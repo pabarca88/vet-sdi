@@ -1,0 +1,51 @@
+
+.nav-atencion-medica.active{
+    color: #fff;
+    font-size: 12px!important;
+    background-color: #1CBEBE;
+    margin-bottom: 5px!important;
+    margin-top: 5px!important;
+    margin-left: 2px!important;
+    margin-right: 2px!important;
+    border-color: #1CBEBE;
+    border: 1px solid #1CBEBE;
+}
+
+.nav-atencion-medica {
+    color: #C7C8C9;
+    font-size: 12px!important;
+    background-color: #fff;
+    padding: 4px 6px!important;
+    border-radius: 1rem;
+    border-color: #C7C8C9;
+    border: 1px solid #C7C8C9;
+    margin-bottom: 5px!important;
+    margin-top: 5px!important;
+    margin-left: 2px!important;
+    margin-right: 2px!important;
+    line-height: 1.5;
+}
+
+.nav-atencion-medica:hover{
+    color: #fff;
+    font-size: 12px!important;
+    background-color: #1CBEBE;
+    margin-bottom: 5px!important;
+    margin-top: 5px!important;
+    margin-left: 2px!important;
+    margin-right: 2px!important;
+    border-color: #1CBEBE;
+    border: 1px solid #1CBEBE;
+}
+
+.nav-tabs {
+    border-bottom: 0px solid #dee2e6!important;
+    margin-bottom: 10px!important;
+    margin-top: 10px!important;
+}
+
+.nav-tabs .nav-item {
+    margin-bottom: 5px!important;
+    margin-top: 5px!important;
+}
+

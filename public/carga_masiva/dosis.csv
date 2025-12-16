@@ -1,0 +1,246 @@
+"cod_dosis"|"cod_parent"|"tipo_prod"|"indic"
+1|0|"comprimidos"|
+2|1||"1 cada 6 horas"
+3|1||"1 cada 8 horas"
+4|1||"1 cada 12 horas"
+5|1||"1 cada 24 horas"
+6|1||"1/2 cada 8 horas"
+7|1||"1/2 cada 12 horas"
+8|1||"1/2 cada 24 horas"
+9|0|"grageas"|
+10|9||"1 cada 6 horas"
+11|9||"1 cada 8 horas"
+12|9||"1 cada 12 horas"
+13|9||"1 cada 24 horas"
+14|"NULL"||
+15|"NULL"||
+16|"NULL"||
+17|0|"cápsulas"|
+18|17||"1 cada 6 horas"
+19|17||"1 cada 8 horas"
+20|17||"1 cada 12 horas"
+21|17||"1 cada 24 horas"
+22|17||"1 cáps de cada fco/día"
+23|"NULL"||
+24|"NULL"||
+25|"NULL"||
+26|0|"tabletas"|
+27|26||"1 cada 6 horas"
+28|26||"1 cada 8 horas"
+29|26||"1 cada 12 horas"
+30|26||"1 cada 24 horas"
+31|26||"1/2 cada 8 horas"
+32|26||"1/2 cada 12 horas"
+33|26||"1/2 cada 24 horas"
+34|"NULL"||
+35|0|"jarabe"|
+36|35||"1 cc cada 8 horas"
+37|35||"2 cc cada 8 horas"
+38|35||"2.5 cc cada 8 horas"
+39|35||"3 cc cada 8 horas"
+40|35||"4 cc cada 8 horas"
+41|35||"5 cc cada 8 horas"
+42|"NULL"||
+43|"NULL"||
+44|35||"1 cc cada 12 horas"
+45|35||"1.5 ml/kg/día(1/2 cada 12 horas)"
+46|35||"2 cc cada 12 horas"
+47|35||"2.5 cc cada 12 horas"
+48|35||"3 cc cada 12 horas"
+49|35||"4 cc cada 12 horas"
+50|35||"5 cc cada 12 horas"
+51|35||"6 cc cada 12 horas"
+52|"NULL"||
+53|"NULL"||
+54|"NULL"||
+55|0|"Gotas"|
+56|55||"1 gota x kilo c/6 horas"
+57|55||"1 gota x kilo c/8 horas"
+58|55||"1 gota x kilo c/12 horas"
+59|55||"10 gotas c/ 8 horas"
+60|55||"20 gotas c/ 8 horas"
+61|55||"30 gotas c/ 8 horas"
+62|55||"30 gotas c/ 8 horas"
+63|"NULL"||
+64|"NULL"||
+65|"NULL"||
+66|"NULL"||
+67|0|"Supositorios"|
+68|67||"1 cada 6 horas"
+69|67||"1 cada 8 horas"
+70|67||"1 cada 12 horas"
+71|67||"1 sup S.O.S"
+72|"NULL"||
+73|"NULL"||
+74|"NULL"||
+75|0|"sachets"|
+76|75||"1 cada 6 horas"
+77|75||"1/2 cada 8 horas"
+78|75||"1 cada 8 horas"
+79|75||"1 cada 12 horas"
+80|75||"1 cada 24 horas"
+81|"NULL"||
+82|"NULL"||
+83|0|"óvulos"|
+84|83||"1 cada 6 horas"
+85|83||"1 cada 8 horas"
+86|83||"1 cada 12 horas"
+87|83||"1 cada 24 horas"
+88|"NULL"||
+89|"NULL"||
+90|0|"ampollas"|
+91|90||"1 amp IM cada 6 horas"
+92|90||"1 amp IM cada 8 horas"
+93|90||"1 amp IM cada 12 horas"
+94|90||"1 amp IM cada 24 horas"
+95|90||"1 amp IV cada 6 horas"
+96|90||"1 amp IV cada 8 horas"
+97|90||"1 amp IV cada 12 horas"
+98|90||"1 amp IV cada 24 horas"
+99|90||"1 amp en suero/24 hras"
+100|90||"2 amp en suero/24 hras"
+101|90||"1 amp en suero/12 hras"
+102|90||"1 amp en suero/8 hras"
+103|"NULL"||
+104|"NULL"||
+105|0|"Fco amp"|
+106|105||"1 amp IM cada 6 horas"
+107|105||"1 amp IM cada 8 horas"
+108|105||"1 amp IM cada 12 horas"
+109|105||"1 amp IM cada 24 horas"
+110|105||"1 amp en suero/24 hras"
+111|105||"2 amp en suero/24 hras"
+112|105||"1amp en suero/12 hras"
+113|105||"1 amp en suero/8 hras"
+114|105||"2 amp en suero/12 hras"
+115|105||"1 amp IV cada 6 horas"
+116|105||"1 amp IV cada 8 horas"
+117|105||"1 amp IV cada 12 horas"
+118|105||"1 amp IV cada 24 horas"
+119|105||"1 amp subcutanea / día"
+120|"NULL"||
+121|0|"Sueros"|
+122|121||"10 gotas por min"
+123|121||"20 gotas por min"
+124|121||"30 gotas por min"
+125|121||"mantención vía"
+126|"NULL"||
+127|"NULL"||
+128|0|"Aplicadores"|
+129|128||"1 aplicación /día"
+130|128||"2 aplicaciones /día"
+131|128||"3 aplicaciones /día"
+132|128||"1 aplicación S.O.S"
+133|128||"uso diario"
+134|128||"1 cáps o vulo/día"
+135|0|"cremas lociones"|
+136|135||"1 aplicación /día"
+137|135||"2 aplicaciones /día"
+138|135||"3 aplicaciones /día"
+139|135||"aplicación S.O.S"
+140|"NULL"||
+141|"NULL"||
+142|0|"gotas oftalmologicas"|
+143|142||"1 Gota cada 2 horas"
+144|142||"1 Gota cada 3 horas"
+145|142||"1 Gota cada 4 horas"
+146|142||"1 Gota cada 6 horas"
+147|142||"1 Gota cada 8 horas"
+148|142||"1 Gota cada 12 horas"
+149|142||"1 Gota cada 24 horas"
+150|0|"ungüento oft"|
+151|150||"1 vez por día c/ojo"
+152|150||"2 vez por día c/ojo"
+153|150||"1 vez por día ojo afect"
+154|0||
+155|0|"Gotas Oticas"|
+156|155||"3 gotas en c/oido 3 veces al día"
+157|155||"3 gotas en c/oido 4 veces al día"
+158|155||"4 gotas en c/oido 3 veces al día"
+159|155||"3 gotas en c/oido 2 veces al día"
+160|155||"3 gotas en oido afectado c/8 horas"
+161|155||"4 gotas en oido afectado c/8 horas"
+162|155||"3 gotas en oido afectado c/8 horas"
+163|155||"3 gotas en oido afectado c/12 horas"
+164|"NULL"||
+165|0|"Jeringas prellenadas"|
+166|165||"1 amp IM"
+167|165||"1 amp IV"
+168|165||"1 amp subcutánea"
+169|0|"cintas"|
+170|169||"uso indicado"
+171|0|"lancetas"|
+172|171||"uso indicado"
+173|0|"polvos tto unico"|
+174|173||"1 vez por semana"
+175|173||"1 cada 2 semanas"
+176|173||"1 al mes"
+177|173||"1 vez al día"
+178|0|"puff"|
+179|178||"1 puff cada 6 horas"
+180|178||"2 puff cada 6 horas"
+181|178||"1 puff cada 8 horas"
+182|178||"2 puff cada 8 horas"
+183|178||"2 puff cada 12 horas"
+184|178||"1 puff S.O.S"
+185|"NULL"||"2 puff S.O.S"
+186|0|"alimentacion"|
+187|186||"1 fco al dia"
+188|189||"1 fco 2 veces al día"
+189|192||"uso diario"
+190|195||"uso 3 veces al dia"
+191|198||"uso 4 veces al dia"
+192|0|"soluciones"|
+193|"NULL"||
+194|"NULL"||
+195|"NULL"||
+196|"NULL"||
+197|"NULL"||
+198|"NULL"||
+199|"NULL"||
+200|0|"labiales"|
+201|200||"aplicación local SOS"
+202|200||"aplicación local 1 vez al día"
+203|200||"aplicación local 2 veces al día"
+204|0|"pasta dental colutorios"|
+205|204||"lavar después de las comidas"
+206|0|"colutorios y aplic dentales"|
+207|206||"aplicar SOS"
+208|206||"colutorios entre las comidas"
+209|206||"1 colutorio por día"
+210|0|"granulos"|
+211|210||"1 cucharada 1 postre al dia"
+212|210||"1 cucharada 2 veces al dia"
+213|210||"2 cucharadas 2 veces po día"
+214|0|"uso en oficina"|
+215|214||"procedimiento médico"
+216|"NULL"||
+217|0|"Parches"|
+218|217||"1 parche diario"
+219|217||"1 parche cada 15 días"
+220|217||"1 parche al mes"
+221|"NULL"|"NULL"|"NULL"
+222|0|"sol bebibles"|"NULL"
+223|222|"NULL"|"1 al día"
+224|222|"NULL"|"2 al dia"
+225|222|"NULL"|"3 al día"
+226|"NULL"|"NULL"|"NULL"
+227|0|"unguentos nasales"|
+228|"NULL"|"NULL"|"aplicar en la fosa nasal 1 vez por día"
+229|"NULL"|"NULL"|"aplicar en ambas fosas nasales 1 vez por día"
+230|"NULL"|"NULL"|"aplicar en ambas fosas nasales 1 vez por día"
+231|"NULL"|"NULL"|"aplicar en ambas fosas nasales 2 veces por día"
+232|"NULL"|"NULL"|"NULL"
+233|0|"insulina"|"NULL"
+234|"NULL"|"NULL"|"NULL"
+235|"NULL"|"NULL"|"NULL"
+236|"NULL"|"NULL"|"NULL"
+237|"NULL"|"NULL"|"NULL"
+238|204||"lavarse en la mañana , noche y después de comer"
+239|"NULL"|"NULL"|"NULL"
+240|"NULL"|"NULL"|"NULL"
+241|0|"Uso indicado"|"NULL"
+242|241|"Siga instrucciones"|"NULL"
+243|241|"por la mañana"|"NULL"
+244|241|"uso indicado"|"NULL"
+"NULL"|"NULL"|"NULL"|"NULL"

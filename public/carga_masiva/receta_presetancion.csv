@@ -1,0 +1,71 @@
+"cod_presentacion"|"cantidad"|"tipo presentacion"|"cant"
+1|0|"cajas"|0
+1|0|"cajas"|
+2|1|1|"(1) Una   caja"
+3|2|1|"(2) Dos  cajas"
+4|3|1|"(3) Tres cajas"
+5|4|1|"(4) Cuatro cajas"
+6|0|"fcos"|
+7|1|6|"Un(1) frasco"
+8|2|6|"Dos (2) frascos"
+9|3|6|"Tres (3) frascos"
+10|4|6|"Cuatro (4) frascos"
+11|0|"viales"|
+12|1|11|"Una (1) vial"
+13|2|11|"Dos (2)  viales"
+14|3|11|"Tres (3) viales"
+15|4|11|"Cuatro (4) viales"
+16|5|11|"Cinco (5) viales"
+17|0|"Ampollas"|
+18|1|17|"Una (1)  ampolla"
+19|2|17|"Dos (2)  ampollas"
+20|3|17|"Tres (3) ampollas"
+21|4|17|"Cuatro (4) ampollas"
+22|5|17|"Cinco (5) ampollas"
+23|6|17|"Séis (6) ampollas"
+24|7|17|"Siete(7) ampollas"
+25|8|17|"Ocho (8) ampollas"
+26|0|17|"Nueve(9) ampollas"
+27|0|17|"Diéz (10) ampollas"
+28|0|17|"Once (11) ampollas"
+29|0|"Fco amp"|
+30|1|29|"Un (1)  fco amp"
+31|2|29|"Dos (2)  fcos amp"
+32|3|29|"Tres (3) fcos amp"
+33|4|29|"Cuatro (4) fcos amp"
+34|5|29|"Cinco (5) fcos amp"
+35|6|29|"Séis (6) fcos amp"
+36|7|29|"Siete(7) fcos amp"
+37|8|29|"Ocho (8) fcos amp"
+38|9|29|"9 fcos amp"
+39|10|29|"10 fcos amp"
+40|0|"jeringas prellenadas"|
+41|1|40|"(1) Una   caja"
+42|2|40|"Dos (2)  cajas"
+43|3|40|"Tres (3) cajas"
+44|4|40|"Cuatro (4) cajas"
+45|0|"'NULL'"|
+46|0|"'NULL'"|
+47|0|"'NULL'"|
+48|0|"unidades"|
+49|1|48|"Una (1)  unidad"
+50|2|48|"Dos (2)  unidades"
+51|3|48|"Tres (3) unidades"
+52|4|48|"Cuatro (4) unidades"
+53|5|48|"Cinco (5) unidades"
+54|6|48|"Séis (6) unidades"
+55|7|48|"Siete(7) unidades"
+56|8|48|"Ocho (8) unidades"
+57|0|"'NULL'"|
+58|0|"'NULL'"|
+59|0|"'NULL'"|
+60|0|"Pasta dental colutorios"|
+61|1|60|"Una (1) unidad"
+62|2|60|"Dos (2)  unidades"
+63|3|60|"Tres (3) unidades"
+64|4|60|"Cuatro (4) unidades"
+65|5|60|"Cinco (5) unidades"
+66|6|60|"Séis (6) unidades"
+67|7|60|"Siete(7) unidades"
+68|8|60|"Ocho (8) unidades"
+"NULL"|"NULL"|"NULL"|"NULL"

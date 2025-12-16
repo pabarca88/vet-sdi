@@ -1,0 +1,114 @@
+/* estilos de boton flotante agenda de examnes */
+
+.bs-canvas-overlay {
+    opacity: 0;
+    z-index: -1;
+}
+
+.bs-canvas-overlay.show {
+    opacity: 0.85;
+    z-index: 1100;
+}
+
+.bs-canvas {
+    top: 0;
+    width: 0;
+    z-index: 1110;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.bs-canvas-left {
+    left: 0;
+}
+
+.bs-canvas-right {
+    right: 0;
+}
+
+.bs-canvas-anim {
+    transition: all 0.4s ease-out;
+    -webkit-transition: all 0.4s ease-out;
+    -moz-transition: all 0.4s ease-out;
+    -ms-transition: all 0.4s ease-out;
+}
+
+.btn-agenda-cons {
+    display: block;
+    width: 148px;
+    height: 30px;
+    padding-left: 3px;
+    font-weight: 600;
+    font-size: 0.7rem;
+    position: fixed;
+    right: -63px;
+    color: #fff;
+    top: 97px;
+    text-align: center;
+    z-index: 1000000000;
+    cursor: pointer;
+    transform: rotate(90deg);
+    padding-bottom: 5px;
+    padding-top: 6px;
+    padding-left: 3px;
+    padding-right: 3px;
+    background-color: #1cbebe;
+}
+
+.btn-agenda-cons:hover {
+    color: #fff;
+}
+
+.btn-agenda-tel {
+    display: block;
+    width: 160px;
+    height: 30px;
+    padding-left: 3px;
+    font-weight: 600;
+    font-size: 0.68rem;
+    position: fixed;
+    right: -68px;
+    padding-bottom: 5px;
+    padding-top: 6px;
+    padding-left: 3px;
+    padding-right: 3px;
+    color: #fff;
+    top: 270px;
+    text-align: center;
+    z-index: 1000000000;
+    cursor: pointer;
+    transform: rotate(90deg);
+    background-color: #387fb6;
+}
+
+
+.btn-agenda-tel:hover {
+    color: #fff;
+}
+
+.btn-agenda-exa {
+    display: block;
+    width: 160px;
+    height: 30px;
+    padding-left: 3px;
+    font-weight: 600;
+    font-size: 0.68rem;
+    position: fixed;
+    right: -68px;
+    padding-bottom: 5px;
+    padding-top: 6px;
+    padding-left: 3px;
+    padding-right: 3px;
+    color: #fff;
+    top: 447px;
+    text-align: center;
+    z-index: 1000000000;
+    cursor: pointer;
+    transform: rotate(90deg);
+    background-color: #387fb6;
+}
+
+
+.btn-agenda-exa:hover {
+    color: #fff;
+}

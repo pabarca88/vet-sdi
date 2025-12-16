@@ -1,0 +1,139 @@
+h1, h2, h3, h4, h5, h6, input, button {
+	font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+}
+
+a {
+	font-size: 12px;
+	font-family: 'Montserrat', sans-serif;
+}
+
+p {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 15px;
+}
+
+label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+span, ul, li {
+	font-family: 'Montserrat', sans-serif;
+}
+
+ul, li {
+	list-style:none;
+}
+
+footer li {
+	font-size: 12px!important;
+}
+
+
+body {
+        background-color: rgb(51,102,204); background: -moz-linear-gradient(81deg, rgba(51,102,204,1) 0%, rgba(28,190,190,1) 100%);
+        background: -webkit-linear-gradient(81deg, rgba(51,102,204,1) 0%, rgba(28,190,190,1) 100%);
+        background: linear-gradient(81deg, rgba(51,102,204,1) 0%, rgba(28,190,190,1) 100%);
+        background-repeat: repeat;
+}
+
+
+/* Ancho */
+.wid-70 {
+	width: 70%;
+}
+
+.wid-50 {
+	width: 50%;
+}
+
+.alin-centro {
+	margin-top: 10%;
+	margin-bottom: 10%;
+}
+
+
+/* Width */
+.w-50 {
+  width: 85%!important;
+}
+
+.t-azul {
+	color: #045aa0;
+}
+
+.transparente {
+	background-color:rgb(255, 255, 255, 0.5);
+}
+
+
+.btn-info {
+  color: #fff;
+  background-color: #17a2b8;
+  border-color: #17a2b8;
+  font-weight: 500;
+}
+
+.btn-info:hover {
+  color: #fff;
+  background-color: #138496;
+  border-color: #117a8b;
+  font-weight: 500;
+}
+
+.btn-info:focus, .btn-info.focus {
+  box-shadow: 0 0 0 0.2rem rgba(58, 176, 195, 0.5);
+}
+
+.btn-info.disabled, .btn-info:disabled {
+  color: #fff;
+  background-color: #abcfd3;
+  border-color: #abcfd3;
+}
+
+.btn-info:not(:disabled):not(.disabled):active, .btn-info:not(:disabled):not(.disabled).active,
+.show > .btn-info.dropdown-toggle {
+  color: #fff;
+  background-color: #117a8b;
+  border-color: #10707f;
+}
+
+.btn-info:not(:disabled):not(.disabled):active:focus, .btn-info:not(:disabled):not(.disabled).active:focus,
+.show > .btn-info.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2rem rgba(58, 176, 195, 0.2);
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #0060af;
+  border-color: #0060af;
+  font-weight: 500;
+}
+
+.btn-primary:hover {
+  color: #fff;
+  background-color: #045aa0;
+  border-color: #045aa0;
+  font-weight: 500;
+}
+
+.btn:focus {
+  outline: none!important;
+  box-shadow: none!important;
+}
+
+*:focus {
+    outline: 0 !important;
+}
+
+button:focus {
+  outline:0!important;
+}
+
+
+
+
+
+

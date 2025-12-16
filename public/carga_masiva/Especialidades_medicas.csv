@@ -1,0 +1,152 @@
+0|"cod_prof"|"txt_prof"|"cod_spe"|"txt_spe"|"cod_sub_esp"|"txt_subesp"|"cod_parent_esp"
+1|0|"MÉDICOS"|0|0|0|0|0
+2|1|0|1|"CIRUGIA "|1|"Cirugía Abdominal General"|1
+3|1|0|2|"ESPECIALIDADES MÉDICAS(der,oft,oto,uro)"|2|"Cirugía Bariátrica"|1
+4|1|0|3|"GINECO-OBSTETRÍCIA"|3|"Cirugia Broncopulmonar"|1
+5|1|0|4|"MEDICINA DE ALTURA"|4|"Cirugía Cardiovascular"|1
+6|1|0|5|"MEDICINA DEL TRABAJO"|5|"Cirugía Cardiovascular Adultos"|1
+7|1|0|6|"MEDICINA DEPORTIVA"|6|"Cirugía Cardiovascular Niños"|1
+8|1|0|7|"MEDICINA FISICA Y REHABILITACIÓN"|7|"Cirugía Coloproctológica"|1
+9|1|0|8|"MEDICINA GENERAL"|8|"Cirugía de Cabeza y Cuello"|1
+10|1|0|9|"MEDICINA INTERNA"|9|"Cirugía de la mama"|1
+11|1|0|10|"NEUROLOGÍA Y NEUROCIRUGÍA"|10|"Cirugía del Tórax"|1
+12|1|0|11|"PEDIATRÍA"|11|"Cirugía digestiva"|1
+13|1|0|12|"SIQUIATRÍA"|12|"Cirugía Gástrica"|1
+14|1|0|13|"TRAUMATOLOGIA Y ORTOPEDIA"|13|"Cirugía maxilofacial"|1
+15|1|0|0|0|14|"Cirugía Nefrourológica"|1
+16|1|0|0|0|15|"Cirugía Oncológica"|1
+17|1|0|0|0|16|"Cirugía Pancreas"|1
+18|1|0|0|0|17|"Cirugía Plástica y Reparadora"|1
+19|1|0|0|0|18|"Cirugía Vascular Periférica"|1
+20|1|0|0|0|1|"Dermatología"|2
+21|1|0|0|0|2|"Oftalmología"|2
+22|1|0|0|0|3|"Otorrinolaringología"|2
+23|1|0|0|0|4|"Urología"|2
+24|1|0|0|0|1|"Ginecología endocrinológica"|3
+25|1|0|0|0|2|"Ginecología  Infantil"|3
+26|1|0|0|0|3|"Ginecología Infertilidad"|3
+27|1|0|0|0|4|"Ginecología Oncológica"|3
+28|1|0|0|0|5|"Ginecologia y Obtetricia General"|3
+29|1|0|0|0|6|"Medicina Materno Fetal"|0
+30|1|0|0|0|1|"Medicina de Altura"|4
+31|1|0|0|0|1|"Medicina del Trabajo"|5
+32|1|0|0|0|1|"Medicina deportiva General"|6
+33|1|0|0|0|2|"Medicina deportiva Alto Rendimiento"|6
+34|1|0|0|0|1|"Mdicina física y Rehabilitación General"|7
+35|1|0|0|0|2|"Mdicina física y Rehabilitación Neurológica"|7
+36|1|0|0|0|3|"Mdicina física y Rehabilitación Respiratoria"|7
+37|1|0|0|0|1|"Medicina Familiar"|8
+38|1|0|0|0|2|"Medicina general adultos y niños"|8
+39|1|0|0|0|3|"Medicina general a Domicilio"|8
+40|1|0|0|0|1|"Alimentación y Nutrición"|9
+41|1|0|0|0|2|"Broncopulmonar"|9
+42|1|0|0|0|3|"Diabetología"|9
+43|1|0|0|0|4|"Endocrinología"|9
+44|1|0|0|0|5|"Endoscopía Digestiva"|9
+45|1|0|0|0|6|"Gastroenterología"|9
+46|1|0|0|0|7|"Geriatría"|9
+47|1|0|0|0|8|"Hematología"|9
+48|1|0|0|0|9|"Hepatología"|9
+49|1|0|0|0|10|"Infectología"|9
+50|1|0|0|0|11|"Inmunología y Alérgias"|9
+51|1|0|0|0|12|"Medicina Nuclear"|9
+52|1|0|0|0|13|"Nefrología"|9
+53|1|0|0|0|14|"Nefrourología"|9
+54|1|0|0|0|15|"Oncología"|9
+55|1|0|0|0|16|"Parasitología"|9
+56|1|0|0|0|17|"Quimioterapia"|9
+57|1|0|0|0|18|"Radioterapia"|9
+58|1|0|0|0|19|"Reumatología"|9
+59|1|0|0|0|1|"Neurología"|10
+60|1|0|0|0|2|"Neurocirugía"|10
+61|1|0|0|0|3|"Neuropsiquiatría"|10
+62|1|0|0|0|4|"Neuroradiología"|10
+63|1|0|0|0|1|"Alergología Pediátrica"|11
+64|1|0|0|0|2|"Alimentación y Nutrición  Infantil"|11
+65|1|0|0|0|3|"Broncopulmonar Infantil"|11
+66|1|0|0|0|4|"Cardiología Pediátrica"|11
+67|1|0|0|0|5|"Cirugía y Traumatología Pediatrica"|11
+68|1|0|0|0|6|"Dermatología Pediátrica"|11
+69|1|0|0|0|7|"Endocrinología Pediátrica"|11
+70|1|0|0|0|8|"Gastroenterología  Pediátrica"|11
+71|1|0|0|0|9|"Ginecología  Infantil"|11
+72|1|0|0|0|10|"Nefrología Pediátrica"|11
+73|1|0|0|0|11|"Neonatología"|11
+74|1|0|0|0|12|"Neurología Infantil"|11
+75|1|0|0|0|13|"Neurosiquiatría Infantil"|11
+76|1|0|0|0|14|"Oftalmología Pediátrica"|11
+77|1|0|0|0|15|"Oncología y Radioterapia  Infantil"|11
+78|1|0|0|0|16|"Otorrinolaringología Pediátrica"|11
+79|1|0|0|0|17|"Pediatría General"|11
+80|1|0|0|0|18|"Urología Pediátrica"|11
+81|1|0|0|0|1|"Psiquiatría General"|12
+82|1|0|0|0|2|"Adicciones"|12
+83|1|0|0|0|1|"Traumatología Cadera"|13
+84|1|0|0|0|2|"Traumatología Codo"|13
+85|1|0|0|0|3|"Traumatología Columna"|13
+86|1|0|0|0|4|"Traumatología General"|13
+87|1|0|0|0|5|"Traumatología Hombro"|13
+88|1|0|0|0|6|"Traumatología Rodilla"|13
+89|0|"ODONTÓLOGOS"|0|"NULL"|0|"NULL"|0
+90|89||14|"CIRUGÍA MAXILOFACIAL"|0|0|0
+91|89||15|"ENDODÓNCIA"|0|0|0
+92|89||16|"IMPLANTOLOGÍA"|0|0|0
+93|89||17|"ODONTOLOGÍA COSMÉTICA"|0|0|0
+94|89||18|"ODONTOLOGÍA GENERAL"|0|0|0
+95|89||19|"ODONTOPEDIATRÍA"|0|0|0
+96|89||20|"ORTODÓNCIA"|0|0|0
+97|89||21|"PERIODÓNCIA"|0|0|0
+98|89||22|"ODONTOPROTESISTA"|0|0|0
+99|89||23|"RADIOLOGÍA DENTAL"|0|0|0
+100|89||24|"REHABILITACIÓN ORAL"|0|0|0
+101|0|"KINESIOLOGIA"|0|0|0|0|0
+102|101|101|25|"KINESIOLOGIA GENERAL"|1|"Kinesiología Respiratoria"|26
+103|101|101|26|"KINESIOLOGIA ESPECIALIZADA"|2|"Kinesiología Traumatológica"|26
+104|101|101|27|"KINESIOLOGIA DOMICILIARIA"|3|"Kinesiología Neurológica"|26
+105|101|"NULL"|0|"NULL"|4|"Kinesiología Tercera Edad"|26
+106|101|"NULL"|0|"NULL"|5|"Kinesiología Infantil"|26
+107|101|"NULL"|0|"NULL"|6|"Kinesiología Del Desarrollo"|26
+108|0|"FONOAUDIOLOGÍA"|0|"NULL"|0|"NULL"|0
+109|108|108|28|"FONOAUDIOLOGIA CLÍNICA ADULTOS Y NIÑOS"|1|"Fonoaudiología Habla y Lenguaje"|30
+110|108|108|29|"FONOAUDIOLOGIA EDUCACIONAL"|2|"Fonoaudiología Neurológica"|30
+111|108|108|30|"FONOAUDIOLOGIA ESPECIALIZADA"|3|"Fonoaudiología de la Audición"|30
+112|108|"NULL"|0|"NULL"|4|"Fonoaudiología del Canto"|30
+113|0|"NUTRICIÓN Y DIETÉTICA"|0|"NULL"|0|"NULL"|0
+114|113|113|31|"NUTRICIONISTA GENERAL"|1|"Obesidad"|33
+115|113|113|32|"NUTRICIONISTA PEDIÁTRICA"|2|"Diabetes"|33
+116|113|113|33|"NUTRICIONISTA ESPECIALIDAD"|3|"Dietología"|33
+117|113|"NULL"|0|"NULL"|4|"Transtornos Metabólicos"|33
+118|113|"NULL"|0|"NULL"|5|"Tercera Edad"|33
+119|0|"SICOLOGÍA"|0|"NULL"|0|"NULL"|0
+120|119|119|34|"SICOLOGÍA GENERAL ADULTOS"|1|"Sicología Adicciones"|37
+121|119|119|35|"SICOLOGÍA GENERAL INFANTIL"|2|"Sicología de la Obesidad"|37
+122|119|119|36|"SICOLOGÍA LABORAL"|3|"Sicología Oncológica"|37
+123|119|119|37|"SICOLOGÍA ESPECIALIZADA"|0|"NULL"|0
+124|0|"MATRÓN/A"|0|"NULL"|0|"NULL"|0
+125|124|124|36|"ATENCIÓN EMBARAZO"|0|"NULL"|0
+126|124|124|37|"ANTICONCEPCIÓN"|0|"NULL"|0
+127|124|124|38|"ATENCIÓN PUERPERIO"|0|"NULL"|0
+128|0|"ENFERMERA UNIVERSITARIA"|0|"NULL"|0|"NULL"|0
+129|128|"NULL"|39|"ENFERMERÍA GENERAL"|1|"Cuidado de enfermos"|39
+130|128|"NULL"|40|"ENFERMERÍA ESPECIALIZADA"|2|"Curaciones tratamientos"|39
+131|128|"NULL"|0|"NULL"|3|"Control de niño sano"|39
+132|0|"TERÁPIA OCUPACIONAL"|0|"NULL"|0|"NULL"|0
+133|132|132|41|"TERÁPIA OCUPACIONAL ADULTOS"|0|"NULL"|0
+134|132|132|42|"TERÁPIA OCUPACIONAL NIÑOS"|0|"NULL"|0
+135|0|"TÉCNICO ENFERMERÍA"|0|"NULL"|0|"NULL"|0
+136|135|135|43|"ATENCIÓN TENS EN GENERAL"|1|"Cuidado de enfermos"|44
+137|135|135|44|"ATENCIÓN TENS ESPECIALIZADA"|2|"Curaciones tratamientos"|44
+138|0|"TECNÓLOGO MÉDICO"|0|"NULL"|0|"NULL"|0
+139|138|138|45|"TECNOLOGÍA MÉDICA GENERAL"|1|"Laboratorio Radiología"|46
+140|138|138|46|"TECNOLOGÍA MÉDICA ESPECIALIZADA"|2|"Laboratorio clínico"|46
+141|138|"NULL"|0|"NULL"|3|"Laboratorio Anatomía Patológica"|46
+142|138|"NULL"|0|"NULL"|4|"Laboratorio Otorrinolaringología"|46
+143|138|"NULL"|0|"NULL"|5|"Laboratorio Oftalmología"|46
+144|138|"NULL"|0|"NULL"|6|"Laboratorio Cardiología"|46
+145|138|"NULL"|0|"NULL"|7|"Laboratorio Neurología"|46
+146|138|"NULL"|0|"NULL"|8|"Laboratorio Dental"|46
+147|138|"NULL"|0|"NULL"|9|"Laboratorio Citopatología"|46
+148|138|"NULL"|0|"NULL"|10|"Laboratorio Inmunología"|46
+149|0|"ARSENALERÍA"|0|"NULL"|0|"NULL"|0
+150|149|"NULL"|47|"ARSENALERÍA QUIRÚRGICA"|0|"NULL"|0
+151|149|"NULL"|48|"ARSENALERÍA OBSTÉTRICA"|0|"NULL"|0

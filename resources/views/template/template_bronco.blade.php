@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+
+    @include('atencion_medica.include.head_broncopulmonar')
+
+    <link rel="icon" href="{{ asset('images/favicon.ico') }}" type="image/x-icon">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}?t={{ time() }}">
+    <link rel="stylesheet" href="{{ asset('css/style_index.css') }}?t={{ time() }}">
+
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <!-- Links del REG-->
+    <link rel="stylesheet" href="{{ asset('css/escritorio_profesional.css') }}?t={{ time() }}">
+    <link rel="stylesheet" href="{{ asset('css/card_estilo.css') }}?t={{ time() }}">
+    <link rel="stylesheet" href="{{ asset('css/boton-flotante.css') }}?t={{ time() }}">
+    <script src="https://kit.fontawesome.com/eb496ab1a0.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{{ asset('css/plugins/bootstrap-tagsinput.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/plugins/bootstrap-tagsinput-typeahead.css') }}">
+
+    <!-- select2 selectbonito css -->
+    <link rel="stylesheet" href="{{ asset('css/plugins/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/formularios.css') }}">
+
+
+    <!-- fileupload-custom css -->
+    <link rel="stylesheet" href="{{ asset('css/plugins/dropzone/dropzone.css') }}?t={{ time() }}">
+
+    <!--boton azul-->
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/nav_azul_sm.css') }}?t={{ time() }}">
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js" defer></script>
+
+    <!-- data tables css -->
+    <link rel="stylesheet" href="{{ asset('css/plugins/dataTables.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/plugins/responsive.bootstrap4.min.css') }}">
+
+
+    <!-- fileupload-custom css -->
+    <link rel="stylesheet" href="{{ asset('css/plugins/dropzone/dropzone.css') }}?t={{ time() }}">
+
+	<!--boton azul-->
+	<link rel="stylesheet" type="text/css" href="{{ asset('css/nav_azul_sm.css') }}?t={{ time() }}">
+
+    <!--Accordion-->
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/accordion.css') }}?t={{ time() }}">
+
+    <!--Card Sidebar-->
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/card_sidebar.css') }}?t={{ time() }}">
+
+    <!--Pills Modals-->
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/pills_modals.css') }}?t={{ time() }}">
+
+    <!--Tab wizard_formularios-->
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/tab_wizard_formularios.css') }}?t=<?= time() ?>">
+
+    <!--Bs-Canvas-->
+    <link rel="stylesheet" href="{{ asset('css/bs_canvas.css') }}?t={{ time() }}">
+
+    <link rel="stylesheet" href="{{ asset('css/estilos_atencion_medica.css') }}?t=<?= time() ?>">
+
+
+    <!-- fancy box -->
+    <link rel="stylesheet" href="{{ asset('css/fancybox/fancybox.css') }}" />
+    <script src="{{ asset('css/fancybox/fancybox.umd.js') }}"></script>
+
+    <!--Estilo tab secciones -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/tabs-secciones.css') }}">
+
+    <!--formulario sm-->
+    <link rel="stylesheet" href="{{ asset('css/formulario_sm.css') }}">
+    {{--  /** agregar css */  --}}
+
+    <style>
+        .ui-front {
+            position: absolute;
+            z-index: 99999999999;
+            overflow: auto;
+        }
+
+    </style>
+    @yield('css-btn-autorizacion')
+       @yield('styles')
+</head>
+<body>
+    @include('template.profesional.header')
+    @include('template.menuProfesional')
+    @yield('Content')
+
+    <!-- Modal de la vista -->
+    @yield('Modals')
+    @yield('modals-med-exa')
+    @yield('Modals-med-exa-esp')
+    @yield('modal-ficha-general-espc')
+    @include('atencion_medica.secciones_especialidad.ficha_orl_tipo')
+
+    <!-- Modal de la vista fin -->
+
+
+
+    <!-- Required Js -->
+    <script src="{{ asset('js/vendor-all.min.js') }}"></script>
+    <script src="{{ asset('js/plugins/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('js/ripple.js') }}"></script>
+    {{--  <script src="{{ asset('js/pcoded.min.js') }}"></script>  --}}
+    <script src="{{ asset('js/documentos.js') }}?upd={{ random_int(1111,9999) }}"></script>
+
+    <!-- datatable Js -->
+    <script src="{{ asset('js/plugins/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('js/plugins/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('js/plugins/dataTables.responsive.min.js') }}"></script>
+    {{--  <script src="{{ asset('js/pages/data-responsive-custom.js') }}"></script>  --}}
+
+    <script src="{{ asset('js/sidebar.js') }}?upd={{ random_int(1111,9999) }}"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+
+    <!--Accordion-->
+    <script src="{{ asset('js/accordion.js') }}?upd={{ random_int(1111,9999) }}"></script>
+
+    <!--Tablas-->
+    <script src="{{ asset('js/tablas_fmu.js') }}?upd={{ random_int(1111,9999) }}"></script>
+    <script src="{{ asset('js/tabla_atenciones_medicas_previas.js') }}?upd={{ random_int(1111,9999) }}"></script>
+    <script src="{{ asset('js/tablas_control_cronicos.js') }}?upd={{ random_int(1111,9999) }}"></script>
+
+    <script src="{{ asset('js/recetas_atencion_medica.js') }}?upd={{ random_int(1111,9999) }}"></script>
+    <script src="{{ asset('js/licencias_atencion_medica.js') }}?upd={{ random_int(1111,9999) }}"></script>
+
+    <!--Sidebars-->
+    <script src="{{ asset('js/bs_canvas.js') }}"></script>
+
+
+    <!--Formularios Modals-->
+    <script src="{{ asset('js/modals_atencion_medica.js') }}?upd={{ random_int(1111,9999) }}"></script>
+
+    <!--Form wizard-->
+    <script src="{{ asset('js/plugins/jquery.bootstrap.wizard.min.js') }}"></script>
+    <script src="{{ asset('js/formularios_wizard.js') }}?upd={{ random_int(1111,9999) }}"></script>
+
+    <!-- datepicker js -->
+    <script src="{{ asset('js/plugins/moment.min.js') }}"></script>
+    <script src="{{ asset('js/plugins/daterangepicker.js') }}"></script>
+    <script src="{{ asset('js/pages/ac-datepicker.js') }}"></script>
+
+    <!--Tooltips-->
+    <script src="{{ asset('js/tooltip_atencion_medica.js') }}?upd={{ random_int(1111,9999) }}"></script>
+
+    <!--Check-->
+    <script src="{{ asset('js/check_atencion_medica.js') }}?upd={{ random_int(1111,9999) }}"></script>
+
+    <!-- file-upload Js -->
+    <script src="{{ asset('js/plugins/dropzone/dropzone.js') }}"></script>
+    <!-- <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script> -->
+
+    <!-- mensajes -->
+    <script src="{{ asset('js/plugins/sweetalert.min.js') }}"></script>
+
+    {{-- autocomplete
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>--}}
+    <script src="{{ asset('js/jquery-ui/jquery-ui.min.js') }}"></script>
+
+    {{--  @include('template.templateAutorizacion')  --}}
+
+    <!-- form-advance custom js -->
+    {{--  <script src="{{ asset('js/pages/form-advance-custom.js') }}?upd={{ random_int(1111,9999) }}"></script>  --}}
+
+    <!--Apgar-->
+    <script src="{{ asset('js/aicalc2.js') }}?upd={{ random_int(1111,9999) }}"></script>
+
+    <!--Botón cards-->
+    <script src="{{ asset('js/btn-cards.js') }}?upd={{ random_int(1111,9999) }}"></script>
+
+    <!--Modals Sidebar derecho-->
+    <script src="{{ asset('js/modals_sidebar_esp.js') }}?upd={{ random_int(1111,9999) }}"></script>
+
+    <!--Tablas y Toggle atención ginecobstetrica-->
+    <script src="{{ asset('js/atencion_especialidades.js') }}?upd={{ random_int(1111,9999) }}"></script>
+
+    <!-- rut -->
+    <script src="{{ asset('js/rut.js') }}"></script>
+
+    <!-- funciones generales -->
+    {{--  <script src="{{ asset('js/funciones.js') }}"></script>  --}}
+
+
+
+    {{-- zoom  --}}
+    <script src="{{ asset('js/app.js') }}" ></script>
+    {{-- <script src="{{ asset('js/react.production.min.js') }}" ></script> --}}
+    {{-- <script src="{{ asset('js/react-dom.production.min.js') }}" ></script> --}}
+    {{-- <script src="{{ asset('js/redux.min.js') }}" ></script> --}}
+    {{-- <script src="{{ asset('js/redux-thunk.min.js') }}" ></script> --}}
+    {{-- <script src="{{ asset('js/lodash.min.js') }}" ></script> --}}
+    {{-- en desarrollo --}}
+    {{-- <script src="{{ asset('zoom/tool.js') }}"></script> --}}
+    {{-- <script src="{{ asset('zoom/vconsole.min.js') }}"></script> --}}
+    {{-- <script src="{{ asset('zoom/index.js') }}"></script> --}}
+
+    <script>
+        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+
+
+        $(document).ready(function () {
+            $('#ex-funcional').select2({
+                dropdownParent: $('#m_espiro .modal-body')
+            });
+
+            $('#examen_rx').select2({
+                dropdownParent: $('#m_rx_brpul .modal-body')
+            });
+              $('#examenes_endoscopico').select2({
+                dropdownParent: $('#m_bronco .modal-body')
+            });
+
+            {{--  mensaje de exito al registrar ficha clinica  --}}
+             @if(session('mensaje'))
+                swal({
+                    title: "Registro de Ficha Clínica.",
+                    text:"{{ session('mensaje') }}",
+                    icon: "info",
+                    // buttons: "Aceptar",
+                    //SuccessMode: true,
+                });
+            @endif
+            {{--  mensaje de exito al registrar ficha clinica  --}}
+            @if(session('success'))
+                swal({
+                    title: "Registro de Ficha Clínica.",
+                    text:"{{ session('success') }}",
+                    icon: "success",
+                    // buttons: "Aceptar",
+                    //SuccessMode: true,
+                });
+            @endif
+
+			{{--  mensaje de erro al registrar ficha clinica  --}}
+			@if(session('error'))
+				swal({
+					title: "Registro de Ficha Clínica.",
+					text:"{{ session('error') }}",
+					icon: "error",
+					// buttons: "Aceptar",
+					//SuccessMode: true,
+				});
+			@endif
+
+			{{--  mensaje de warning al registrar ficha clinica  --}}
+			@if(session('warning'))
+				swal({
+					title: "Registro de Ficha Clínica.",
+					text:"{{ session('warning') }}",
+					icon: "warning",
+					// buttons: "Aceptar",
+					//SuccessMode: true,
+				});
+			@endif
+
+            @if (request('tab'))
+                let li = $('a[id="{{ request('tab') }}"]');
+                li.tab('show');
+            @endif
+
+            $('#table_examen_1').DataTable();
+            $('#table_examen_2').DataTable();
+            $('#table_examen_3').DataTable();
+            $('#tabla_examen_cirugia_d').DataTable({
+                "paging": false,
+                "info": false,
+                "searching": true,
+                "ordering": false,
+                "responsive": true,
+                "autoWidth": false,
+                "language": {
+                    "lengthMenu": "Mostrar _MENU_ registros por página",
+                    "zeroRecords": "No se encontraron resultados",
+                    "info": "Mostrando la página _PAGE_ de _PAGES_",
+                    "infoEmpty": "No hay registros disponibles",
+                    "infoFiltered": "(filtrando de _MAX_ registros)",
+                    "search": "Buscar:",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Último",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    }
+                }
+            });
+
+        });
+
+        function editarInformacionContacto(){
+            $('#modal_editar_contacto').modal('show');
+            $('#info_contacto').css('display', 'none');
+            $('#info_contacto-edit').css('display', 'block');
+        }
+
+        function cancelarInformacionContacto(){
+            $('#info_contacto').css('display', 'block');
+            $('#info_contacto-edit').css('display', 'none');
+        }
+
+         function guardarInformacionContacto(){
+            console.log('editando');
+            let rut = $('#contacto_rut_edit').val();
+            let nombre = $('#contacto_nombre_edit').val();
+            let apellido_uno = $('#contacto_apellido_uno').val();
+            let apellido_dos = $('#contacto_apellido_dos').val();
+            let fn = $('#contacto_fn_edit').val();
+            let sexo = $('#contacto_sexo_edit').val();
+            let direccion = $('#contacto_dir_edit').val();
+            let region = $('#contacto_region_edit').val();
+            let comuna = $('#contacto_comuna_edit').val();
+            let email = $('#contacto_email_edit').val();
+            let telefono = $('#contacto_telefono_edit').val();
+
+            let data = {
+                rut: rut,
+                nombre: nombre,
+                apellido_uno: apellido_uno,
+                apellido_dos: apellido_dos,
+                fn: fn,
+                sexo: sexo,
+                direccion: direccion,
+                region: region,
+                comuna: comuna,
+                email: email,
+                telefono: telefono,
+                _token: CSRF_TOKEN
+            }
+
+            console.log(data);
+             let url = "{{ ROUTE('asistente.contacto.modificar') }}";
+
+            $.ajax({
+
+                url: url,
+                type: "get",
+                data: data,
+                })
+                .done(function(data) {
+                console.log(data);
+                if (data.estado == 1)
+                {
+                    if (data.estado == 1)
+                    {
+                        let contacto = data.contacto;
+                        $('#nombre_completo_contacto').text(contacto.nombres);
+                        $('#apellidos_contacto').text(contacto.apellido_uno + ' ' + contacto.apellido_dos)
+
+                        $('#email_contacto_').text(contacto.email);
+                        $('#telefono_contacto').text(contacto.telefono_uno);
+                        $('#comuna_region_contacto').html(contacto.ciudad + '<br> ' + contacto.region);
+
+                        // $('.paciente_view_asistente').show();
+                        // $('.paciente_edit_asistente').hide();
+                        // $('#modificando_paciente_asistente').val(0);
+
+                        swal({
+                            title: "Actualización de Contacto",
+                            text: "Actualización Exitosa",
+                            icon: "success",
+                        });
+                        cancelarInformacionContacto();
+                    }
+                    else
+                    {
+                        swal({
+                            title: "Actualización de Paciente",
+                            text: "Falla en Actualización.\nIntente de nuevo.",
+                            icon: "error",
+                        });
+                    }
+                }
+                else
+                {
+                    swal({
+                        title: "Actualización de Paciente",
+                        text: "Falla en Actualización.\nIntente de nuevo.",
+                        icon: "error",
+                    });
+                }
+                })
+                .fail(function(jqXHR, ajaxOptions, thrownError) {
+                console.log(jqXHR, ajaxOptions, thrownError)
+                });
+        }
+
+        function editarInformacionPaciente(){
+            $('#modal_editar_paciente').modal('show');
+            $('#info_paciente').css('display', 'none');
+            $('#info_paciente-edit').css('display', 'block');
+        }
+
+        function cancelarInformacionPaciente(){
+            $('#info_paciente').css('display', 'block');
+            $('#info_paciente-edit').css('display', 'none');
+        }
+
+        function guardarInformacionPaciente(){
+            let id_paciente = $('#id_paciente').val();
+            let nombres = $('#paciente_nombre_edit').val();
+            let apellido_uno = $('#paciente_apellido_uno_edit').val();
+            let apellido_dos = $('#paciente_apellido_dos_edit').val();
+            let fecha_nac = $('#paciente_fn_edit').val();
+            let sexo = $('#paciente_sexo_edit').val();
+            let direccion = $('#paciente_dir_edit').val();
+            let region = $('#paciente_region_edit').val();
+            let comuna = $('#paciente_comuna_edit').val();
+            let email = $('#paciente_email_edit').val();
+            let telefono = $('#paciente_telefono_edit').val();
+
+            let data = {
+                id: id_paciente,
+                nombre: nombres,
+                apellido_uno: apellido_uno,
+                apellido_dos: apellido_dos,
+                fecha_nacimiento: fecha_nac,
+                sexo: sexo,
+                direccion: direccion,
+                region: region,
+                ciudad: comuna,
+                email: email,
+                telefono: telefono,
+                _token: CSRF_TOKEN
+            }
+
+            console.log(data);
+            let url = "{{ route('asistente.paciente.modificar') }}";
+
+            $.ajax({
+
+                url: url,
+                type: "get",
+                data: data,
+                })
+                .done(function(data) {
+                console.log(data);
+                if (data.estado == 1)
+                {
+                    if (data.estado == 1)
+                    {
+                        let paciente = data.paciente;
+                        $('#nombre_completo_paciente').text(paciente.nombres + ' ' + paciente.apellido_uno + ' ' + paciente.apellido_dos);
+                        $('#fecha_nac_paciente').text(paciente.fecha_nac);
+                        if (paciente.sexo == 'M') {
+                            $('#sexo_paciente').text('Masculino');
+                        } else {
+                            $('#sexo_paciente').text('Femenino');
+                        }
+                        $('#email_paciente_').text(paciente.email);
+                        $('#telefono_paciente').text(paciente.telefono_uno);
+                        $('#comuna_region_paciente').html(paciente.ciudad + '<br> ' + paciente.region);
+
+                        // $('.paciente_view_asistente').show();
+                        // $('.paciente_edit_asistente').hide();
+                        // $('#modificando_paciente_asistente').val(0);
+
+                        swal({
+                            title: "Actualización de Paciente",
+                            text: "Actualización Exitosa",
+                            icon: "success",
+                        });
+                        cancelarInformacionPaciente();
+                    }
+                    else
+                    {
+                        swal({
+                            title: "Actualización de Paciente",
+                            text: "Falla en Actualización.\nIntente de nuevo.",
+                            icon: "error",
+                        });
+                    }
+                }
+                else
+                {
+                    swal({
+                        title: "Actualización de Paciente",
+                        text: "Falla en Actualización.\nIntente de nuevo.",
+                        icon: "error",
+                    });
+                }
+                })
+                .fail(function(jqXHR, ajaxOptions, thrownError) {
+                console.log(jqXHR, ajaxOptions, thrownError)
+                });
+        }
+
+        function buscar_ciudad_paciente(id_ciudad = 0) {
+
+            let region = $('#paciente_region_edit').val();
+            let url = "{{ route('profesional.buscar_ciudad_region') }}";
+            $.ajax({
+
+                    url: url,
+                    type: "get",
+                    data: {
+                        //_token: _token,
+                        region: region,
+                    },
+                })
+                .done(function(data) {
+                    if (data != null) {
+                        data = JSON.parse(data);
+
+                        let ciudades = $('#paciente_comuna_edit');
+
+                        ciudades.find('option').remove();
+                        ciudades.append('<option value="0">seleccione</option>');
+                        $(data).each(function(i, v) { // indice, valor
+                            ciudades.append('<option value="' + v.id + '">' + v.nombre +
+                                '</option>');
+                        })
+
+                        if (id_ciudad != 0)
+                            ciudades.val(id_ciudad);
+
+                    } else {
+
+                        swal({
+                            title: "Error",
+                            text: "Error al cargar las ciudades",
+                            icon: "error",
+                            buttons: "Aceptar",
+                            DangerMode: true,
+                        })
+                        // alert('No se pudo Cargar las ciudades');
+                    }
+
+                })
+                .fail(function(jqXHR, ajaxOptions, thrownError) {
+                    console.log(jqXHR, ajaxOptions, thrownError)
+                });
+
+
+        };
+
+        $('#tipo_examen_d').change(function(e) {
+            e.preventDefault();
+            tipo_examen = $('#tipo_examen_d').val();
+
+            $("#sub_tipo_examen_d").empty();
+            $("#examen_d").empty();
+            $.ajax({
+                    url: '{{ route('listar.sub_tipo_examen') }}',
+                    type: 'GET',
+                    dataType: 'json',
+                    data: {
+                        tipo_examen: tipo_examen
+                    },
+                })
+                .done(function(response) {
+
+                    $('#sub_tipo_examen_d').append(
+                        `<option value="0">Seleccione... </option>`);
+                    for (var i = 0; i < response.length; i++) {
+                        $('#sub_tipo_examen_d').append(`<option value="${response[i].cod_examen}">
+                                    ${response[i].nombre_examen}
+                                </option>`);
+                    }
+
+                    /** ACTIVAR CHECHBOK DE CON  CONTRASTE */
+                    if($('#tipo_examen_d').val() == 362) $('#imagenologia_con_contraste').removeAttr('disabled');
+                    else  $('#imagenologia_con_contraste').attr('disabled','disabled');
+                })
+                .fail(function() {
+                    console.log("error");
+                })
+
+        });
+
+        {{--  buscar examenes por el sub tipo de examen  --}}
+        $('#sub_tipo_examen_d').change(function(e) {
+
+            e.preventDefault();
+            sub_tipo_examen = $('#sub_tipo_examen_d').val();
+
+            $("#examen_d").empty();
+            $.ajax({
+                    url: '{{ route('listar.examen') }}',
+                    type: 'GET',
+                    dataType: 'json',
+                    data: {
+                        sub_tipo_examen: sub_tipo_examen
+                    },
+                })
+                .done(function(response) {
+
+                    $('#examen_d').append(
+                        `<option value="0">Seleccione... </option>`);
+                    for (var i = 0; i < response.length; i++) {
+                        $('#examen_d').append(`<option value="${response[i].cod_examen}">
+                                    ${response[i].nombre_examen}
+                                </option>`);
+                    }
+                })
+                .fail(function() {
+                    console.log("error");
+                })
+
+        });
+        function buscar_ciudad_contacto(id_ciudad = 0) {
+
+            let region = $('#contacto_region_edit').val();
+            let url = "{{ route('profesional.buscar_ciudad_region') }}";
+            $.ajax({
+
+                    url: url,
+                    type: "get",
+                    data: {
+                        //_token: _token,
+                        region: region,
+                    },
+                })
+                .done(function(data) {
+                    if (data != null) {
+                        data = JSON.parse(data);
+
+                        let ciudades = $('#contacto_comuna_edit');
+
+                        ciudades.find('option').remove();
+                        ciudades.append('<option value="0">Seleccione</option>');
+                        $(data).each(function(i, v) { // indice, valor
+                            ciudades.append('<option value="' + v.id + '">' + v.nombre +
+                                '</option>');
+                        })
+
+                        if (id_ciudad != 0)
+                            ciudades.val(id_ciudad);
+
+                    } else {
+
+                        swal({
+                            title: "Error",
+                            text: "Error al cargar las ciudades",
+                            icon: "error",
+                            buttons: "Aceptar",
+                            DangerMode: true,
+                        })
+                        // alert('No se pudo Cargar las ciudades');
+                    }
+
+                })
+                .fail(function(jqXHR, ajaxOptions, thrownError) {
+                    console.log(jqXHR, ajaxOptions, thrownError)
+                });
+
+
+        };
+
+        function cargarIgual(input)
+        {
+
+            let actual = $('#'+input);
+            let equivalentes = $('#'+input).attr('data-input_igual').split(',');
+            $.each(equivalentes, function( index, value ) {
+                var equivalente = $('#'+value);
+                equivalente.val(actual.val());
+            });
+
+            // let actual = $('#'+input);
+            // let equivalente = $('#'+$('#'+input).attr('data-input_igual'));
+
+            // equivalente.val(actual.val());
+
+        }
+	</script>
+    @yield('js_inferior')
+    @yield('page-script')
+    @yield('page-script-ficha-atencion'){{-- ficha_orl.blade --}}
+    @yield('js-ficha-general-espc') {{-- seccion js fiche general especialidad --}}
+    @yield('page-script-med-exa') {{--  seccion receta y exmaenes --}}
+    @yield('page-script-med-exa-esp') {{-- seccion receta y exmaenes especiales --}}
+    @yield('js-sidebar') {{-- seccion js side bar --}}
+    @yield('js-lic') {{-- seccion js side bar --}}
+    @yield('page-script-btn-autorizacion')
+</body>
+
+</html>

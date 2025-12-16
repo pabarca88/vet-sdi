@@ -1,0 +1,125 @@
+.row > .column {
+  padding: 0 8px;
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both!important;
+}
+
+/* Create four equal columns that floats next to eachother */
+.column {
+  float: left!important;
+  width: 25%!important;
+}
+
+/* The Modal (background) */
+.modal {
+  display: none!important;
+  position: fixed!important;
+  z-index: 1!important;
+  padding-top: 100px!important;
+  left: 0!important;
+  top: 0!important;
+  width: 100%!important;
+  height: 100%!important;
+  overflow: auto!important;
+  background-color: black!important;
+}
+
+/* Modal Content */
+.modal-content {
+  position: relative!important;
+  background-color: #fefefe!important;
+  margin: auto!important;
+  padding: 0!important;
+  width: 90%!important;
+  max-width: 1200px!important;
+}
+
+/* The Close Button */
+.close {
+  color: white!important;
+  position: absolute!important;
+  top: 10px!important;
+  right: 25px!important;
+  font-size: 35px!important;
+  font-weight: bold!important;
+}
+
+.close:hover,
+.close:focus {
+  color: #999!important;
+  text-decoration: none!important;
+  cursor: pointer!important;
+}
+
+/* Hide the slides by default */
+.mySlides {
+  display: none!important;
+}
+
+/* Next & previous buttons */
+.prev,
+.next {
+  cursor: pointer!important;
+  position: absolute!important;
+  top: 50%!important;
+  width: auto!important;
+  padding: 16px!important;
+  margin-top: -50px!important;
+  color: white!important;
+  font-weight: bold!important;
+  font-size: 20px!important;
+  transition: 0.6s ease!important;
+  border-radius: 0 3px 3px 0!important;
+  user-select: none!important;
+  -webkit-user-select: none!important;
+}
+
+/* Position the "next button" to the right */
+.next {
+  right: 0!important;
+  border-radius: 3px 0 0 3px!important;
+}
+
+/* On hover, add a black background color with a little bit see-through */
+.prev:hover,
+.next:hover {
+  background-color: rgba(0, 0, 0, 0.8)!important;
+}
+
+/* Number text (1/3 etc) */
+.numbertext {
+  color: #f2f2f2!important;
+  font-size: 12px!important;
+  padding: 8px 12px!important;
+  position: absolute!important;
+  top: 0!important;
+}
+
+/* Caption text */
+.caption-container {
+  text-align: center!important;
+  background-color: black!important;
+  padding: 2px 16px!important;
+  color: white!important;
+}
+
+img.demo {
+  opacity: 0.6!important;
+}
+
+.active,
+.demo:hover {
+  opacity: 1!important;
+}
+
+img.hover-shadow {
+  transition: 0.3s!important;
+}
+
+.hover-shadow:hover {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)!important;
+}

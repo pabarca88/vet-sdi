@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<title>Centro Médico Insi</title>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+	<!-- Estilos -->
+  	<link href="css/main.css" rel="stylesheet" type="text/css">
+
+  	<link href="css/aos.css" rel="stylesheet" type="text/css">
+
+	<!-- Google Fonts -->
+	  <link rel="preconnect" href="https://fonts.gstatic.com">
+	  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+	  <link rel="preconnect" href="https://fonts.gstatic.com">
+	  <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+
+  	<!-- Font Awesome -->
+  	<script src="https://kit.fontawesome.com/7066bc9f2e.js" crossorigin="anonymous"></script>
+</head>
+<body>
+	<header>
+		<!--Menú 1-->
+		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+			<a class="navbar-brand" href="index.html">
+			    <img src="img/insi-logo.png" width="130" height="auto" alt="INSI">
+			  </a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+				<ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+					<li class="nav-item mx-2 active">
+						<a class="nav-link ancla" href="#esp-med" data-ancla="esp-med">Especialidades médicas</a>
+					</li>
+					<li class="nav-item mx-2">
+						<a class="nav-link ancla" href="#exam-proc" data-ancla="exam-proc">Exámenes y procedimientos</a>
+					</li><!--
+					<li class="nav-item mx-2">
+						<a class="nav-link ancla" href="#contacto" data-ancla="contacto">Contacto</a>
+					</li>-->
+					<li class="nav-item mx-2">
+						<a class="btn btn-orange" href="profesionales" role="button">Buscar profesionales</a>
+					</li>
+				</ul>
+			</div>
+		</nav>
+
+		<!--Slider-->
+		<div id="carouselExampleIndicators" class="carousel slide carousel-fade" data-ride="carousel">
+			<div class="carousel-inner">
+				<div class="carousel-item active">
+					<img src="img/banner-insi.png" class="d-block w-100" alt="banner insi">
+				</div>
+			</div>
+		</div>
+	</header>
+
+	<div class="container">
+		<div class="row mt-4">
+			<div class="col-md-4 text-center my-1">
+				<a href="profesionales" class="text-white" style="text-decoration: none;">
+					<div class="card bg-naranja border-0 shadow" style="width: auto;">
+						<div class="card-body">
+							<i class="fa-solid fa-calendar-days fa-2x mb-2"></i>
+							<h6 class="card-title">Buscar profesionales</h6>
+						</div>
+					</div>
+				</a>
+			</div>
+			<div class="col-md-4 text-center my-1">
+				<a href="#esp-med" data-ancla="esp-med" class="text-white data-ancla" style="text-decoration: none;">
+					<div class="card bg-azul border-0 shadow" style="width: auto;">
+						<div class="card-body">
+							<i class="fa-solid fa-stethoscope fa-2x mb-2"></i>
+							<h6 class="card-title">Especialidades médicas</h6>
+						</div>
+					</div>
+				</a>
+			</div>
+			<div class="col-md-4 text-center my-1">
+				<a href="#exam-proc" data-ancla="exam-proc" class="text-white" style="text-decoration: none;">
+					<div class="card bg-azul border-0 shadow" style="width: auto;">
+						<div class="card-body">
+							<i class="fa-sharp fa-solid fa-syringe fa-2x mb-2"></i>
+							<h6 class="card-title">Exámenes y procedimientos</h6>
+						</div>
+					</div>
+				</a>
+			</div>
+		</div>
+	</div>
+	
+	<!--Especialidades Médicas-->
+	<div data-aos="fade-up"
+	    data-aos-easing="linear"
+	    data-aos-duration="1100">
+		<div class="container mt-5 mb-5" id="esp-med">
+			<div class="row">
+				<div class="col-md-12 mt-5 mb-4">
+					<h2 class="text-petroleo">Nuestras especialidades médicas</h2>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-8 text-center">
+					<img class="img-fluid" src="img/especialidades-medicas.png">
+				</div>
+				<div class="col-md-4 text-left mt-4">
+					<ul>
+						<li>Medicina general</li>
+						<li>Broncopulmonar</li>
+						<li>Cardiología</li>
+						<li>Cirugía digestiva</li>
+						<li>Gastroenterología</li>
+						<li>Ginecología</li>
+						<li>Dermatología</li>
+						<li>Medicina Homeópata</li>
+						<li>Neurología</li>
+						<li>Oftalmoglogía</li>
+						<li>Otorrinolaringología</li>
+						<li>Pediatría</li>
+						<li>Psicología</li>
+						<li>Nutricionista</li>
+						<li>Psiquiatría</li>
+						<li>Traumatología</li>
+						<li>Urología</li>
+						<li>Kinesiología</li>
+						<li>Fonoaudiología</li>
+						<a class="btn btn-orange" href="profesionales" role="button">Buscar profesionales</a>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--Exámenes y procedimientos-->
+	<div data-aos="fade-up"
+	    data-aos-easing="linear"
+	    data-aos-duration="1100">
+	    <div class="container mt-10 mb-8" id="exam-proc">
+	    	<div class="row">
+				<div class="col-md-12 text-petroleo text-center mb-3">
+					<h2>Exámenes y procedimientos</h2>
+				</div>
+			</div>
+			<div class="row row-cols-1 row-cols-md-2">
+	  					<div class="col mb-4">
+							<div class="card shadow border-0 h-100">
+								<img src="img/radiografias.png" class="card-img-top img-fluid" alt="...">
+								<div class="card-body">
+									<h6 class="card-title text-petroleo">Radiografías</h6>
+									<button type="button" class="btn btn-orange" data-toggle="modal" data-target="#exampleModal">
+									 + Información
+									</button>
+								</div>
+							</div>
+						</div>
+						<div class="col mb-4">
+							<div class="card shadow border-0 h-100">
+								<img src="img/ecotomografias.png" class="card-img-top img-fluid" alt="...">
+								<div class="card-body">
+									<h6 class="card-title text-petroleo">Ecotomografías</h6>
+									<button type="button" class="btn btn-orange" data-toggle="modal" data-target="#m_ecotom">
+									 + Información
+									</button>
+								</div>
+							</div>
+						</div>
+						<div class="col mb-4">
+							<div class="card shadow border-0 h-100">
+								<img src="img/cardiologicos.png" class="card-img-top img-fluid" alt="...">
+								<div class="card-body">
+									<h6 class="card-title text-petroleo">Cardiológicos</h6>
+									<button type="button" class="btn btn-orange" data-toggle="modal" data-target="#m_cardio">
+									 + Información
+									</button>
+								</div>
+							</div>
+						</div>
+						<div class="col mb-4">
+							<div class="card shadow border-0 h-100">
+								<img src="img/endoscopicos.png" class="card-img-top img-fluid" alt="...">
+								<div class="card-body">
+									<h6 class="card-title text-petroleo">Procedimientos endoscópicos</h6>
+									<button type="button" class="btn btn-orange" data-toggle="modal" data-target="#m_endo">
+									 + Información
+									</button>
+								</div>
+							</div>
+						</div>
+						<div class="col mb-4">
+							<div class="card shadow border-0 h-100">
+								<img src="img/enfermeria.png" class="card-img-top img-fluid" alt="...">
+								<div class="card-body">
+									<h6 class="card-title text-petroleo">Procedimientos de enfermería</h6>
+									<button type="button" class="btn btn-orange" data-toggle="modal" data-target="#m_enfermeria">
+									 + Información
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--Alianzas-->
+	<div data-aos="fade-up"
+	    data-aos-easing="linear"
+	    data-aos-duration="1100">
+	    <div class="container mt-10 mb-8 px-4">
+	    	<div class="row">
+				<div class="col-md-12 text-petroleo text-center mb-3">
+					<h3>Alianzas</h3>
+				</div>
+			</div>
+			<div class="row col-md-12 d-flex align-items-center">
+				<div class="col-md-3 mb-2 text-center align-middle">
+					<a href="http://www.cronicos.cl/"target="black">
+						<img class="img-fluid" src="img/sdi/cronicos.svg" width="300" height="auto" alt="">
+					</a>
+				</div>
+				<div class="col-md-3 mb-2 text-center align-middle">
+					<a href="http://www.medichile.cl/"target="black">
+						<img class="img-fluid" src="img/sdi/medichile.svg" width="220" height="auto" alt="">
+					</a>
+				</div>
+				<div class="col-md-3 mb-2 text-center align-middle">
+					<a href="http://www.farmacronicos.cl/"target="black">
+						<img class="img-fluid" src="img/sdi/farmacronicos.svg" width="350" height="auto" alt="">
+					</a>
+				</div>
+				<div class="col-md-3 mb-2 text-center align-middle">
+					<a href="https://www.med-sdi.cl/"target="black">
+						<img class="img-fluid" src="img/sdi/logo.svg" width="200" height="auto" alt="">
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--Contacto-->
+	<div id="contacto" class="container-fluid bg-azul-corp pt-4">
+		<div class="container">
+			<div class="row mx-2">
+				<div class="col-md-12">
+					<h5 class="text-white">Escribenos un mensaje</h5>
+				</div>
+			</div>
+			<div class="row mx-2">
+				<div class="col-md-4">
+					<form>
+						<div class="form-group">
+							<label for="nombre" class="text-white">Nombre</label>
+							<input id="nombre" name="nombre" required type="text" class="form-control form-control-sm">
+						</div>
+						<div class="form-group">
+							<label class="text-white" for="email">Correo electrónico</label>
+							<input id="email" name="email" type="email" class="form-control form-control-sm" required>
+						</div>
+						<div class="form-group">
+							<label class="text-white" for="asunto">Asunto</label>
+							<input id="text" name="asunto" type="asunto" class="form-control form-control-sm" required>					</div>
+						<div class="form-group">
+							<label class="text-white" for="comentario">Mensaje</label>
+							<textarea class="form-control form-control-sm"  id="comentario" name="comentario" rows="5"></textarea>
+						</div>
+						<button type="submit" class="btn btn-outline-light btn-block enviar" name="button" id="button" value="Enviar" onClick="javascript: if (validar()) {document.cliente.submit();}else{return false;}">Enviar</button>
+					</form>
+				</div>
+				<div class="col-md-8 text-white text-center">
+					<iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d13377.375335457635!2d-71.4448017!3d-33.0474136!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x1e43483d05d5385d!2sCentro%20M%C3%A9dico%20INSI!5e0!3m2!1ses-419!2scl!4v1667515700481!5m2!1ses-419!2scl" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+					<p><strong>Horario de atención:</strong><br> Lunes a Viernes 08:00 a 19:00 hrs /
+					Sábados 08:00 a 13:00 hrs
+					</p>
+					<p><strong>Teléfonos:</strong><br> (32) 2188930 (32) 2188940
+					</p>			
+					<img class="img-fluid mb-2" src="img/sdi/sellos.png" width="300" height="auto" alt="Sellos">
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--Footer--> 
+	<div class="container-fluid bg-footer">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-4 text-center py-2 align-middle">
+				<span class="align-middle copyright" style="font-size: 12px; color:#B7B7B7;">© 2021 <b>INSI</b> Todos los derechos reservados</span>
+				</div>
+				<div class="col-md-4 offset-md-4 text-white text-center py-2">
+					<a href="#" style="color: #B7B7B7;">
+						<i class="fab fa-facebook-f fa-1x mr-2"></i>
+					</a>
+					<a href="#" style="color: #B7B7B7;">
+						<i class="fab fa-instagram fa-1x"></i>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div> 
+
+	<!--Btn wsp-->
+	<a class="btn-whatsapp" href="https://api.whatsapp.com/send?phone=56985580587" target="_blank">
+		<img src="img/btn-wsp.png">
+	</a>
+
+	<!--Modals-->
+		<!--Radiografías-->
+		<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+				  <div class="modal-body">
+				      	<div class="row">
+				      		<div class="col-md-12">
+						      	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						          <span aria-hidden="true">&times;</span>
+						          </button>
+				      		</div>
+				      	</div>
+				  		<div class="row">
+				  			<div class="col-md-12 text-center">
+					        	<h4 class="text-petroleo">Radiografías</h4>
+					        </div>
+					    </div>
+					    <div class="row">
+				  			<div class="col-md-12">
+					        	<ul>
+					        		<li>ss</li>
+					        	</ul>
+					        </div>
+					    </div>
+				  </div>
+				</div>
+			</div>
+		</div>
+
+		<!--Ecotomografías-->
+		<div class="modal fade" id="m_ecotom" tabindex="-1" aria-labelledby="m_ecotom" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+				  <div class="modal-body">
+				      	<div class="row">
+				      		<div class="col-md-12">
+						      	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						          <span aria-hidden="true">&times;</span>
+						          </button>
+				      		</div>
+				      	</div>
+				  		<div class="row">
+				  			<div class="col-md-12">
+					        	<h4 class="text-petroleo ml-4">Ecotomografías</h4>
+					        </div>
+					    </div>
+					    <div class="row">
+				  			<div class="col-md-12">
+					        	<ul>
+					        		<li>Abdominal</li>
+					        		<li>Renal</li>
+					        		<li>Tiroidea</li>
+					        		<li>Cervical o cuello</li>
+					        		<li>Partes blandas</li>
+					        		<li>Testicular simple</li>
+					        		<li>Pelviana femenina</li>
+					        		<li>Pelviana masculina</li>
+					        		<li>Mamaria</li>
+					        		<li>Transvaginal</li>
+					        		<li>Obstetrica</li>
+					        		<li>Ginecológica</li>
+					        		<li>Seguimiento Folicular</li>
+					        		<li>Doppler fetal</li>
+					        		<li>3D</li><br>
+					        		<li><strong>Contacto:</strong> (32) 2188947 / (32) 2921287</li>
+					        		<li><strong>Whatsapp:</strong> +569 42498385</li>			        	
+					        	</ul>
+					        </div>
+					    </div>
+				  	</div>
+				</div>
+			</div>
+		</div>
+
+		<!--Cardiológicos-->
+		<div class="modal fade" id="m_cardio" tabindex="-1" aria-labelledby="m_cardio" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+				  <div class="modal-body">
+				      	<div class="row">
+				      		<div class="col-md-12">
+						      	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						          <span aria-hidden="true">&times;</span>
+						          </button>
+				      		</div>
+				      	</div>
+				  		<div class="row">
+				  			<div class="col-md-12">
+					        	<h4 class="text-petroleo ml-4">Exámenes cardiológicos</h4>
+					        </div>
+					    </div>
+					    <div class="row">
+				  			<div class="col-md-12">
+					        	<ul>
+					        		<li>Holter de presión</li>
+					        		<li>Holter de Arritmias</li>
+					        		<li>Eco Cardiograma</li>
+					        		<li>Eco Cardiograma Doppler</li>
+					        		<li>Eco Cardiograma Doppler Color</li>
+					        		<li>Test de esfuerzo</li>
+					        		<li>E.K.G</li>
+					        	</ul>
+					        </div>
+					    </div>
+				  </div>
+				</div>
+			</div>
+		</div>
+
+		<!--Procedimientos endoscópicos-->
+		<div class="modal fade" id="m_endo" tabindex="-1" aria-labelledby="m_endo" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+				  <div class="modal-body">
+				      	<div class="row">
+				      		<div class="col-md-12">
+						      	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						          <span aria-hidden="true">&times;</span>
+						          </button>
+				      		</div>
+				      	</div>
+				  		<div class="row">
+				  			<div class="col-md-12">
+					        	<h4 class="text-petroleo ml-4">Procedimientos endoscópicos</h4>
+					        </div>
+					    </div>
+					    <div class="row">
+				  			<div class="col-md-12">
+					        	<ul>
+					        		<li>Endoscopía digestiva</li>
+					        		<li>Rectoscopía</li>
+					        		<li>Citoscopía</li>
+					        	</ul>
+					        </div>
+					    </div>
+				  </div>
+				</div>
+			</div>
+		</div>
+
+		<!--Procedimientos de enfermería-->
+		<div class="modal fade" id="m_enfermeria" tabindex="-1" aria-labelledby="m_enfermeria" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+				  <div class="modal-body">
+				      	<div class="row">
+				      		<div class="col-md-12">
+						      	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						          <span aria-hidden="true">&times;</span>
+						          </button>
+				      		</div>
+				      	</div>
+				  		<div class="row">
+				  			<div class="col-md-12">
+					        	<h4 class="text-petroleo ml-4">Procedimientos de enfermería</h4>
+					        </div>
+					    </div>
+					    <div class="row">
+				  			<div class="col-md-12">
+					        	<ul>
+					        		<li>Curaciones</li>
+					        		<li>Inyecciones</li>
+					        		<li>Toma de presión</li>
+					        		<li>Uroflujometría</li>
+					        	</ul>
+					        </div>
+					    </div>
+				  </div>
+				</div>
+			</div>
+		</div>
+
+	<script src="js/jquery-3.6.0.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/popper.min.js"></script>
+	<script src="js/carousel.js"></script>
+	<script src="js/aos.js"></script>
+	
+	
+	<script type="text/javascript">
+		$('.carousel').carousel({
+		interval: 3000
+		})
+	</script>
+	<script>
+	  $(document).ready(function(){
+	    $(".ancla").click(function(evento){
+	      evento.preventDefault();
+	      var codigo = "#" + $(this).data("ancla");
+	      $("html,body").animate({scrollTop: $(codigo).offset().top}, 1400);
+	    });
+	  });
+	</script>
+	<script>
+	  $(document).ready(function(){
+	    $("#boton").click(function(evento){
+	      $("html,body").animate({scrollTop:0}, "slow");
+	    });
+	  });
+	</script>
+	<script>
+	  AOS.init();
+	</script>
+		
+</body>
+</html>

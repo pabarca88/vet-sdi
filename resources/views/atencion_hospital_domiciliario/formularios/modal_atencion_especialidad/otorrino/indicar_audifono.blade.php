@@ -1,0 +1,98 @@
+<div id="indicar_audif" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="indicar_audif" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-info">
+                <h5 class="modal-title text-white mt-1">Receta Audífonos</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+                </button>
+            </div>
+			<div class="modal-body">
+                <!--Inicio de Card-->
+				<div class="card" href="#">
+					<div class="card-body border-top pro-det-edit collapse show" id="pro-det-edit-1">
+						<form>
+							<div class="form- row">
+								<div class="col-md-6 mb-3">
+									<h6 class="label" type="label">Tipo de Audífono</h6>
+								</div>
+								<div class="col-md-6 mb-3">
+									<select class="form-control form-control-sm" tabindex="-1" aria-hidden="true" id="modal_audifono_tipo">
+                                        <option value="">Seleccione</option>
+                                        <option value="1">Intracanal</option>
+                                        <option value="2">Retroauricular</option>
+                                        <option value="3">Audigafas</option>
+                                        <option value="4">Implante</option>
+                                        <option value="5">Otro Tipo</option>
+									</select>
+								</div>
+							</div>
+							<br>
+							<hr>
+							<div class="form-row">
+								<div class="col-md-6 mb-3">
+									<div class="form-group fill">
+										<div class="form-check">
+											<input class="form-check-input" type="checkbox" value="" id="modal_audifono_od">
+											<label class="form-check-label" for="modal_audifono_od">Oído Derecho</label>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6 mb-3">
+									<div class="form-group fill" id = "div_modal_audifono_especificacion_od" style="display:none;">
+										<label class="floating-label-activo-sm">Especificaciones para OD</label>
+										<input type="text" class="form-control form-control-sm" id="modal_audifono_especificacion_od" >
+									</div>
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="col-md-6 mb-3">
+									<div class="form-group fill">
+										<div class="form-check">
+											<input class="form-check-input" type="checkbox" value="" id="modal_audifono_oi">
+											<label class="form-check-label" for="modal_audifono_oi">Oído Izquierdo</label>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6 mb-3">
+									<div class="form-group fill" id = "div_modal_audifono_especificacion_oi" style="display:none;">
+										<label class="floating-label-activo-sm">Especificaciones para OI</label>
+										<input type="text" class="form-control form-control-sm" id="modal_audifono_especificacion_oi" >
+									</div>
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="col-md-6 mb-3">
+									<div class="form-group fill">
+										<div class="form-check">
+											<input class="form-check-input" type="checkbox" value="" id="modal_audifono_bi">
+											<label class="form-check-label" for="modal_audifono_bi">Bilateral</label>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6 mb-3">
+									<div class="form-group fill" id = "div_modal_audifono_especificacion_bi" style="display:none;">
+										<label class="floating-label-activo-sm">Especificaciones para Bilateral</label>
+										<input type="text" class="form-control form-control-sm" id="modal_audifono_especificacion_bi" >
+									</div>
+								</div>
+							</div>
+
+							<div class="form- row">
+								<div class="col-md-12 mb-3">
+									<div class="form-group fill">
+										<label class="floating-label-activo-sm">Especificaciones Generales</label>
+										<textarea id="modal_audifono_especificacion_general" name="modal_audifono_especificacion_general"class="form-control form-control-sm" rows="2"></textarea>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+					<button type="button" class="btn btn-success" onclick="registrar_audifono();">Guardar</button>
+				</div>
+			</div>
+		</div>
+    </div>
+</div>

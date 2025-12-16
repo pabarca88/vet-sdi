@@ -1,0 +1,9 @@
+td {
+  white-space: normal !important; 
+  word-wrap: break-word!important;
+  width: auto!important; 
+}
+table {
+  table-layout: fixed!important;
+}
+        

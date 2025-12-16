@@ -1,0 +1,1689 @@
+@extends('template.asistente_cm_publico.template')
+@section('content')
+<!--Container Completo-->
+<div class="pcoded-main-container">
+    <div class="pcoded-content">
+        <!--Header-->
+        <div class="page-header">
+            <div class="page-block">
+                <div class="row align-items-center">
+                    <div class="col-md-12">
+                        <div class="page-header-title">
+                            <h5 class="m-b-10 font-weight-bold">Escritorio Asistente Institución</h5>
+                        </div>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="{{ route('asistentecm.home') }}">Mi Escritorio </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Cierre: Header-->
+
+        <!--Tabla agenda del día y flujo de caja-->
+        <div class="row m-b-10" >
+            <div class="col-md-12">
+                <div class="card h-100 pb-1">
+                    <div class="card-header bg-c-info">
+                        <div class="row">
+                            <div class="col-sm-12 d-inline text-center">
+                                <h5 class="text-white my-1" style="font-size: 1.4rem;">Agendas Profesionales</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" name="agenda_lugar_atencion_asistente" id="agenda_lugar_atencion_asistente" value="{{ $lugares_atencion->id }}">
+                    <div class="card-body pt-4 pb-0">
+						<div class="form-row">
+							<div class="col-sm-3 d-inline text-center">
+								<div class="card">
+									<label class="floating-label-activo-sm">Agendas del Centro</label>
+									<select class="form-control form-control-sm" id="agenda_profesional_asistente" name="agenda_profesional_asistente" onchange="cargarAgendaProfesional('')">
+										<option value="">Selecione</option>
+                                        @if($profesionales)
+                                        @foreach($profesionales as $key_pro => $value_pro)
+                                            <option value="{{ $value_pro->id }}">{{ strtoupper($value_pro->nombre) }} {{ strtoupper($value_pro->apellido_uno) }} {{ strtoupper($value_pro->apellido_dos) }}</option>
+                                        @endforeach
+                                    @endif
+									</select>
+								</div>
+							</div>
+							<div class="col-sm-9 d-inline text-center">
+								<div class="dt-responsive table-responsive" >
+									<table class="table table-striped table-bordered nowrap table-xs" id="tabla_info_profesional">
+										<thead>
+											<tr >
+												<th colspan="2" class="text-center align-middle">Agenda Profesional:</th>
+											</tr>
+										</thead>
+										<tbody style="display: none;">
+                                            <tr>
+                                                <td class="text-center align-middle">
+                                                    <span><strong id="nombre_profesional_agenda"></strong></span><br>
+                                                    <span id="especialidad_porfesional_agenda">
+                                                    </span>
+                                                </td>
+                                                <td class="text-center align-middle">
+                                                        {{--  <button type="button" class="btn btn-info btn-sm" id="btn_ver_info_profesional_seleccionado"  onclick="info_profesional({{ $profesional->id }});"><i class="fa fa-plus"></i> Ver Información</button>  --}}
+                                                        <button type="button" class="btn btn-info btn-sm" id="btn_ver_info_profesional_seleccionado"  onclick=""><i class="fa fa-plus"></i> Ver Información</button>
+                                                </td>
+                                            </tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+                        <div class="form-row">
+                            <div class="col-sm-12 d-inline text-center">
+								<div class="card">
+                                    <div class="row">
+                                        <div class="col-sm-4 pt-1 pb-1 d-inline text-center" >
+                                            <button type="button" class="btn btn-outline-success btn-sm" id="btn_ver_lista_espera_profesional_seleccionado" onclick="lista_espera()"; ><i class="fas fa-save"></i>  Cargar Lista de Espera del profesional</button>
+                                        </div>
+                                        <div class="col-sm-4 pt-1 pb-1 d-inline text-center" >
+                                            <button type="button" class="btn btn-outline-success btn-sm" id="btn_ver_agregar_hora_extra" onclick="abrir_horas_extras()"; ><i class="fas fa-save"></i>  Cargar Hora Extra del profesional</button>
+                                        </div>
+                                        <div class="col-sm-4 pt-1 pb-1 d-inline text-center" >
+                                            <button type="button" class="btn btn-outline-success btn-sm" id="btn_ver_agregar_hora_examen" onclick="abrir_horas_examen()"; ><i class="fas fa-save"></i>  Cargar Hora Examen del profesional</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+						</div>
+                    </div>
+                    <div class="card-body bg-white">
+                        <div id='agenda'></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Row Botones-->
+        <div class="row m-b-5">
+            <div class="col-md-12">
+                <div class="card-deck">
+                    <!--Cierre de Card-->
+                    <div class="card  subir py-auto">
+                        <a href="{{ ROUTE('asistentecm.confirmar_hora') }}">
+                            <div class="card-body text-center" style="cursor:pointer">
+                                <img class="wid-30 text-center mt-1 mb-2" src="{{ asset('images/iconos/pacientes.svg') }}">
+                                <h5 class="mt-1 mb-0">Confirmar Hora</h5>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="card  subir py-auto">
+                        <a href="{{ ROUTE('asistentecm.buscar_paciente') }}">
+                            <div class="card-body text-center" style="cursor:pointer">
+                                <img class="wid-30 text-center mt-1 mb-2" src="{{ asset('images/iconos/pacientes.svg') }}">
+                                <h5 class="mt-1 mb-0">Buscar Pacientes</h5>
+                            </div>
+                        </a>
+                    </div>
+					{{--  <div class="card  subir py-auto">
+                        <a href="{{ ROUTE('asistente.reservar_hora') }}">
+                            <div class="card-body text-center" style="cursor:pointer">
+                                <img class="wid-60 text-center mb-1" src="{{ asset('images/iconos/profesional_2.svg') }}">
+                                <h5 class="mt-1 mb-0">Reservar Hora Médica</h5>
+                            </div>
+                        </a>
+                    </div>  --}}
+                    <div class="card subir py-auto">
+                        <a href="{{ ROUTE('asistentecm.mis_profesionales') }}">
+                            <div class="card-body text-center" style="cursor:pointer">
+                                <img class="wid-30 text-center" src="{{ asset('images/iconos/agenda.svg') }}">
+                                <h5 class="mt-1 mb-0">Profesionales</h5>
+                            </div>
+                        </a>
+                    </div>
+                    {{--  <div class="card subir py-auto">
+                        <a href="{{ ROUTE('asistente.administracion_asistente') }}">
+                            <div class="card-body text-center" style="cursor:pointer">
+                                <img class="wid-30 text-center mb-1" src="{{ asset('images/iconos/flujo_caja_2.svg') }}">
+                                <h5 class="mt-1 mb-0">Administración</h5>
+                            </div>
+                        </a>
+                    </div>  --}}
+					<div class="card subir py-auto">
+                        <a href="{{ ROUTE('asistentecm.rendir') }}">
+                            <div class="card-body text-center" style="cursor:pointer">
+                                <img class="wid-30 text-center mb-1" src="{{ asset('images/iconos/flujo_caja_2.svg') }}">
+                                <h5 class="mt-1 mb-0">Entrega de Caja</h5>
+                            </div>
+                        </a>
+                    </div>
+                    {{--
+                    <div class="card py-auto subir">
+                        <a href="{{ ROUTE('asistente.venta_productos') }}">
+                        <a href="{{ ROUTE('asistente.registro_paciente') }}" class="btn" type="button">
+                            <div class="card-body text-center" style="cursor:pointer">
+                                <img class="wid-60 text-center mb-1" src="{{ asset('images/iconos/otros_servicios_1.svg') }}">
+                                <h5 class="mt-1 mb-0"> Venta de Productos</h5>
+                            </div>
+                        </a>
+                    </div>
+					--}}
+                </div>
+            </div>
+        </div>
+        <!--CIERRE: Row Botones -->
+    </div>
+</div>
+<!--Cierre: Container Completo-->
+
+@section('modales')
+    @include('app.asistente_cm.modales.modal_profesional_informacion')
+    @include('general.asistentes.modal_consulta_agenda')
+    @include('app.asistente_cm_publico.modales.lista_espera')
+
+    {{-- horas extras --}}
+    @include('app.asistente_cm_publico.modales.horas_extras')
+    @include('app.asistente_cm_publico.modales.horas_extras_agendar')
+
+    {{-- hora examen --}}
+    @include('app.asistente_cm_publico.modales.horas_examen')
+    @include('app.asistente_cm_publico.modales.horas_examen_agendar')
+
+@endsection
+
+@endsection
+
+@section('page-script')
+    <script>
+
+        var CalendarEl = null;
+        $(document).ready(function()
+        {
+            $('#agenda_profesional_asistente').select2();
+
+            {{--  CERRAR MODALES  --}}
+            $("#cerrar_registro_paciente_hora").click(function() {
+                $("#agenda_agregar_paciente").modal('hide');
+                $('#rut_paciente_reserva').val('');
+            });
+
+            $("#cerrar_tomar_hora").click(function() {
+                $("#agenda_agregar_paciente").modal('hide');
+                $('#rut_paciente_reserva').val('');
+            });
+
+            $("#cerrarModal").click(function() {
+                $("#consulta").modal('hide')
+            });
+
+            $(".close_modal_recepcion_bonos_api").click(function() {
+                $("#modal_recepcion_bonos_api").modal('hide')
+            });
+
+            $(".close_agenda_agregar_paciente").click(function() {
+                $("#agenda_agregar_paciente").modal('hide');
+                $('#rut_paciente_reserva').val('');
+            });
+
+            function cerrar_modal_infoProf() {
+                $('#info_prof').modal('hide');
+            }
+
+            {{-- ****** VALIDACIONDEFORMULARIOS ****** --}}
+            {{--  VALIDACION RUT BUSQUEDA - AGENDA  --}}
+            $('#validacion_rut_form').validate({
+                rules: {
+                    rut_paciente_reserva: {
+                        required: true,
+                        minlength: 9
+                    },
+                },
+                messages: {
+
+                    rut_paciente_reserva: {
+                        required: "Debe Ingresar Rut",
+                        minlength: "Por favor ingrese un Rut valido 1111111-1"
+                    },
+                },
+            });
+
+        });
+        {{--  ***** INICIO FUNCIONES ******  --}}
+        /** METODOS DE AGENDA */
+        {{-- BUSCAR INFO PROFESIONAL --}}
+        function cargarProfesional()
+        {
+            let id_lugar_atencion = $('#agenda_lugar_atencion_asistente').val();
+            let id_profesional = $('#agenda_profesional_asistente').val();
+            let url = "{{ route('asistentecm.buscar_info_profesional') }}";
+            $.ajax({
+                url: url,
+                type: "GET",
+                data: {
+                    id_profesional: id_profesional,
+                    id_lugar_atencion: id_lugar_atencion,
+                },
+                success:function(data){
+                    if (data !== 'null')
+                    {
+                        //data = JSON.parse(data);
+                        {{--  console.log('-----------------------');  --}}
+                        {{--  console.log(data);  --}}
+                        {{--  console.log('-----------------------');  --}}
+                        if(data.estado == 1)
+                        {
+                            info_profesional_seleccionado.push(data.profesional);
+                            info_profesional_seleccionado.push(data.horario);
+                            return true;
+                        }
+                        else
+                        {
+                            swal({
+                                title: "Agenda del Profesional.",
+                                text:"El profesional no cuenta con agenda.",
+                                icon: "error",
+                                // buttons: "Aceptar",
+                                //SuccessMode: true,
+                            });
+                            return false;
+                        }
+                    }
+                    end(arrayTemp);
+                }
+            });
+        }
+
+        {{--  CARGA AGENDE DEL PROFESIONAL  --}}
+        function cargarAgendaProfesional(fecha)
+        {
+            // console.log('asistente_cm_publico/escritorio_asistente');
+            if(fecha != undefined && fecha != '')
+            {
+                var res = fecha.split('T')[0];
+                fecha = res;
+            }
+            else
+            {
+                fecha = '{{ date("Y-m-d") }}';
+            }
+
+            var evaluacion = false;
+
+            var id_lugar_atencion = $('#agenda_lugar_atencion_asistente').val();
+            var id_profesional = $('#agenda_profesional_asistente').val();
+            let url1 = "{{ route('agenda.buscar_info_profesional') }}";
+            $.ajax({
+                url: url1,
+                type: "GET",
+                data: {
+                    id_profesional: id_profesional,
+                    id_lugar_atencion: id_lugar_atencion,
+                },
+                success:function(data){
+                    if (data !== 'null')
+                    {
+
+                        //data = JSON.parse(data);
+                        // console.log('-----------------------');
+                        // console.log(data);
+                        // console.log('-----------------------');
+                        if(data.estado == 1 && data.horario.length!=0)
+                        {
+                            $('#tabla_info_profesional tbody').show();
+                            $('#nombre_profesional_agenda').html(data.profesional.nombre.toUpperCase()  + ' ' + data.profesional.apellido_uno.toUpperCase()  + ' ' + data.profesional.apellido_dos.toUpperCase() );
+
+                            var especialidad = '';
+                            especialidad += data.especialidad.nombre.toUpperCase() +'<br>';
+                            especialidad += data.tipo_especialidad.nombre.toUpperCase() +'<br>';
+                            if(data.sub_tipo_especialidad != '')
+                                especialidad += data.sub_tipo_especialidad.nombre.toUpperCase() +'<br>';
+                            $('#especialidad_porfesional_agenda').html(especialidad);
+                            $('#btn_ver_info_profesional_seleccionado').attr('onclick','info_profesional('+data.profesional.id+');');
+
+                            if(data.horario.length > 0)
+                            {
+                                info_profesional_seleccionado['profesional'] = data.profesional;
+                                info_profesional_seleccionado['horario'] = data.horario;
+                                info_profesional_seleccionado['horario_data'] = data.horario_data;
+                                evaluacion =  true;
+                            }
+                            else
+                            {
+                                evaluacion =  false;
+                            }
+                            {{--  console.log(evaluacion);  --}}
+                            if(evaluacion)
+                            {
+                                var calendarEl = document.getElementById('agenda');
+                                CalendarEl = new FullCalendar.Calendar(calendarEl, {
+                                    droppable: false,
+                                    editable: false,
+                                    locale: "es",
+                                    timeZone: 'local',
+                                    initialDate: fecha,
+                                    initialView: 'timeGridWeek',
+                                    themeSystem: 'bootstrap',
+                                    slotDuration: '00:15:00',
+                                    // slotMinutes: '00:15:00',
+                                    headerToolbar: {
+                                        //start: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek', // will normally be on the left. if RTL, will be on the right
+                                        //center: 'title',
+                                        //end: 'today prev,next'
+                                        start: 'prev,next today',
+                                        center: 'title',
+                                        // right: 'timeGridWeek,listWeek'
+                                        right: 'timeGridWeek,listWeek'
+                                    },
+                                    // timeGrid: 60,
+                                    //navLinks: true,
+                                    weekends: false,
+                                    nowIndicator: true,
+                                    selectable: true,
+                                    //dayMaxEvents: true,
+                                    titleFormat: {
+                                        year: 'numeric',
+                                        month: 'numeric',
+                                        day: 'numeric'
+                                    },
+                                    allDaySlot: false,
+                                    expandRows: true,
+                                    slotEventOverlap: false,
+
+                                    selectConstraint: "businessHours",
+                                    slotLabelFormat: {
+                                        hour: 'numeric',
+                                        minute: '2-digit',
+                                        omitZeroMinute: false,
+                                        meridiem: 'medium'
+                                    },
+                                    eventDidMount: function(info) {
+                                        {{--   console.log(info.el);  --}}
+                                        $(info.el).tooltip({
+                                            title: info.event.extendedProps.description,
+                                            placement: "top",
+                                            trigger: "hover",
+                                            container: "body"
+                                        });
+                                    },
+
+                                    events: function(start, end, callback){
+                                        var arrayTemp = [];
+                                        let url = "{{ route('hora_medica.ver') }}";
+
+                                        $.ajax({
+                                            url: url,
+                                            type: "GET",
+                                            data: {
+                                                id_profesional: id_profesional
+                                            },
+                                            success:function(data){
+                                                        if (data !== 'null')
+                                                        {
+                                                            //data = JSON.parse(data);
+                                                            console.log('---------evento--------------');
+                                                            console.log(data);
+                                                            console.log('-----------------------');
+                                                            if(data.estado == 1)
+                                                            {
+                                                                // var arraytemp = [];
+                                                                // arraytemp.push([id=>'11']);
+                                                                // console.log(arraytemp)
+                                                                var arrayTemp = [];
+                                                                data.registros.forEach(element => {
+                                                                    var rut = element.paciente.rut+' | '
+                                                                    var valor = element.estado.valor+' | '
+                                                                    var comentarios_confirmacion = '';
+                                                                    if(comentarios_confirmacion != 'null')
+                                                                        comentarios_confirmacion = element.comentarios_confirmacion+' | '
+                                                                    var nombre = element.paciente.prevision.nombre
+                                                                    var descripcion = '';
+                                                                    descripcion += rut;
+                                                                    descripcion += valor;
+                                                                    descripcion += comentarios_confirmacion;
+                                                                    descripcion += nombre;
+
+                                                                    arrayTemp.push({
+                                                                                    id: element.id,
+                                                                                    title: element.tipo_hora_medica+' - '+element.descripcion,
+                                                                                    description: descripcion ,
+                                                                                    start: element.fecha_consulta + 'T' + element.hora_inicio,
+                                                                                    end: element.fecha_consulta + 'T' + element.hora_termino,
+                                                                                    backgroundColor: element.estado.color
+                                                                    });
+                                                                });
+                                                                console.log(arrayTemp);
+                                                            }
+                                                            else
+                                                            {
+                                                                console.log('falla en carga');
+                                                            }
+                                                        }
+                                                        end(arrayTemp);
+                                                    }
+                                        });
+                                    },
+
+                                    eventClick: function(info) {
+                                        let id_hora_medica = info.event.id;
+                                        let url = "{{ route('agenda.buscar_hora_medica') }}";
+
+                                        $.ajax({
+
+                                                url: url,
+                                                type: "get",
+                                                data: {
+                                                    //_token: _token,
+                                                    id_hora_medica: id_hora_medica,
+                                                }
+                                            })
+                                            .done(function(data) {
+                                                if (data != null) {
+
+                                                    //{{-- console.log(info.event);  --}}
+                                                    // console.log(data);
+                                                    // data = JSON.parse(data);
+                                                    $('#datos_consulta_rut').text(data.paciente.rut);
+                                                    $('#datos_consulta_nombre').text(data.paciente.nombres + ' ' + data.paciente.apellido_uno + ' ' + data.paciente.apellido_dos);
+                                                    $('#datos_consulta_edad').text(data.paciente.fecha_nac);
+
+                                                    if (data.paciente.sexo == 'M') {
+                                                        $('#datos_consulta_sexo').text('Masculino');
+                                                    } else {
+                                                        $('#datos_consulta_sexo').text('Femenino');
+                                                    }
+
+                                                    $('#estado_id_profesional').val(data.profesional.id);
+                                                    $('#estado_id_paciente').val(data.paciente.id);
+                                                    $('#id_hora_medica').val(id_hora_medica);
+
+                                                    //celeste
+                                                    //Reservada
+                                                    if (data.estado_hora == 1) //else if (info.event.backgroundColor == '#FEAA32')
+                                                    {
+                                                        //'Reservada') //Hora pendiente
+                                                        $('#hm_anular_hora').show();
+                                                        $('#hm_atender_hora').hide();
+                                                        $('#hm_confirmar_hora').show();
+                                                        $('#hm_ver_hora').hide();
+                                                        $('#hm_espera_paciente_hora').hide();
+                                                        $('#confirmar_anulacion_hora').hide();
+                                                        $('#confirmacion_hora').hide();
+
+                                                        $('#cabecera_hora_medica').text('Datos Del Paciente');
+                                                        $('#consulta').modal('show');
+                                                        // $('#id_hora_medica').val(id_hora_medica);
+                                                        // console.log(data);
+                                                        // $('#reservar_hora').modal('hide');
+                                                        //location.reload();
+                                                    }
+                                                    //verde
+                                                    // CONFIRMADO
+                                                    else if(data.estado_hora == 2)//if (info.event.backgroundColor == '#94BF61')
+                                                    {
+                                                        //'Confirmada')//Hora confirmada
+                                                        // $('#hm_confirmar_hora').hide();
+                                                        // $('#hm_anular_hora').show();
+                                                        // $('#hm_atender_hora').show();
+                                                        // // $('#hm_espera_paciente_hora').show();
+                                                        // $('#hm_espera_paciente_hora').hide();
+                                                        // $('#hm_ver_hora').hide();
+                                                        // $('#confirmar_anulacion_hora').hide();
+                                                        // $('#confirmacion_hora').hide();
+                                                        $('#modal_recepcion_bonos_api').modal('show');
+
+                                                        /** PESTAÑA DE RECIBIR PAGO */
+                                                        $('#bono_paciente_rut').val(data.paciente.rut);
+                                                        $('#bono_paciente_nombre').val(data.paciente.nombres + ' ' + data.paciente.apellido_uno + ' ' + data.paciente.apellido_dos);
+                                                        $('#bono_profesional_nombre').val(data.profesional.nombre+' '+data.profesional.apellido_uno+' '+data.profesional.apellido_dos);
+                                                        $('#bono_profesional_rut').val( data.profesional.rut);
+                                                        $('#bono_hora_medica').val(info.event.id);
+                                                        $('#bono_id_profesional').val(data.profesional.id);
+                                                        $('#bono_id_paciente').val(data.paciente.id);
+
+                                                        /** PESTAÑA DE VENTA DE BONO */
+                                                        $('#venta_rut').val(data.paciente.rut);
+                                                        $('#venta_serie').val('');
+                                                        $('#venta_nombre').val(data.paciente.nombres + ' ' + data.paciente.apellido_uno + ' ' + data.paciente.apellido_dos);
+                                                        $('#venta_paciente_nombre').val(data.paciente.nombres);
+                                                        $('#venta_paciente_apellido_uno').val(data.paciente.apellido_uno);
+                                                        $('#venta_paciente_apellido_dos').val(data.paciente.apellido_dos);
+                                                        $('#venta_paciente_email').val(data.paciente.email);
+                                                        $('#venta_previsioon').val('0');
+                                                        $('#venta_folio').val('');
+                                                        $('#venta_valor_consulta').val('');
+                                                        $('#venta_valor_pagar').val('');
+                                                        $('#venta_valor_seguro').val('');
+                                                        $('#venta_valor_copago').val('');
+
+                                                        $('.venta_autorizada').hide();
+
+                                                        $('#div_btn_pedir_autorizacion').show();
+
+                                                    }
+                                                    //rojo
+                                                    //Rechazada
+                                                    else if(data.estado_hora == 3)//else if (info.event.backgroundColor == '#FF3D3D')
+                                                    {
+                                                        // 'Rechazada')//Hora cancelada
+                                                        $('#hm_anular_hora').hide();
+                                                        $('#hm_atender_hora').hide();
+                                                        $('#hm_confirmar_hora').hide();
+                                                        $('#hm_espera_paciente_hora').hide();
+                                                        $('#hm_ver_hora').hide();
+                                                        $('#confirmar_anulacion_hora').hide();
+                                                        $('#confirmacion_hora').hide();
+
+                                                        $('#cabecera_hora_medica').text('Datos Del Paciente');
+                                                        $('#consulta').modal('show');
+                                                        // $('#id_hora_medica').val(id_hora_medica);
+                                                        // console.log(data);
+                                                        // $('#reservar_hora').modal('hide');
+                                                        //location.reload();
+                                                    }
+                                                    //morado
+                                                    // Espera -- Llamando
+                                                    else if (data.estado_hora == 4 || data.estado_hora == 8) //else if (info.event.backgroundColor == '#A06CC1')
+                                                    {
+                                                        // 'Espera')//Esperando atención
+                                                        // 'Llamando')//Esperando atención
+                                                        $('#hm_anular_hora').hide();
+                                                        $('#hm_atender_hora').hide();
+                                                        $('#hm_confirmar_hora').hide();
+                                                        $('#hm_ver_hora').hide();
+                                                        $('#hm_espera_paciente_hora').hide();
+                                                        $('#confirmar_anulacion_hora').hide();
+                                                        $('#confirmacion_hora').hide();
+
+                                                        $('#cabecera_hora_medica').text('Datos Del Paciente');
+                                                        $('#consulta').modal('show');
+                                                        // $('#id_hora_medica').val(id_hora_medica);
+                                                        // console.log(data);
+                                                        // $('#reservar_hora').modal('hide');
+                                                        //location.reload();
+                                                    }
+                                                    //rosa
+                                                    //Realizando
+                                                    else if (data.estado_hora == 5) //else if (info.event.backgroundColor == '#EDBB99')
+                                                    {
+                                                        //'Realizando')
+                                                        $('#hm_anular_hora').hide();
+                                                        $('#hm_atender_hora').hide();
+                                                        $('#hm_confirmar_hora').hide();
+                                                        $('#hm_ver_hora').hide();
+                                                        $('#hm_espera_paciente_hora').hide();
+                                                        $('#confirmar_anulacion_hora').hide();
+                                                        $('#confirmacion_hora').hide();
+
+                                                        $('#cabecera_hora_medica').text('Datos Del Paciente');
+                                                        $('#consulta').modal('show');
+                                                        // $('#id_hora_medica').val(id_hora_medica);
+                                                        // console.log(data);
+                                                        // $('#reservar_hora').modal('hide');
+                                                        //location.reload();
+                                                    }
+                                                    //azul
+                                                    // Realizada
+                                                    else if (data.estado_hora == 6)//else if (info.event.backgroundColor == '#17C1C1')
+                                                    {
+                                                        //'Realizada')//Paciente atendido
+                                                        $('#hm_anular_hora').hide();
+                                                        $('#hm_atender_hora').hide();
+                                                        $('#hm_confirmar_hora').hide();
+                                                        $('#hm_ver_hora').hide();
+                                                        $('#hm_espera_paciente_hora').hide();
+                                                        $('#confirmar_anulacion_hora').hide();
+                                                        $('#confirmacion_hora').hide();
+
+                                                        $('#cabecera_hora_medica').text('Datos Del Paciente');
+                                                        $('#consulta').modal('show');
+                                                        // $('#id_hora_medica').val(id_hora_medica);
+                                                        // console.log(data);
+                                                        // $('#reservar_hora').modal('hide');
+                                                        //location.reload();
+                                                    }
+                                                    //naranjo
+                                                    //Inasistida
+                                                    else if (data.estado_hora == 7)//else if (info.event.backgroundColor == '#F9A825')
+                                                    {
+
+                                                        //'Inasistida')
+                                                        $('#hm_anular_hora').hide();
+                                                        $('#hm_atender_hora').hide();
+                                                        $('#hm_confirmar_hora').hide();
+                                                        $('#hm_ver_hora').hide();
+                                                        $('#hm_espera_paciente_hora').hide();
+                                                        $('#confirmar_anulacion_hora').hide();
+                                                        $('#confirmacion_hora').hide();
+
+                                                        $('#cabecera_hora_medica').text('Datos Del Paciente');
+                                                        $('#consulta').modal('show');
+                                                        // $('#id_hora_medica').val(id_hora_medica);
+                                                        // console.log(data);
+                                                        // $('#reservar_hora').modal('hide');
+                                                        //location.reload();
+
+                                                    }
+
+                                                    // $('#cabecera_hora_medica').text('Datos Del Paciente');
+                                                    // $('#consulta').modal('show');
+                                                    // $('#id_hora_medica').val(id_hora_medica);
+                                                    // // console.log(data);
+                                                    // // $('#reservar_hora').modal('hide');
+                                                    // //location.reload();
+
+                                                }
+                                                else
+                                                {
+
+                                                    swal({
+                                                        title: "Paciente no encontrado en el sistema",
+                                                        icon: "error",
+                                                        buttons: "Aceptar",
+                                                        DangerMode: true,
+                                                    })
+                                                    // alert('Paciente no encontrado en el sistema');
+                                                }
+
+                                            })
+                                            .fail(function(jqXHR, ajaxOptions, thrownError) {
+                                                console.log(jqXHR, ajaxOptions, thrownError)
+                                            });
+
+
+                                        $('#datos_hora_medica').show();
+                                        $('#cancelacion_hora_medica').hide();
+                                        $('#confirmacion_hora_medica').hide();
+                                        /*$('#opcion_cancelar_hora_div').hide();*/
+                                        $('#id_hora_medica').val(info.event.id);
+                                        $('#id_hora_realizar').val(info.event.id);
+                                        info.el.style.borderColor = 'red';
+                                    },
+
+                                    selectOverlap: function(event) {
+                                        {{--  console.log(event);  --}}
+                                        return event.rendering === 'background';
+                                    },
+
+                                    dateClick: function(date, jsEvent, view) {
+
+                                        var valido = 1;
+                                        var valido_fecha = 1;
+                                        $.each(date.jsEvent.path, function(index, value)
+                                        {
+                                            if(value.className == 'fc-non-business')
+                                            {
+                                                swal({
+                                                    title: "Toma de Hora",
+                                                    text: "Horario no disponible con el Profesional",
+                                                    icon: "error",
+                                                    buttons: "Aceptar",
+                                                    DangerMode: true,
+                                                })
+                                                valido = 0;
+                                            }
+
+                                        });
+
+                                        if(valido == 1)
+                                        {
+
+                                            {{--  console.log(date.date);  --}}
+                                            {{--  console.log(date.dateStr);  --}}
+                                            var date_str = date.dateStr.replace('T',' ');
+                                            var date_DD = new Date(date_str);
+                                            var curr_date = date_DD.getDate();
+                                            var curr_month = date_DD.getMonth();
+                                            var curr_year = date_DD.getFullYear();
+                                            var curr_hour = date_DD.getHours();
+                                            var curr_mint = date_DD.getMinutes();
+                                            var fecha_seleccionada = curr_year+"-"+curr_month+"-"+curr_date+" "+curr_hour+":"+curr_mint;
+                                            $.each(CalendarEl.getEvents(), function( index, value ) {
+                                                var date_str2 = value.startStr.replace('T',' ');
+                                                var date_DD2 = new Date(date_str2);
+                                                var curr_date2 = date_DD2.getDate();
+                                                var curr_month2 = date_DD2.getMonth();
+
+                                                var curr_year2 = date_DD2.getFullYear();
+                                                var curr_hour2 = date_DD2.getHours();
+                                                var curr_mint2 = date_DD2.getMinutes();
+                                                var fecha_evento = curr_year2+"-"+curr_month2+"-"+curr_date2+" "+curr_hour2+":"+curr_mint2;
+
+                                                if($.trim(fecha_seleccionada) == $.trim(fecha_evento))
+                                                {
+                                                    valido = 0;
+                                                }
+                                            });
+
+                                            /** validar  dias pasados */
+                                            var diaActual = '{{ date('d') }}';
+                                            var mesActual = '{{ date('m')-1 }}';
+                                            var anioActual = '{{ date('Y') }}';
+
+                                            var fecha_actual = new Date(anioActual, mesActual, diaActual);
+                                            var fecha_seleccion = new Date(curr_year, curr_month, curr_date);
+
+                                            if(fecha_actual > fecha_seleccion){
+                                                console.log("fecha_actual > fecha_seleccion");
+                                                valido_fecha = 0;
+                                            }
+                                            if(fecha_actual <= fecha_seleccion){
+                                                console.log("fecha_actual < fecha_seleccion");
+                                                valido_fecha = 1;
+                                            }
+
+
+                                            if(valido == 1)
+                                            {
+                                                if(valido_fecha == 1)
+                                                {
+                                                    $('.div_rut_buscar').show();
+                                                    $('#agenda_agregar_paciente').modal('show');
+                                                    $('#reserva_datos_paciente').hide();
+                                                    $('#rut_paciente_reserva').val('');
+                                                    $('#reserva_agregar_paciente_hora').hide();
+                                                    $('#fecha_consulta').val(date.dateStr);
+                                                }
+                                                else
+                                                {
+                                                    swal({
+                                                        title: "Seleccion Fecha",
+                                                        text: "No Puede tomar Hora en Fechas Anterior a la actual",
+                                                        icon: "error",
+                                                        buttons: "Aceptar",
+                                                        DangerMode: true,
+                                                    })
+                                                }
+                                            }
+                                            else
+                                            {
+                                                swal({
+                                                    title: "Toma de Hora",
+                                                    text: "Hora con profesional ya esta tomada",
+                                                    icon: "error",
+                                                    buttons: "Aceptar",
+                                                    DangerMode: true,
+                                                })
+                                            }
+                                        }
+                                    },
+                                    eventDrop: function(info) {
+                                        {{--  console.log(info);  --}}
+                                        return false;
+                                    },
+
+                                });
+
+                                var data_businessHours = [];
+                                $.each(info_profesional_seleccionado.horario, function(key, value){
+                                    var dias =  value.dia.split(",");
+                                    data_businessHours.push({
+                                        'daysOfWeek': dias ,
+                                        'startTime': value.hora_inicio,
+                                        'endTime': value.hora_termino
+                                    });
+                                })
+                                var tem_hiddenDays = info_profesional_seleccionado.horario_data.horario_agenda.split(",");
+                                var tem_hiddenDays2 =[];
+
+                                $.each(tem_hiddenDays, function(key, value){
+                                    {{--  console.log(value);  --}}
+                                    tem_hiddenDays2.push(parseInt(value));
+                                });
+
+                                CalendarEl.setOption('hiddenDays',tem_hiddenDays2  );
+                                CalendarEl.setOption('businessHours', data_businessHours );
+                                CalendarEl.setOption('slotMinTime', info_profesional_seleccionado.horario_data.hora_inicio_agenda );
+                                CalendarEl.setOption('slotMaxTime', info_profesional_seleccionado.horario_data.hora_termino_agenda );
+                                {{--  console.log(CalendarEl.getOption('hiddenDays'));  --}}
+                                {{--  console.log(CalendarEl.getOption('businessHours'));  --}}
+                                {{--  console.log(CalendarEl.getOption('slotMinTime'));  --}}
+                                {{--  console.log(CalendarEl.getOption('slotMaxTime'));  --}}
+
+                                CalendarEl.render();
+
+                                if(fecha != '' && fecha != null)
+                                    CalendarEl.gotoDate(fecha);
+
+
+                                {{--   console.log(calendarEl);  --}}
+
+                                // var event = calendarEl.getEventById('107');
+                                {{--   console.log(event);  --}}
+                                // var start = event.start;
+                                {{--   console.log(start.toISOString());  --}}
+                            }
+                            else
+                            {
+                                swal({
+                                    title: "Agenda del Profesional.",
+                                    text:"El profesional no cuenta con agenda.",
+                                    icon: "error",
+                                    // buttons: "Aceptar",
+                                    //SuccessMode: true,
+                                });
+                                evaluacion =  false;
+                                $('#agenda').html('');
+                            }
+
+                        }
+                        else
+                        {
+                            swal({
+                                title: "Agenda del Profesional.",
+                                text:"El profesional no cuenta con agenda.",
+                                icon: "error",
+                                // buttons: "Aceptar",
+                                //SuccessMode: true,
+                            });
+                            evaluacion =  false;
+                        }
+                    }
+                }
+            });
+
+
+        }
+
+        {{--  CANCELAR HORA CARGA DE MENSAJE --}}
+        function opcion_cancelar_hora()
+        {
+            $('#datos_hora_medica').hide();
+            $('#cancelacion_hora_medica').show();
+            $('#cabecera_hora_medica').text('Cancelar Hora Medica');
+            $('#hm_anular_hora').hide();
+            $('#hm_atender_hora').hide();
+            $('#hm_confirmar_hora').hide();
+            $('#hm_ver_hora').hide();
+            $('#confirmar_anulacion_hora').show();
+        };
+
+        {{--  CANCELAR HORA  --}}
+        function cancelar_hora() {
+
+            let url = "{{ route('agenda.cancelar_hora') }}";
+            let comentario = $('#cancelar_hora_comentario').val();
+            let id_hora_medica = $('#id_hora_medica').val();
+
+            $.ajax({
+
+                url: url,
+                type: "get",
+                data: {
+                    //_token: _token,
+                    comentario: comentario,
+                    id_hora_medica: id_hora_medica
+                },
+            })
+            .done(function(data) {
+                if (data != null) {
+                    data = JSON.parse(data);
+                    {{--  console.log(data);  --}}
+                    $('#consulta').modal('hide');
+                    swal({
+                        title: "Exito!",
+                        text: "Hora medica cancelada correctamente",
+                        type: "success",
+                        confirmButtonText: "Cool"
+                    });
+
+                    cargarAgendaProfesional('');
+
+
+                } else {
+                    alert('No se pudo Confirmar Reserva');
+                }
+
+            })
+            .fail(function(jqXHR, ajaxOptions, thrownError) {
+                {{--  console.log(jqXHR, ajaxOptions, thrownError)  --}}
+            });
+
+        };
+
+        {{--  CONFIRMAR HORA OPCION --}}
+        function opcion_confirmar_hora()
+        {
+            $('#datos_hora_medica').hide();
+            $('#cancelacion_hora_medica').hide();
+            $('#cabecera_hora_medica').text('Confirmar Hora Medica');
+            $('#hm_anular_hora').hide();
+            $('#hm_atender_hora').hide();
+            $('#hm_confirmar_hora').hide();
+            $('#hm_ver_hora').hide();
+            $('#confirmacion_hora').show();
+            $('#confirmacion_hora_medica').show();
+        };
+
+        {{--  CONFIRMAR HORA  --}}
+        function confirmar_hora() {
+
+            let url = "{{ route('agenda.confirmar_hora') }}";
+            let comentario = $('#confirmar_hora_comentario').val();
+            let id_hora_medica = $('#id_hora_medica').val();
+            let id_profesional = $('#estado_id_profesional').val();
+
+            $.ajax({
+
+                    url: url,
+                    type: "get",
+                    data: {
+                        //_token: _token,
+                        comentario: comentario,
+                        id_hora_medica: id_hora_medica
+                    },
+                })
+                .done(function(data) {
+                    if (data != null) {
+                        data = JSON.parse(data);
+                        {{--  console.log(data);  --}}
+                        swal({
+                            title: "Exito!",
+                            text: "Se ha confirmado su hora medica",
+                            type: "success",
+                            // DangerMode: true,
+                            confirmButtonText: "Cool"
+                        });
+                        cargarAgendaProfesional(data.fecha_consulta);
+                        $('#consulta').modal('hide');
+
+                    } else {
+                        swal({
+                            title: "Error!",
+                            text: "No se pudo Confirmar Reserva",
+                            type: "danger",
+                            DangerMode: true,
+                            confirmButtonText: "Cool"
+                        });
+                    }
+
+                })
+                .fail(function(jqXHR, ajaxOptions, thrownError) {
+                    {{--  console.log(jqXHR, ajaxOptions, thrownError)  --}}
+                });
+
+        };
+
+        {{-- RECIBIR PAGO --}}
+        function recepcion_pago()
+        {
+            let token = CSRF_TOKEN;
+            var bono_paciente_rut = $('#bono_paciente_rut').val();
+            var bono_paciente_nombre = $('#bono_paciente_nombre').val();
+            var bono_profesional_nombre = $('#bono_profesional_nombre').val();
+            var bono_profesional_rut = $('#bono_profesional_rut').val();
+            var bono_numero = $('#bono_numero').val();
+            var bono_valor_consulta = $('#bono_valor_consulta').val();
+            var bono_prevision = $('#bono_prevision').val();
+            var bono_prevision_nombre = $('#bono_prevision option:selected').text();
+            var recepcion_programa = $('#recepcion_programa').val();
+            var bono_sn_sesiones = $('#bono_sn_sesiones').val();
+
+            var bono_hora_medica = $('#bono_hora_medica').val();
+            var bono_id_profesional = $('#bono_id_profesional').val();
+            var bono_id_paciente = $('#bono_id_paciente').val();
+            var bono_id_tipo_bono = $('#bono_id_tipo_bono').val();
+            var bono_id_clase_bono = $('#bono_id_clase_bono').val();
+
+            var mensaje = '';
+            var valido = 1;
+
+            if(bono_paciente_rut == '')
+            {
+                mensaje += 'Campo requerido RUT DEL PACIENTE\n';
+                valido = 0;
+            }
+            if(bono_paciente_nombre == '')
+            {
+                mensaje += 'Campo requerido NOMBRE DEL PACIENTE\n';
+                valido = 0;
+            }
+            if(bono_profesional_nombre == '')
+            {
+                mensaje += 'Campo requerido NOMBRE DEL PROFESIONAL\n';
+                valido = 0;
+            }
+            if(bono_profesional_rut == '')
+            {
+                mensaje += 'Campo requerido RUT DEL PROFESIONAL\n';
+                valido = 0;
+            }
+            if(bono_id_clase_bono != 6)
+            {
+                if(bono_numero == '')
+                {
+                    mensaje += 'Campo requerido NUMERO DEL BONO O PROGRAMA\n';
+                    valido = 0;
+                }
+            }
+            if(bono_valor_consulta == '')
+            {
+                mensaje += 'Campo requerido VALOR TOTAL\n';
+                valido = 0;
+            }
+            if(bono_prevision == '' || bono_prevision == 0)
+            {
+                mensaje += 'Campo requerido CONVENIO\n';
+                valido = 0;
+            }
+
+            if(valido == 1)
+            {
+                let url = "{{ route('agenda.recibir_bono') }}";
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    data: {
+                        // _token: token,
+                        _token: CSRF_TOKEN,
+                        convenio: bono_prevision,
+                        convenio_nombre: bono_prevision_nombre,
+                        numero_bono: bono_numero,
+                        valor_atencion: bono_valor_consulta,
+                        glosa: '1',
+                        id_profesional: bono_id_profesional,
+                        id_asistente: '{{ $asistente->id }}',
+                        id_paciente: bono_id_paciente,
+                        id_tipo_bono: bono_id_tipo_bono,
+                        id_clase_bono: bono_id_clase_bono,
+                        id_referencia: bono_hora_medica,//une bono a hora medica (para buscar id ficha atencion)
+                        numero_sesiones: bono_sn_sesiones
+                    }
+                })
+                .done(function(data)
+                {
+                    if (data !== 'null')
+                    {
+                        //data = JSON.parse(data);
+                        {{--  console.log('-----------------------');  --}}
+                        {{--  console.log(data);  --}}
+                        {{--  console.log('-----------------------');  --}}
+                        if(data.estado == 1)
+                        {
+                            swal({
+                                title: "Recepción de bonos y programas",
+                                text: 'Pago Exitoso',
+                                icon: "success",
+                                // buttons: "Aceptar",
+                                //SuccessMode: true,
+                            });
+                            cargarAgendaProfesional(data.hora_medica.fecha_consulta);
+                            $('#modal_recepcion_bonos_api').modal('hide');
+                            $('#bono_paciente_rut').val('');
+                            $('#bono_paciente_nombre').val('');
+                            $('#bono_profesional_nombre').val('');
+                            $('#bono_profesional_rut').val('');
+                            $('#bono_numero').val('');
+                            $('#bono_valor_consulta').val('');
+                            $('#bono_prevision').val('');
+                            $('#recepcion_programa').val('');
+                            $('#bono_sn_sesiones').val('');
+                            $('#bono_hora_medica').val('');
+                            {{--  $('#bono_id_profesional').val('');  --}}
+                            {{--  $('#bono_id_paciente').val('');  --}}
+                            {{--  $('#bono_id_tipo_bono').val('');  --}}
+
+                        }
+                        else
+                        {
+                            var mensaje = '';
+                            if(isset(data.bono))
+                            {
+                                if(data.bono.estado == 0)
+                                {
+                                    mensaje +=  bono.estado.msj;
+                                }
+                                if(data.hora_medica.estado == 0)
+                                {
+                                    mensaje +=  data.hora_medica.msj;
+                                }
+                            }
+                            else
+                            {
+                                mensaje += data.error;
+                            }
+
+                            swal({
+                                title: "Recepción de bonos y programas",
+                                text: 'Pago con Problemas.\n'+data.msj+'\n'+mensaje,
+                                icon: "success",
+                                // buttons: "Aceptar",
+                                //SuccessMode: true,
+                            });
+
+                        }
+                    }
+
+                })
+                .fail(function(jqXHR, ajaxOptions, thrownError) {
+                    console.log('fail');
+                    console.log(jqXHR, ajaxOptions, thrownError)
+                });
+            }
+            else
+            {
+                swal({
+                    title: "Recepción de bonos y programas",
+                    text: mensaje,
+                    icon: "error",
+                    // buttons: "Aceptar",
+                    //SuccessMode: true,
+                });
+            }
+
+        }
+
+        {{--  FORMATEO DE RUT busqueda paciente  --}}
+        function formatoRut(rut)
+        {
+            var valor = rut.value.replace('.','');
+            valor = valor.replace('-','');
+            cuerpo = valor.slice(0,-1);
+            dv = valor.slice(-1).toUpperCase();
+            rut.value = cuerpo + '-'+ dv
+
+            if(cuerpo.length < 7) { rut.setCustomValidity("RUT Incompleto"); return false;}
+
+            suma = 0;
+            multiplo = 2;
+
+            for(i=1;i<=cuerpo.length;i++)
+            {
+                index = multiplo * valor.charAt(cuerpo.length - i);
+                suma = suma + index;
+                if(multiplo < 7) { multiplo = multiplo + 1; } else { multiplo = 2; }
+            }
+
+            dvEsperado = 11 - (suma % 11);
+            dv = (dv == 'K')?10:dv;
+            dv = (dv == 0)?11:dv;
+
+            if(dvEsperado != dv) { rut.setCustomValidity("RUT Inválido"); return false; }
+
+            rut.setCustomValidity('');
+        }
+
+        {{-- BUSCAR PACIENTE --}}
+        function buscar_paciente() {
+            $('#form_reseva_de_horas').submit(function(e) {
+                e.preventDefault();
+            });
+            let rut = $('#rut_paciente_reserva').val();
+            $('#reserva_agregar_paciente_hora').hide();
+            $('#reserva_datos_paciente').hide();
+            let url = "{{ route('agenda.buscar_rut_paciente') }}";
+
+            $.ajax({
+
+                    url: url,
+                    type: "get",
+                    data: {
+                        rut: rut,
+                    },
+                })
+                .done(function(data) {
+
+
+                    if (data !== 'null') {
+                        data = JSON.parse(data);
+                        if(data.tipo_paciente == 'SI')
+                        {
+                            {{--  console.log(data);  --}}
+                            $('#reserva_datos_paciente').show();
+                            $('#reserva_hora_id_paciente').val(data.id);
+                            $('#reserva_rut_paciente').text(data.rut);
+                            $('#reserva_hora_nombre').text(data.nombres + ' ' + data.apellido_uno + ' ' + data.apellido_dos);
+                            $('#reserva_fecha_nacimiento').text(data.fecha_nac);
+                            if (data.sexo == 'M') {
+                                $('#reserva_sexo').text('Masculino');
+                            } else {
+                                $('#reserva_sexo').text('Femenino');
+                            }
+                            $('#reserva_hora_email').text(data.email);
+                            $('#reserva_hora_telefono').text(data.telefono_uno);
+
+                            $('#reserva_convenio').text(data.prevision.nombre);
+                            $('#reserva_direccion').text(data.direccion.direccion+' '+data.direccion.numero_dir+', '+data.direccion.ciudad.nombre);
+
+                            $('#rut_paciente_reserva').val('');
+                            $('.div_rut_buscar').hide();
+                        }
+                        else
+                        {
+                            $('#reserva_datos_paciente').hide();
+                            $('#reserva_agregar_paciente_hora').show();
+
+                            $('#reserva_hora_nombres_paciente').val(data.nombres);
+                            $('#reserva_hora_apellido_uno').val(data.apellido_uno);
+                            $('#reserva_hora_apellido_dos').val(data.apellido_dos);
+                            $('#reserva_hora_fecha_nac').val(data.fecha_nac);
+                            if(data.sexo != null)
+                                $('#reserva_hora_sexo').val(data.sexo);
+                            else
+                                $('#reserva_hora_sexo').val(0);
+
+
+                            $('#reserva_hora_correo').val(data.email);
+                            $('#region_agregar').val(data.direccion.ciudad.id_region);
+                            buscar_ciudad(data.direccion.id_ciudad);
+                            $('#reserva_hora_direccion').val(data.direccion.direccion);
+                            $('#reserva_hora_numero_dir').val(data.direccion.numero_dir);
+
+                            $('#reserva_hora_telefono_uno').val(data.telefono_uno);
+
+                            {{--
+                            $('#reserva_hora_profesion').val();
+                            $('#reserva_hora_convenio').val();
+                            $('#reserva_hora_descripcion').val();
+                            --}}
+                        }
+                    } else {
+                        $('#reserva_datos_paciente').hide();
+                        $('#reserva_agregar_paciente_hora').show();
+
+                    }
+
+                })
+                .fail(function(jqXHR, ajaxOptions, thrownError) {
+                    console.log(jqXHR, ajaxOptions, thrownError)
+                });
+        };
+
+        {{--  REGISTRO NUEVO PACIENTE GENERACION DE HORA  --}}
+        function agendar_hora_paciente_nuevo()
+        {
+            let url = "{{ route('agenda.agendar_hora_nuevo_paciente') }}";
+            let _token = $('#_token').val();
+            let fecha_consulta = $('#fecha_consulta').val();
+
+            let rut_paciente_reserva = $('#rut_paciente_reserva').val();
+            if (rut_paciente_reserva == '')
+            {
+                swal({
+                    title: "Error!",
+                    text: "Debe ingresar el Rut",
+                    icon: "error",
+                    type: "danger",
+                    DangerMode: true,
+                });
+                return false;
+            }
+
+            let reserva_hora_nombre = $('#reserva_hora_nombres_paciente').val();
+            if (reserva_hora_nombre == '') {
+
+                swal({
+                    title: "Error!",
+                    text: "Debe ingresar los nombres del paciente",
+                    icon: "error",
+                    type: "danger",
+                    DangerMode: true,
+
+                });
+                return;
+
+            }
+
+            let reserva_hora_primer_apellido = $('#reserva_hora_apellido_uno').val();
+            if (reserva_hora_primer_apellido == '')
+            {
+                swal({
+                    title: "Error!",
+                    text: "Debe ingresar el primer apellido",
+                    icon: "error",
+                    type: "danger",
+                    DangerMode: true,
+
+                });
+                return false;
+            }
+
+            let reserva_hora_segundo_apellido = $('#reserva_hora_apellido_dos').val();
+            if (reserva_hora_segundo_apellido == '')
+            {
+                swal({
+                    title: "Error!",
+                    text: "Debe ingresar el segundo apellido",
+                    icon: "error",
+                    type: "danger",
+                    DangerMode: true,
+                });
+                return false;
+
+            }
+
+            let reserva_hora_fecha_nac = $('#reserva_hora_fecha_nac').val();
+            if (reserva_hora_fecha_nac == '') {
+
+                swal({
+                    title: "Error!",
+                    text: "Debe ingresar la fecha de nacimiento",
+                    icon: "error",
+                    type: "danger",
+                    DangerMode: true,
+
+                });
+                return;
+
+            }
+
+            let reserva_hora_sexo = $('#reserva_hora_sexo').val();
+            if (reserva_hora_sexo == '0') {
+
+                swal({
+                    title: "Error!",
+                    text: "Debe seleccionar el del sexo del paciente",
+                    icon: "error",
+                    type: "danger",
+                    DangerMode: true,
+
+                });
+
+                return;
+            }
+
+            let reserva_hora_profesion = $('#reserva_hora_profesion').val();
+            let reserva_hora_profesion_texto = $('#reserva_hora_profesion option:selected').text();
+            if (reserva_hora_profesion == '0') {
+
+                swal({
+                    title: "Error!",
+                    text: "Debe seleccionar profesión u oficio del paciente",
+                    icon: "error",
+                    type: "danger",
+                    DangerMode: true,
+
+                });
+
+                return;
+            }
+
+            let reserva_hora_convenio = $('#reserva_hora_convenio').val();
+            if (reserva_hora_convenio == '0') {
+
+                swal({
+                    title: "Error!",
+                    text: "Debe seleccionar la previsión del paciente",
+                    icon: "error",
+                    type: "danger",
+                    DangerMode: true,
+
+                });
+                return;
+
+            }
+            let reserva_hora_direccion = $('#reserva_hora_direccion').val();
+            if (reserva_hora_direccion == '') {
+
+                swal({
+                    title: "Error!",
+                    text: "Debe ingresar una dirección",
+                    icon: "error",
+                    type: "danger",
+                    DangerMode: true,
+
+                });
+                return;
+
+            }
+            let reserva_hora_numero_dir = $('#reserva_hora_numero_dir').val();
+            if (reserva_hora_numero_dir == '') {
+
+                swal({
+                    title: "Error!",
+                    text: "Debe ingresar un numero a su dirección",
+                    icon: "error",
+                    type: "danger",
+                    DangerMode: true,
+
+                });
+                return;
+
+            }
+            let reserva_hora_comuna = $('#ciudad_agregar').val();
+            if (reserva_hora_comuna == '') {
+
+                swal({
+                    title: "Error!",
+                    text: "Debe ingresar la región y la ciudad",
+                    icon: "error",
+                    type: "danger",
+                    DangerMode: true,
+
+                });
+                return;
+
+            }
+            let reserva_hora_email = $('#reserva_hora_correo').val();
+            if (reserva_hora_email == '') {
+
+                swal({
+                    title: "Error!",
+                    text: "Debe ingresar el email",
+                    icon: "error",
+                    type: "danger",
+                    DangerMode: true,
+
+                });
+                return;
+
+            }
+            let reserva_hora_telefono = $('#reserva_hora_telefono_uno').val();
+            if (reserva_hora_telefono == '') {
+
+                swal({
+                    title: "Error!",
+                    text: "Debe ingresar el teléfono",
+                    icon: "error",
+                    type: "danger",
+                    DangerMode: true,
+
+                });
+                return;
+
+            }
+
+            let reserva_hora_confirmacion = $('#reserva_hora_confirmacion').val();
+            let reserva_hora_sms = $('#reserva_hora_sms').val();
+            let id_profesional = $('#agenda_profesional_asistente').val();
+            let id_lugar_atencion = $('#agenda_lugar_atencion_asistente').val();
+
+            $.ajax({
+
+                    url: url,
+                    type: "get",
+                    data: {
+                        _token: _token,
+                        fecha_consulta: fecha_consulta,
+                        rut_paciente_reserva: rut_paciente_reserva,
+                        reserva_hora_nombre: reserva_hora_nombre,
+                        reserva_hora_primer_apellido: reserva_hora_primer_apellido,
+                        reserva_hora_segundo_apellido: reserva_hora_segundo_apellido,
+                        reserva_hora_fecha_nac: reserva_hora_fecha_nac,
+                        reserva_hora_sexo: reserva_hora_sexo,
+                        reserva_hora_profesion: reserva_hora_profesion_texto,
+                        reserva_hora_convenio: reserva_hora_convenio,
+                        reserva_hora_direccion: reserva_hora_direccion,
+                        reserva_hora_numero_dir: reserva_hora_numero_dir,
+                        reserva_hora_comuna: reserva_hora_comuna,
+                        reserva_hora_email: reserva_hora_email,
+                        reserva_hora_telefono: reserva_hora_telefono,
+                        reserva_hora_confirmacion: reserva_hora_confirmacion,
+                        reserva_hora_sms: reserva_hora_sms,
+                        id_profesional:id_profesional,
+                        id_lugar_atencion:id_lugar_atencion
+                    },
+                })
+                .done(function(data) {
+                    if (data != null) {
+                        data = JSON.parse(data);
+                        // console.log(data);
+
+                        swal({
+                            title: "Exito!",
+                            text: "Hora medica agendada correctamente",
+                            type: "success",
+                            confirmButtonText: "Cool"
+                        });
+                        $('#reservar_hora').modal('hide');
+                        $('#agenda_agregar_paciente').modal('hide');
+                        cargarAgendaProfesional(fecha_consulta);
+                        // location.reload();
+
+                    } else {
+                        swal({
+                            title: "Error!",
+                            text: "Paciente no encontrado en el sistema",
+                            type: "error",
+                            confirmButtonText: "Cool"
+                        });
+                        // alert('Paciente no encontrado en el sistema');
+                    }
+
+                })
+                .fail(function(jqXHR, ajaxOptions, thrownError) {
+                    console.log(jqXHR, ajaxOptions, thrownError)
+                });
+        };
+
+        {{--  GENERAR HORA USUARIO EXISTENTE  --}}
+        function agendar_hora() {
+
+            let url = "{{ route('agenda.agendar_hora') }}";
+            let _token = $('#_token').val();
+            let fecha_consulta = $('#fecha_consulta').val();
+            let reserva_hora_id = $('#reserva_hora_id_paciente').val();
+            let id_profesional = $('#agenda_profesional_asistente').val();
+            let id_lugar_atencion = $('#agenda_lugar_atencion_asistente').val();
+
+
+            $.ajax({
+
+                    url: url,
+                    type: "get",
+                    data: {
+                        _token: _token,
+                        fecha_consulta: fecha_consulta,
+                        reserva_hora_id: reserva_hora_id,
+                        id_lugar_atencion: id_lugar_atencion,
+                        id_profesional: id_profesional,
+                    }
+                })
+                .done(function(data) {
+                    if (data != null) {
+                        data = JSON.parse(data);
+                        if(data.estado == 'error') {
+
+                            swal({
+                                title: "Error!",
+                                text: data.msj,
+                                type: "error",
+                                icon: "error",
+                                confirmButtonText: "Cool"
+                            });
+
+                            $('#agenda_agregar_paciente').modal('hide');
+                        }
+                        else
+                        {
+                            swal({
+                                title: "Hora Agendada Correctamente",
+                                icon: "success",
+                                buttons: "Aceptar",
+                                // DangerMode: true,
+                            })
+                            $('#reservar_hora').modal('hide');
+                            $('#agenda_agregar_paciente').modal('hide');
+                        }
+                        cargarAgendaProfesional(fecha_consulta);
+
+
+                    } else {
+
+                        swal({
+                            title: "Error!",
+                            text: "Paciente no encontrado en el sistema",
+                            type: "error",
+                            confirmButtonText: "Cool"
+                        });
+                    }
+
+                })
+                .fail(function(jqXHR, ajaxOptions, thrownError) {
+                    console.log(jqXHR, ajaxOptions, thrownError)
+                });
+        };
+
+        {{--  BUSCANDO CIUDAD --}}
+        function buscar_ciudades(id_ciudad=0) {
+            buscar_ciudad(id_ciudad);
+        }
+
+        function buscar_ciudad(id_ciudad=0) {
+
+
+            var region = $('#region_agregar').val();
+
+            if (region == null) {
+                region = $('#region_contacto_modificar').val();
+            }
+            let url = "{{ route('home.buscar_ciudad_region') }}";
+            $.ajax({
+                url: url,
+                type: "get",
+                data: {
+                    //_token: _token,
+                    region: region,
+                },
+            })
+            .done(function(data) {
+                if (data != null) {
+                    data = JSON.parse(data);
+
+                    let ciudades = $('#ciudad_lugar_atencion_modificar');
+                    let ciudades_contacto = $('#ciudad_contacto_modificar');
+                    let ciudades_agregar = $('#ciudad_agregar');
+
+                    ciudades.find('option').remove();
+                    ciudades.append('<option value="0">seleccione</option>');
+                    $(data).each(function(i, v) { // indice, valor
+                        ciudades.append('<option value="' + v.id + '">' + v.nombre +
+                            '</option>');
+                    })
+
+                    ciudades_contacto.find('option').remove();
+                    ciudades_contacto.append('<option value="0">seleccione</option>');
+                    $(data).each(function(i, v) { // indice, valor
+                        ciudades_contacto.append('<option value="' + v.id + '">' + v.nombre +
+                            '</option>');
+                    })
+
+                    ciudades_agregar.find('option').remove();
+                    ciudades_agregar.append('<option value="0">seleccione</option>');
+                    $(data).each(function(i, v) { // indice, valor
+                        ciudades_agregar.append('<option value="' + v.id + '">' + v.nombre +
+                            '</option>');
+                    })
+
+                    if(id_ciudad != 0)
+                    {
+                        ciudades.val(id_ciudad);
+                        ciudades_contacto.val(id_ciudad);
+                        ciudades_agregar.val(id_ciudad);
+
+                    }
+
+                } else {
+
+                    swal({
+                        title: "Error",
+                        text: "Error al cargar las ciudades",
+                        icon: "error",
+                        buttons: "Aceptar",
+                        DangerMode: true,
+                    })
+                    // alert('No se pudo Cargar las ciudades');
+                }
+
+            })
+            .fail(function(jqXHR, ajaxOptions, thrownError) {
+                console.log(jqXHR, ajaxOptions, thrownError)
+            });
+        };
+
+    </script>
+@endsection

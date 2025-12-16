@@ -1,0 +1,38 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class CreateConsentimientoFaltanteTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('consentimiento_faltante', function (Blueprint $table) {
+            $table->id();
+            $table->bigInteger('id_prof_sol_cons');
+            $table->dateTime('prof_sol_cons_fecha');
+            $table->string('form_cons_faltante');
+            $table->string('form_cons_faltante_especialidad');
+            $table->string('obs_sol_cons_formulario')->nullable();
+            $table->integer('estado')->nullable()->default(1);
+            $table->string('otro')->nullable();
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('consentimiento_faltante');
+    }
+}

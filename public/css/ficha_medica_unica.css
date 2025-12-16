@@ -1,0 +1,186 @@
+<style 
+
+.auth-wrapper .card .card-body {
+    padding: 10px 10px 10px 10px!important;
+}
+
+.accordion > .card > .card-header> {
+    border-radius: 0 !important;
+    margin-bottom: 0px !important;
+}
+
+
+
+
+#link {
+    color: #fff;
+}
+
+
+.auth-wrapper .auth-content:not(.container) {
+    width: 1080px;
+}
+
+.auth-wrapper .card {
+    margin-bottom: 0;
+    padding: 0px!important;
+    border-radius: 0;
+    border:0;
+}
+
+.card .card-header {
+    border-bottom: 1px solid #FFF;
+    position: relative;
+    background-color: #3366CC;
+}
+
+.card-header {
+    padding: 0.1rem 0.1rem;
+    border-radius: 0px;
+    margin-bottom: 0;
+    background-color: rgba(0, 0, 0, 0);
+    border-bottom: 0px solid rgba(0, 0, 0, 0.125);
+}
+
+.card-header:first-child {
+    border-radius: 0;
+}
+
+
+.bg-accordion {
+    background-color: #FCFCFC ;
+
+}
+
+.caja-info {
+    margin: 10px 10px;
+    background-color: #fff;
+}
+
+.border-primary{
+
+border: 1px solid #d7dfe6!important;
+box-shadow: none!important;
+
+}
+
+.titulo-card{
+    padding: 0.1rem 1rem;
+    background-color: #f4f7fa!important;
+    border-radius: 3px; 
+    border-bottom:1px solid #d7dfe6!important;
+}
+
+.titulo-text {
+    color: #59636d!important; 
+}
+
+p{
+    color: #59636d;
+    word-wrap: break-word!important;
+    font-size: 14px;
+}
+
+.bg-transparente{
+    background-color: rgba(0,0,0,0.1)!important;
+}
+
+body{
+    background-color: transparent;
+}
+
+.btn-link{
+    color: #fff!important;
+    text-decoration: none!important;
+    font-weight: 700!important;
+    letter-spacing: 1px;
+    padding: 0.3rem 1.1875rem;
+    width: 100%!important;
+    display: block!important;
+    width: 100%!important;
+}
+
+.btn-link:hover{
+    color: #fff!important;
+    text-decoration: none!important;
+    width: 100%!important;
+    display: block!important;
+    width: 100%!important;
+}
+
+.btn-link:active {
+    color: #fff!important;
+    text-decoration: none!important;
+    width: 100%!important;
+    display: block!important;
+    width: 100%!important;
+}
+
+.btn-link:visited {
+    color: #fff!important;
+    text-decoration: none!important;
+    width: 100%!important;
+    display: block!important;
+    width: 100%!important;
+}
+
+.btn.btn-icon {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border-radius: 50%;
+    font-size: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (max-width: 768.98px) {
+
+    .btn-link{
+    color: #fff!important;
+    text-decoration: none!important;
+    font-weight: 700!important;
+    letter-spacing: 1px;
+    font-size: 13px!important;
+    padding: 0.5rem 1.1875rem;
+    width: 100%!important;
+}
+
+h6{
+    font-size: 14px;
+}
+
+
+
+p{
+    font-size: 14px;
+}
+
+}
+
+/* Botón Accordion */
+
+.bg-neonatologia{
+    background-color: #e690ad!important;
+}
+
+.bg-niño-sano-items{
+    background-color: #C9D850!important;
+}
+
+.bg-niño-sano{
+    background-color: #C9D850!important;
+}
+
+.bg-cronicos{
+    background-color: #B76BCE!important;
+}
+
+
+
+
+
+
+
+

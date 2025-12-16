@@ -1,0 +1,35 @@
+.tab-sm-formularios{
+	background-color:#fff!important;
+	color: #fff!important;	
+}
+
+.nav-link-sm.active {
+	background-color: #3366CC!important;
+	color: #fff!important;
+	border: 1px solid #3366CC!important;
+	padding: 0.25rem 0.5rem;
+	margin-bottom: 3px!important;
+	margin-top: 3px!important;
+	margin-left: 1px!important;
+	margin-right: 1px!important;	
+}
+
+.nav-link-sm {
+	background-color: #fff!important;
+	color: #3366CC!important;
+	border: 1px solid #3366CC!important;
+	padding: 4px 8px!important;
+	margin-bottom: 3px!important;
+	margin-top: 3px!important;
+	margin-left: 1px!important;
+	margin-right: 1px!important;	
+}
+
+.bt-sm .nav {
+    background: #fff!important;
+}
+
+.nav-link-sm{
+    display: block;
+    padding: 0.5rem 1rem;
+}

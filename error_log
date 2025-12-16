@@ -1,0 +1,1 @@
+[10-Dec-2025 21:01:35 America/Santiago] PHP Fatal error:  Cannot declare class CreateSolicitudHospitalizacionExtendidaTable, because the name is already in use in /home/vetsdi/public_html/database/migrations/2025_05_27_174409_create_solicitud_hospitalizacions_extendida_table.php on line 7

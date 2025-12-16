@@ -1,0 +1,310 @@
+@extends('template.adm_cm.template')
+@section('content')
+<!--****Container Completo****-->
+<div class="pcoded-main-container">
+    <div class="pcoded-content">
+        <div class="page-header">
+            <div class="page-block">
+                <div class="row align-items-center">
+                    <div class="col-md-12">
+                        <div class="page-header-title">
+                            <h5 class="m-b-10 font-weight-bold">Proveedores</h5>
+                        </div>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="escritorio_admin_general_cm.php" data-toggle="tooltip" data-placement="top" title="Volver a mi escritorio"><i class="feather icon-home"></i></a></li>
+                            <li class="breadcrumb-item"><a href="administracion_cm.php">Administracion del centro médico</a></li>
+                            <li class="breadcrumb-item"><a href="proveedores_cm.php">Proveedores</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header bg-info">
+                    <div class="row">
+                        <div class="col-md-12 align-botton">
+                            <h4 class="text-white f-20 d-inline ml-4 mt-3">Proveedores</h4>
+                            <div class="btn-group float-right" role="group" aria-label="Basic example">
+                              <button type="button" class="btn btn-outline-light btn-sm" onclick="agregar_proveedor();"><i class="feather icon-plus"></i>Agregar proveedor</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                        </div>
+                    </div>
+                    <table id="inventario_insumos" class="display table table-striped  table-sm table-hover dt-responsive nowrap" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th class="text-center align-middle">Proveedor</th>
+                                <th class="text-center align-middle">Productos</th>
+                                <th class="text-center align-middle">Dirección</th>
+                                <th class="text-center align-middle">Teléfono</th>
+                                <th class="text-center align-middle">Correo electrónico</th>
+                                <th class="text-center align-middle">Editar</th>
+                                <th class="text-center align-middle">Habilitar /<br> deshabilitar</th>
+                                <th class="text-center align-middle">Accion</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($proveedores as $proveedor)
+                            <tr>
+                                <td class="text-center align-middle">{{ $proveedor->nombre }}</td>
+                                <td class="text-center align-middle">{{ $proveedor->tipo_producto }}</td>
+                                <td class="text-center align-middle">{{ $proveedor->direccion }}</td>
+                                <td class="text-center align-middle">{{ $proveedor->telefono }}</td>
+                                <td class="text-center align-middle">{{ $proveedor->email }}</td>
+                                <td class="text-center align-middle">
+                                    <button type="button" class="btn btn-info btn-sm" onclick="editar_proveedor({{ $proveedor->id }});"><i class="feather icon-edit"></i></button>
+                                </td>
+                                <td class="align-middle text-center">
+                                    <div class="switch switch-success d-inline m-r-10">
+                                        <input type="checkbox" id="activo-{{ $proveedor->id }}" >
+                                        <label for="activo-{{ $proveedor->id }}" class="cr"></label>
+                                    </div>
+                                </td>
+                                <td class="text-center align-middle">
+                                    <button type="button" class="btn btn-danger btn-sm" onclick="eliminar_proveedor({{ $proveedor->id }});"><i class="feather icon-trash"></i></button>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <button class="btn btn-danger btn-sm">Buscar proveedor</button>
+        </div>
+    </div>
+</div>
+<!--****Cierre Container Completo****-->
+
+<!--Modal agregar gastos cm -->
+<div id="agregar_proveedor_cm" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="agregar_proveedor_cm" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-info">
+                <h5 class="modal-title text-white text-center">Agregar proveedor</h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+                <form action="{{ ROUTE('guardarProveedor') }}" method="post">
+                    @csrf
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group fill">
+                                <label class="floating-label">Proveedor</label>
+                                <input class="form-control form-control-sm" name="nombre_prov" id="nombre_prov" type="text">
+                            </div>
+                        </div>
+						<div class="col-sm-12">
+                            <div class="form-group fill">
+                                <label class="floating-label">Productos</label>
+                                <select name="prov_prod" id="prov_prod" class="form-control">
+                                    <option value="0">Seleccione</option>
+                                    @foreach($tipo_producto as $producto)
+                                        <option value="{{ $producto->id }}">{{ $producto->nombre }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group fill">
+                                <label class="floating-label">Rut</label>
+                                <input class="form-control form-control-sm" name="rut" id="rut" type="text" >
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group fill">
+                                <label class="floating-label">Rol</label>
+                                <input class="form-control form-control-sm" name="rol" id="rol" type="text" >
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group fill">
+                                <label class="floating-label">Correo Electrónico</label>
+                                <input class="form-control form-control-sm" name="email" id="email" type="email" >
+                            </div>
+                        </div>
+                    <div class="col-sm-12">
+                        <div class="form-group fill">
+                            <label class="floating-label">Teléfono</label>
+                            <input class="form-control form-control-sm" name="telefono" id="telefono" type="number" >
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group fill">
+                            <label class="floating-label">Teléfono (opcional)</label>
+                            <input class="form-control form-control-sm" name="telefono" id="telefono" type="number" >
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group fill">
+                            <label class="floating-label">Dirección / Calle</label>
+                            <input class="form-control form-control-sm" name="direccion" id="direccion" type="text">
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group fill">
+                            <label class="floating-label">Número</label>
+                            <input class="form-control form-control-sm" name="numero" id="numero" type="text" >
+                        </div>
+                    </div>
+
+					<div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                        <div class="form-group fill">
+                            <label class="floating-label-activo-sm">Región</label>
+                            <select id="region_agregar" onchange="buscar_ciudad();" name="region_agregar"
+                                class="form-control form-control-sm" required>
+                                <option value="0">Seleccione</option>
+                                @if (isset($region))
+                                    @foreach ($region as $reg)
+                                        <option value="{{ $reg->id }}">{{ $reg->nombre }} </option>
+                                    @endforeach
+                                @endif
+                            </select>
+                        </div>
+                    </div>
+
+					<div class="col-sm-6 col-md-6 col-xl-6">
+						<div class="form-group">
+							<label class="floating-label-activo-sm">Ciudad</label>
+							<select id="comunas" name="comunas" class="form-control form-control-sm" required>
+
+
+							</select>
+						</div>
+					</div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger mb-0" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-info mb-0" >Agregar proveedor</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Modal editar gastos cm-->
+<div id="editar_proveedor_cm" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="editar_proveedor_cm" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-info">
+                <h5 class="modal-title text-white text-center">
+                    Editar proveedor
+                </h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    @csrf
+                    <div class="row">
+                        <input class="form-control form-control-sm" name="id_proveedor" id="id_proveedor" type="hidden">
+
+                        <div class="col-sm-12">
+                            <div class="form-group fill">
+                                <label class="floating-label">Proveedor</label>
+                                <input class="form-control form-control-sm" name="nombre" id="nombre" type="text">
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group fill">
+                                <label class="floating-label">Productos</label>
+                                <select class="form-control form-control-sm" name="prov_prod_" id="prov_prod_">
+                                    <option value="0">Seleccione</option>
+                                    @foreach($tipo_producto as $producto)
+                                        <option value="{{ $producto->id }}">{{ $producto->nombre }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group fill">
+                                <label class="floating-label">Rut</label>
+                                <input class="form-control form-control-sm" name="rut" id="rut" type="text" >
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group fill">
+                                <label class="floating-label">Rol</label>
+                                <input class="form-control form-control-sm" name="rol_" id="rol_" type="text" >
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                        <div class="form-group fill">
+                            <label class="floating-label">Correo Electrónico</label>
+                            <input class="form-control form-control-sm" name="email" id="email" type="email" >
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group fill">
+                            <label class="floating-label">Teléfono</label>
+                            <input class="form-control form-control-sm" name="telefono" id="telefono" type="number" >
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group fill">
+                            <label class="floating-label">Teléfono (opcional)</label>
+                            <input class="form-control form-control-sm" name="telefono" id="telefono" type="number" >
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group fill">
+                            <label class="floating-label">Dirección / Calle</label>
+                            <input class="form-control form-control-sm" name="direccion" id="direccion" type="text">
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group fill">
+                            <label class="floating-label">Número</label>
+                            <input class="form-control form-control-sm" name="numero" id="numero" type="text" >
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                        <div class="form-group fill">
+                            <label class="floating-label-activo-sm">Región</label>
+                            <select id="region_editar" onchange="buscar_ciudad_editar();" name="region_editar"
+                                class="form-control form-control-sm" required>
+                                <option value="0">Seleccione</option>
+                                @if (isset($region))
+                                    @foreach ($region as $reg)
+                                        <option value="{{ $reg->id }}">{{ $reg->nombre }} </option>
+                                    @endforeach
+                                @endif
+                            </select>
+                        </div>
+                    </div>
+
+					<div class="col-sm-6 col-md-6 col-xl-6">
+						<div class="form-group">
+							<label class="floating-label-activo-sm">Ciudad</label>
+							<select id="comunas_editar" name="comunas_editar" class="form-control form-control-sm" required>
+
+
+							</select>
+						</div>
+					</div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger mb-0" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-info mb-0" >Guardar cambios</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@endsection

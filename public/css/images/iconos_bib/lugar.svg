@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 23.0.4, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#1CBEBE;}
+	.st1{fill:url(#SVGID_1_);}
+	.st2{fill:url(#SVGID_2_);}
+	.st3{fill:#3366CC;}
+	.st4{fill:url(#SVGID_3_);}
+</style>
+<path class="st0" d="M489.9,505.7H20c-6.6,0-12-5.4-12-12v-11.4c0-6.6,5.4-12,12-12h469.9c6.6,0,12,5.4,12,12v11.4
+	C501.9,500.3,496.5,505.7,489.9,505.7z"/>
+<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="167.222" y1="511.0447" x2="345.778" y2="407.9553" gradientTransform="matrix(1 0 0 -1 0 512)">
+	<stop  offset="0" style="stop-color:#FFFFFF"/>
+	<stop  offset="0.296" style="stop-color:#FDFEFE"/>
+	<stop  offset="0.4379" style="stop-color:#F5FCFC"/>
+	<stop  offset="0.547" style="stop-color:#E8F8F8"/>
+	<stop  offset="0.6394" style="stop-color:#D6F3F3"/>
+	<stop  offset="0.7211" style="stop-color:#BEECEC"/>
+	<stop  offset="0.7955" style="stop-color:#A0E4E4"/>
+	<stop  offset="0.8641" style="stop-color:#7DDADA"/>
+	<stop  offset="0.9284" style="stop-color:#54CECE"/>
+	<stop  offset="0.9868" style="stop-color:#27C1C1"/>
+	<stop  offset="1" style="stop-color:#1CBEBE"/>
+</linearGradient>
+<rect x="162" y="10" class="st1" width="189" height="85"/>
+<linearGradient id="SVGID_2_" gradientUnits="userSpaceOnUse" x1="152" y1="474" x2="356" y2="270" gradientTransform="matrix(1 0 0 -1 0 512)">
+	<stop  offset="0" style="stop-color:#FFFFFF"/>
+	<stop  offset="0.3814" style="stop-color:#FDFEFE"/>
+	<stop  offset="0.5189" style="stop-color:#F6FDFD"/>
+	<stop  offset="0.6169" style="stop-color:#EAF9F9"/>
+	<stop  offset="0.6961" style="stop-color:#DAF4F4"/>
+	<stop  offset="0.7639" style="stop-color:#C4EEEE"/>
+	<stop  offset="0.824" style="stop-color:#A8E6E6"/>
+	<stop  offset="0.8784" style="stop-color:#88DDDD"/>
+	<stop  offset="0.9284" style="stop-color:#62D2D2"/>
+	<stop  offset="0.9728" style="stop-color:#39C6C6"/>
+	<stop  offset="1" style="stop-color:#1CBEBE"/>
+</linearGradient>
+<rect x="96" y="94" class="st2" width="316" height="92"/>
+<g>
+	<g id="XMLID_1_">
+		<g>
+			<path class="st3" d="M488.5,465c13,0,23.5,10.5,23.5,23.5S501.5,512,488.5,512H128.2c-4.1,0-7.5-3.4-7.5-7.5s3.4-7.5,7.5-7.5
+				h360.3c4.7,0,8.5-3.8,8.5-8.5s-3.8-8.5-8.5-8.5h-465c-4.7,0-8.5,3.8-8.5,8.5s3.8,8.5,8.5,8.5h72c4.1,0,7.5,3.4,7.5,7.5
+				s-3.4,7.5-7.5,7.5h-72C10.5,512,0,501.5,0,488.5S10.5,465,23.5,465h68V95.5c0-4.1,3.4-7.5,7.5-7.5h53.5V7.5
+				c0-4.1,3.4-7.5,7.5-7.5h31.9c4.1,0,7.5,3.4,7.5,7.5S196,15,191.9,15h-24.4v73h26v-7.7c0-6.3,5.2-11.5,11.5-11.5h23.5V45.3
+				c0-6.3,5.2-11.5,11.5-11.5h32c6.3,0,11.5,5.2,11.5,11.5v23.5H307c6.3,0,11.5,5.2,11.5,11.5V88h26V15H222.8
+				c-4.1,0-7.5-3.4-7.5-7.5s3.4-7.5,7.5-7.5H352c4.1,0,7.5,3.4,7.5,7.5V88H413c4.1,0,7.5,3.4,7.5,7.5v32.1c0,4.1-3.4,7.5-7.5,7.5
+				s-7.5-3.4-7.5-7.5V103h-87v9.3c0,6.3-5.2,11.5-11.5,11.5h-23.5v23.5c0,6.3-5.2,11.5-11.5,11.5h-32c-6.3,0-11.5-5.2-11.5-11.5
+				v-23.5H205c-6.3,0-11.5-5.2-11.5-11.5V103h-87v73.9h299v-17.3c0-4.1,3.4-7.5,7.5-7.5s7.5,3.4,7.5,7.5V465H488.5z M405.5,465
+				V221.9h-299V465h51v-52.5c0-4.1,3.4-7.5,7.5-7.5h182c4.1,0,7.5,3.4,7.5,7.5V465H405.5z M405.4,206.9v-15H106.5v15H405.4z
+				 M339.5,465v-45h-19v45H339.5z M305.5,465v-45h-99v45H305.5z M303.5,108.8v-25H280c-6.3,0-11.5-5.2-11.5-11.5V48.8h-25v23.5
+				c0,6.3-5.2,11.5-11.5,11.5h-23.5v25H232c6.3,0,11.5,5.2,11.5,11.5v23.5h25v-23.5c0-6.3,5.2-11.5,11.5-11.5H303.5z M191.5,465v-45
+				h-19v45H191.5z"/>
+			
+				<linearGradient id="SVGID_3_" gradientUnits="userSpaceOnUse" x1="254.7175" y1="169.2905" x2="513.6591" y2="19.7905" gradientTransform="matrix(1 0 0 -1 0 512)">
+				<stop  offset="0" style="stop-color:#FFFFFF"/>
+				<stop  offset="9.798101e-02" style="stop-color:#F9FDFD"/>
+				<stop  offset="0.2339" style="stop-color:#E7F8F8"/>
+				<stop  offset="0.3923" style="stop-color:#C9F0F0"/>
+				<stop  offset="0.5674" style="stop-color:#A0E4E4"/>
+				<stop  offset="0.7564" style="stop-color:#6BD5D5"/>
+				<stop  offset="0.9541" style="stop-color:#2CC3C3"/>
+				<stop  offset="1" style="stop-color:#1CBEBE"/>
+			</linearGradient>
+			<path class="st4" d="M405.5,221.9V465h-51v-52.5c0-4.1-3.4-7.5-7.5-7.5H165c-4.1,0-7.5,3.4-7.5,7.5V465h-51V221.9H405.5z"/>
+			<rect x="106.5" y="191.9" class="st0" width="298.9" height="15"/>
+			<path class="st0" d="M303.5,83.8v25H280c-6.3,0-11.5,5.2-11.5,11.5v23.5h-25v-23.5c0-6.3-5.2-11.5-11.5-11.5h-23.5v-25H232
+				c6.3,0,11.5-5.2,11.5-11.5V48.8h25v23.5c0,6.3,5.2,11.5,11.5,11.5H303.5z"/>
+		</g>
+	</g>
+	<path class="st3" d="M190,234.5h-54c-4.1,0-7.5,3.4-7.5,7.5v50c0,4.1,3.4,7.5,7.5,7.5h54c4.1,0,7.5-3.4,7.5-7.5v-50
+		C197.5,237.9,194.1,234.5,190,234.5z"/>
+	<g id="XMLID_3_">
+		<g>
+			<rect x="143.5" y="249.5" class="st0" width="39" height="35"/>
+		</g>
+	</g>
+	<path class="st3" d="M376,234.5h-54c-4.1,0-7.5,3.4-7.5,7.5v50c0,4.1,3.4,7.5,7.5,7.5h54c4.1,0,7.5-3.4,7.5-7.5v-50
+		C383.5,237.9,380.1,234.5,376,234.5z"/>
+	<g id="XMLID_5_">
+		<g>
+			<rect x="329.5" y="249.5" class="st0" width="39" height="35"/>
+		</g>
+	</g>
+	<path class="st3" d="M283,234.5h-54c-4.1,0-7.5,3.4-7.5,7.5v50c0,4.1,3.4,7.5,7.5,7.5h54c4.1,0,7.5-3.4,7.5-7.5v-50
+		C290.5,237.9,287.1,234.5,283,234.5z"/>
+	<g id="XMLID_4_">
+		<g>
+			<rect x="236.5" y="249.5" class="st0" width="39" height="35"/>
+		</g>
+	</g>
+	<path class="st3" d="M190,321.5h-54c-4.1,0-7.5,3.4-7.5,7.5v50c0,4.1,3.4,7.5,7.5,7.5h54c4.1,0,7.5-3.4,7.5-7.5v-50
+		C197.5,324.9,194.1,321.5,190,321.5z"/>
+	<g id="XMLID_6_">
+		<g>
+			<rect x="143.5" y="336.5" class="st0" width="39" height="35"/>
+		</g>
+	</g>
+	<path class="st3" d="M376,321.5h-54c-4.1,0-7.5,3.4-7.5,7.5v50c0,4.1,3.4,7.5,7.5,7.5h54c4.1,0,7.5-3.4,7.5-7.5v-50
+		C383.5,324.9,380.1,321.5,376,321.5z"/>
+	<g id="XMLID_8_">
+		<g>
+			<rect x="329.5" y="336.5" class="st0" width="39" height="35"/>
+		</g>
+	</g>
+	<path class="st3" d="M283,321.5h-54c-4.1,0-7.5,3.4-7.5,7.5v50c0,4.1,3.4,7.5,7.5,7.5h54c4.1,0,7.5-3.4,7.5-7.5v-50
+		C290.5,324.9,287.1,321.5,283,321.5z"/>
+	<g id="XMLID_7_">
+		<g>
+			<rect x="236.5" y="336.5" class="st0" width="39" height="35"/>
+		</g>
+	</g>
+</g>
+</svg>

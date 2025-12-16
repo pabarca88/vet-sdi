@@ -1,0 +1,133 @@
+body {
+  font-family: "Poppins", "Arial", "Helvetica Neue", sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+}
+
+/* ==========================================================================
+  BOTONES
+   ========================================================================== */
+.btn-next-con {
+  text-align: right;
+  padding-top: 30px;
+}
+
+.btn-next,
+.btn-back,
+.btn-last {
+  display: inline-block;
+  -webkit-box-shadow: 0px 3px 14px 0px rgba(0, 0, 0, 0.15);
+  -moz-box-shadow: 0px 3px 14px 0px rgba(0, 0, 0, 0.15);
+  box-shadow: 0px 3px 14px 0px rgba(0, 0, 0, 0.15);
+  line-height: 35px;
+  padding: 0 40px;
+  -webkit-border-radius: 22.5px;
+  -moz-border-radius: 22.5px;
+  border-radius: 22.5px;
+  background: #3366CC;
+  font-size: 14px;
+  color: #fff!important;
+  font-family: inherit;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.btn-next:hover,
+.btn-back:hover,
+.btn-last:hover {
+  background: #1EBEBE;
+  transition: 0.3s;
+}
+
+@media (max-width: 767px) {
+  .btn-next,
+  .btn-back,
+  .btn-last {
+    display: block;
+    text-align: center;
+  }
+}
+
+.btn-back {
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  background: #3366CC;
+  margin-right: 10px;
+}
+
+.btn-back:hover {
+  background: #1EBEBE;
+  transition: 0.3s;
+}
+
+@media (max-width: 767px) {
+  .btn-back {
+    margin-right: 0;
+    margin-bottom: 15px;
+  }
+}
+
+/* ==========================================================================
+   #TAB
+   ========================================================================== */
+.tab-content > .tab-pane {
+  display: none;
+}
+
+.tab-content > .tab-pane.active {
+  display: block;
+}
+
+.nav-tab {
+  height: 0;
+  visibility: hidden;
+}
+
+
+/* ==========================================================================
+   #BARRA
+   ========================================================================== */
+.progress {
+  height: 25px;
+  margin-bottom: 22px;
+  overflow: hidden;
+  background-color: #f5f5f5;
+  -webkit-border-radius: 17.5px;
+  -moz-border-radius: 17.5px;
+  border-radius: 17.5px;
+  border: 1px solid #e5e5e5;
+}
+
+.progress-bar {
+  float: left;
+  width: 0;
+  height: 100%;
+  font-size: 12px;
+  line-height: 35px;
+  color: #fff;
+  text-align: center;
+  -webkit-border-radius: 17.5px;
+  -moz-border-radius: 17.5px;
+  border-radius: 17.5px;
+  background-color: #3366CC;
+  -webkit-transition: width .6s ease;
+  -o-transition: width .6s ease;
+  -moz-transition: width .6s ease;
+  transition: width .6s ease;
+  position: relative;
+}
+
+.progress-val {
+  font-size: 15px;
+  color: #fff;
+  font-weight: 700;
+  text-align: center;
+  -webkit-transition: all 0.6s ease;
+  -o-transition: all 0.6s ease;
+  -moz-transition: all 0.6s ease;
+  transition: all 0.6s ease;
+}
+
+
+

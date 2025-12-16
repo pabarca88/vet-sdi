@@ -1,0 +1,37 @@
+ <scrpt>
+                                    function calculaSalarioNeto() {
+                                       let puesto= parseint(document.getElementById("puesto").value);
+                                       let horas= parseint(document.getElementById("horas").value);
+                                       let anios= parseint(document.getElementById("anios").value);
+                                       var sueldoHora=0;
+                                       switch(puesto){
+                                           case 1: sueldoHora = 300; break;
+                                           case 1: sueldoHora = 100; break;
+                                           case 1: sueldoHora = 120; break;
+                                        }
+                                        let sueldoBase=sueldoHora*horas;
+                                        let CanastaBasica=parsefloat(sueldoBase*0.025);
+                                        let apoyo=parsefloat(sueldoBase*0.05);
+                                        let antiguedad=parsefloat(anios*150);
+                                        let estimulo=parsefloat(sueldoBase*0.02);
+                                        let totalPercepciones=parsefloat(sueldoBase+canastaBasica+apoyo+antiguedad+estimulo);
+                                        let ISR=parsefloat(sueldoBase*0.15);
+                                        let servicioSalud=parsefloat(sueldoBase*0.035);
+                                        let AFORE=parsefloat(sueldoBase*0.04);
+                                        let sindicato=parsefloat(sueldoBase*0.025);
+                                        let totalDeducciones=parsefloat(ISR+servicioSalud+AFORE+sindicato);
+                                        let salarioNeto=parsefloat(totalPercepciones-totalDeducciones);
+                                        document.getElementById("sueldoBase").innerHTML=<h6>$"+sueldoBase.toFixed(2)+"<h6>";
+                                        document.getElementById("apoyo").innerHTML=<h6>$"+apoyo.toFixed(2)+"<h6>";
+                                        document.getElementById("canastaBasica").innerHTML=<h6>$"+canastaBasica.toFixed(2)+"<h6>;
+                                        document.getElementById("antiguedad").innerHTML=<h6>$"+antiguedad.toFixed(2)+"<h6>;
+                                        document.getElementById("estimulo").innerHTML=<h6>$"+estimulo.toFixed(2)+"<h6>;
+                                        document.getElementById("totalPercepciones").innerHTML=<h6>$"+totalPercepciones.toFixed(2)+"<h6>;
+                                        document.getElementById("ISR").innerHTML=<h6>$"+ISR.toFixed(2)+"<h6>;
+                                        document.getElementById("servicioSalud").innerHTML=<h6>$"+servicioSalud.toFixed(2)+"<h6>;
+                                        document.getElementById("AFORE").innerHTML=<h6>$"+AFORE.toFixed(2)+"<h6>;
+                                        document.getElementById("sindicato").innerHTML=<h6>$"+sindicato.toFixed(2)+"<h6>;
+                                        document.getElementById("totalDeducciones").innerHTML=<h6>$"+totalDeducciones.toFixed(2)+"<h6>;
+                                        document.getElementById("salarioNeto").innerHTML=<h6>$"+salarioNeto.toFixed(2)+"<h6>;
+                                        }
+                                </script>

@@ -1,0 +1,38 @@
+# ========================================
+# RUTAS PARA CARRITO DE COMPRAS
+# ========================================
+# Agregar estas rutas en routes/web.php
+
+// Grupo de rutas para carrito de compras (requiere autenticación)
+Route::middleware(['auth'])->group(function () {
+
+    // Agregar producto al carrito
+    Route::post('/laboratorio/carrito/agregar',
+        [App\Http\Controllers\LaboratorioController::class, 'agregarAlCarrito'])
+        ->name('laboratorio.carrito.agregar');
+
+    // Obtener items del carrito
+    Route::get('/laboratorio/carrito',
+        [App\Http\Controllers\LaboratorioController::class, 'obtenerCarrito'])
+        ->name('laboratorio.carrito.obtener');
+
+    // Actualizar cantidad de un item
+    Route::put('/laboratorio/carrito/actualizar-cantidad',
+        [App\Http\Controllers\LaboratorioController::class, 'actualizarCantidadCarrito'])
+        ->name('laboratorio.carrito.actualizar_cantidad');
+
+    // Eliminar item del carrito
+    Route::delete('/laboratorio/carrito/eliminar',
+        [App\Http\Controllers\LaboratorioController::class, 'eliminarDelCarrito'])
+        ->name('laboratorio.carrito.eliminar');
+
+    // Vaciar carrito completo
+    Route::delete('/laboratorio/carrito/vaciar',
+        [App\Http\Controllers\LaboratorioController::class, 'vaciarCarrito'])
+        ->name('laboratorio.carrito.vaciar');
+
+    // Procesar venta (finalizar compra)
+    Route::post('/laboratorio/carrito/procesar-venta',
+        [App\Http\Controllers\LaboratorioController::class, 'procesarVentaCarrito'])
+        ->name('laboratorio.carrito.procesar_venta');
+});

@@ -1,0 +1,374 @@
+/**
+ * Estilos para el Sistema de Cotización de Audífonos
+ */
+
+/* Tarjetas de productos */
+.producto-card {
+    transition: all 0.3s ease;
+    border: 1px solid #e0e0e0;
+}
+
+.producto-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border-color: #28a745;
+}
+
+.producto-card .card-img-top {
+    border-bottom: 1px solid #e0e0e0;
+    background-color: #f8f9fa;
+}
+
+.producto-card .card-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.producto-card .btn {
+    transition: all 0.2s ease;
+}
+
+.producto-card .btn:hover {
+    transform: scale(1.05);
+}
+
+/* Tabla de cotización */
+#tabla_productos_cotizacion thead th {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: #495057;
+}
+
+#tabla_productos_cotizacion tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+#tabla_productos_cotizacion tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+#tabla_productos_cotizacion input[type="number"] {
+    font-weight: 600;
+}
+
+/* Resumen de totales */
+.card.bg-light .card-body {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.card.bg-light .card-body > div {
+    font-size: 0.95rem;
+}
+
+.card.bg-light .card-body > div:last-child {
+    border-top: 2px solid #007bff;
+    padding-top: 10px;
+    margin-top: 10px;
+}
+
+/* Badges personalizados */
+.badge-izq {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: inline-block;
+    margin-bottom: 15px;
+}
+
+.badge-der {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: inline-block;
+    margin-bottom: 15px;
+}
+
+/* Headers de cards */
+.card-header.bg-primary,
+.card-header.bg-success,
+.card-header.bg-info {
+    padding: 12px 20px;
+}
+
+.card-header h6 {
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+/* Alertas info */
+.alert-info {
+    background-color: #e7f3ff;
+    border-color: #b3d9ff;
+    color: #004085;
+}
+
+/* Animaciones de entrada */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card {
+    animation: fadeInUp 0.3s ease;
+}
+
+/* Botones de acción */
+.btn-group-actions {
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+}
+
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+}
+
+/* Inputs de cantidad y descuento */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    opacity: 1;
+}
+
+input[type="number"] {
+    appearance: textfield;
+    -moz-appearance: textfield;
+}
+
+/* Tabla responsive mejorada */
+.table-responsive {
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+/* Historial de cotizaciones */
+#tabla_historial_cotizaciones tbody tr {
+    cursor: pointer;
+}
+
+#tabla_historial_cotizaciones tbody tr:hover {
+    background-color: #f1f3f5;
+}
+
+/* Estados de cotización */
+.badge {
+    font-size: 0.75rem;
+    padding: 5px 10px;
+    font-weight: 600;
+}
+
+/* Loader personalizado */
+.spinner-border {
+    width: 3rem;
+    height: 3rem;
+}
+
+/* Formulario mejorado */
+.form-control-sm:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+textarea.form-control {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* Cards con bordes de color */
+.card.border-primary {
+    border-width: 2px;
+}
+
+.card.border-success {
+    border-width: 2px;
+}
+
+.card.border-info {
+    border-width: 2px;
+}
+
+/* Iconos en títulos */
+.feather {
+    width: 18px;
+    height: 18px;
+    vertical-align: middle;
+}
+
+/* Mejoras responsive */
+@media (max-width: 768px) {
+    .producto-card {
+        margin-bottom: 15px;
+    }
+
+    #tabla_productos_cotizacion {
+        font-size: 0.8rem;
+    }
+
+    #tabla_productos_cotizacion input[type="number"] {
+        width: 50px !important;
+    }
+
+    .btn-sm {
+        padding: 0.2rem 0.4rem;
+        font-size: 0.75rem;
+    }
+}
+
+/* Efectos hover en botones */
+.btn {
+    transition: all 0.2s ease-in-out;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+/* Mensajes de estado */
+.text-muted {
+    color: #6c757d !important;
+}
+
+.text-primary {
+    color: #007bff !important;
+}
+
+.text-success {
+    color: #28a745 !important;
+}
+
+.text-danger {
+    color: #dc3545 !important;
+}
+
+.text-warning {
+    color: #ffc107 !important;
+}
+
+.text-info {
+    color: #17a2b8 !important;
+}
+
+/* Card informacion mejorada */
+.card-informacion {
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.card-informacion .card-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 10px 15px;
+}
+
+.card-informacion .card-title {
+    font-size: 1rem;
+    margin: 0;
+}
+
+/* Animación de carga */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading {
+    animation: spin 1s linear infinite;
+}
+
+/* Estilos para impresión */
+@media print {
+    .btn,
+    .card-header,
+    .form-control,
+    .input-group-append {
+        display: none !important;
+    }
+
+    .card {
+        border: 1px solid #000 !important;
+        page-break-inside: avoid;
+    }
+
+    .table {
+        font-size: 10pt;
+    }
+}
+
+/* Tooltips personalizados */
+[title] {
+    position: relative;
+}
+
+/* Transiciones suaves */
+* {
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+/* Separadores visuales */
+hr {
+    border-top: 2px solid #dee2e6;
+    margin: 1rem 0;
+}
+
+/* Mejoras de accesibilidad */
+.btn:focus,
+.form-control:focus {
+    outline: 2px solid #007bff;
+    outline-offset: 2px;
+}
+
+/* Empty state mejorado */
+#cotiz_row_vacio td {
+    padding: 3rem 1rem !important;
+}
+
+#cotiz_row_vacio i {
+    font-size: 3rem;
+    color: #dee2e6;
+}
+
+/* Precio destacado */
+.text-primary.f-20 {
+    font-size: 1.5rem !important;
+    font-weight: 700;
+}
+
+/* Estilos para el stock */
+.badge-success {
+    background-color: #28a745;
+}
+
+.badge-danger {
+    background-color: #dc3545;
+}
+
+.badge-warning {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+/* Card shadow hover */
+.card:hover {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
+}

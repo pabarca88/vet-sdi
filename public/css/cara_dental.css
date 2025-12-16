@@ -1,0 +1,65 @@
+.circulo-o {
+  width: 35px;
+  height: 35px;
+  background: #8AC007;
+  border-radius: 1000px;
+  text-align:center; 
+  color:white;
+  font-size:25px;
+  cursor: pointer;  
+}
+
+
+.circulo-v {
+  width: 35px;
+  height: 35px;
+  background: #8AC007;
+  border-radius: 1000px;
+  text-align:center; 
+  color:white;
+  font-size:25px;
+  cursor: pointer; 
+}
+
+.circulo-m {
+  width: 35px;
+  height: 35px;
+  background: #8AC007;
+  border-radius: 1000px;
+  text-align:center; 
+  color:white;
+  font-size:25px;
+  cursor: pointer;
+}
+
+.circulo-p {
+  width: 35px;
+  height: 35px;
+  background: #8AC007;
+  border-radius: 1000px;
+  text-align:center; 
+  color:white;
+  font-size:25px;
+  cursor: pointer;
+}
+
+.circulo-d {
+  width: 35px;
+  height: 35px;
+  background: #8AC007;
+  border-radius: 1000px;
+  text-align:center; 
+  color:white;
+  font-size:25px;
+  cursor: pointer;
+}
+
+.circulo:hover {
+    background-color: rgba(128,128,128,1);
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.padding-caras {
+  padding: 2px!important;
+}

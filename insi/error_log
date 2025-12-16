@@ -1,0 +1,14 @@
+[09-Apr-2025 00:30:16 UTC] PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'root'@'localhost' (using password: NO) in /home/medsdi/public_html/insi/include/conexion.php on line 7
+[09-Apr-2025 00:30:20 UTC] PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'root'@'localhost' (using password: NO) in /home/medsdi/public_html/insi/include/conexion.php on line 7
+[09-Apr-2025 00:33:11 UTC] PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'root'@'localhost' (using password: NO) in /home/medsdi/public_html/insi/include/conexion.php on line 7
+[09-Apr-2025 00:35:05 UTC] PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'medsdi_root'@'localhost' (using password: NO) in /home/medsdi/public_html/insi/include/conexion.php on line 7
+[09-Apr-2025 00:35:42 UTC] PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'medsdi_root'@'localhost' (using password: NO) in /home/medsdi/public_html/insi/include/conexion.php on line 7
+[09-Apr-2025 00:45:55 UTC] PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'medsdi_root'@'localhost' (using password: NO) in /home/medsdi/public_html/insi/include/conexion.php on line 7
+[09-Apr-2025 00:47:25 UTC] PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'root'@'localhost' (using password: NO) in /home/medsdi/public_html/insi/include/conexion.php on line 7
+[09-Apr-2025 00:49:45 UTC] PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'medsdi_root'@'localhost' (using password: NO) in /home/medsdi/public_html/insi/include/conexion.php on line 7
+[09-Apr-2025 00:51:44 UTC] PHP Warning:  mysqli_connect(): (HY000/1045): Access denied for user 'medsdi_root'@'localhost' (using password: NO) in /home/medsdi/public_html/insi/include/conexion.php on line 7
+[09-Apr-2025 00:55:26 UTC] PHP Warning:  mysqli_connect(): (HY000/1045): Access denied for user 'medsdi_root'@'localhost' (using password: NO) in /home/medsdi/public_html/insi/include/conexion.php on line 7
+[09-Apr-2025 00:56:26 UTC] PHP Warning:  mysqli_connect(): (HY000/1045): Access denied for user 'medsdi_root'@'server.med-sdi.cl' (using password: NO) in /home/medsdi/public_html/insi/include/conexion.php on line 7
+[09-Apr-2025 00:57:00 UTC] PHP Warning:  mysqli_connect(): (HY000/2002): Connection refused in /home/medsdi/public_html/insi/include/conexion.php on line 7
+[09-Apr-2025 00:58:00 UTC] PHP Warning:  mysqli_connect(): (HY000/1045): Access denied for user 'medsdi_root'@'localhost' (using password: NO) in /home/medsdi/public_html/insi/include/conexion.php on line 7
+[09-Apr-2025 01:22:20 UTC] PHP Warning:  mysqli_connect(): (HY000/1045): Access denied for user 'root'@'localhost' (using password: NO) in /home/medsdi/public_html/insi/include/conexion.php on line 7

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 18.14 24">
+  <g id="lock" transform="translate(-62.512)">
+    <g id="Grupo_3" data-name="Grupo 3" transform="translate(62.512 9.209)">
+      <g id="Grupo_2" data-name="Grupo 2" transform="translate(0)">
+        <path id="Trazado_3" data-name="Trazado 3" d="M79.256,196.465H63.907a1.4,1.4,0,0,0-1.4,1.4v12a1.4,1.4,0,0,0,1.4,1.4H79.256a1.4,1.4,0,0,0,1.4-1.4v-12A1.4,1.4,0,0,0,79.256,196.465Zm-.279,13.116H64.186V198.139H78.977v11.442Z" transform="translate(-62.512 -196.465)" fill="#ffffff"/>
+      </g>
+    </g>
+    <g id="Grupo_5" data-name="Grupo 5" transform="translate(64.745)">
+      <g id="Grupo_4" data-name="Grupo 4" transform="translate(0)">
+        <path id="Trazado_4" data-name="Trazado 4" d="M116.977,0a6.873,6.873,0,0,0-6.837,6.893V9.767h1.674V6.893a5.163,5.163,0,1,1,10.326,0V9.767h1.674V6.893A6.873,6.873,0,0,0,116.977,0Z" transform="translate(-110.14 0)" fill="#ffffff"/>
+      </g>
+    </g>
+    <g id="Grupo_7" data-name="Grupo 7" transform="translate(70.605 15.628)">
+      <g id="Grupo_6" data-name="Grupo 6">
+        <path id="Trazado_5" data-name="Trazado 5" d="M236,333.395a.837.837,0,0,0-.837.837v1.953a.837.837,0,1,0,1.674,0v-1.953A.837.837,0,0,0,236,333.395Z" transform="translate(-235.163 -333.395)" fill="#ffffff"/>
+      </g>
+    </g>
+  </g>
+</svg>

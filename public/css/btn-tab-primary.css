@@ -1,0 +1,45 @@
+.nav-tab-primary.active{
+    color: #fff;
+    font-size: 12px!important;
+    background-color: #3366CC;
+    margin-bottom: 5px!important;
+    margin-top: 5px!important;
+    margin-left: 2px!important;
+    margin-right: 2px!important;
+}
+
+.nav-tab-primary {
+    color: #C7C8C9;
+    font-size: 12px!important;
+    background-color: #fff;
+    padding: 4px 6px!important;
+    border-radius: 1rem;
+    margin-bottom: 5px!important;
+    margin-top: 5px!important;
+    margin-left: 2px!important;
+    margin-right: 2px!important;
+    line-height: 1.5;
+}
+
+.nav-tab-primary:hover{
+    color: #fff;
+    font-size: 12px!important;
+    background-color: #3366CC;
+    margin-bottom: 5px!important;
+    margin-top: 5px!important;
+    margin-left: 2px!important;
+    margin-right: 2px!important;
+    transition: 0.3s;
+}
+
+.nav-tabs-tab-primary {
+    border-bottom: 0px solid #dee2e6!important;
+    margin-bottom: 10px!important;
+    margin-top: 10px!important;
+}
+
+.nav-tabs-tab-primary .nav-item-tab-primary {
+    margin-bottom: 5px!important;
+    margin-top: 5px!important;
+}
+

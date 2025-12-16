@@ -1,0 +1,114 @@
+body {
+    background: #1a49a3!important;
+}
+
+.bg-c-info {
+	background-color: #1CBEBE;  
+}
+
+@media (min-width: 992px) { 
+
+.subir {
+      
+  transform: translate(0px);
+  transition: 0.5s;
+}
+
+.subir:hover {
+      
+  transform: translateY(-10px);
+  transition: 0.5s;
+}
+
+
+.opacidad {
+    opacity:1;
+    transition: 0.2s;
+}
+
+.opacidad:hover {
+    opacity:0.7;
+    transition: 0.2s;   
+}
+
+.opacidad_collapse {
+    opacity:1;
+    transition: 0.2s;
+
+}
+
+.opacidad_collapse:hover {
+    opacity:0.8;
+    transition: 0.2s;   
+}
+
+
+.bg-c-orange {
+	background-color: #E27222;
+}
+
+.btn-horas-rojo {
+    color: #fff;
+    background-color: #dc3545;
+    border-color: none;
+    padding: 2px 3px 2px 3px;
+    margin: 1px;
+    font-size: 10px;
+    cursor:pointer;
+    transition: 0.5s;
+}
+
+.btn-horas-rojo:hover {
+    color: #fff;
+    background-color: #BC0214;
+    border-color: none;
+    padding: 2px 3px 2px 3px;
+    cursor:pointer;
+    transition: 0.5s;   
+}
+
+.btn-horas-verde {
+    color: #fff;
+    background-color: #72B02C;
+    border-color: none;
+    padding: 2px 3px 2px 3px;
+    margin: 1px;
+    font-size: 10px;
+    cursor:pointer;
+    transition: 0.5s;
+}
+
+.btn-horas-verde:hover {
+    color: #fff;
+    background-color: #4D8013;
+    border-color: none;
+    padding: 2px 3px 2px 3px;
+    cursor:pointer;
+    transition: 0.5s;
+}
+
+.card-derecho {
+  flex-direction: row;
+}
+
+.card-derecho img {
+  width: 30%;
+}
+
+.badge-purple {
+    color: #fff;
+    background-color: #A06CC1;
+}
+
+.btn.btn-icon {
+    width: 33px;
+    height: 33px;
+    padding: 0;
+    border-radius: 50%;
+    font-size: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+

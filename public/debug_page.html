@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Laravel API - Med-SDI</title>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #2c5282;
+            margin-bottom: 20px;
+        }
+        button {
+            background: #3182ce;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            margin: 8px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        button:hover {
+            background: #2c5282;
+        }
+        #results {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            border-left: 4px solid #3182ce;
+            white-space: pre-wrap;
+            font-family: monospace;
+        }
+        .status {
+            color: #2d3748;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .error {
+            color: #e53e3e;
+        }
+        .success {
+            color: #38a169;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Debug Laravel API Authentication - Med-SDI</h1>
+
+        <div class="status">
+            🚨 PROBLEMA IDENTIFICADO: Middleware no existe en servidor<br>
+            🔥 SOLUCIÓN: Crear middleware remotamente, luego probar autenticación
+        </div>
+
+        <h3>� CRÍTICO - Crear Middleware:</h3>
+        <button onclick="runTest('createMiddlewareOnServer')" style="background: #e53e3e; font-weight: bold;">🚨 Crear Middleware en Servidor</button>
+
+        <h3>Tests de Configuración:</h3>
+        <button onclick="runTest('testDebugAuthConfig')">🔧 Test Config Auth</button>
+        <button onclick="runTest('testAlternativeHeaders')">📡 Test Headers Alternativos</button>
+        <button onclick="runTest('testMiddleware')">⚙️ Test Middleware</button>
+
+        <h3>Tests de Autenticación:</h3>
+        <button onclick="runTest('testSimpleAuth')">🔐 Test Simple Auth (CRÍTICO)</button>
+        <button onclick="runTest('testXAuthTokenAuth')">🔑 Test X-Auth-Token</button>
+
+        <h3>Tests de Rutas Finales:</h3>
+        <button onclick="runTest('testPacienteRoutesWithXAuth')">🏥 Test Rutas Paciente</button>
+
+        <h3>Limpiar Resultados:</h3>
+        <button onclick="clearResults()" style="background: #e53e3e;">🗑️ Limpiar</button>
+
+        <div id="results"></div>
+    </div>
+
+    <script src="debug_functions.js"></script>
+    <script>
+        let resultsDiv = document.getElementById('results');
+
+        // Sobrescribir console.log para mostrar en la página
+        const originalLog = console.log;
+        const originalError = console.error;
+
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+
+            const message = args.map(arg =>
+                typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+            ).join(' ');
+
+            resultsDiv.innerHTML += message + '\n';
+            resultsDiv.scrollTop = resultsDiv.scrollHeight;
+        };
+
+        console.error = function(...args) {
+            originalError.apply(console, args);
+
+            const message = args.map(arg =>
+                typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+            ).join(' ');
+
+            resultsDiv.innerHTML += `❌ ERROR: ${message}\n`;
+            resultsDiv.scrollTop = resultsDiv.scrollHeight;
+        };
+
+        async function runTest(functionName) {
+            console.log(`\n===============================================`);
+            console.log(`🚀 EJECUTANDO: ${functionName}`);
+            console.log(`===============================================\n`);
+
+            try {
+                if (typeof window[functionName] === 'function') {
+                    await window[functionName]();
+                } else {
+                    console.error(`❌ Función ${functionName} no encontrada`);
+                }
+            } catch (error) {
+                console.error(`❌ Error ejecutando ${functionName}:`, error);
+            }
+
+            console.log(`\n===============================================`);
+            console.log(`✅ COMPLETADO: ${functionName}`);
+            console.log(`===============================================\n`);
+        }
+
+        function clearResults() {
+            resultsDiv.innerHTML = '';
+        }
+
+        // Mensaje inicial
+        console.log('🔧 Debug Laravel API Authentication - Med-SDI');
+        console.log('📋 Presiona los botones para ejecutar las pruebas');
+        console.log('🎯 OBJETIVO: Identificar causa del error 500 en autenticación\n');
+    </script>
+</body>
+</html>

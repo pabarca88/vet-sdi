@@ -1,0 +1,98 @@
+
+
+
+# RewriteEngine on
+# .htaccess flag list
+# C (chained with next rule)
+# CO=cookie (set specified cookie)
+# E=var:value (set environment variable var to value)
+# F (forbidden - sends a 403 header to the user)
+# G (gone - no longer exists)
+# H=handler (set handler)
+# L (last - stop processing rules)
+# Last rule: instructs the server to stop rewriting after the preceding directive is processed.
+
+# N (next - continue processing rules)
+# NC (case insensitive)
+# NE (do not escape special URL characters in output)
+# NS (ignore this rule if the request is a subrequest)
+# P (proxy - i.e., apache should grab the remote content specified in the substitution section and return it)
+# PT (pass through - use when processing URLs with additional handlers, e.g., mod_alias)
+# R (temporary redirect to new URL)
+# R=301 (permanent redirect to new URL)
+# QSA (append query string from request to substituted URL)
+# S=x (skip next x rules)
+# T=mime-type (force specified mime type)
+# Flags are added to the end of a rewrite rule to tell Apache how to interpret and handle the rule. They can be used to tell apache to treat the rule as case-insensitive, to stop processing rules if the current one matches, or a variety of other options. They are comma-separated, and contained in square brackets.
+
+# RewriteOptions inherit
+
+
+#=======================================================================
+#ASIGNACION DE WWW
+# RewriteCond %{HTTP_HOST} !=""
+# RewriteCond %{HTTP_HOST} !^www\. [NC]
+# RewriteCond %{HTTPS}s ^on(s)|
+# RewriteRule ^ http%1://www.%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+#ASIGNACION DE HTTPS
+RewriteCond %{HTTPS} !on
+RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+#=======================================================================
+
+<IfModule mod_rewrite.c>
+    <IfModule mod_negotiation.c>
+        Options -MultiViews
+    </IfModule>
+
+    RewriteEngine On
+
+    RewriteCond %{REQUEST_FILENAME} -d [OR]
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteRule ^ ^$1 [N]
+
+    RewriteCond %{REQUEST_URI} (\.\w+$) [NC]
+    RewriteRule ^(.*)$ public/$1 
+
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ server.php
+
+</IfModule>
+
+# BEGIN cPanel-generated php ini directives, do not edit
+# Manual editing of this file may result in unexpected behavior.
+# To make changes to this file, use the cPanel MultiPHP INI Editor (Home >> Software >> MultiPHP INI Editor)
+# For more information, read our documentation (https://go.cpanel.net/EA4ModifyINI)
+<IfModule php7_module>
+   php_flag display_errors Off
+   php_value max_execution_time 100
+   php_value max_input_time 90
+   php_value max_input_vars 1000
+   php_value memory_limit 512M
+   php_value post_max_size 256M
+   php_value session.gc_maxlifetime 1440
+   php_value session.save_path "/var/cpanel/php/sessions/ea-php74"
+   php_value upload_max_filesize 256M
+   php_flag zlib.output_compression On
+</IfModule>
+<IfModule lsapi_module>
+   php_flag display_errors Off
+   php_value max_execution_time 100
+   php_value max_input_time 90
+   php_value max_input_vars 1000
+   php_value memory_limit 512M
+   php_value post_max_size 256M
+   php_value session.gc_maxlifetime 1440
+   php_value session.save_path "/var/cpanel/php/sessions/ea-php74"
+   php_value upload_max_filesize 256M
+   php_flag zlib.output_compression On
+</IfModule>
+# END cPanel-generated php ini directives, do not edit
+
+# php -- BEGIN cPanel-generated handler, do not edit
+# Set the “ea-php74” package as the default “PHP” programming language.
+<IfModule mime_module>
+  AddHandler application/x-httpd-ea-php74 .php .php7 .phtml
+</IfModule>
+# php -- END cPanel-generated handler, do not edit
