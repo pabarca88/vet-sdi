@@ -103,7 +103,7 @@
                             }
                         @endphp
                         <div class="col">
-                            <div class="card">
+                            <div class="card card-mascota" data-id="{{ $mascota->id }}">
                                 <div class="card-body text-center" style="cursor:pointer">
                                     <img class="wid-60 text-center mt-1 rounded-circle" src="{{ $imgMascota }}">
                                     <h5 class="mt-2 mb-0">{{ $mascota->nombre }}</h5>
@@ -150,15 +150,171 @@
  @include('app.paciente.modales.dependientes.ver_acomp')
     @include('app.paciente.modales.dependientes.agregar')
 
- 
+    <div class="modal fade" id="modal_detalle_mascota" tabindex="-1" role="dialog" aria-labelledby="modalDetalleMascota" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-info">
+                    <h5 class="modal-title text-white mt-1" id="modalDetalleMascota">Detalle de la mascota</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center mb-3">
+                        <img id="modal_mascota_img" class="wid-60 text-center mt-1 rounded-circle" src="{{ asset('images/iconos/paciente-m.svg') }}" alt="Foto Mascota">
+                        <h5 class="mt-2 mb-0" id="modal_mascota_nombre"></h5>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <p class="mb-1"><strong>Especie:</strong> <span id="modal_mascota_especie">-</span></p>
+                        </div>
+                        <div class="col-sm-6">
+                            <p class="mb-1"><strong>Tamaño:</strong> <span id="modal_mascota_tamano">-</span></p>
+                        </div>
+                        <div class="col-sm-6">
+                            <p class="mb-1"><strong>Sexo:</strong> <span id="modal_mascota_sexo">-</span></p>
+                        </div>
+                        <div class="col-sm-6">
+                            <p class="mb-1"><strong>Fecha nacimiento:</strong> <span id="modal_mascota_fecha">-</span></p>
+                        </div>
+                        <div class="col-sm-12">
+                            <p class="mb-1"><strong>Chip:</strong> <span id="modal_mascota_chip">-</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-   
 @endsection
 
 
 
 @section('page-script')
     <script>
+        var mascotasCache = {};
+        var mascotasIniciales = @json(isset($mascotas) ? $mascotas : []);
+        var especiesLabel = {1:'Canina',2:'Felina',3:'Pez',4:'Aves',5:'Reptiles',6:'Roedores',7:'Hurones',8:'Otros'};
+        var tamanoLabel = {pequena:'Pequeña', mediana:'Mediana', grande:'Grande'};
+
+        function registrarMascotaCache(mascota)
+        {
+            if(mascota && mascota.id)
+            {
+                mascotasCache[mascota.id] = mascota;
+            }
+        }
+
+        function registrarMascotasIniciales()
+        {
+            if(Array.isArray(mascotasIniciales))
+            {
+                mascotasIniciales.forEach(function(item){
+                    registrarMascotaCache(item);
+                });
+            }
+        }
+
+        function obtenerLabelEspecie(especie, otra)
+        {
+            var label = especiesLabel[especie] ? especiesLabel[especie] : '';
+            if(especie == 8 && otra)
+            {
+                label += (label ? ' ('+otra+')' : otra);
+            }
+            return label || '-';
+        }
+
+        function obtenerLabelTamano(tamano)
+        {
+            return tamanoLabel[tamano] ? tamanoLabel[tamano] : '-';
+        }
+
+        function obtenerLabelSexo(sexo)
+        {
+            if(sexo === 'M') return 'Macho';
+            if(sexo === 'F') return 'Hembra';
+            return '-';
+        }
+
+        function obtenerChipLabel(mascota)
+        {
+            if(mascota && mascota.tiene_chip)
+            {
+                return mascota.chip ? mascota.chip : 'Sí';
+            }
+            return 'No';
+        }
+
+        function formatearFecha(fecha)
+        {
+            if(!fecha) return '-';
+
+            // Normaliza fechas tipo "YYYY-MM-DD" o ISO completas con tiempo.
+            var soloFecha = fecha;
+            if(typeof fecha === 'string' && fecha.indexOf('T') > -1)
+            {
+                soloFecha = fecha.split('T')[0];
+            }
+
+            // Intenta formatear desde YYYY-MM-DD
+            var partes = soloFecha.split('-');
+            if(partes.length === 3)
+            {
+                return partes[2] + '/' + partes[1] + '/' + partes[0];
+            }
+
+            // Último recurso: usar Date para cadenas ISO u otros formatos válidos.
+            var d = new Date(fecha);
+            if(!isNaN(d.getTime()))
+            {
+                var dia = ('0' + d.getDate()).slice(-2);
+                var mes = ('0' + (d.getMonth()+1)).slice(-2);
+                return dia + '/' + mes + '/' + d.getFullYear();
+            }
+
+            return fecha;
+        }
+
+        function obtenerImagenMascota(mascota)
+        {
+            var img_m = '{{ asset('images/iconos/paciente-m.svg') }}';
+            var img_f = '{{ asset('images/iconos/paciente-f.svg') }}';
+            if(mascota.foto_perfil)
+            {
+                if(mascota.foto_perfil.startsWith('/'))
+                    return mascota.foto_perfil;
+                return '/storage/imagenes/temp/'+mascota.foto_perfil;
+            }
+            if(mascota.galeria && mascota.galeria.ven_pre && mascota.galeria.ven_pre.length>0 && mascota.galeria.ven_pre[0][0])
+            {
+                return mascota.galeria.ven_pre[0][0];
+            }
+            if(mascota.sexo === 'M') return img_m;
+            return img_f;
+        }
+
+        function mostrarDetalleMascota(idMascota)
+        {
+            var mascota = mascotasCache[idMascota];
+            if(!mascota) return;
+
+            var $modal = $('#modal_detalle_mascota');
+            if(!$modal.length) return;
+
+            $('#modal_mascota_nombre').text(mascota.nombre || '-');
+            $('#modal_mascota_especie').text(obtenerLabelEspecie(mascota.especie, mascota.otra_especie));
+            $('#modal_mascota_tamano').text(obtenerLabelTamano(mascota.tamano));
+            $('#modal_mascota_sexo').text(obtenerLabelSexo(mascota.sexo));
+            $('#modal_mascota_fecha').text(formatearFecha(mascota.fecha_nacimiento));
+            $('#modal_mascota_chip').text(obtenerChipLabel(mascota));
+            $('#modal_mascota_img').attr('src', obtenerImagenMascota(mascota));
+
+            $modal.appendTo('body');
+            $modal.modal('show');
+        }
+
         $(document).ready(function () {
             $('#btn-agregar-dep').click(function (e) {
                 e.preventDefault();
@@ -174,7 +330,13 @@
             });
 
             toggleChipInput();
+            registrarMascotasIniciales();
             cargarDependientes();
+
+            $(document).on('click', '.card-mascota', function(){
+                var idMascota = $(this).data('id');
+                mostrarDetalleMascota(idMascota);
+            });
         });
 
         function limpiarFormularioMascota()
@@ -757,6 +919,7 @@
                     if(data.registros != '')
                     {
                         $.each(data.registros, function (key, value) {
+                            registrarMascotaCache(value);
                             var img = '';
 
                             if(value.foto_perfil)
@@ -782,7 +945,7 @@
                             }
 
                             html += '<div class="col">';
-                            html += '    <div class="card">';
+                            html += '    <div class="card card-mascota" data-id="'+value.id+'">';
                             html += '        <div class="card-body text-center" style="cursor:pointer">';
                             html += '            <img class="wid-60 text-center mt-1 rounded-circle" src="'+img+'">';
                             html += '            <h5 class="mt-2 mb-0">'+value.nombre+'</h5>';
