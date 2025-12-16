@@ -34,10 +34,12 @@ class MascotasController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'chip' => 'nullable|string|max:255',
+            'tiene_chip' => 'required|boolean',
+            'chip' => 'nullable|required_if:tiene_chip,1|string|max:255',
             'nombre' => 'required|string|max:255',
             'especie' => 'required|integer|min:1',
             'otra_especie' => 'nullable|string|max:500',
+            'tamano' => 'required|string|in:pequena,mediana,grande',
             'fecha_nacimiento' => 'nullable|date',
             'sexo' => 'required|string|in:M,F',
             'foto_perfil' => 'nullable|string|max:255',
@@ -69,12 +71,16 @@ class MascotasController extends Controller
             }
         }
 
+        $tieneChip = filter_var($request->input('tiene_chip'), FILTER_VALIDATE_BOOLEAN);
+
         $mascota = new Mascota();
         $mascota->id_responsable = $paciente->id;
-        $mascota->chip = $request->input('chip');
+        $mascota->tiene_chip = $tieneChip;
+        $mascota->chip = $tieneChip ? $request->input('chip') : null;
         $mascota->nombre = $request->input('nombre');
         $mascota->especie = $request->input('especie');
         $mascota->otra_especie = $request->input('otra_especie');
+        $mascota->tamano = $request->input('tamano');
         $mascota->fecha_nacimiento = $request->input('fecha_nacimiento');
         $mascota->sexo = $request->input('sexo');
         $mascota->foto_perfil = $request->input('foto_perfil');

@@ -173,16 +173,20 @@
                 useThousandsSeparator : false
             });
 
+            toggleChipInput();
             cargarDependientes();
         });
 
         function limpiarFormularioMascota()
         {
+            $('#modal_agregar_dep_nuevo_tiene_chip').val('0');
+            toggleChipInput();
             $('#modal_agregar_dep_nuevo_rut').val('');
             $('#modal_agregar_dep_nuevo_nombres_paciente').val('');
             $('#espec_masc').val('0');
             $('#div_espec_masc').hide();
             $('#obs_espec_masc').val('');
+            $('#modal_agregar_dep_nuevo_tamano').val('');
             $('#modal_agregar_dep_nuevo_fecha_nac').val('');
             $('#modal_agregar_dep_nuevo_sexo').val('0');
             $('#imagenes_ven_pre').val('');
@@ -190,6 +194,24 @@
             $('#input_lista_ven_imagenes').val('');
             $('#obs_fotos_ven').val('');
             $('#btn_registrar').show();
+        }
+
+        function toggleChipInput()
+        {
+            var tiene_chip = $('#modal_agregar_dep_nuevo_tiene_chip').val();
+            var mostrar = (tiene_chip === '1');
+
+            $('#contenedor_numero_chip').toggle(mostrar);
+            $('#modal_agregar_dep_nuevo_rut').prop('required', mostrar);
+            if(mostrar)
+            {
+                $('#requerido_modal_agregar_dep_nuevo_rut').show();
+            }
+            else
+            {
+                $('#requerido_modal_agregar_dep_nuevo_rut').hide();
+                $('#modal_agregar_dep_nuevo_rut').val('');
+            }
         }
 
         function buscar_rut_dep()
@@ -596,10 +618,12 @@
 
         function registrar_dep_nuevo()
         {
+            var tiene_chip = $('#modal_agregar_dep_nuevo_tiene_chip').val();
             var chip = $('#modal_agregar_dep_nuevo_rut').val();
             var nombre = $('#modal_agregar_dep_nuevo_nombres_paciente').val();
             var especie = $('#espec_masc').val();
             var otra_especie = $('#obs_espec_masc').val();
+            var tamano = $('#modal_agregar_dep_nuevo_tamano').val();
             var fecha_nac = $('#modal_agregar_dep_nuevo_fecha_nac').val();
             var sexo = $('#modal_agregar_dep_nuevo_sexo').val();
             var foto_perfil = $('#imagenes_ven_pre').val();
@@ -624,6 +648,11 @@
                 valido = 0;
                 mensaje += 'Debe detallar la especie.\n';
             }
+            if(tamano == '')
+            {
+                valido = 0;
+                mensaje += 'Tipo de mascota: requerido\n';
+            }
             if(fecha_nac == '')
             {
                 valido = 0;
@@ -634,6 +663,11 @@
                 valido = 0;
                 mensaje += 'Sexo: requerido\n';
             }
+            if(tiene_chip === '1' && chip == '')
+            {
+                valido = 0;
+                mensaje += 'Número de chip: requerido\n';
+            }
 
             if(valido == 1)
             {
@@ -641,10 +675,12 @@
                 var datos = {};
 
                 datos._token = CSRF_TOKEN;
-                datos.chip = chip;
+                datos.tiene_chip = tiene_chip;
+                datos.chip = (tiene_chip === '1') ? chip : '';
                 datos.nombre = nombre;
                 datos.especie = especie;
                 datos.otra_especie = otra_especie;
+                datos.tamano = tamano;
                 datos.fecha_nacimiento = fecha_nac;
                 datos.sexo = sexo;
                 datos.foto_perfil = foto_perfil;

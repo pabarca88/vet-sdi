@@ -15,9 +15,11 @@ class Mascota extends Model
     protected $fillable = [
         'id_responsable',
         'chip',
+        'tiene_chip',
         'nombre',
         'especie',
         'otra_especie',
+        'tamano',
         'fecha_nacimiento',
         'sexo',
         'foto_perfil',
@@ -30,6 +32,7 @@ class Mascota extends Model
     protected $casts = [
         'galeria' => 'array',
         'fecha_nacimiento' => 'date',
+        'tiene_chip' => 'boolean',
     ];
 
     public function Responsable()

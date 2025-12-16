@@ -233,19 +233,21 @@
 
 
             <div class="form-row">
-
-                <div class="col-sm-12 col-md-12">
-
+                <div class="col-sm-12 col-md-6">
                     <div class="form-group">
-
-                        <label class="floating-label-activo-sm"><span class="requerido" style="color: red;" id="requerido_modal_agregar_dep_nuevo_rut">*</span>Tiene Chip? Ingrese Nº</label>
-
-                        <input type="text" required class="form-control form-control-sm" name="modal_agregar_dep_nuevo_rut" id="modal_agregar_dep_nuevo_rut">
-
+                        <label class="floating-label-activo-sm"><span class="requerido" style="color: red;" id="requerido_modal_agregar_dep_nuevo_tiene_chip">*</span>¿Tiene chip?</label>
+                        <select class="form-control form-control-sm" name="modal_agregar_dep_nuevo_tiene_chip" id="modal_agregar_dep_nuevo_tiene_chip" onchange="toggleChipInput();">
+                            <option value="0">No</option>
+                            <option value="1">Sí</option>
+                        </select>
                     </div>
-
                 </div>
-
+                <div class="col-sm-12 col-md-6" id="contenedor_numero_chip" style="display:none;">
+                    <div class="form-group">
+                        <label class="floating-label-activo-sm"><span class="requerido" style="color: red; display:none;" id="requerido_modal_agregar_dep_nuevo_rut">*</span>Ingrese N°</label>
+                        <input type="text" class="form-control form-control-sm" name="modal_agregar_dep_nuevo_rut" id="modal_agregar_dep_nuevo_rut">
+                    </div>
+                </div>
             </div>
 
             <div class="form-row">
@@ -279,8 +281,19 @@
                         <textarea class="form-control form-control-sm"   rows="1"  onfocus="this.rows=3" onblur="this.rows=1;" name="obs_espec_masc" id="obs_espec_masc"></textarea>
                     </div>
                 </div>    
-          
-               
+
+                <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                    <div class="form-group">
+                        <label class="floating-label-activo-sm"><span class="requerido" style="color: red;" id="requerido_modal_agregar_dep_nuevo_tamano">*</span>Tipo de mascota (tamaño)</label>
+                        <select class="form-control form-control-sm" name="modal_agregar_dep_nuevo_tamano" id="modal_agregar_dep_nuevo_tamano">
+                            <option value="">Seleccione</option>
+                            <option value="pequena">Pequeña</option>
+                            <option value="mediana">Mediana</option>
+                            <option value="grande">Grande</option>
+                        </select>
+                    </div>
+                </div>
+
 
                 <div class="col-sm-6 col-md-6">
 
@@ -725,4 +738,3 @@
   });
 </script>
 @endsection
-
