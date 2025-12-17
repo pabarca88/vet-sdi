@@ -4,6 +4,12 @@
 
 @section('content')
 
+    @php
+        $especiesMascotas = $especiesMascotas ?? collect();
+        $tamanosMascotas = $tamanosMascotas ?? collect();
+        $especieTamanosMascotas = $especieTamanosMascotas ?? collect();
+    @endphp
+
     <div class="pcoded-main-container">
 
         <div class="pcoded-content">
@@ -96,10 +102,10 @@
                     @foreach ($mascotas as $mascota)
                         @php
                             $imgMascota = $mascota->foto_perfil ?: ($mascota->sexo === 'M' ? asset('images/iconos/paciente-m.svg') : asset('images/iconos/paciente-f.svg'));
-                            $especies = [1 => 'Canina', 2 => 'Felina', 3 => 'Pez', 4 => 'Aves', 5 => 'Reptiles', 6 => 'Roedores', 7 => 'Hurones', 8 => 'Otros'];
-                            $labelEspecie = $especies[$mascota->especie] ?? 'Sin especie';
-                            if ($mascota->especie == 8 && !empty($mascota->otra_especie)) {
-                                $labelEspecie .= ' (' . $mascota->otra_especie . ')';
+                            $especie = $especiesMascotas->firstWhere('id', $mascota->especie_id ?? $mascota->especie);
+                            $labelEspecie = $especie->nombre ?? 'Sin especie';
+                            if ($especie && $especie->requiere_detalle && !empty($mascota->otra_especie)) {
+                                $labelEspecie = trim($labelEspecie . ' (' . $mascota->otra_especie . ')');
                             }
                         @endphp
                         <div class="col">
@@ -178,6 +184,15 @@
                         <div class="col-sm-12">
                             <p class="mb-1"><strong>Chip:</strong> <span id="modal_mascota_chip">-</span></p>
                         </div>
+                        <div class="col-sm-6">
+                            <p class="mb-1"><strong>Esterilizado:</strong> <span id="modal_mascota_esterilizado">-</span></p>
+                        </div>
+                        <div class="col-sm-6">
+                            <p class="mb-1"><strong>F. esterilización:</strong> <span id="modal_mascota_fecha_esterilizacion">-</span></p>
+                        </div>
+                        <div class="col-sm-12">
+                            <p class="mb-1"><strong>Enfermedad crónica o frecuente:</strong> <span id="modal_mascota_enfermedad_cronica">-</span></p>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -195,8 +210,25 @@
     <script>
         var mascotasCache = {};
         var mascotasIniciales = @json(isset($mascotas) ? $mascotas : []);
-        var especiesLabel = {1:'Canina',2:'Felina',3:'Pez',4:'Aves',5:'Reptiles',6:'Roedores',7:'Hurones',8:'Otros'};
-        var tamanoLabel = {pequena:'Pequeña', mediana:'Mediana', grande:'Grande'};
+        var especiesMascotas = @json($especiesMascotas);
+        var tamanosMascotas = @json($tamanosMascotas);
+        var especieTamanosMascotas = @json($especieTamanosMascotas);
+
+        function construirMapaNombre(listado)
+        {
+            var mapa = {};
+            (listado || []).forEach(function(item){
+                mapa[item.id] = item.nombre;
+            });
+            return mapa;
+        }
+
+        var especiesLabel = construirMapaNombre(especiesMascotas);
+        var tamanoLabel = construirMapaNombre(tamanosMascotas);
+        var tamanoLabelSlug = {};
+        (tamanosMascotas || []).forEach(function(item){
+            tamanoLabelSlug[item.slug] = item.nombre;
+        });
 
         function registrarMascotaCache(mascota)
         {
@@ -216,19 +248,74 @@
             }
         }
 
+        function getEspecieById(id)
+        {
+            return (especiesMascotas || []).find(function(item){
+                return parseInt(item.id) === parseInt(id);
+            });
+        }
+
+        function requiereDetalleEspecie(especieId)
+        {
+            var especie = getEspecieById(especieId);
+            return especie ? !!especie.requiere_detalle : false;
+        }
+
+        function obtenerTamanosPorEspecie(especieId)
+        {
+            if(!especieId) return (tamanosMascotas || []);
+            var permitidos = (especieTamanosMascotas || []).filter(function(item){
+                return parseInt(item.especie_id) === parseInt(especieId);
+            }).map(function(item){ return item.tamano_id; });
+
+            return (tamanosMascotas || []).filter(function(tamano){
+                return permitidos.length === 0 || permitidos.indexOf(tamano.id) >= 0;
+            });
+        }
+
+        function actualizarOpcionesTamano(especieId)
+        {
+            var tamanosDisponibles = obtenerTamanosPorEspecie(especieId);
+            var select = $('#modal_agregar_dep_nuevo_tamano');
+            var valorActual = select.val();
+            select.html('<option value=\"\">Seleccione</option>');
+
+            tamanosDisponibles.forEach(function(tamano){
+                select.append('<option value=\"'+tamano.id+'\">'+tamano.nombre+'</option>');
+            });
+
+            if(valorActual && select.find('option[value=\"'+valorActual+'\"]').length)
+            {
+                select.val(valorActual);
+            }
+        }
+
+        function handleEspecieChange()
+        {
+            var especieSeleccionada = $('#espec_masc').val();
+            var requiereDetalle = requiereDetalleEspecie(especieSeleccionada);
+            $('#div_espec_masc').toggle(requiereDetalle);
+            if(!requiereDetalle)
+            {
+                $('#obs_espec_masc').val('');
+            }
+            actualizarOpcionesTamano(especieSeleccionada);
+        }
+
         function obtenerLabelEspecie(especie, otra)
         {
             var label = especiesLabel[especie] ? especiesLabel[especie] : '';
-            if(especie == 8 && otra)
+            if(requiereDetalleEspecie(especie) && otra)
             {
                 label += (label ? ' ('+otra+')' : otra);
             }
             return label || '-';
         }
 
-        function obtenerLabelTamano(tamano)
+        function obtenerLabelTamano(tamanoId)
         {
-            return tamanoLabel[tamano] ? tamanoLabel[tamano] : '-';
+            if(tamanoLabel[tamanoId]) return tamanoLabel[tamanoId];
+            return tamanoLabelSlug[tamanoId] ? tamanoLabelSlug[tamanoId] : '-';
         }
 
         function obtenerLabelSexo(sexo)
@@ -304,11 +391,17 @@
             if(!$modal.length) return;
 
             $('#modal_mascota_nombre').text(mascota.nombre || '-');
-            $('#modal_mascota_especie').text(obtenerLabelEspecie(mascota.especie, mascota.otra_especie));
-            $('#modal_mascota_tamano').text(obtenerLabelTamano(mascota.tamano));
+            var especieId = mascota.especie_id || mascota.especie;
+            var tamanoId = mascota.tamano_id || mascota.tamano;
+            $('#modal_mascota_especie').text(obtenerLabelEspecie(especieId, mascota.otra_especie));
+            $('#modal_mascota_tamano').text(obtenerLabelTamano(tamanoId));
             $('#modal_mascota_sexo').text(obtenerLabelSexo(mascota.sexo));
             $('#modal_mascota_fecha').text(formatearFecha(mascota.fecha_nacimiento));
             $('#modal_mascota_chip').text(obtenerChipLabel(mascota));
+            var esterilizado = (mascota.esterilizado === true || mascota.esterilizado === 1 || mascota.esterilizado === '1');
+            $('#modal_mascota_esterilizado').text(esterilizado ? 'Sí' : 'No');
+            $('#modal_mascota_fecha_esterilizacion').text(esterilizado ? formatearFecha(mascota.fecha_esterilizacion) : '-');
+            $('#modal_mascota_enfermedad_cronica').text(mascota.enfermedad_cronica ? mascota.enfermedad_cronica : '-');
             $('#modal_mascota_img').attr('src', obtenerImagenMascota(mascota));
 
             $modal.appendTo('body');
@@ -329,6 +422,8 @@
                 useThousandsSeparator : false
             });
 
+            handleEspecieChange();
+            toggleEsterilizacion();
             toggleChipInput();
             registrarMascotasIniciales();
             cargarDependientes();
@@ -346,11 +441,14 @@
             $('#modal_agregar_dep_nuevo_rut').val('');
             $('#modal_agregar_dep_nuevo_nombres_paciente').val('');
             $('#espec_masc').val('0');
-            $('#div_espec_masc').hide();
-            $('#obs_espec_masc').val('');
+            handleEspecieChange();
             $('#modal_agregar_dep_nuevo_tamano').val('');
             $('#modal_agregar_dep_nuevo_fecha_nac').val('');
             $('#modal_agregar_dep_nuevo_sexo').val('0');
+            $('#modal_agregar_dep_nuevo_esterilizado').val('');
+            $('#modal_agregar_dep_nuevo_fecha_esterilizacion').val('');
+            $('#modal_agregar_dep_nuevo_enfermedad_cronica').val('');
+            toggleEsterilizacion();
             $('#imagenes_ven_pre').val('');
             $('#imagenes_ven_post').val('');
             $('#input_lista_ven_imagenes').val('');
@@ -373,6 +471,19 @@
             {
                 $('#requerido_modal_agregar_dep_nuevo_rut').hide();
                 $('#modal_agregar_dep_nuevo_rut').val('');
+            }
+        }
+
+        function toggleEsterilizacion()
+        {
+            var esterilizado = $('#modal_agregar_dep_nuevo_esterilizado').val();
+            var mostrar = (esterilizado === '1');
+            $('#contenedor_fecha_esterilizacion').toggle(mostrar);
+            $('#requerido_modal_agregar_dep_nuevo_fecha_esterilizacion').toggle(mostrar);
+            $('#modal_agregar_dep_nuevo_fecha_esterilizacion').prop('required', mostrar);
+            if(!mostrar)
+            {
+                $('#modal_agregar_dep_nuevo_fecha_esterilizacion').val('');
             }
         }
 
@@ -786,6 +897,9 @@
             var especie = $('#espec_masc').val();
             var otra_especie = $('#obs_espec_masc').val();
             var tamano = $('#modal_agregar_dep_nuevo_tamano').val();
+            var esterilizado = $('#modal_agregar_dep_nuevo_esterilizado').val();
+            var fecha_esterilizacion = $('#modal_agregar_dep_nuevo_fecha_esterilizacion').val();
+            var enfermedad_cronica = $('#modal_agregar_dep_nuevo_enfermedad_cronica').val();
             var fecha_nac = $('#modal_agregar_dep_nuevo_fecha_nac').val();
             var sexo = $('#modal_agregar_dep_nuevo_sexo').val();
             var foto_perfil = $('#imagenes_ven_pre').val();
@@ -805,7 +919,7 @@
                 valido = 0;
                 mensaje += 'Especie: requerido\n';
             }
-            if(especie == '8' && otra_especie == '')
+            if(requiereDetalleEspecie(especie) && otra_especie == '')
             {
                 valido = 0;
                 mensaje += 'Debe detallar la especie.\n';
@@ -814,6 +928,16 @@
             {
                 valido = 0;
                 mensaje += 'Tipo de mascota: requerido\n';
+            }
+            if(esterilizado === '')
+            {
+                valido = 0;
+                mensaje += 'Esterilizado: requerido\n';
+            }
+            if(esterilizado === '1' && fecha_esterilizacion === '')
+            {
+                valido = 0;
+                mensaje += 'Fecha de esterilización: requerido\n';
             }
             if(fecha_nac == '')
             {
@@ -840,9 +964,12 @@
                 datos.tiene_chip = tiene_chip;
                 datos.chip = (tiene_chip === '1') ? chip : '';
                 datos.nombre = nombre;
-                datos.especie = especie;
+                datos.especie_id = especie;
                 datos.otra_especie = otra_especie;
-                datos.tamano = tamano;
+                datos.tamano_id = tamano;
+                datos.esterilizado = esterilizado;
+                datos.fecha_esterilizacion = (esterilizado === '1') ? fecha_esterilizacion : '';
+                datos.enfermedad_cronica = enfermedad_cronica;
                 datos.fecha_nacimiento = fecha_nac;
                 datos.sexo = sexo;
                 datos.foto_perfil = foto_perfil;
@@ -914,7 +1041,6 @@
                 {
                     var  img_m = '{{ asset('images/iconos/paciente-m.svg') }}';
                     var  img_f = '{{ asset('images/iconos/paciente-f.svg') }}';
-                    var  especies = {1:'Canina',2:'Felina',3:'Pez',4:'Aves',5:'Reptiles',6:'Roedores',7:'Hurones',8:'Otros'};
 
                     if(data.registros != '')
                     {
@@ -938,11 +1064,7 @@
                             else
                                 img = img_f;
 
-                            var especie_label = especies[value.especie] ? especies[value.especie] : '';
-                            if(value.especie == 8 && value.otra_especie)
-                            {
-                                especie_label += ' ('+value.otra_especie+')';
-                            }
+                            var especie_label = obtenerLabelEspecie(value.especie_id || value.especie, value.otra_especie);
 
                             html += '<div class="col">';
                             html += '    <div class="card card-mascota" data-id="'+value.id+'">';
