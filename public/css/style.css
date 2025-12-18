@@ -35702,3 +35702,9 @@ transition: 0.2s!important;
 .border-xl {
     border-radius:20px;
 }
+
+.card-mascota .rounded-circle {
+    height: 80px;
+    width: 80px;
+    object-fit: cover;
+}
