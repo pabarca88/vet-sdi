@@ -196,6 +196,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" id="btn_eliminar_mascota">Eliminar</button>
+                    <button type="button" class="btn btn-info" id="btn_editar_mascota">Editar</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
@@ -207,8 +209,206 @@
 
 
 @section('page-script')
+<script>
+  
+  // IMPORTANTE: desactiva auto-discover
+  Dropzone.autoDiscover = false;
+
+  // Lista (la mantengo igual)
+  var rutaMascotasBase = "{{ route('paciente.mascotas.index') }}";
+  var lista_ven_imagenes = {};
+
+  function cargar_lista_ven_imagenes(obj_dropzone, alias_examen) {
+    lista_ven_imagenes[alias_examen] = [];
+
+    let temp = obj_dropzone.getAcceptedFiles();
+    $.each(temp, function(index, value) {
+      if (value.status === "success" && value.xhr) {
+        var img_temp = JSON.parse(value.xhr.response);
+
+        lista_ven_imagenes[alias_examen][index] = [
+          url = img_temp.img.url,
+          nombre_origian = img_temp.img.original_file_name,
+          nombre_img = img_temp.img.nombre_img,
+          file_extension = img_temp.img.file_extension,
+        ];
+
+        $('#input_lista_ven_imagenes').val(JSON.stringify(lista_ven_imagenes));
+      }
+    });
+  }
+
+  function normalizarRutaImagen(nombreImagen) {
+    if (!nombreImagen) return '';
+    if (typeof nombreImagen !== 'string') return '';
+    if (nombreImagen.startsWith('/')) return nombreImagen;
+    return '/storage/imagenes/temp/' + nombreImagen;
+  }
+
+  function limpiarFotosActuales() {
+    lista_ven_imagenes = {};
+    $('#imagenes_ven_pre').val('');
+    $('#imagenes_ven_post').val('');
+    $('#input_lista_ven_imagenes').val('');
+    $('#listado_fotos_actuales').empty();
+    $('#contenedor_fotos_actuales').hide();
+    if (myDropzone_ven_pre && typeof myDropzone_ven_pre.removeAllFiles === 'function') {
+      myDropzone_ven_pre.removeAllFiles(true);
+    }
+    if (myDropzone_ven_post && typeof myDropzone_ven_post.removeAllFiles === 'function') {
+      myDropzone_ven_post.removeAllFiles(true);
+    }
+  }
+
+  function renderizarFotosActuales(mascota) {
+    var $contenedor = $('#contenedor_fotos_actuales');
+    var $listado = $('#listado_fotos_actuales');
+    if (!$contenedor.length || !$listado.length) return;
+
+    $listado.empty();
+    var fotos = [];
+
+    if (mascota && mascota.foto_perfil) {
+      fotos.push(normalizarRutaImagen(mascota.foto_perfil));
+    }
+    if (mascota && mascota.galeria) {
+      ['ven_pre', 'ven_post'].forEach(function (clave) {
+        (mascota.galeria[clave] || []).forEach(function (item) {
+          if (item && item[0]) {
+            var urlFoto = item[0];
+            if (typeof urlFoto === 'string' && urlFoto.charAt(0) !== '/' && urlFoto.indexOf('http') !== 0) {
+              urlFoto = normalizarRutaImagen(urlFoto);
+            }
+            fotos.push(urlFoto);
+          }
+        });
+      });
+    }
+
+    if (!fotos.length) {
+      $contenedor.hide();
+      return;
+    }
+
+    fotos.forEach(function (url) {
+      var $img = $('<img>')
+        .attr('src', url)
+        .addClass('img-thumbnail mr-2 mb-2')
+        .css({ width: '75px', height: '75px', objectFit: 'cover' });
+      $listado.append($img);
+    });
+    $contenedor.show();
+  }
+
+  function setModoEdicion(idMascota) {
+    mascotaEditandoId = idMascota || null;
+    $('#mascota_editar_id').val(mascotaEditandoId || '');
+    if (mascotaEditandoId) {
+      $('#btn_registrar').html('<i class="feather icon-check"></i> Actualizar');
+    } else {
+      $('#btn_registrar').html('<i class="feather icon-check"></i> Registrar');
+    }
+  }
+
+  // Destruye cualquier instancia previa (auto o vieja)
+  function destroyDZ(selector) {
+    var el = document.querySelector(selector);
+    if (el && el.dropzone) {
+      el.dropzone.destroy();
+    }
+  }
+
+  // Instancias globales
+  var myDropzone_ven_pre = null;
+  var myDropzone_ven_post = null;
+
+  function initVenDropzones() {
+    // Si no están en el DOM, no hagas nada
+    if (!document.querySelector("#mi-imagen-ven-pre")) return;
+    if (!document.querySelector("#mi-imagen-ven-post")) return;
+
+    destroyDZ("#mi-imagen-ven-pre");
+    destroyDZ("#mi-imagen-ven-post");
+
+    myDropzone_ven_pre = new Dropzone("#mi-imagen-ven-pre", {
+      url: "{{ route('profesional.imagen.carga') }}",
+      method: "post",
+      headers: { "X-CSRF-TOKEN": CSRF_TOKEN },
+
+      // ✅ Para descartar falsos “tipo inválido”
+      acceptedFiles: "image/jpeg,image/png,image/jpg,.jpeg,.jpg,.png,image/*",
+      maxFilesize: 6, // MB
+      maxFiles: 12,
+      addRemoveLinks: true,
+      createImageThumbnails: true,
+      paramName: "file", // default, pero lo dejamos explícito
+
+      dictInvalidFileType: "No puedes subir archivos de este tipo.",
+      dictFileTooBig: "El archivo es demasiado grande. Max 6 MiB.",
+
+      success: function(file, response) {
+        $('#imagenes_ven_pre').val(response.img.url ?? response.img.nombre_img);
+        cargar_lista_ven_imagenes(myDropzone_ven_pre, "ven_pre");
+      },
+
+      error: function(file, message, xhr) {
+        console.log("VEN_PRE ERROR:", message);
+        if (xhr && xhr.responseText) console.log("VEN_PRE SERVER:", xhr.responseText);
+      },
+
+      removedfile: function(file) {
+        $('#imagenes_ven_pre').val('');
+        cargar_lista_ven_imagenes(myDropzone_ven_pre, "ven_pre");
+        if (file.previewElement) file.previewElement.remove();
+      }
+    });
+
+    myDropzone_ven_post = new Dropzone("#mi-imagen-ven-post", {
+      url: "{{ route('profesional.imagen.carga') }}",
+      method: "post",
+      headers: { "X-CSRF-TOKEN": CSRF_TOKEN },
+
+      acceptedFiles: "image/jpeg,image/png,image/jpg,.jpeg,.jpg,.png,image/*",
+      maxFilesize: 6,
+      maxFiles: 12,
+      addRemoveLinks: true,
+      createImageThumbnails: true,
+      paramName: "file",
+
+      dictInvalidFileType: "No puedes subir archivos de este tipo.",
+      dictFileTooBig: "El archivo es demasiado grande. Max 6 MiB.",
+
+      success: function(file, response) {
+        $('#imagenes_ven_post').val(response.img.nombre_img);
+        cargar_lista_ven_imagenes(myDropzone_ven_post, "ven_post");
+      },
+
+      error: function(file, message, xhr) {
+        console.log("VEN_POST ERROR:", message);
+        if (xhr && xhr.responseText) console.log("VEN_POST SERVER:", xhr.responseText);
+      },
+
+      removedfile: function(file) {
+        $('#imagenes_ven_post').val('');
+        cargar_lista_ven_imagenes(myDropzone_ven_post, "ven_post");
+        if (file.previewElement) file.previewElement.remove();
+      }
+    });
+  }
+
+  // ✅ Inicializa cuando el modal se ABRE (bootstrap)
+  $(document).on("shown.bs.modal", "#modal_agregar_dep_nuevo", function() {
+    initVenDropzones();
+  });
+
+  // (opcional) por si la vista se carga ya con el modal abierto
+  $(document).ready(function() {
+    initVenDropzones();
+  });
+</script>
     <script>
         var mascotasCache = {};
+        var mascotaEditandoId = null;
         var mascotasIniciales = @json(isset($mascotas) ? $mascotas : []);
         var especiesMascotas = @json($especiesMascotas);
         var tamanosMascotas = @json($tamanosMascotas);
@@ -364,15 +564,30 @@
             return fecha;
         }
 
+        function formatearFechaInput(fecha)
+        {
+            if(!fecha) return '';
+            if(typeof fecha === 'string' && fecha.indexOf('T') > -1)
+            {
+                return fecha.split('T')[0];
+            }
+            var d = new Date(fecha);
+            if(!isNaN(d.getTime()))
+            {
+                var mes = ('0' + (d.getMonth() + 1)).slice(-2);
+                var dia = ('0' + d.getDate()).slice(-2);
+                return d.getFullYear() + '-' + mes + '-' + dia;
+            }
+            return fecha;
+        }
+
         function obtenerImagenMascota(mascota)
         {
             var img_m = '{{ asset('images/iconos/paciente-m.svg') }}';
             var img_f = '{{ asset('images/iconos/paciente-f.svg') }}';
             if(mascota.foto_perfil)
             {
-                if(mascota.foto_perfil.startsWith('/'))
-                    return mascota.foto_perfil;
-                return '/storage/imagenes/temp/'+mascota.foto_perfil;
+                return normalizarRutaImagen(mascota.foto_perfil);
             }
             if(mascota.galeria && mascota.galeria.ven_pre && mascota.galeria.ven_pre.length>0 && mascota.galeria.ven_pre[0][0])
             {
@@ -389,6 +604,7 @@
 
             var $modal = $('#modal_detalle_mascota');
             if(!$modal.length) return;
+            $modal.data('id', idMascota);
 
             $('#modal_mascota_nombre').text(mascota.nombre || '-');
             var especieId = mascota.especie_id || mascota.especie;
@@ -408,11 +624,121 @@
             $modal.modal('show');
         }
 
+        function abrirEdicionMascota(idMascota)
+        {
+            var mascota = mascotasCache[idMascota];
+            if(!mascota) return;
+
+            $('#modal_detalle_mascota').modal('hide');
+            limpiarFormularioMascota();
+            setModoEdicion(idMascota);
+
+            $('#modal_agregar_dep_nuevo_tiene_chip').val(mascota.tiene_chip ? '1' : '0');
+            toggleChipInput();
+            $('#modal_agregar_dep_nuevo_rut').val(mascota.tiene_chip ? (mascota.chip || '') : '');
+            $('#modal_agregar_dep_nuevo_nombres_paciente').val(mascota.nombre || '');
+
+            var especieId = mascota.especie_id || mascota.especie || '0';
+            $('#espec_masc').val(especieId);
+            handleEspecieChange();
+            $('#obs_espec_masc').val(mascota.otra_especie || '');
+
+            var tamanoId = mascota.tamano_id || mascota.tamano || '';
+            $('#modal_agregar_dep_nuevo_tamano').val(tamanoId);
+
+            $('#modal_agregar_dep_nuevo_fecha_nac').val(formatearFechaInput(mascota.fecha_nacimiento));
+            $('#modal_agregar_dep_nuevo_sexo').val(mascota.sexo || '0');
+
+            var esterilizado = (mascota.esterilizado === true || mascota.esterilizado === 1 || mascota.esterilizado === '1');
+            $('#modal_agregar_dep_nuevo_esterilizado').val(esterilizado ? '1' : '0');
+            toggleEsterilizacion();
+            $('#modal_agregar_dep_nuevo_fecha_esterilizacion').val(esterilizado ? formatearFechaInput(mascota.fecha_esterilizacion) : '');
+
+            $('#modal_agregar_dep_nuevo_enfermedad_cronica').val(mascota.enfermedad_cronica || '');
+
+            var galeriaMascota = mascota.galeria;
+            if(typeof galeriaMascota === 'string')
+            {
+                try { galeriaMascota = JSON.parse(galeriaMascota); }
+                catch (e) { galeriaMascota = {}; }
+            }
+            lista_ven_imagenes = galeriaMascota || {};
+            if(lista_ven_imagenes && Object.keys(lista_ven_imagenes).length)
+            {
+                $('#input_lista_ven_imagenes').val(JSON.stringify(lista_ven_imagenes));
+            }
+            else
+            {
+                $('#input_lista_ven_imagenes').val('');
+            }
+
+            $('#imagenes_ven_pre').val(mascota.foto_perfil || '');
+            $('#obs_fotos_ven').val(mascota.observaciones_fotos || '');
+            renderizarFotosActuales(mascota);
+
+            $('#modal_agregar_dep_nuevo').modal('show');
+        }
+
+        function eliminarMascota(idMascota)
+        {
+            var mascota = mascotasCache[idMascota];
+            var nombre = mascota ? mascota.nombre : '';
+            swal({
+                title: "Eliminar mascota",
+                text: nombre ? "¿Desea eliminar a " + nombre + "?" : "¿Desea eliminar esta mascota?",
+                icon: "warning",
+                buttons: ["Cancelar", "Eliminar"],
+                dangerMode: true,
+            }).then(function(confirmado){
+                if(!confirmado) return;
+
+                $.ajax({
+                    url: rutaMascotasBase + '/' + idMascota,
+                    type: "DELETE",
+                    data: {_token: CSRF_TOKEN},
+                })
+                .done(function(data){
+                    if(data.estado == 1)
+                    {
+                        $('#modal_detalle_mascota').modal('hide');
+                        swal({
+                            title: "Mascota eliminada.",
+                            text:"Exito",
+                            icon: "success",
+                        });
+                        cargarDependientes();
+                    }
+                    else
+                    {
+                        swal({
+                            title: "Eliminar mascota.",
+                            text: data.msj || "No se pudo eliminar la mascota.",
+                            icon: "error",
+                        });
+                    }
+                })
+                .fail(function(jqXHR, ajaxOptions, thrownError) {
+                    console.log(jqXHR, ajaxOptions, thrownError)
+                });
+            });
+        }
+
         $(document).ready(function () {
             $('#btn-agregar-dep').click(function (e) {
                 e.preventDefault();
                 limpiarFormularioMascota();
                 $('#modal_agregar_dep_nuevo').modal('show');
+            });
+            $('#btn_editar_mascota').on('click', function(){
+                var idMascota = $('#modal_detalle_mascota').data('id');
+                if(idMascota) abrirEdicionMascota(idMascota);
+            });
+            $('#btn_eliminar_mascota').on('click', function(){
+                var idMascota = $('#modal_detalle_mascota').data('id');
+                if(idMascota) eliminarMascota(idMascota);
+            });
+            $('#btn_limpiar_fotos_actuales').on('click', function(){
+                limpiarFotosActuales();
             });
 
             $("#modal_agregar_dep_input_rut").rut({
@@ -436,6 +762,8 @@
 
         function limpiarFormularioMascota()
         {
+            setModoEdicion(null);
+            limpiarFotosActuales();
             $('#modal_agregar_dep_nuevo_tiene_chip').val('0');
             toggleChipInput();
             $('#modal_agregar_dep_nuevo_rut').val('');
@@ -454,6 +782,7 @@
             $('#input_lista_ven_imagenes').val('');
             $('#obs_fotos_ven').val('');
             $('#btn_registrar').show();
+            lista_ven_imagenes = {};
         }
 
         function toggleChipInput()
@@ -891,6 +1220,7 @@
 
         function registrar_dep_nuevo()
         {
+            var mascotaId = $('#mascota_editar_id').val();
             var tiene_chip = $('#modal_agregar_dep_nuevo_tiene_chip').val();
             var chip = $('#modal_agregar_dep_nuevo_rut').val();
             var nombre = $('#modal_agregar_dep_nuevo_nombres_paciente').val();
@@ -957,10 +1287,14 @@
 
             if(valido == 1)
             {
-                let url = "{{ route('paciente.mascotas.store') }}";
+                let url = mascotaId ? rutaMascotasBase + '/' + mascotaId : "{{ route('paciente.mascotas.store') }}";
                 var datos = {};
 
                 datos._token = CSRF_TOKEN;
+                if(mascotaId)
+                {
+                    datos._method = 'PUT';
+                }
                 datos.tiene_chip = tiene_chip;
                 datos.chip = (tiene_chip === '1') ? chip : '';
                 datos.nombre = nombre;
@@ -986,9 +1320,11 @@
                     if (data.estado == 1)
                     {
                         $('#modal_agregar_dep_nuevo').modal('hide');
+                        setModoEdicion(null);
+                        limpiarFormularioMascota();
 
                         swal({
-                            title: "Registro de Mascota.",
+                            title: mascotaId ? "Mascota actualizada." : "Registro de Mascota.",
                             text:"Exito",
                             icon: "success",
                         });
@@ -1035,6 +1371,7 @@
                 data: datos,
             })
             .done(function(data) {
+                mascotasCache = {};
                 $('#card-lista-dependientes').html('');
                 var html = '';
                 if (data.estado == 1)
@@ -1050,10 +1387,7 @@
 
                             if(value.foto_perfil)
                             {
-                                if(value.foto_perfil.startsWith('/'))
-                                    img = value.foto_perfil;
-                                else
-                                    img = '/storage/imagenes/temp/'+value.foto_perfil;
+                                img = normalizarRutaImagen(value.foto_perfil);
                             }
                             else if(value.galeria && value.galeria.ven_pre && value.galeria.ven_pre.length>0 && value.galeria.ven_pre[0][0])
                             {

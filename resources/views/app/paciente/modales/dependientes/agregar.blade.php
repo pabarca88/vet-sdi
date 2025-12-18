@@ -267,7 +267,7 @@
 
         <div class="modal-body">
 
-
+            <input type="hidden" id="mascota_editar_id" value="">
 
             <div class="form-row">
                 <div class="col-sm-12 col-md-6">
@@ -398,6 +398,11 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="col-sm-12" id="contenedor_fotos_actuales" style="display:none;">
+                    <p class="f-12 mb-1 font-weight-bold">Fotos actuales guardadas</p>
+                    <div class="d-flex flex-wrap" id="listado_fotos_actuales"></div>
+                    <button type="button" class="btn btn-link px-0" id="btn_limpiar_fotos_actuales">Quitar fotos actuales</button>
                 </div>
                                   
                           
@@ -668,129 +673,3 @@
         }
     }
 </script>
-@section('script-veneria')
-<script>
-  
-  // IMPORTANTE: desactiva auto-discover
-  Dropzone.autoDiscover = false;
-
-  // Lista (la mantengo igual)
-  var lista_ven_imagenes = {};
-
-  function cargar_lista_ven_imagenes(obj_dropzone, alias_examen) {
-    lista_ven_imagenes[alias_examen] = [];
-
-    let temp = obj_dropzone.getAcceptedFiles();
-    $.each(temp, function(index, value) {
-      if (value.status === "success" && value.xhr) {
-        var img_temp = JSON.parse(value.xhr.response);
-
-        lista_ven_imagenes[alias_examen][index] = [
-          url = img_temp.img.url,
-          nombre_origian = img_temp.img.original_file_name,
-          nombre_img = img_temp.img.nombre_img,
-          file_extension = img_temp.img.file_extension,
-        ];
-
-        $('#input_lista_ven_imagenes').val(JSON.stringify(lista_ven_imagenes));
-      }
-    });
-  }
-
-  // Destruye cualquier instancia previa (auto o vieja)
-  function destroyDZ(selector) {
-    var el = document.querySelector(selector);
-    if (el && el.dropzone) {
-      el.dropzone.destroy();
-    }
-  }
-
-  // Instancias globales
-  var myDropzone_ven_pre = null;
-  var myDropzone_ven_post = null;
-
-  function initVenDropzones() {
-    // Si no están en el DOM, no hagas nada
-    if (!document.querySelector("#mi-imagen-ven-pre")) return;
-    if (!document.querySelector("#mi-imagen-ven-post")) return;
-
-    destroyDZ("#mi-imagen-ven-pre");
-    destroyDZ("#mi-imagen-ven-post");
-
-    myDropzone_ven_pre = new Dropzone("#mi-imagen-ven-pre", {
-      url: "{{ route('profesional.imagen.carga') }}",
-      method: "post",
-      headers: { "X-CSRF-TOKEN": CSRF_TOKEN },
-
-      // ✅ Para descartar falsos “tipo inválido”
-      acceptedFiles: "image/jpeg,image/png,image/jpg,.jpeg,.jpg,.png,image/*",
-      maxFilesize: 6, // MB
-      maxFiles: 12,
-      addRemoveLinks: true,
-      createImageThumbnails: true,
-      paramName: "file", // default, pero lo dejamos explícito
-
-      dictInvalidFileType: "No puedes subir archivos de este tipo.",
-      dictFileTooBig: "El archivo es demasiado grande. Max 6 MiB.",
-
-      success: function(file, response) {
-        $('#imagenes_ven_pre').val(response.img.url ?? response.img.nombre_img);
-        cargar_lista_ven_imagenes(myDropzone_ven_pre, "ven_pre");
-      },
-
-      error: function(file, message, xhr) {
-        console.log("VEN_PRE ERROR:", message);
-        if (xhr && xhr.responseText) console.log("VEN_PRE SERVER:", xhr.responseText);
-      },
-
-      removedfile: function(file) {
-        $('#imagenes_ven_pre').val('');
-        cargar_lista_ven_imagenes(myDropzone_ven_pre, "ven_pre");
-        if (file.previewElement) file.previewElement.remove();
-      }
-    });
-
-    myDropzone_ven_post = new Dropzone("#mi-imagen-ven-post", {
-      url: "{{ route('profesional.imagen.carga') }}",
-      method: "post",
-      headers: { "X-CSRF-TOKEN": CSRF_TOKEN },
-
-      acceptedFiles: "image/jpeg,image/png,image/jpg,.jpeg,.jpg,.png,image/*",
-      maxFilesize: 6,
-      maxFiles: 12,
-      addRemoveLinks: true,
-      createImageThumbnails: true,
-      paramName: "file",
-
-      dictInvalidFileType: "No puedes subir archivos de este tipo.",
-      dictFileTooBig: "El archivo es demasiado grande. Max 6 MiB.",
-
-      success: function(file, response) {
-        $('#imagenes_ven_post').val(response.img.nombre_img);
-        cargar_lista_ven_imagenes(myDropzone_ven_post, "ven_post");
-      },
-
-      error: function(file, message, xhr) {
-        console.log("VEN_POST ERROR:", message);
-        if (xhr && xhr.responseText) console.log("VEN_POST SERVER:", xhr.responseText);
-      },
-
-      removedfile: function(file) {
-        $('#imagenes_ven_post').val('');
-        cargar_lista_ven_imagenes(myDropzone_ven_post, "ven_post");
-        if (file.previewElement) file.previewElement.remove();
-      }
-    });
-  }
-
-  // ✅ Inicializa cuando el modal se ABRE (bootstrap)
-  $(document).on("shown.bs.modal", "#modal_agregar_dep_nuevo", function() {
-    initVenDropzones();
-  });
-
-  // (opcional) por si la vista se carga ya con el modal abierto
-  $(document).ready(function() {
-    initVenDropzones();
-  });
-</script>
-@endsection

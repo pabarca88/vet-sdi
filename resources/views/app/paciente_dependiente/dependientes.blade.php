@@ -179,7 +179,7 @@
 
 
 @section('page-script')
-
+    
     <script>
         var especiesMascotas = @json($especiesMascotas);
         var tamanosMascotas = @json($tamanosMascotas);

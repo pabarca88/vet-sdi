@@ -824,6 +824,8 @@ Route::group([
     Route::get('mascotas', [App\Http\Controllers\MascotasController::class, 'index'])->name('paciente.mascotas.index');
     Route::post('mascotas', [App\Http\Controllers\MascotasController::class, 'store'])->name('paciente.mascotas.store');
     Route::get('mascotas/lista', [App\Http\Controllers\MascotasController::class, 'listar'])->name('paciente.mascotas.lista');
+    Route::put('mascotas/{mascota}', [App\Http\Controllers\MascotasController::class, 'update'])->whereNumber('mascota')->name('paciente.mascotas.update');
+    Route::delete('mascotas/{mascota}', [App\Http\Controllers\MascotasController::class, 'destroy'])->whereNumber('mascota')->name('paciente.mascotas.destroy');
     Route::get('/inscripcion_alimentos',[App\Http\Controllers\MascotasController::class, 'inscripcion_alimentos'])->name('paciente.mascotas.inscripcion_alimentos');
     Route::get('/inscripcion_medicamentos',[App\Http\Controllers\MascotasController::class, 'inscripcion_medicamentos'])->name('paciente.mascotas.inscripcion_medicamentos');
     Route::get('/promociones_especiales',[App\Http\Controllers\MascotasController::class, 'promociones_especiales'])->name('paciente.mascotas.promociones_especiales');
