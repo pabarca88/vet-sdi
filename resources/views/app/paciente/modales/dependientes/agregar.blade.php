@@ -6,6 +6,43 @@
 
 </button> -->
 
+@php
+    $especiesMascotas = $especiesMascotas ?? collect();
+    $tamanosMascotas = $tamanosMascotas ?? collect();
+@endphp
+@php
+    if ($especiesMascotas instanceof \Illuminate\Support\Collection) {
+        $especiesMascotas = $especiesMascotas;
+    } else {
+        $especiesMascotas = collect($especiesMascotas);
+    }
+    if ($tamanosMascotas instanceof \Illuminate\Support\Collection) {
+        $tamanosMascotas = $tamanosMascotas;
+    } else {
+        $tamanosMascotas = collect($tamanosMascotas);
+    }
+    if ($especiesMascotas->isEmpty()) {
+        $especiesMascotas = collect([
+            (object)['id' => 1, 'nombre' => 'Canina', 'slug' => 'canina', 'requiere_detalle' => false],
+            (object)['id' => 2, 'nombre' => 'Felina', 'slug' => 'felina', 'requiere_detalle' => false],
+            (object)['id' => 3, 'nombre' => 'Pez', 'slug' => 'pez', 'requiere_detalle' => false],
+            (object)['id' => 4, 'nombre' => 'Aves', 'slug' => 'aves', 'requiere_detalle' => false],
+            (object)['id' => 5, 'nombre' => 'Reptiles', 'slug' => 'reptiles', 'requiere_detalle' => false],
+            (object)['id' => 6, 'nombre' => 'Roedores', 'slug' => 'roedores', 'requiere_detalle' => false],
+            (object)['id' => 7, 'nombre' => 'Hurones', 'slug' => 'hurones', 'requiere_detalle' => false],
+            (object)['id' => 8, 'nombre' => 'Otros', 'slug' => 'otros', 'requiere_detalle' => true],
+        ]);
+    }
+
+    if ($tamanosMascotas->isEmpty()) {
+        $tamanosMascotas = collect([
+            (object)['id' => 1, 'nombre' => 'Pequeña', 'slug' => 'pequena'],
+            (object)['id' => 2, 'nombre' => 'Mediana', 'slug' => 'mediana'],
+            (object)['id' => 3, 'nombre' => 'Grande', 'slug' => 'grande'],
+        ]);
+    }
+@endphp
+
 
 
 <!-- Modal busqueda por rut -->
@@ -264,16 +301,11 @@
                 <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
                     <div class="form-group">
                         <label class="floating-label-activo-sm" for="espec_masc">Especie</label>
-                        <select name="espec_masc" id="espec_masc" class="form-control form-control-sm" onchange="evaluar_para_carga_detalle('espec_masc','div_espec_masc','obs_espec_masc',8);">
+                        <select name="espec_masc" id="espec_masc" class="form-control form-control-sm" onchange="handleEspecieChange();">
                             <option value="0">Seleccione</option>
-                             <option value="1">Canina</option>
-                            <option value="2">Felina</option>
-                            <option value="3">Pez</option>
-                            <option value="4">Aves</option>
-                            <option value="5">Reptiles</option>
-                            <option value="6">Roedores</option>
-                            <option value="7">Hurones</option>
-                            <option value="8">Otros</option>
+                            @foreach(($especiesMascotas ?? []) as $especie)
+                                <option value="{{ $especie->id }}">{{ $especie->nombre }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="form-group" id="div_espec_masc" style="display:none;">
@@ -287,10 +319,34 @@
                         <label class="floating-label-activo-sm"><span class="requerido" style="color: red;" id="requerido_modal_agregar_dep_nuevo_tamano">*</span>Tipo de mascota (tamaño)</label>
                         <select class="form-control form-control-sm" name="modal_agregar_dep_nuevo_tamano" id="modal_agregar_dep_nuevo_tamano">
                             <option value="">Seleccione</option>
-                            <option value="pequena">Pequeña</option>
-                            <option value="mediana">Mediana</option>
-                            <option value="grande">Grande</option>
+                            @foreach(($tamanosMascotas ?? []) as $tamano)
+                                <option value="{{ $tamano->id }}">{{ $tamano->nombre }}</option>
+                            @endforeach
                         </select>
+                    </div>
+                </div>
+
+                <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                    <div class="form-group">
+                        <label class="floating-label-activo-sm"><span class="requerido" style="color: red;" id="requerido_modal_agregar_dep_nuevo_esterilizado">*</span>¿Esterilizado?</label>
+                        <select class="form-control form-control-sm" name="modal_agregar_dep_nuevo_esterilizado" id="modal_agregar_dep_nuevo_esterilizado" onchange="toggleEsterilizacion();">
+                            <option value="">Seleccione</option>
+                            <option value="1">Sí</option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6" id="contenedor_fecha_esterilizacion" style="display:none;">
+                    <div class="form-group">
+                        <label class="floating-label-activo-sm" for="modal_agregar_dep_nuevo_fecha_esterilizacion"><span class="requerido" style="color: red; display:none;" id="requerido_modal_agregar_dep_nuevo_fecha_esterilizacion">*</span>Fecha de esterilización</label>
+                        <input type="date" class="form-control form-control-sm" name="modal_agregar_dep_nuevo_fecha_esterilizacion" id="modal_agregar_dep_nuevo_fecha_esterilizacion" max="{{ date('Y-m-d') }}">
+                    </div>
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="floating-label-activo-sm" for="modal_agregar_dep_nuevo_enfermedad_cronica">Enfermedad crónica o frecuente</label>
+                        <textarea class="form-control form-control-sm" rows="1" onfocus="this.rows=3" onblur="this.rows=1;" name="modal_agregar_dep_nuevo_enfermedad_cronica" id="modal_agregar_dep_nuevo_enfermedad_cronica"></textarea>
                     </div>
                 </div>
 

@@ -4,6 +4,12 @@
 
 @section('content')
 
+    @php
+        $especiesMascotas = $especiesMascotas ?? collect();
+        $tamanosMascotas = $tamanosMascotas ?? collect();
+        $especieTamanosMascotas = $especieTamanosMascotas ?? collect();
+    @endphp
+
     <div class="pcoded-main-container">
 
         <div class="pcoded-content">
@@ -175,6 +181,90 @@
 @section('page-script')
 
     <script>
+        var especiesMascotas = @json($especiesMascotas);
+        var tamanosMascotas = @json($tamanosMascotas);
+        var especieTamanosMascotas = @json($especieTamanosMascotas);
+        var especiesLabel = {};
+        var tamanoLabel = {};
+        var tamanoLabelSlug = {};
+
+        function construirMapaNombre(listado)
+        {
+            var mapa = {};
+            (listado || []).forEach(function(item){
+                mapa[item.id] = item.nombre;
+            });
+            return mapa;
+        }
+
+        especiesLabel = construirMapaNombre(especiesMascotas);
+        tamanoLabel = construirMapaNombre(tamanosMascotas);
+        (tamanosMascotas || []).forEach(function(item){
+            tamanoLabelSlug[item.slug] = item.nombre;
+        });
+
+        function requiereDetalleEspecie(especieId)
+        {
+            var especie = (especiesMascotas || []).find(function(item){
+                return parseInt(item.id) === parseInt(especieId);
+            });
+            return especie ? !!especie.requiere_detalle : false;
+        }
+
+        function obtenerTamanosPorEspecie(especieId)
+        {
+            if(!especieId) return (tamanosMascotas || []);
+            var permitidos = (especieTamanosMascotas || []).filter(function(item){
+                return parseInt(item.especie_id) === parseInt(especieId);
+            }).map(function(item){ return item.tamano_id; });
+
+            return (tamanosMascotas || []).filter(function(tamano){
+                return permitidos.length === 0 || permitidos.indexOf(tamano.id) >= 0;
+            });
+        }
+
+        function actualizarOpcionesTamano(especieId)
+        {
+            var tamanosDisponibles = obtenerTamanosPorEspecie(especieId);
+            var select = $('#modal_agregar_dep_nuevo_tamano');
+            var valorActual = select.val();
+            select.html('<option value=\"\">Seleccione</option>');
+            tamanosDisponibles.forEach(function(tamano){
+                select.append('<option value=\"'+tamano.id+'\">'+tamano.nombre+'</option>');
+            });
+            if(valorActual && select.find('option[value=\"'+valorActual+'\"]').length)
+            {
+                select.val(valorActual);
+            }
+        }
+
+        function handleEspecieChange()
+        {
+            var especieSeleccionada = $('#espec_masc').val();
+            var requiereDetalle = requiereDetalleEspecie(especieSeleccionada);
+            $('#div_espec_masc').toggle(requiereDetalle);
+            if(!requiereDetalle)
+            {
+                $('#obs_espec_masc').val('');
+            }
+            actualizarOpcionesTamano(especieSeleccionada);
+        }
+
+        function obtenerLabelEspecie(especie, otra)
+        {
+            var label = especiesLabel[especie] ? especiesLabel[especie] : '';
+            if(requiereDetalleEspecie(especie) && otra)
+            {
+                label += (label ? ' ('+otra+')' : otra);
+            }
+            return label || '-';
+        }
+
+        function obtenerLabelTamano(tamanoId)
+        {
+            if(tamanoLabel[tamanoId]) return tamanoLabel[tamanoId];
+            return tamanoLabelSlug[tamanoId] ? tamanoLabelSlug[tamanoId] : '-';
+        }
 
         $(document).ready(function () {
 
@@ -204,6 +294,8 @@
 
 
 
+            handleEspecieChange();
+            toggleEsterilizacion();
             toggleChipInput();
             cargarDependientes();
 
@@ -216,11 +308,14 @@
             $('#modal_agregar_dep_nuevo_rut').val('');
             $('#modal_agregar_dep_nuevo_nombres_paciente').val('');
             $('#espec_masc').val('0');
-            $('#div_espec_masc').hide();
-            $('#obs_espec_masc').val('');
+            handleEspecieChange();
             $('#modal_agregar_dep_nuevo_tamano').val('');
             $('#modal_agregar_dep_nuevo_fecha_nac').val('');
             $('#modal_agregar_dep_nuevo_sexo').val('0');
+            $('#modal_agregar_dep_nuevo_esterilizado').val('');
+            $('#modal_agregar_dep_nuevo_fecha_esterilizacion').val('');
+            $('#modal_agregar_dep_nuevo_enfermedad_cronica').val('');
+            toggleEsterilizacion();
             $('#imagenes_ven_pre').val('');
             $('#imagenes_ven_post').val('');
             $('#input_lista_ven_imagenes').val('');
@@ -243,6 +338,19 @@
             {
                 $('#requerido_modal_agregar_dep_nuevo_rut').hide();
                 $('#modal_agregar_dep_nuevo_rut').val('');
+            }
+        }
+
+        function toggleEsterilizacion()
+        {
+            var esterilizado = $('#modal_agregar_dep_nuevo_esterilizado').val();
+            var mostrar = (esterilizado === '1');
+            $('#contenedor_fecha_esterilizacion').toggle(mostrar);
+            $('#requerido_modal_agregar_dep_nuevo_fecha_esterilizacion').toggle(mostrar);
+            $('#modal_agregar_dep_nuevo_fecha_esterilizacion').prop('required', mostrar);
+            if(!mostrar)
+            {
+                $('#modal_agregar_dep_nuevo_fecha_esterilizacion').val('');
             }
         }
 
@@ -915,6 +1023,12 @@
 
             var tamano = $('#modal_agregar_dep_nuevo_tamano').val();
 
+            var esterilizado = $('#modal_agregar_dep_nuevo_esterilizado').val();
+
+            var fecha_esterilizacion = $('#modal_agregar_dep_nuevo_fecha_esterilizacion').val();
+
+            var enfermedad_cronica = $('#modal_agregar_dep_nuevo_enfermedad_cronica').val();
+
             var fecha_nac = $('#modal_agregar_dep_nuevo_fecha_nac').val();
 
             var sexo = $('#modal_agregar_dep_nuevo_sexo').val();
@@ -957,7 +1071,7 @@
 
 
 
-            if(especie == '8' && otra_especie == '')
+            if(requiereDetalleEspecie(especie) && otra_especie == '')
 
             {
 
@@ -975,6 +1089,17 @@
 
                 mensaje += 'Tipo de mascota: requerido\n';
 
+            }
+
+            if(esterilizado === '')
+            {
+                valido = 0;
+                mensaje += 'Esterilizado: requerido\n';
+            }
+            if(esterilizado === '1' && fecha_esterilizacion === '')
+            {
+                valido = 0;
+                mensaje += 'Fecha de esterilización: requerido\n';
             }
 
 
@@ -1033,11 +1158,14 @@
 
                 datos.nombre = nombre;
 
-                datos.especie = especie;
+                datos.especie_id = especie;
 
                 datos.otra_especie = otra_especie;
 
-                datos.tamano = tamano;
+                datos.tamano_id = tamano;
+                datos.esterilizado = esterilizado;
+                datos.fecha_esterilizacion = (esterilizado === '1') ? fecha_esterilizacion : '';
+                datos.enfermedad_cronica = enfermedad_cronica;
 
                 datos.fecha_nacimiento = fecha_nac;
 
@@ -1173,7 +1301,6 @@
                 {
                     var  img_m = '{{ asset('images/iconos/paciente-m.svg') }}';
                     var  img_f = '{{ asset('images/iconos/paciente-f.svg') }}';
-                    var  especies = {1:'Canina',2:'Felina',3:'Pez',4:'Aves',5:'Reptiles',6:'Roedores',7:'Hurones',8:'Otros'};
 
                     if(data.registros != '')
                     {
@@ -1196,11 +1323,7 @@
                             else
                                 img = img_f;
 
-                            var especie_label = especies[value.especie] ? especies[value.especie] : '';
-                            if(value.especie == 8 && value.otra_especie)
-                            {
-                                especie_label += ' ('+value.otra_especie+')';
-                            }
+                            var especie_label = obtenerLabelEspecie(value.especie_id || value.especie, value.otra_especie);
 
                             html += '<div class="col">';
                             html += '    <div class="card">';
