@@ -13,6 +13,7 @@ use App\Models\Profesional;
 use App\Models\Region;
 use App\Models\TipoDependencia;
 use App\Models\User;
+use App\Models\FichaAtencion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -72,6 +73,7 @@ class EscritorioDependientesController extends Controller
                     'prevision' => $prevision,
                     'region' => $region,
                     'paciente' => $paciente,
+                    'fichasMascota' => FichaAtencion::where('id_paciente', 3)->orderBy('id', 'desc')->get(),
 
                 ]);
 
@@ -126,6 +128,7 @@ class EscritorioDependientesController extends Controller
                     'tipo_dependencias' => $request->tipo_dependencia,
                     'prevision' => $prevision,
                     'region' => $region,
+                    'fichasMascota' => FichaAtencion::where('id_paciente', 3)->orderBy('id', 'desc')->get(),
                 ]);
             }
         }

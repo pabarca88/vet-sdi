@@ -429,7 +429,7 @@ class ficha_atencionController extends Controller
 
         // CONSULTAS PREVIAS base fichas atencion
         $filtro_previas = array();
-        $filtro_previas[] = array('id_paciente', $hora->id_paciente);
+        $filtro_previas[] = array('id_paciente', $hora->id_paciente); //3
         $filtro_previas[] = array('confidencial', '0');
         $filtro_previas[] = array('finalizada', 1);
         $filtro_previas[] = array('id_profesional', $profesional->id);

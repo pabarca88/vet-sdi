@@ -114,6 +114,10 @@
                                     <img class="wid-60 text-center mt-1 rounded-circle" src="{{ $imgMascota }}">
                                     <h5 class="mt-2 mb-0">{{ $mascota->nombre }}</h5>
                                     <p class="mb-0">{{ $labelEspecie }}</p>
+                                    <div class="mt-2 d-flex justify-content-center">
+                                        <button type="button" class="btn btn-info btn-sm mr-1 btn-ver-mascota" data-id="{{ $mascota->id }}">Ver mascota</button>
+                                        <button type="button" class="btn btn-primary btn-sm btn-ver-ficha" data-id="{{ $mascota->id }}">Ficha medica</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -199,6 +203,43 @@
                     <button type="button" class="btn btn-danger" id="btn_eliminar_mascota">Eliminar</button>
                     <button type="button" class="btn btn-info" id="btn_editar_mascota">Editar</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal_ficha_mascota" tabindex="-1" role="dialog" aria-labelledby="modalFichaMascota" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h5 class="modal-title text-white mt-1" id="modalFichaMascota">Ficha medica <span id="modal_ficha_mascota_nombre"></span></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table table-sm table-bordered mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Diagnostico</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (isset($fichasMascota) && $fichasMascota->count() > 0)
+                                    @foreach ($fichasMascota as $ficha)
+                                        <tr>
+                                            <td>{{ \Carbon\Carbon::parse($ficha->created_at)->format('d/m/Y') }}</td>
+                                            <td>{{ $ficha->hipotesis_diagnostico ?: '-' }}</td>
+                                        </tr>
+                                    @endforeach
+                                @else
+                                    <tr>
+                                        <td colspan="2" class="text-center">Sin registros</td>
+                                    </tr>
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -753,6 +794,24 @@
             toggleChipInput();
             registrarMascotasIniciales();
             cargarDependientes();
+
+            $(document).on('click', '.btn-ver-mascota', function(e){
+                e.stopPropagation();
+                var idMascota = $(this).data('id') || $(this).closest('.card-mascota').data('id');
+                mostrarDetalleMascota(idMascota);
+            });
+
+            $(document).on('click', '.btn-ver-ficha', function(e){
+                e.stopPropagation();
+                var idMascota = $(this).data('id') || $(this).closest('.card-mascota').data('id');
+                var mascota = mascotasCache[idMascota];
+                $('#modal_ficha_mascota_nombre').text(mascota && mascota.nombre ? 'de ' + mascota.nombre : '');
+                var $modalFicha = $('#modal_ficha_mascota');
+                $('.modal.show').modal('hide');
+                if ($modalFicha.length) {
+                    $modalFicha.appendTo('body').modal('show');
+                }
+            });
 
             $(document).on('click', '.card-mascota', function(){
                 var idMascota = $(this).data('id');
@@ -1406,6 +1465,10 @@
                             html += '            <img class="wid-60 text-center mt-1 rounded-circle" src="'+img+'">';
                             html += '            <h5 class="mt-2 mb-0">'+value.nombre+'</h5>';
                             html += '            <p class="mb-0">'+especie_label+'</p>';
+                            html += '            <div class="mt-2 d-flex justify-content-center">';
+                            html += '                <button type="button" class="btn btn-info btn-sm mr-1 btn-ver-mascota" data-id="'+value.id+'">Ver mascota</button>';
+                            html += '                <button type="button" class="btn btn-primary btn-sm btn-ver-ficha" data-id="'+value.id+'">Ficha medica</button>';
+                            html += '            </div>';
                             html += '        </div>';
                             html += '    </div>';
                             html += '</div>';

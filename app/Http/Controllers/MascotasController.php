@@ -24,6 +24,7 @@ class MascotasController extends Controller
         $especies = EspecieMascota::orderBy('nombre')->get();
         $tamanos = TamanoMascota::orderBy('nombre')->get();
         $especieTamanos = EspecieTamanoMascota::with(['especie', 'tamano'])->get();
+        $fichasMascota = FichaAtencion::where('id_paciente', 3)->orderBy('id', 'desc')->get();
 
         return view('app.paciente.dependientes')->with([
             'titulo' => 'Mascotas',
@@ -37,6 +38,7 @@ class MascotasController extends Controller
             'especiesMascotas' => $especies,
             'tamanosMascotas' => $tamanos,
             'especieTamanosMascotas' => $especieTamanos,
+            'fichasMascota' => $fichasMascota,
         ]);
     }
 
