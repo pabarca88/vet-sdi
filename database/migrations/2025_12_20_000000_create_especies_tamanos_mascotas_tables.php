@@ -14,18 +14,18 @@ class CreateEspeciesTamanosMascotasTables extends Migration
      */
     public function up()
     {
-        Schema::create('especies_mascotas', function (Blueprint $table) {
-            $table->id();
-            $table->string('nombre');
-            $table->string('slug')->unique();
-            $table->boolean('requiere_detalle')->default(false);
-            $table->timestamps();
-        });
+        // Schema::create('especies_mascotas', function (Blueprint $table) {
+        //     $table->id();
+        //     $table->string('nombre', 100);
+        //     $table->string('slug', 100)->unique();
+        //     $table->boolean('requiere_detalle')->default(false);
+        //     $table->timestamps();
+        // });
 
         Schema::create('tamanos_mascotas', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre');
-            $table->string('slug')->unique();
+            $table->string('nombre', 100);
+            $table->string('slug', 100)->unique();
             $table->timestamps();
         });
 

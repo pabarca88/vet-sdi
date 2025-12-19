@@ -73,7 +73,7 @@
                                     {{-- @if ( $tipo_dependencias != '4' ) --}}
 
                                         <button type="button" class="btn btn-light btn-sm d-inline float-md-right" id="btn-agregar-dep" name="btn-agregar-dep"><i class="fas fa-plus"></i> Agregar mascota</button>
-                                     
+
 
                                     {{-- @endif --}}
 
@@ -152,8 +152,8 @@
 @endsection
 
 @section('modales')
-   @include('app.paciente.modales.dependientes.agregar_acompanante')
- @include('app.paciente.modales.dependientes.ver_acomp')
+    @include('app.paciente.modales.dependientes.agregar_acompanante')
+    @include('app.paciente.modales.dependientes.ver_acomp')
     @include('app.paciente.modales.dependientes.agregar')
 
     <div class="modal fade" id="modal_detalle_mascota" tabindex="-1" role="dialog" aria-labelledby="modalDetalleMascota" aria-hidden="true">
@@ -208,6 +208,9 @@
 
 @section('page-script')
     <script>
+        // IMPORTANTE: desactiva auto-discover de Dropzone
+        Dropzone.autoDiscover = false;
+
         var mascotasCache = {};
         var mascotasIniciales = @json(isset($mascotas) ? $mascotas : []);
         var especiesMascotas = @json($especiesMascotas);
@@ -453,6 +456,16 @@
             $('#imagenes_ven_post').val('');
             $('#input_lista_ven_imagenes').val('');
             $('#obs_fotos_ven').val('');
+
+            // Limpiar Dropzones
+            if (myDropzone_ven_pre) {
+                myDropzone_ven_pre.removeAllFiles(true);
+            }
+            if (myDropzone_ven_post) {
+                myDropzone_ven_post.removeAllFiles(true);
+            }
+            lista_ven_imagenes = {};
+
             $('#btn_registrar').show();
         }
 
@@ -1095,5 +1108,110 @@
                 console.log(jqXHR, ajaxOptions, thrownError)
             });
         }
+
+        // ====== INICIALIZACIÓN DE DROPZONE ======
+        var lista_ven_imagenes = {};
+        var myDropzone_ven_pre = null;
+        var myDropzone_ven_post = null;
+
+        function cargar_lista_ven_imagenes(obj_dropzone, alias_examen) {
+            lista_ven_imagenes[alias_examen] = [];
+
+            let temp = obj_dropzone.getAcceptedFiles();
+            $.each(temp, function(index, value) {
+                if (value.status === "success" && value.xhr) {
+                    var img_temp = JSON.parse(value.xhr.response);
+
+                    lista_ven_imagenes[alias_examen][index] = [
+                        url = img_temp.img.url,
+                        nombre_origian = img_temp.img.original_file_name,
+                        nombre_img = img_temp.img.nombre_img,
+                        file_extension = img_temp.img.file_extension,
+                    ];
+
+                    $('#input_lista_ven_imagenes').val(JSON.stringify(lista_ven_imagenes));
+                }
+            });
+        }
+
+        function destroyDZ(selector) {
+            var el = document.querySelector(selector);
+            if (el && el.dropzone) {
+                el.dropzone.destroy();
+            }
+        }
+
+        function initVenDropzones() {
+            if (!document.querySelector("#mi-imagen-ven-pre")) return;
+            if (!document.querySelector("#mi-imagen-ven-post")) return;
+
+            destroyDZ("#mi-imagen-ven-pre");
+            destroyDZ("#mi-imagen-ven-post");
+
+            myDropzone_ven_pre = new Dropzone("#mi-imagen-ven-pre", {
+                url: "{{ route('profesional.imagen.carga') }}",
+                method: "post",
+                headers: { "X-CSRF-TOKEN": CSRF_TOKEN },
+                acceptedFiles: "image/jpeg,image/png,image/jpg,.jpeg,.jpg,.png,image/*",
+                maxFilesize: 6,
+                maxFiles: 12,
+                addRemoveLinks: true,
+                createImageThumbnails: true,
+                paramName: "file",
+                dictInvalidFileType: "No puedes subir archivos de este tipo.",
+                dictFileTooBig: "El archivo es demasiado grande. Max 6 MiB.",
+
+                success: function(file, response) {
+                    $('#imagenes_ven_pre').val(response.img.url ?? response.img.nombre_img);
+                    cargar_lista_ven_imagenes(myDropzone_ven_pre, "ven_pre");
+                },
+
+                error: function(file, message, xhr) {
+                    console.log("VEN_PRE ERROR:", message);
+                    if (xhr && xhr.responseText) console.log("VEN_PRE SERVER:", xhr.responseText);
+                },
+
+                removedfile: function(file) {
+                    $('#imagenes_ven_pre').val('');
+                    cargar_lista_ven_imagenes(myDropzone_ven_pre, "ven_pre");
+                    if (file.previewElement) file.previewElement.remove();
+                }
+            });
+
+            myDropzone_ven_post = new Dropzone("#mi-imagen-ven-post", {
+                url: "{{ route('profesional.imagen.carga') }}",
+                method: "post",
+                headers: { "X-CSRF-TOKEN": CSRF_TOKEN },
+                acceptedFiles: "image/jpeg,image/png,image/jpg,.jpeg,.jpg,.png,image/*",
+                maxFilesize: 6,
+                maxFiles: 12,
+                addRemoveLinks: true,
+                createImageThumbnails: true,
+                paramName: "file",
+                dictInvalidFileType: "No puedes subir archivos de este tipo.",
+                dictFileTooBig: "El archivo es demasiado grande. Max 6 MiB.",
+
+                success: function(file, response) {
+                    $('#imagenes_ven_post').val(response.img.nombre_img);
+                    cargar_lista_ven_imagenes(myDropzone_ven_post, "ven_post");
+                },
+
+                error: function(file, message, xhr) {
+                    console.log("VEN_POST ERROR:", message);
+                    if (xhr && xhr.responseText) console.log("VEN_POST SERVER:", xhr.responseText);
+                },
+
+                removedfile: function(file) {
+                    $('#imagenes_ven_post').val('');
+                    cargar_lista_ven_imagenes(myDropzone_ven_post, "ven_post");
+                    if (file.previewElement) file.previewElement.remove();
+                }
+            });
+        }
+
+        // Inicializar Dropzone cuando se abre el modal
+        $(document).on("shown.bs.modal", "#modal_agregar_dep_nuevo", function() {
+            initVenDropzones();
+        });
     </script>
 @endsection

@@ -312,7 +312,7 @@
                         <label class="floating-label-activo-sm" for="obs_espec_masc">Otra especie <i>(Anote)</i></label>
                         <textarea class="form-control form-control-sm"   rows="1"  onfocus="this.rows=3" onblur="this.rows=1;" name="obs_espec_masc" id="obs_espec_masc"></textarea>
                     </div>
-                </div>    
+                </div>
 
                 <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
                     <div class="form-group">
@@ -399,8 +399,8 @@
                         </div>
                     </div>
                 </div>
-                                  
-                          
+
+
 
                 {{--  <div class="col-sm-12 col-md-12">
 
@@ -647,17 +647,16 @@
 </div>
 
 <script>
-       function cargarIgual(input)
+    function cargarIgual(input)
     {
-
         let actual = $('#'+input);
         let equivalentes = $('#'+input).attr('data-input_igual').split(',');
         $.each(equivalentes, function( index, value ) {
             var equivalente = $('#'+value);
             equivalente.val(actual.val());
         });
-
     }
+
     function evaluar_para_carga_detalle(select, div, input, valor)
     {
         var valor_select = $('#'+select+'').val();
@@ -667,12 +666,6 @@
             $('#'+input+'').val('');
         }
     }
-</script>
-@section('script-veneria')
-<script>
-  
-  // IMPORTANTE: desactiva auto-discover
-  Dropzone.autoDiscover = false;
 
   // Lista (la mantengo igual)
   var lista_ven_imagenes = {};
@@ -793,4 +786,3 @@
     initVenDropzones();
   });
 </script>
-@endsection
