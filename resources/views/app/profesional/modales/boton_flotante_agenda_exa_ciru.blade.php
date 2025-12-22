@@ -211,9 +211,13 @@
                                                                     descripcion += valor;
                                                                     descripcion += comentarios_confirmacion;
                                                                     descripcion += nombre;
+                                                                    var mascotaNombre = '';
+                                                                    if (element.mascota && element.mascota.nombre) {
+                                                                        mascotaNombre = ' - ' + element.mascota.nombre;
+                                                                    }
                                                                     arrayTemp.push({
                                                                                     id: element.id,
-                                                                                    title: element.tipo_hora_medica+' - '+element.descripcion,
+                                                                                    title: element.tipo_hora_medica+' - '+element.descripcion + mascotaNombre,
                                                                                     description: descripcion ,
                                                                                     start: element.fecha_consulta + 'T' + element.hora_inicio,
                                                                                     end: element.fecha_consulta + 'T' + element.hora_termino,
@@ -278,6 +282,22 @@
                                                         else
                                                             $('#datos_consulta_fecha_ultima').text('No registra atenciones previas');													 
                                                         $('#datos_consulta_fecha_ultima').text(data.paciente.fecha_ultima_atencion);
+
+                                                        var mascota = data.mascota || null;
+                                                        var mascotaRaza = '';
+                                                        if (mascota) {
+                                                            if (mascota.especieMascota && mascota.especieMascota.nombre) {
+                                                                mascotaRaza = mascota.especieMascota.nombre;
+                                                            } else if (mascota.especie) {
+                                                                mascotaRaza = mascota.especie;
+                                                            }
+                                                        }
+                                                        $('#datos_consulta_mascota_nombre').text(mascota && mascota.nombre ? mascota.nombre : '');
+                                                        $('#datos_consulta_mascota_raza').text(mascotaRaza);
+                                                        $('#datos_consulta_mascota_esterilizado').text(mascota ? (mascota.esterilizado ? 'SI' : 'NO') : '');
+                                                        var fechaUltimaMascota = (data.hora_medica && data.hora_medica.fecha_consulta) ? data.hora_medica.fecha_consulta : '';
+                                                        $('#datos_consulta_mascota_ultima_consulta').text(fechaUltimaMascota);
+                                                        // $('#datos_consulta_mascota_fecha_ultima').text(fechaUltimaMascota);
 
                                                         if (data.paciente.sexo == 'M') {
                                                             $('#datos_consulta_sexo').text('Masculino');

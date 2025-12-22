@@ -196,7 +196,7 @@
                     <div class="form-row div_rut_buscar">
                          <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                             <div class="form-group">
-                                <h6 class="text-c-blue f-14">Ingrese el RUT del cliente</h6>
+                                <h6 class="text-c-blue f-14">Ingrese el RUT del responsable</h6>
                             </div>
                         </div>
                         <div class="col-sm-9 col-md-9">
@@ -272,253 +272,299 @@
                             
                             <table class="table table-borderless table-xs">
                                 <tbody>
-                                     <tr>
-                                        <h6 class="text-c-blue f-16 d-inline mb-3">Seleccione mascota para agendar cita</h6>
-                                        <div class="form-row">
-                                             <div class="form-group col-12">
-                                                <label class="floating-label-activo-sm">Mascota</label>
-                                                <select class="form-control form-control-sm" >
-                                                    <option value="">Seleccione mascota</option>
-                                                </select>
-                                            </div>
-                                            <div class="form-group col-12">
-                                                <label class="floating-label-activo-sm">Motivo de la consulta</label>
-                                                <select class="form-control form-control-sm" >
-                                                    <option value="">Seleccione</option>
-                                                     <option value="">Consulta</option>
-                                                     <option>Control</option>
-
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </tr>
                                     <tr>
-                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 mt-2">
-                                        <h6 class="text-c-blue f-16 d-inline">Información del cliente</h6>
-                                        <button type="button" onclick="editar_info_paciente();" class="btn btn-sm btn-info-light-c float-right d-inline paciente_view">
-                                            <i class="feather icon-edit"></i> Editar
-                                        </button>
-                                        <input type="hidden" name="modificando_paciente" id="modificando_paciente" value="0">
-                                    </div>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">
-                                            <strong>Rut</strong>
-                                        </th>
-                                        <td><span id="reserva_rut_paciente"></span></td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">
-                                            <strong>Nombre</strong>
-                                        </th>
-                                        <td>
-                                            <div class="paciente_view">
-                                                <span id="reserva_hora_nombre"></span>
+                                        <td class="align-top">
+                                            <h6 class="text-c-blue f-16 mb-3">Seleccione mascota para agendar cita</h6>
+                                            <div class="form-row">
+                                                <div class="form-group col-12">
+                                                    <label class="floating-label-activo-sm">Mascota</label>
+                                                    <select class="form-control form-control-sm" id="reserva_hora_mascota_id" name="reserva_hora_mascota_id">
+                                                        <option value="">Seleccione mascota</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group col-12">
+                                                    <label class="floating-label-activo-sm">Motivo de la consulta</label>
+                                                    <select class="form-control form-control-sm">
+                                                        <option value="">Seleccione</option>
+                                                        <option value="urgencia">Urgencia</option>
+                                                        <option value="consulta-general">Consulta general</option>
+                                                        <option value="control">Control</option>
+                                                        <option value="vacunacion">Vacunación</option>
+                                                        <option value="desparacation-externa">Desparacitación Externa</option>
+                                                        <option value="desparacation-interna">Desparacitación Interna</option>
+                                                        <option value="plan-geriatrico">Plan geriátrico</option>
+                                                    </select>
+                                                </div>
                                             </div>
+                                            <div class="row">
+                                              <div class="col-md-7">
+                                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 mt-2">
+                                                <h6 class="text-c-blue f-16 d-inline">Información del cliente</h6>
+                                                <button type="button" onclick="editar_info_paciente();" class="btn btn-sm btn-info-light-c float-right d-inline paciente_view">
+                                                    <i class="feather icon-edit"></i> Editar
+                                                </button>
+                                                <input type="hidden" name="modificando_paciente" id="modificando_paciente" value="0">
+                                                </div>
 
-                                                <div class="paciente_edit" style="display:none">
-                                                <div class="form-row">
-                                                    <div class="col-sm-12 col-md-4">
-                                                        <input type="text" class="form-control form-control-sm" id="input_reserva_hora_nombre" value="">
-                                                    </div>
-                                                        <div class="col-sm-12 col-md-4">
-                                                            <input type="text" class="form-control form-control-sm" id="input_reserva_hora_apellido_uno" value="">
-                                                    </div>
-                                                    <div class="col-sm-12 col-md-4">
-                                                        <input type="text" class="form-control form-control-sm" id="input_reserva_hora_apellido_dos" value="">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <!--<tr>
-                                        <th scope="row">
-                                            <strong>Fecha Nacimiento</strong>
-                                        </th>
-                                        <td>
-                                            <div class="paciente_view">
-                                                <span id="reserva_fecha_nacimiento"></span>
-                                            </div>
-                                            <div class="paciente_edit" style="display:none">
-                                                <input type="text" class="mask_date form-control form-control-sm"
-                                                    name="input_reserva_fecha_nacimiento" id="input_reserva_fecha_nacimiento"
-                                                    onchange="evaluar_edad();"
-                                                    maxlength="10" placeholder="dd/mm/aaaa"
-                                                    autocomplete="off"
-                                                    data-mask="00/00/0000"
-                                                />
-                                            </div>
-                                        </td>
-                                    </tr>-->
-                                    <!--<tr>
-                                        <th scope="row">
-                                            <strong>Sexo</strong>
-                                        </th>
-                                        <td>
-                                            <div class="paciente_view">
-                                                <span id="reserva_sexo"></span>
-                                            </div>
-                                            <div class="paciente_edit" style="display:none">
-                                                <select id="input_reserva_sexo" class="form-control form-control-sm">
-                                                    <option value="M">Masculino</option>
-                                                    <option value="F">Femenino</option>
-                                                </select>
-                                            </div>
-                                        </td>
-                                    </tr>-->
-                                    <tr>
-                                        <th scope="row">
-                                            <strong>Dirección</strong>
-                                        </th>
-                                        <td>
-                                            <div class="paciente_view">
-                                                <span id="reserva_direccion"></span>
-                                            </div>
-                                            <div class="paciente_edit" style="display:none">
-                                                <div class="form-row">
-                                                    <div class="col-sm-12 col-md-9">
-                                                        <div class="form-group">
-                                                            <input type="address" class="form-control form-control-sm" name="input_reserva_direccion_direccion" id="input_reserva_direccion_direccion" value="">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-12 col-md-3">
-                                                        <div class="form-group">
-                                                            <input type="address" class="form-control form-control-sm" name="input_reserva_direccion_numero_dir" id="input_reserva_direccion_numero_dir" value="">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="form-row">
-                                                    <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                                                        <div class="form-group">
-                                                            <label class="floating-label-activo-sm">Región</label>
-                                                            <select id="input_reserva_direccion_region" onchange="buscar_ciudad_general('input_reserva_direccion_region', 'input_reserva_direccion_ciudad', 0);" name="input_reserva_direccion_region" class="form-control form-control-sm">
-                                                                <option value="0">Seleccione</option>
-                                                                @if (isset($region))
-                                                                    @foreach ($region as $reg)
-                                                                        <option value="{{ $reg->id }}">{{ $reg->nombre }} </option>
-                                                                    @endforeach
-                                                                @endif
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                                                        <div class="form-group">
-                                                            <label class="floating-label-activo-sm">Ciudad</label>
-                                                            <select id="input_reserva_direccion_ciudad" name="input_reserva_direccion_ciudad" class="form-control form-control-sm">
-                                                                <option value="0">Seleccione</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">
-                                            <strong>Correo Electrónico</strong>
-                                        </th>
-                                        <td>
-                                            <div class="paciente_view">
-                                                <span id="reserva_hora_email"></span>
-                                            </div>
-                                            <div class="paciente_edit" style="display:none">
-                                                <div class="form-row">
-                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                                                        <input type="text" class="form-control form-control-sm" id="input_reserva_hora_email" value="">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">
-                                            <strong>Teléfono</strong>
-                                        </th>
-                                        <td>
-                                            <div class="paciente_view">
-                                                <span id="reserva_hora_telefono"></span>
-                                            </div>
-                                            <div class="paciente_edit" style="display:none">
-                                                <div class="form-row">
-                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                                                        <input type="text" class="form-control form-control-sm" id="input_reserva_hora_telefono" value="">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">
-                                            <strong>Convenio</strong>
-                                        </th>
-                                        <td>
-                                            <div class="paciente_view">
-                                                <span id="reserva_convenio"></span>
-                                            </div>
-                                            <div class="paciente_edit" style="display:none">
-                                                <select id="input_reserva_convenio" name="input_reserva_convenio" class="form-control form-control-sm">
-                                                    <option value="0">Seleccione</option>
-                                                    @if (isset($prevision))
-                                                        @foreach ($prevision as $p)
-                                                            <option value="{{ $p->id }}">{{ $p->nombre }}</option>
-                                                        @endforeach
-                                                    @endif
-                                                </select>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                                <table class="table table-borderless table-xs mb-0">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>
+                                                              <div><b>Rut</b></div>
+                                                              <span id="reserva_rut_paciente"></span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                              <div><b>Nombre</b></div>
+                                                                <div class="paciente_view">
+                                                                    <span id="reserva_hora_nombre"></span>
+                                                                </div>
 
+                                                                <div class="paciente_edit" style="display:none">
+                                                                    <div class="form-row">
+                                                                        <div class="col-sm-12 col-md-4">
+                                                                            <input type="text" class="form-control form-control-sm" id="input_reserva_hora_nombre" value="">
+                                                                        </div>
+                                                                        <div class="col-sm-12 col-md-4">
+                                                                            <input type="text" class="form-control form-control-sm" id="input_reserva_hora_apellido_uno" value="">
+                                                                        </div>
+                                                                        <div class="col-sm-12 col-md-4">
+                                                                            <input type="text" class="form-control form-control-sm" id="input_reserva_hora_apellido_dos" value="">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <!--<tr>
+                                                            <th scope="row">
+                                                                <strong>Fecha Nacimiento</strong>
+                                                            </th>
+                                                            <td>
+                                                                <div class="paciente_view">
+                                                                    <span id="reserva_fecha_nacimiento"></span>
+                                                                </div>
+                                                                <div class="paciente_edit" style="display:none">
+                                                                    <input type="text" class="mask_date form-control form-control-sm"
+                                                                        name="input_reserva_fecha_nacimiento" id="input_reserva_fecha_nacimiento"
+                                                                        onchange="evaluar_edad();"
+                                                                        maxlength="10" placeholder="dd/mm/aaaa"
+                                                                        autocomplete="off"
+                                                                        data-mask="00/00/0000"
+                                                                    />
+                                                                </div>
+                                                            </td>
+                                                        </tr>-->
+                                                        <!--<tr>
+                                                            <th scope="row">
+                                                                <strong>Sexo</strong>
+                                                            </th>
+                                                            <td>
+                                                                <div class="paciente_view">
+                                                                    <span id="reserva_sexo"></span>
+                                                                </div>
+                                                                <div class="paciente_edit" style="display:none">
+                                                                    <select id="input_reserva_sexo" class="form-control form-control-sm">
+                                                                        <option value="M">Masculino</option>
+                                                                        <option value="F">Femenino</option>
+                                                                    </select>
+                                                                </div>
+                                                            </td>
+                                                        </tr>-->
+                                                        <tr>
+                                                            <td>
+                                                              <div><b>Dirección</b></div>
+                                                                <div class="paciente_view">
+                                                                    <span id="reserva_direccion"></span>
+                                                                </div>
+                                                                <div class="paciente_edit" style="display:none">
+                                                                    <div class="form-row">
+                                                                        <div class="col-sm-12 col-md-9">
+                                                                            <div class="form-group">
+                                                                                <input type="address" class="form-control form-control-sm" name="input_reserva_direccion_direccion" id="input_reserva_direccion_direccion" value="">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-sm-12 col-md-3">
+                                                                            <div class="form-group">
+                                                                                <input type="address" class="form-control form-control-sm" name="input_reserva_direccion_numero_dir" id="input_reserva_direccion_numero_dir" value="">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-row">
+                                                                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                                                            <div class="form-group">
+                                                                                <label class="floating-label-activo-sm">Región</label>
+                                                                                <select id="input_reserva_direccion_region" onchange="buscar_ciudad_general('input_reserva_direccion_region', 'input_reserva_direccion_ciudad', 0);" name="input_reserva_direccion_region" class="form-control form-control-sm">
+                                                                                    <option value="0">Seleccione</option>
+                                                                                    @if (isset($region))
+                                                                                        @foreach ($region as $reg)
+                                                                                            <option value="{{ $reg->id }}">{{ $reg->nombre }} </option>
+                                                                                        @endforeach
+                                                                                    @endif
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                                                            <div class="form-group">
+                                                                                <label class="floating-label-activo-sm">Ciudad</label>
+                                                                                <select id="input_reserva_direccion_ciudad" name="input_reserva_direccion_ciudad" class="form-control form-control-sm">
+                                                                                    <option value="0">Seleccione</option>
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                              <div><b>Correo Electrónico</b></div>
+                                                                <div class="paciente_view">
+                                                                    <span id="reserva_hora_email"></span>
+                                                                </div>
+                                                                <div class="paciente_edit" style="display:none">
+                                                                    <div class="form-row">
+                                                                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                                                            <input type="text" class="form-control form-control-sm" id="input_reserva_hora_email" value="">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                              <div><b>Teléfono</b></div>
+                                                                <div class="paciente_view">
+                                                                    <span id="reserva_hora_telefono"></span>
+                                                                </div>
+                                                                <div class="paciente_edit" style="display:none">
+                                                                    <div class="form-row">
+                                                                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                                                            <input type="text" class="form-control form-control-sm" id="input_reserva_hora_telefono" value="">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <div><b>Convenio</b></div>
+                                                                <div class="paciente_view">
+                                                                    <span id="reserva_convenio"></span>
+                                                                </div>
+                                                                <div class="paciente_edit" style="display:none">
+                                                                    <select id="input_reserva_convenio" name="input_reserva_convenio" class="form-control form-control-sm">
+                                                                        <option value="0">Seleccione</option>
+                                                                        @if (isset($prevision))
+                                                                            @foreach ($prevision as $p)
+                                                                                <option value="{{ $p->id }}">{{ $p->nombre }}</option>
+                                                                            @endforeach
+                                                                        @endif
+                                                                    </select>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
 
+                                                        <!--<tr class="paciente_view">
+                                                            <th scope="row">
+                                                                <strong>Fecha última consulta</strong>
+                                                            </th>
+                                                            <td>
+                                                                <div>
+                                                                    <span id="reserva_fecha_ultima_consulta"></span>
+                                                                </div>
+                                                            </td>
+                                                            <td class="text-center align-middle status-circle" id="estado_pago">
+                                                                <div class="circle bg-success"></div>
+                                                            </td>
+                                                        </tr>-->
+                                                        {{-- <tr class="paciente_view">
+                                                            <th scope="row">
+                                                                <strong>Información pagos</strong>
+                                                            </th>
+                                                            <td>
+                                                                <div >
+                                                                    <span id="reserva_hora_pago"></span>
+                                                                    <div class="status-circle">
+                                                                        <div class="circle bg-success"></div> Pago completo
+                                                                    </div>
+                                                                    <div class="status-circle">
+                                                                        <div class="circle bg-warning"></div> Pago incompleto
+                                                                    </div>
+                                                                    <div class="status-circle">
+                                                                        <div class="circle bg-danger"></div> Sin pagos
+                                                                    </div>
+                                                                </div>
+                                                            </td>
 
-                                    <!--<tr class="paciente_view">
-                                        <th scope="row">
-                                            <strong>Fecha última consulta</strong>
-                                        </th>
-                                        <td>
-                                            <div>
-                                                <span id="reserva_fecha_ultima_consulta"></span>
+                                                        </tr> --}}
+                                                        <!-- <tr class="paciente_edit" style="display: none;">
+                                                            <hr>
+                                                        </tr>-->
+                                                        <br>
+                                                        <tr class="paciente_edit">
+                                                          <td>
+                                                            <table>
+                                                              <tr>
+                                                                <td>
+                                                                    <button type="button" id="cancelar_modifcar_paciente" onclick="cancelar_modificacion_paciente();" class="btn btn-sm btn-danger">
+                                                                        <i class="feather icon-x"></i> Cancelar actualización
+                                                                    </button>
+                                                                </td>
+                                                                <td>
+                                                                    <button type="button" id="actualizar_modificar_paciente" onclick="actualizar_paciente();" class="btn btn-sm btn-info">
+                                                                        <i class="feather icon-check"></i> Actualizar paciente
+                                                                    </button>
+                                                                </td>
+                                                              </tr>
+                                                            </table>
+                                                          </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                              </div>
+                                              <div class="col-md-5">
+                                                <h6 class="text-c-blue f-16 d-inline mb-3">Información de la mascota</h6>
+                                                <table class="table table-borderless table-xs mb-0">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>
+                                                              <div><b>Nombre</b></div>
+                                                              <span id="reserva_mascota_nombre"></span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                              <div><b>Especie</b></div>
+                                                              <span id="reserva_mascota_especie"></span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                              <div><b>Tamaño</b></div>
+                                                              <span id="reserva_mascota_tamano"></span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                              <div><b>Sexo</b></div>
+                                                              <span id="reserva_mascota_sexo"></span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                              <div><b>Fecha nacimiento</b></div>
+                                                              <span id="reserva_mascota_fecha_nacimiento"></span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                              <div><b>Chip</b></div>
+                                                              <span id="reserva_mascota_chip"></span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                              <div><b>Esterilizado</b></div>
+                                                              <span id="reserva_mascota_esterilizado"></span></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                              </div>
                                             </div>
-                                        </td>
-                                        <td class="text-center align-middle status-circle" id="estado_pago">
-                                            <div class="circle bg-success"></div>
-                                        </td>
-                                    </tr>-->
-                                    {{-- <tr class="paciente_view">
-                                        <th scope="row">
-                                            <strong>Información pagos</strong>
-                                        </th>
-                                        <td>
-                                            <div >
-                                                <span id="reserva_hora_pago"></span>
-                                                <div class="status-circle">
-                                                    <div class="circle bg-success"></div> Pago completo
-                                                </div>
-                                                <div class="status-circle">
-                                                    <div class="circle bg-warning"></div> Pago incompleto
-                                                </div>
-                                                <div class="status-circle">
-                                                    <div class="circle bg-danger"></div> Sin pagos
-                                                </div>
-                                            </div>
-                                        </td>
-
-                                    </tr> --}}
-                                   <!-- <tr class="paciente_edit" style="display: none;">
-                                        <hr>
-                                    </tr>-->
-                                    <br>
-                                    <tr class="paciente_edit">
-
-                                        <td>
-                                            <button type="button" id="cancelar_modifcar_paciente" onclick="cancelar_modificacion_paciente();" class="btn btn-sm btn-danger">
-                                                <i class="feather icon-x"></i> Cancelar actualización
-                                            </button>
-                                        </td>
-                                        <td>
-                                            <button type="button" id="actualizar_modificar_paciente" onclick="actualizar_paciente();" class="btn btn-sm btn-info">
-                                                <i class="feather icon-check"></i> Actualizar paciente
-                                            </button>
-
                                         </td>
                                     </tr>
                                 </tbody>

@@ -2365,6 +2365,7 @@
         }
 
         function buscar_paciente() {
+            console.log("buscar_paciente2");
             $('#form_reseva_de_horas').submit(function(e) {
                 e.preventDefault();
             });
@@ -2409,11 +2410,13 @@
             validar_campo_telefono_representante();
 
             let rut = $('#rut_paciente_reserva').val();
+            console.log('[buscar_paciente] rut:', rut);
 
             if (rut != '') {
                 $('#reserva_agregar_paciente_hora').hide();
                 $('#reserva_datos_paciente').hide();
                 let url = "{{ route('profesional.buscar_rut_paciente') }}";
+                console.log('[buscar_paciente] url:', url);
 
                 $.ajax({
 
@@ -2443,6 +2446,7 @@
                                 $('#examenes').addClass('d-none');
                             }
                             data = JSON.parse(data);
+                            console.log('[buscar_paciente] data parsed:', data);
                             if (data.tipo_paciente == 'SI') {
 
                                 {{-- validacion para especialidad de pediatria --}}
@@ -2528,6 +2532,8 @@
                                 $('.div_rut_buscar').hide();
 
                                 $('#reserva_hora_edad').val(data.edad);
+                                console.log('[buscar_paciente] mascotas payload:', data.mascotas);
+                                renderMascotasReserva(data.mascotas || []);
 
                                 // $('#id_lugar_atencion').val($('#agenda_lugar_atencion_asistente').val());
                                 $('#contenedor_tratamientos_presupuesto').show();
@@ -2583,6 +2589,7 @@
                             } else {
                                 $('#reserva_datos_paciente').hide();
                                 $('#reserva_agregar_paciente_hora').show();
+                                renderMascotasReserva([]);
 
                                 $('#reserva_hora_nombres_paciente').val(data.nombres);
                                 $('#reserva_hora_apellido_uno').val(data.apellido_uno);
@@ -2617,6 +2624,7 @@
                         } else {
                             $('#reserva_datos_paciente').hide();
                             $('#reserva_agregar_paciente_hora').show();
+                            renderMascotasReserva([]);
 
                         }
 
@@ -2632,6 +2640,50 @@
                 });
             }
         };
+
+        var mascotasReservaCache = {};
+
+        function setMascotaDetalle(mascota) {
+            $('#reserva_mascota_nombre').text(mascota ? (mascota.nombre || '') : '');
+            $('#reserva_mascota_especie').text(mascota ? ((mascota.especieMascota && mascota.especieMascota.nombre) || mascota.especie || '') : '');
+            $('#reserva_mascota_tamano').text(mascota ? ((mascota.tamanoMascota && mascota.tamanoMascota.nombre) || mascota.tamano || '') : '');
+            $('#reserva_mascota_sexo').text(mascota ? (mascota.sexo || '') : '');
+            $('#reserva_mascota_fecha_nacimiento').text(mascota ? (mascota.fecha_nacimiento || '') : '');
+            $('#reserva_mascota_chip').text(mascota ? (mascota.chip || '') : '');
+            $('#reserva_mascota_esterilizado').text(mascota ? (mascota.esterilizado ? 'Si' : 'No') : '');
+        }
+
+        function renderMascotasReserva(mascotas) {
+            var $select = $('#reserva_hora_mascota_id');
+            console.log('[renderMascotasReserva] select found:', $select.length);
+            if (!$select.length) {
+                return;
+            }
+            $select.empty();
+            $select.append('<option value="">Seleccione mascota</option>');
+            mascotasReservaCache = {};
+
+            console.log('[renderMascotasReserva] mascotas:', mascotas);
+            if (Array.isArray(mascotas)) {
+                mascotas.forEach(function(mascota) {
+                    var nombre = mascota.nombre || 'Mascota';
+                    var especie = '';
+                    if (mascota.especieMascota && mascota.especieMascota.nombre) {
+                        especie = mascota.especieMascota.nombre;
+                    } else if (mascota.especie) {
+                        especie = mascota.especie;
+                    }
+                    var label = nombre;
+                    mascotasReservaCache[mascota.id] = mascota;
+                    $select.append('<option value="' + mascota.id + '">' + label + '</option>');
+                });
+            }
+            $select.off('change.reservaMascota').on('change.reservaMascota', function() {
+                var mascotaId = $(this).val();
+                setMascotaDetalle(mascotaId ? mascotasReservaCache[mascotaId] : null);
+            });
+            setMascotaDetalle(null);
+        }
 
         function desasociar_asistente(id_asistente) {
 
@@ -3107,6 +3159,7 @@
             let reserva_hora_id = $('#reserva_hora_id_paciente').val();
             let id_lugar_atencion = $('#id_lugar_atencion').val();
             let tipo_agenda = $('#id_tipo_agenda').val();
+            let id_mascota = $('#reserva_hora_mascota_id').val();
             var tipo_agenda_text = 'C';
             var procedimiento = '';
             var proc_bloque = '';
@@ -3175,6 +3228,7 @@
                         autorizacion_atencion: autorizacion_atencion,
                         procedimiento: procedimiento,
                         proc_bloque: proc_bloque,
+                        id_mascota: id_mascota,
                     }
                 })
                 .done(function(data) {
