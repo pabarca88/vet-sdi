@@ -76,6 +76,8 @@ use App\Models\Licencia;
 use App\Models\LicenciaPPF;
 use App\Models\LugarAtencion;
 use App\Models\MarcasImplantes;
+use App\Models\EspecieMascota;
+use App\Models\Mascota;
 use App\Models\Paciente;
 use App\Models\PacienteContactoEmergencia;
 use App\Models\PacienteTriage;
@@ -260,6 +262,25 @@ class ficha_atencionController extends Controller
         $hora = HoraMedica::where('id', $request->id_hora_realizar)->first();
 
         $paciente = Paciente::where('id', $hora->id_paciente)->first();
+        $mascota = null;
+        $mascota_edad = null;
+        if (!empty($hora->id_mascota)) {
+            $mascota = Mascota::with('especieMascota')->find($hora->id_mascota);
+            if ($mascota && !empty($mascota->fecha_nacimiento)) {
+                $mascota_edad = Carbon::parse($mascota->fecha_nacimiento)->age;
+            }
+            if ($mascota && !$mascota->especieMascota) {
+                $especieId = null;
+                if (!empty($mascota->especie_id)) {
+                    $especieId = $mascota->especie_id;
+                } elseif (!empty($mascota->especie) && is_numeric($mascota->especie)) {
+                    $especieId = (int) $mascota->especie;
+                }
+                if ($especieId) {
+                    $mascota->setRelation('especieMascota', EspecieMascota::find($especieId));
+                }
+            }
+        }
 
         $necesita_plan_tratamiento = false;
         $tiene_controles = false;
@@ -452,6 +473,7 @@ class ficha_atencionController extends Controller
         {
             $nueva_ficha_atencion = new FichaAtencion();
             $nueva_ficha_atencion->id_paciente = $paciente->id;
+            $nueva_ficha_atencion->id_mascota = $request->id_mascota ?? $hora->id_mascota ?? null;
             $nueva_ficha_atencion->id_profesional = $profesional->id;
             $nueva_ficha_atencion->id_lugar_atencion = $request->lugar_atencion_id;
 
@@ -2404,6 +2426,8 @@ class ficha_atencionController extends Controller
                 'placeholder_examen_fisico' => $placeholder_examen_fisico,
                 'url_tratamientos_autocomplete' => $url_tratamientos_autocomplete,
                 'paciente' => $paciente,
+                'mascota' => $mascota,
+                'mascota_edad' => $mascota_edad,
                 'proxima_fecha_atencion' => $proxima_fecha_atencion,
                 'tons_dental' => $tons_dental,
                 'hora_inicio_atencion' => isset($hora_inicio_fecha_atencion) ? $hora_inicio_fecha_atencion : '',

@@ -36,7 +36,7 @@
                                     </tr>
                                     <tr>
                                         <th scope="row">
-                                            <strong>Raza</strong>
+                                            <strong>Especie</strong>
                                         <td>
                                             <span id="datos_consulta_mascota_raza"></span>
                                         </td>
@@ -272,6 +272,7 @@
                         @csrf
                         <input type="hidden" name="id_hora_realizar" id="id_hora_realizar" val="">
                         <input type="hidden" name="lugar_atencion_id" id="lugar_atencion_id" value="{{ $lugar_atencion }}">
+                        <input type="hidden" name="id_mascota" id="id_mascota" value="">
 
                         <button type="submit" id="hm_atender_hora" class="btn btn-info btn-sm"><i class="feather icon-check"></i> Atender</button>
                     </form>

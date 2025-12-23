@@ -33,6 +33,7 @@ use App\Models\Direccion;
 use App\Models\Empresas;
 use App\Models\EmpresasConvenios;
 use App\Models\Especialidad;
+use App\Models\EspecieMascota;
 use App\Models\EvolucionPacienteHospital;
 use App\Models\EvaluacionPeriodoncia;
 use App\Models\EvolucionUrgencia;
@@ -2332,6 +2333,17 @@ class EscritorioProfesional extends Controller
         $mascota = null;
         if (!empty($hora_medica->id_mascota)) {
             $mascota = Mascota::with(['especieMascota', 'tamanoMascota'])->find($hora_medica->id_mascota);
+            if ($mascota && !$mascota->especieMascota) {
+                $especieId = null;
+                if (!empty($mascota->especie_id)) {
+                    $especieId = $mascota->especie_id;
+                } elseif (!empty($mascota->especie) && is_numeric($mascota->especie)) {
+                    $especieId = (int) $mascota->especie;
+                }
+                if ($especieId) {
+                    $mascota->setRelation('especieMascota', EspecieMascota::find($especieId));
+                }
+            }
         }
 
 		$fecha_ultima_atencion = HoraMedica::select('horas_medicas.fecha_consulta','fichas_atenciones.*')

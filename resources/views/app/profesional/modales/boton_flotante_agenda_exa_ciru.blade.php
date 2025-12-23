@@ -286,10 +286,12 @@
                                                         var mascota = data.mascota || null;
                                                         var mascotaRaza = '';
                                                         if (mascota) {
-                                                            if (mascota.especieMascota && mascota.especieMascota.nombre) {
+                                                            if (mascota.especie_mascota && mascota.especie_mascota.nombre) {
+                                                                mascotaRaza = mascota.especie_mascota.nombre;
+                                                            } else if (mascota.especieMascota && mascota.especieMascota.nombre) {
                                                                 mascotaRaza = mascota.especieMascota.nombre;
-                                                            } else if (mascota.especie) {
-                                                                mascotaRaza = mascota.especie;
+                                                            } else if (mascota.otra_especie) {
+                                                                mascotaRaza = mascota.otra_especie;
                                                             }
                                                         }
                                                         $('#datos_consulta_mascota_nombre').text(mascota && mascota.nombre ? mascota.nombre : '');
@@ -297,7 +299,8 @@
                                                         $('#datos_consulta_mascota_esterilizado').text(mascota ? (mascota.esterilizado ? 'SI' : 'NO') : '');
                                                         var fechaUltimaMascota = (data.hora_medica && data.hora_medica.fecha_consulta) ? data.hora_medica.fecha_consulta : '';
                                                         $('#datos_consulta_mascota_ultima_consulta').text(fechaUltimaMascota);
-                                                        // $('#datos_consulta_mascota_fecha_ultima').text(fechaUltimaMascota);
+                                                        $('#datos_consulta_mascota_fecha_ultima').text(fechaUltimaMascota);
+                                                        $('#id_mascota').val(data.hora_medica && data.hora_medica.id_mascota ? data.hora_medica.id_mascota : '');
 
                                                         if (data.paciente.sexo == 'M') {
                                                             $('#datos_consulta_sexo').text('Masculino');
