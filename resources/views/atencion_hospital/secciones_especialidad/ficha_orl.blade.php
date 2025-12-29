@@ -12,6 +12,9 @@
                     <li class="nav-item-secciones">
                         <a class="nav-secciones text-uppercase" id="rinofibro-tab" data-toggle="tab" href="#rinofibro" role="tab" aria-controls="rinofibro" aria-selected="false">Rinofibrolaringoscopía</a>
                     </li>
+                    <li class="nav-item-secciones">
+                        <a class="nav-secciones text-uppercase" id="presupuesto-mascota-tab" data-toggle="tab" href="#presupuesto-mascota" role="tab" aria-controls="presupuesto-mascota" aria-selected="false">Presupuestos</a>
+                    </li>
                     {{--  <li class="nav-item-secciones">
                         <a class="nav-secciones text-uppercase" id="bio-tab" data-toggle="tab" href="#bio" role="tab" aria-controls="bio" aria-selected="false">Biomicroscopía</a>
                     </li>  --}}
@@ -708,6 +711,63 @@
                         </div>
                         <!--CIERRE: INFORME RINOFIBROLARINGOSCOPÍA-->
 
+                        <div class="tab-pane fade" id="presupuesto-mascota" role="tabpanel" aria-labelledby="presupuesto-mascota-tab">
+                            <div class="row bg-white shadow-none rounded mx-1">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-12 mt-3 mb-0">
+                                            <h6 class="f-16 text-c-blue">Presupuesto mascota (ejemplo)</h6>
+                                            <hr>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <input type="hidden" id="presupuesto_mascota_id_paciente" value="{{ $paciente->id }}">
+                                        <input type="hidden" id="presupuesto_mascota_id_profesional" value="{{ $profesional->id }}">
+                                        <input type="hidden" id="presupuesto_mascota_id_ficha_atencion" value="{{ $id_ficha_atencion }}">
+                                        <input type="hidden" id="presupuesto_mascota_id_lugar_atencion" value="{{ $id_lugar_atencion }}">
+                                        <div class="form-group col-md-3">
+                                            <label class="floating-label-activo-sm">Fecha</label>
+                                            <input type="date" class="form-control form-control-sm" id="presupuesto_mascota_fecha">
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <label class="floating-label-activo-sm">Fecha control</label>
+                                            <input type="date" class="form-control form-control-sm" id="presupuesto_mascota_fecha_control">
+                                        </div>
+                                        <div class="form-group col-md-2">
+                                            <label class="floating-label-activo-sm">Estado</label>
+                                            <input type="number" class="form-control form-control-sm" id="presupuesto_mascota_estado">
+                                        </div>
+                                        <div class="form-group col-md-2">
+                                            <label class="floating-label-activo-sm">Aprobado</label>
+                                            <input type="number" class="form-control form-control-sm" id="presupuesto_mascota_aprobado">
+                                        </div>
+                                        <div class="form-group col-md-2">
+                                            <label class="floating-label-activo-sm">Boca</label>
+                                            <input type="number" class="form-control form-control-sm" id="presupuesto_mascota_boca">
+                                        </div>
+                                        <div class="form-group col-md-12">
+                                            <label class="floating-label-activo-sm">Datos de atención</label>
+                                            <textarea class="form-control form-control-sm" rows="3" id="presupuesto_mascota_datos"></textarea>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label class="floating-label-activo-sm">Otros</label>
+                                            <input type="text" class="form-control form-control-sm" id="presupuesto_mascota_otros">
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label class="floating-label-activo-sm">Observaciones</label>
+                                            <input type="text" class="form-control form-control-sm" id="presupuesto_mascota_observaciones">
+                                        </div>
+                                        <div class="col-md-12 text-center mb-3">
+                                            <button type="button" class="btn btn-info" id="btn_guardar_presupuesto_mascota">Guardar presupuesto</button>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div id="presupuesto_mascota_resultado" class="text-center"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         {{--  div de botones  --}}
                         <div class="bg-white shadow-none rounded mx-1 p-15">
                             <!--SECCION DE MEDICAMENTOS Y EXAMENES GENERALES -->
@@ -738,6 +798,45 @@
 @section('page-script-ficha-atencion')
     <script>
         $(document).ready(function() {
+            $('#btn_guardar_presupuesto_mascota').on('click', function() {
+                var payload = {
+                    _token: '{{ csrf_token() }}',
+                    id_paciente: $('#presupuesto_mascota_id_paciente').val(),
+                    id_profesional: $('#presupuesto_mascota_id_profesional').val(),
+                    id_ficha_atencion: $('#presupuesto_mascota_id_ficha_atencion').val(),
+                    id_lugar_atencion: $('#presupuesto_mascota_id_lugar_atencion').val(),
+                    fecha: $('#presupuesto_mascota_fecha').val(),
+                    fecha_control: $('#presupuesto_mascota_fecha_control').val(),
+                    estado: $('#presupuesto_mascota_estado').val(),
+                    aprobado: $('#presupuesto_mascota_aprobado').val(),
+                    boca: $('#presupuesto_mascota_boca').val(),
+                    datos_atencion: $('#presupuesto_mascota_datos').val(),
+                    otros: $('#presupuesto_mascota_otros').val(),
+                    observaciones: $('#presupuesto_mascota_observaciones').val()
+                };
+
+                $.ajax({
+                    url: '{{ route('profesional.presupuesto_mascota.guardar') }}',
+                    type: 'POST',
+                    data: payload
+                })
+                .done(function(resp) {
+                    $('#presupuesto_mascota_resultado')
+                        .removeClass('text-danger')
+                        .addClass('text-success')
+                        .text(resp.msj || 'Presupuesto guardado.');
+                })
+                .fail(function(xhr) {
+                    var mensaje = 'Error al guardar presupuesto.';
+                    if (xhr.responseJSON && xhr.responseJSON.msj) {
+                        mensaje = xhr.responseJSON.msj;
+                    }
+                    $('#presupuesto_mascota_resultado')
+                        .removeClass('text-success')
+                        .addClass('text-danger')
+                        .text(mensaje);
+                });
+            });
 
             $('#hip-diag_spec').keyup(function(){
                 if($.trim(this.value) != ''){

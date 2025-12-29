@@ -9,6 +9,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\PresupuestoMascota;
 
 
 
@@ -79,6 +80,11 @@ class FichaAtencion extends Model
 
         return $this->hasOne(LugarAtencion::class, 'id', 'id_lugar_atencion');
 
+    }
+
+    public function PresupuestosMascota()
+    {
+        return $this->hasMany(PresupuestoMascota::class, 'id_ficha_atencion', 'id');
     }
 
 }

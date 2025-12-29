@@ -1,6 +1,23 @@
 @extends('template.usuario.template')
 
-
+@section('page-styles')
+<style>
+    #modal_ficha_mascota table {
+        table-layout: fixed;
+        width: 100%;
+    }
+    #modal_ficha_mascota th,
+    #modal_ficha_mascota td {
+        white-space: normal;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
+    #modal_ficha_mascota th:nth-child(1),
+    #modal_ficha_mascota td:nth-child(1) {
+        width: 120px;
+    }
+</style>
+@endsection
 
 @section('content')
 
@@ -222,6 +239,7 @@
                                 <tr>
                                     <th>Fecha</th>
                                     <th>Diagnostico</th>
+                                    <th>Indicaciones</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -230,11 +248,12 @@
                                         <tr>
                                             <td>{{ \Carbon\Carbon::parse($ficha->created_at)->format('d/m/Y') }}</td>
                                             <td>{{ $ficha->hipotesis_diagnostico ?: '-' }}</td>
+                                            <td>{{ $ficha->indicaciones ?: '-' }}</td>
                                         </tr>
                                     @endforeach
                                 @else
                                     <tr>
-                                        <td colspan="2" class="text-center">Sin registros</td>
+                                        <td colspan="3" class="text-center">Sin registros</td>
                                     </tr>
                                 @endif
                             </tbody>

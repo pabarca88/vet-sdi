@@ -8,6 +8,7 @@ use App\Models\Mascota;
 use App\Models\EspecieMascota;
 use App\Models\EspecieTamanoMascota;
 use App\Models\TamanoMascota;
+use App\Models\FichaAtencion;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
@@ -24,7 +25,10 @@ class MascotasController extends Controller
         $especies = EspecieMascota::orderBy('nombre')->get();
         $tamanos = TamanoMascota::orderBy('nombre')->get();
         $especieTamanos = EspecieTamanoMascota::with(['especie', 'tamano'])->get();
-        $fichasMascota = FichaAtencion::where('id_paciente', 3)->orderBy('id', 'desc')->get();
+        $fichasMascota = FichaAtencion::with('PresupuestosMascota')
+            ->where('id_paciente', 3)
+            ->orderBy('id', 'desc')
+            ->get();
 
         return view('app.paciente.dependientes')->with([
             'titulo' => 'Mascotas',

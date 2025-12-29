@@ -78,6 +78,7 @@ use App\Models\LugarAtencion;
 use App\Models\MarcasImplantes;
 use App\Models\EspecieMascota;
 use App\Models\Mascota;
+use App\Models\PresupuestoMascota;
 use App\Models\Paciente;
 use App\Models\PacienteContactoEmergencia;
 use App\Models\PacienteTriage;
@@ -2605,6 +2606,66 @@ class ficha_atencionController extends Controller
                 'laboratorios' => $laboratorios,
             ]
         );
+    }
+
+    public function guardarPresupuestoMascota(Request $request)
+    {
+        $validator = \Validator::make($request->all(), [
+            'id_paciente' => 'required|integer',
+            'id_profesional' => 'required|integer',
+            'id_ficha_atencion' => 'required|integer',
+            'id_lugar_atencion' => 'required|integer',
+            'datos_atencion' => 'nullable|string',
+            'estado' => 'nullable|integer',
+            'aprobado' => 'nullable|integer',
+            'fecha_control' => 'nullable|date',
+            'fecha' => 'nullable|date',
+            'otros' => 'nullable|string',
+            'observaciones' => 'nullable|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'estado' => 0,
+                'msj' => 'Datos inválidos',
+                'error' => $validator->errors(),
+            ], 422);
+        }
+
+        $datosAtencionRaw = $request->input('datos_atencion');
+        if ($datosAtencionRaw !== null && $datosAtencionRaw !== '') {
+            $decoded = json_decode($datosAtencionRaw, true);
+            $datosAtencion = json_last_error() === JSON_ERROR_NONE ? $decoded : ['detalle' => $datosAtencionRaw];
+        } else {
+            $datosAtencion = [];
+        }
+
+        $presupuesto = new PresupuestoMascota();
+        $presupuesto->id_paciente = $request->input('id_paciente');
+        $presupuesto->id_profesional = $request->input('id_profesional');
+        $presupuesto->id_ficha_atencion = $request->input('id_ficha_atencion');
+        $presupuesto->id_lugar_atencion = $request->input('id_lugar_atencion');
+        $presupuesto->id_tipo_tratamiento = $request->input('id_tipo_tratamiento');
+        $presupuesto->datos_atencion = $datosAtencion;
+        $presupuesto->estado = $request->input('estado');
+        $presupuesto->aprobado = $request->input('aprobado');
+        $presupuesto->fecha_control = $request->input('fecha_control');
+        $presupuesto->fecha = $request->input('fecha');
+        $presupuesto->otros = $request->input('otros');
+        $presupuesto->observaciones = $request->input('observaciones');
+
+        if (!$presupuesto->save()) {
+            return response()->json([
+                'estado' => 0,
+                'msj' => 'No se pudo guardar el presupuesto',
+            ], 500);
+        }
+
+        return response()->json([
+            'estado' => 1,
+            'msj' => 'Presupuesto registrado',
+            'id' => $presupuesto->id,
+        ]);
     }
 
     public function dame_comunas_contacto_emergencia($id_paciente){

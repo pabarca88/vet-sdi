@@ -50,6 +50,14 @@
                             </div>
                         </a>
                     </div>
+                    <div class="card subir">
+                        <a href="{{ ROUTE('paciente.convenios') }}">
+                            <div class="card-body text-center" style="cursor:pointer">
+                                <img class="wid-60 text-center mt-1" src="{{ asset('images/iconos/convenios.png') }}">
+                                <h5 class="mt-2"> Mis convenios de atención</h5>
+                            </div>
+                        </a>
+                    </div>
                     {{--  <div class="card subir">
                         <a href="https://www.cronicos.cl/" class="btn" type="button">
                             <div class="card-body text-center" style="cursor:pointer">
