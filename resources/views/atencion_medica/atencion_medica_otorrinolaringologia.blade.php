@@ -45,9 +45,9 @@
                                     </li>
                                     <li class="nav-item" id="nav-fmu">
                                         @if(!empty(session('fmu_token')) && session('fmu_estado') == 1)
-                                            <a class="nav-link text-reset" id="fmu-tab" data-toggle="tab" href="#fmu" role="tab" aria-controls="fmu" aria-selected="false">FMU</a>
+                                            <a class="nav-link text-reset" id="fmu-tab" data-toggle="tab" href="#fmu" role="tab" aria-controls="fmu" aria-selected="false">FVU</a>
                                         @else
-                                            <a class="nav-link text-reset" id="fmu-tab" data-toggle="tab" href="#" role="tab" aria-controls="fmu" aria-selected="false" onclick="abrir_autorizacion_fmu();">FMU</a>
+                                            <a class="nav-link text-reset" id="fmu-tab" data-toggle="tab" href="#" role="tab" aria-controls="fmu" aria-selected="false" onclick="abrir_autorizacion_fmu();">FVU</a>
                                         @endif
                                     </li>
                                     <li class="nav-item">

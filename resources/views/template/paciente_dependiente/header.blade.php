@@ -12,7 +12,7 @@
 
 			<a href="#!" class="mob-toggler">
 
-				<i class="feather icon-more-vertical"></i>
+				<i class="feather icon-more-vertical" style="font-size: 1.2rem;"></i>
 
 			</a>
 
@@ -28,7 +28,7 @@
 
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
 
-                        <i class="feather icon-user "></i>
+                        <i class="feather icon-user" style="font-size: 1.2rem;"></i>
 
                     </a>
 
@@ -54,7 +54,7 @@
 
                                     <a data-toggle="tooltip" title="Cerrar sesión" class="text-danger" href="javascript:{}" onclick="document.getElementById('closeSession').submit();">
 
-                                        <i class="feather icon-power"></i> Cerrar sesión
+                                        <i class="feather icon-power" style="font-size: 1.2rem;"></i> Cerrar sesión
 
                                     </a>
 
