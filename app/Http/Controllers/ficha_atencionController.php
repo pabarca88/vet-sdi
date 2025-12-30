@@ -106,6 +106,7 @@ use App\Models\TipoExamen;
 use App\Models\User;
 use App\Models\UsoPersonal;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use App\Models\FichaCirugiaDigestivaGeneralAdulto;
 use App\Models\FichaDermo;
 use App\Models\FichaDermoImg;
@@ -265,6 +266,8 @@ class ficha_atencionController extends Controller
         $paciente = Paciente::where('id', $hora->id_paciente)->first();
         $mascota = null;
         $mascota_edad = null;
+        $responsable_mascota = null;
+        $ficha_atencion_mascota = null;
         if (!empty($hora->id_mascota)) {
             $mascota = Mascota::with('especieMascota')->find($hora->id_mascota);
             if ($mascota && !empty($mascota->fecha_nacimiento)) {
@@ -280,6 +283,13 @@ class ficha_atencionController extends Controller
                 if ($especieId) {
                     $mascota->setRelation('especieMascota', EspecieMascota::find($especieId));
                 }
+            }
+            if ($mascota) {
+                $responsable_mascota = $mascota->Responsable()->first();
+                $ficha_atencion_mascota = DB::table('fichas_atenciones')
+                    ->where('id_mascota', $mascota->id)
+                    ->orderBy('id', 'desc')
+                    ->first();
             }
         }
 
@@ -2429,6 +2439,8 @@ class ficha_atencionController extends Controller
                 'paciente' => $paciente,
                 'mascota' => $mascota,
                 'mascota_edad' => $mascota_edad,
+                'responsable_mascota' => $responsable_mascota,
+                'ficha_atencion_mascota' => $ficha_atencion_mascota,
                 'proxima_fecha_atencion' => $proxima_fecha_atencion,
                 'tons_dental' => $tons_dental,
                 'hora_inicio_atencion' => isset($hora_inicio_fecha_atencion) ? $hora_inicio_fecha_atencion : '',
