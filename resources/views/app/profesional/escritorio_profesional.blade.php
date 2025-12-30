@@ -38,7 +38,7 @@
                             <a href="{{ route('profesional.pacientes') }}">
                                 <div class="card-body text-center px-2" style="cursor:pointer">
                                     <img class="wid-40 text-center" src="{{ asset('images/iconos/mascotas.svg') }}">
-                                    <h6 class="mt-1">Mis <br>clientes</h6>
+                                    <h6 class="mt-1">Mis <br>responsables</h6>
                                 </div>
                             </a>
                         </div>

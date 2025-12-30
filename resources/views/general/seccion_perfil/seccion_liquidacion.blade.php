@@ -3,7 +3,7 @@
     {{-- formulario para agregar  --}}
     <div class="row">
         <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-            <h5 class="f-20 text-c-blue d-inline mr-2 pt-1">Cuentas bancarias para depósito</h5>
+            <h5 class="f-20 d-inline mr-2 pt-1">Cuentas bancarias para depósito</h5>
             @if($liquidacion != NULL)
                 <input type="hidden" name="cantidad_liquidaciones" id="cantidad_liquidaciones" value="{{ $liquidacion->count() }}">
             @else
@@ -26,7 +26,7 @@
                 <div class="col-sm-12 col-md-6">
                     <!--Card LIQUIDACION-->
                     <div class="card">
-                        <div class="card-header d-flex align-items-center justify-content-between bg-primary">
+                        <div class="card-header d-flex align-items-center justify-content-between bg-info">
                             {{-- <h5 class="mb-0 text-white">{{ $value_liqu->banco->nombre }}</h5> --}}
                             <h5 class="mb-0 text-white">{{ $value_liqu->banco['nombre'] }}</h5>
                             <div class="float-md-right d-inline">

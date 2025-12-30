@@ -13,7 +13,7 @@
         }
     </style>
 
-    <style>
+       <style>
         #loading {
             display: none;
             position: absolute;
@@ -57,7 +57,7 @@
 
         .fc-timegrid-event-harness > .fc-timegrid-event {
           /* height:6em; */
-		}
+        }
 
         .fc .fc-toolbar-title {
             font-size: 1.4em;
@@ -74,11 +74,17 @@
             flex: 1 1 auto;
             padding: 5px 5px;
             font-size: 0.8rem;
+            background-color: #40abaf;
+            border-color: #40abaf;
         }
+
+       
 
         .fc-today-button{
             padding: 5px 5px;
             font-size: 0.8rem;
+            background-color: #40abaf;
+            border-color: #40abaf;
         }
 
          .btn.btn-agenda {
@@ -91,7 +97,11 @@
 
         @media (max-width: 767.98px) {
 
-            .t-lugar-aten{
+            .titulo-agenda {
+                font-size: 1.2rem;
+            }
+
+            .t-lugar-aten {
                 font-size:0.9rem!important;
             }
 
@@ -121,6 +131,31 @@
             }
 
          }
+
+         @media (min-width: 768px) { 
+               .titulo-agenda {
+                font-size: 1.2rem;
+            }
+          }
+
+        @media (min-width: 992px) { 
+
+        .titulo-agenda {
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (min-width: 1200px) { 
+            .titulo-agenda {
+                font-size: 1.3rem;
+            }
+
+        }
+
+        @media (min-width: 1400px) { 
+        .titulo-agenda {
+                font-size: 1.6rem;
+            } }
     </style>
 
     <link href='{{ asset('css/estilos_boton_agen_examenes.css') }}' rel='stylesheet' />
@@ -136,7 +171,7 @@
                     <div class="row align-items-center text-center">
                         <div class="page-header-title">
 
-                            <h5 class="text-white f-18 t-lugar-aten">
+                            <h5 class="text-white titulo-agenda t-lugar-aten">
                                 <a href="#" data-toggle="tooltip" data-placement="top" title="Volver a mi escritorio"><i class="feather icon-home"></i></a>
                                 <strong>AGENDA: </strong> {{ strtoupper($lugar_atencion_nombre) }}
                             </h5>
@@ -148,9 +183,9 @@
 
 
             <div class="row user-profile user-card  align-items-center py-1 pb-3 px-4" style="background-color:#ecf0f5;">
-                <div class="col-md-12 d-inline pt-1">
-                    <h5 class="text-primary d-inline mt-2 t-tipo-agenda" style="font-size: 1.2rem;" id="titulo_tipo_agenda"></h5>
-                           @include('general.info_simbologia.simbologia_agenda')
+                <div class="col-md-12 d-inline pt-3">
+                    <h5 class="titulo-agenda d-inline mt-2 t-tipo-agenda" id="titulo_tipo_agenda"></h5>
+                    @include('general.info_simbologia.simbologia_agenda')
                     @include('general.anular_hora.anular_hora')
                     @include('general.bloqueo_hora.bloque_hora')
 

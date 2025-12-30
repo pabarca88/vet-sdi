@@ -16,7 +16,7 @@
                                 <li class="breadcrumb-item">
                                     <a href="{{ route('profesional.home') }}" data-toggle="tooltip" data-placement="top" title="Volver a mi escritorio"><i class="feather icon-home"></i></a>
                                 </li>
-                                <li class="breadcrumb-item"><a href="#">Mis clientes </a></li>
+                                <li class="breadcrumb-item"><a href="#">Mis Responsables </a></li>
                             </ul>
                         </div>
                     </div>
@@ -31,8 +31,8 @@
                     <div class="card-header text-center bg-info">
                         <div class="row">
                             <div class="col-sm-12 col-md-12 col-lg mb-1 align-botton d-flex justify-content-between">
-                                <h4 class="text-white f-20 d-inline ml-4 mt-1 float-left">Mis clientes</h4>
-                                <button class="btn btn-purple btn-sm  d-inline float-md-right" onclick="enviar_difusion_pacientes()"><i class="feather icon-mail"></i>  Enviar mensaje de difusión a mis clientes</button>
+                                <h4 class="text-white f-20 d-inline ml-4 mt-1 float-left">Mis Responsables</h4>
+                                <button class="btn btn-purple btn-sm  d-inline float-md-right" onclick="enviar_difusion_pacientes()"><i class="feather icon-mail"></i>  Enviar mensaje de difusión a mis Responsables</button>
                             </div>
                         </div>
                     </div>
@@ -44,7 +44,7 @@
                                         style="width:100%">
                                         <thead>
                                             <tr>
-                                                <th>Cliente</th>
+                                                <th>Responsable</th>
                                                 <th>Mascota</th>
                                                 <th>Especie</th>
                                                 <th>Raza</th>
