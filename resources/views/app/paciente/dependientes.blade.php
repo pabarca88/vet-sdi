@@ -228,8 +228,8 @@
     <div class="modal fade" id="modal_ficha_mascota" tabindex="-1" role="dialog" aria-labelledby="modalFichaMascota" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
-                <div class="modal-header bg-primary">
-                    <h5 class="modal-title text-white mt-1" id="modalFichaMascota">Ficha medica <span id="modal_ficha_mascota_nombre"></span></h5>
+                <div class="modal-header bg-info">
+                    <h5 class="modal-title text-white mt-1" id="modalFichaMascota">Ficha Médica <span id="modal_ficha_mascota_nombre"></span></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body">
@@ -1486,7 +1486,7 @@
                             html += '            <p class="mb-0">'+especie_label+'</p>';
                             html += '            <div class="mt-2 d-flex justify-content-center">';
                             html += '                <button type="button" class="btn btn-info btn-sm mr-1 btn-ver-mascota" data-id="'+value.id+'">Ver mascota</button>';
-                            html += '                <button type="button" class="btn btn-primary btn-sm btn-ver-ficha" data-id="'+value.id+'">Ficha medica</button>';
+                            html += '                <button type="button" class="btn btn-primary btn-sm btn-ver-ficha" data-id="'+value.id+'">Ficha Médica</button>';
                             html += '            </div>';
                             html += '        </div>';
                             html += '    </div>';
