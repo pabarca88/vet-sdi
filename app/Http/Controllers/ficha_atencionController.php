@@ -80,6 +80,7 @@ use App\Models\EspecieMascota;
 use App\Models\Mascota;
 use App\Models\PresupuestoMascota;
 use App\Models\Paciente;
+use App\Models\TamanoMascota;
 use App\Models\PacienteContactoEmergencia;
 use App\Models\PacienteTriage;
 use App\Models\PagosPresupuestoDental;
@@ -351,6 +352,8 @@ class ficha_atencionController extends Controller
         $direccion_txt_region_paciente = '';
         $regiones = Region::all();
         $ciudades = Ciudad::all();
+        $especies_mascotas = EspecieMascota::orderBy('nombre')->get();
+        $tamanos_mascotas = TamanoMascota::orderBy('nombre')->get();
 
         if($direccion_paciente)
         {
@@ -2545,6 +2548,8 @@ class ficha_atencionController extends Controller
                 'fichas' => $fichas,
                 'ciudades' => $ciudades,
                 'regiones' => $regiones,
+                'especies_mascotas' => $especies_mascotas,
+                'tamanos_mascotas' => $tamanos_mascotas,
                 'tipo_examen' => $tipoExamen,
                 'control_peso' => $control_peso,
                 'hipertension' => $hipertension,

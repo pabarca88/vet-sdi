@@ -28,21 +28,21 @@
                         <div id="info_mascota">
                             <div class="form-row pt-3">
                                 <label class="col-3 text-dark font-weight-bolder">Nombre</label>
-                                <div class="col-8 ml-2 text-secondary">
+                                <div class="col-8 ml-2 text-secondary" id="mascota_nombre_text">
                                     {{ $mascota->nombre ?? 'Sin registro' }}
                                 </div>
                             </div>
                             <hr class="mt-2">
                             <div class="form-row mt-1">
                                 <label class="col-3 text-dark font-weight-bolder">Especie</label>
-                                <div class="col-8 ml-2 text-secondary">
+                                <div class="col-8 ml-2 text-secondary" id="mascota_especie_text">
                                     {{ optional($mascota->especieMascota)->nombre ?? $mascota->otra_especie ?? $mascota->especie ?? 'Sin registro' }}
                                 </div>
                             </div>
                             <hr class="mt-2">
                             <div class="form-row mt-1">
                                 <label class="col-3 text-dark font-weight-bolder">Sexo</label>
-                                <div class="col-8 ml-2 text-secondary">
+                                <div class="col-8 ml-2 text-secondary" id="mascota_sexo_text">
                                     @if ($mascota->sexo == 'M')
                                         Macho
                                     @elseif ($mascota->sexo == 'F')
@@ -55,7 +55,7 @@
                             <hr class="mt-2">
                             <div class="form-row mt-1">
                                 <label class="col-3 text-dark font-weight-bolder">FN</label>
-                                <div class="col-8 ml-2 text-secondary">
+                                <div class="col-8 ml-2 text-secondary" id="mascota_fn_text">
                                     {{ $mascota->fecha_nacimiento ?? 'Sin registro' }}
                                     @if (isset($mascota_edad))
                                         - (<span>{{ $mascota_edad }}</span> años)
@@ -65,14 +65,14 @@
                             <hr class="mt-2">
                             <div class="form-row mt-1">
                                 <label class="col-3 text-dark font-weight-bolder">Tamaño</label>
-                                <div class="col-8 ml-2 text-secondary">
+                                <div class="col-8 ml-2 text-secondary" id="mascota_tamano_text">
                                     {{ optional($mascota->tamanoMascota)->nombre ?? $mascota->tamano ?? 'Sin registro' }}
                                 </div>
                             </div>
                             <hr class="mt-2">
                             <div class="form-row mt-1">
                                 <label class="col-3 text-dark font-weight-bolder">Chip</label>
-                                <div class="col-8 ml-2 text-secondary">
+                                <div class="col-8 ml-2 text-secondary" id="mascota_chip_text">
                                     @if ($mascota->tiene_chip)
                                         {{ $mascota->chip ?? 'Si' }}
                                     @else
@@ -83,73 +83,140 @@
                             <hr class="mt-2">
                             <div class="form-row mt-1">
                                 <label class="col-3 text-dark font-weight-bolder">Esterilizado</label>
-                                <div class="col-8 ml-2 text-secondary">
+                                <div class="col-8 ml-2 text-secondary" id="mascota_esterilizado_text">
                                     {{ $mascota->esterilizado ? 'Si' : 'No' }}
                                 </div>
                             </div>
                             <hr class="mt-2">
                             <div class="form-row mt-1">
                                 <label class="col-3 text-dark font-weight-bolder">Enf. cronica</label>
-                                <div class="col-8 ml-2 text-secondary">
+                                <div class="col-8 ml-2 text-secondary" id="mascota_enf_cronica_text">
                                     {{ $mascota->enfermedad_cronica ?? 'Sin registro' }}
                                 </div>
                             </div>
                             <hr class="mt-2">
-                            <div class="form-row mt-2">
-                                <div class="col-12 text-info font-weight-bolder">RESPONSABLE</div>
-                            </div>
-                            <div class="form-row mt-1">
-                                <label class="col-3 text-dark font-weight-bolder">Rut</label>
-                                <div class="col-8 ml-2 text-secondary">
-                                    {{ optional($responsable_mascota)->rut ?? 'Sin registro' }}
+                            <div class="form-row mt-3 mb-5">
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 text-center">
+                                    <button type="button" class="btn btn-primary-light-c btn-xxs"
+                                        onclick="editarInformacionMascota()"><i class="feather icon-edit"></i> Editar
+                                        información</button>
                                 </div>
                             </div>
-                            <hr class="mt-2">
-                            <div class="form-row mt-1">
+                        </div>
+                        <div id="info_mascota-edit" style="display: none">
+                            <div class="form-row pt-3">
                                 <label class="col-3 text-dark font-weight-bolder">Nombre</label>
                                 <div class="col-8 ml-2 text-secondary">
-                                    @if (isset($responsable_mascota))
-                                        {{ $responsable_mascota->nombres }} {{ $responsable_mascota->apellido_uno }} {{ $responsable_mascota->apellido_dos }}
-                                    @else
-                                        Sin registro
-                                    @endif
+                                    <input type="text" id="mascota_nombre_edit" class="form-control"
+                                        value="{{ $mascota->nombre ?? '' }}">
                                 </div>
                             </div>
                             <hr class="mt-2">
                             <div class="form-row mt-1">
-                                <label class="col-3 text-dark font-weight-bolder">Email</label>
+                                <label class="col-3 text-dark font-weight-bolder">Especie</label>
                                 <div class="col-8 ml-2 text-secondary">
-                                    {{ optional($responsable_mascota)->email ?? 'Sin registro' }}
+                                    <select id="mascota_especie_edit" class="form-control">
+                                        <option value="0">Seleccione especie</option>
+                                        @foreach ($especies_mascotas as $especie)
+                                            <option value="{{ $especie->id }}"
+                                                @if ($mascota->especie_id == $especie->id || $mascota->especie == $especie->id) selected @endif>{{ $especie->nombre }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
                             <hr class="mt-2">
                             <div class="form-row mt-1">
-                                <label class="col-3 text-dark font-weight-bolder">Telefono</label>
+                                <label class="col-3 text-dark font-weight-bolder">Otra especie</label>
                                 <div class="col-8 ml-2 text-secondary">
-                                    {{ optional($responsable_mascota)->telefono_uno ?? 'Sin registro' }}
+                                    <input type="text" id="mascota_otra_especie_edit" class="form-control"
+                                        value="{{ $mascota->otra_especie ?? '' }}">
                                 </div>
                             </div>
                             <hr class="mt-2">
                             <div class="form-row mt-1">
-                                <label class="col-3 text-dark font-weight-bolder">Direccion</label>
+                                <label class="col-3 text-dark font-weight-bolder">Sexo</label>
                                 <div class="col-8 ml-2 text-secondary">
-                                    @if (isset($responsable_mascota) && $responsable_mascota->Direccion()->first() != null)
-                                        {{ $responsable_mascota->Direccion()->first()->direccion . ' ' . $responsable_mascota->Direccion()->first()->numero_dir }}
-                                    @else
-                                        Sin registro
-                                    @endif
+                                    <select id="mascota_sexo_edit" class="form-control">
+                                        <option value="M" @if ($mascota->sexo == 'M') selected @endif>Macho</option>
+                                        <option value="F" @if ($mascota->sexo == 'F') selected @endif>Hembra</option>
+                                    </select>
                                 </div>
                             </div>
                             <hr class="mt-2">
-                            <div class="form-row mt-1 text-dark">
-                                <label class="col-3 text-dark font-weight-bolder">Comuna / Region</label>
+                            <div class="form-row mt-1">
+                                <label class="col-3 text-dark font-weight-bolder">FN</label>
                                 <div class="col-8 ml-2 text-secondary">
-                                    @if (isset($responsable_mascota) && $responsable_mascota->Direccion()->first() != null && $responsable_mascota->Direccion()->first()->Ciudad()->first() != null)
-                                        {{ $responsable_mascota->Direccion()->first()->Ciudad()->first()->nombre }}<br>
-                                        {{ $responsable_mascota->Direccion()->first()->Ciudad()->first()->Region()->first()->nombre }}
-                                    @else
-                                        Sin registro
-                                    @endif
+                                    <input type="date" id="mascota_fn_edit" class="form-control"
+                                        value="{{ $mascota->fecha_nacimiento ?? '' }}">
+                                </div>
+                            </div>
+                            <hr class="mt-2">
+                            <div class="form-row mt-1">
+                                <label class="col-3 text-dark font-weight-bolder">Tamaño</label>
+                                <div class="col-8 ml-2 text-secondary">
+                                    <select id="mascota_tamano_edit" class="form-control">
+                                        <option value="0">Seleccione tamaño</option>
+                                        @foreach ($tamanos_mascotas as $tamano)
+                                            <option value="{{ $tamano->id }}"
+                                                @if ($mascota->tamano_id == $tamano->id || $mascota->tamano == $tamano->slug) selected @endif>{{ $tamano->nombre }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <hr class="mt-2">
+                            <div class="form-row mt-1">
+                                <label class="col-3 text-dark font-weight-bolder">Tiene chip</label>
+                                <div class="col-8 ml-2 text-secondary">
+                                    <select id="mascota_tiene_chip_edit" class="form-control">
+                                        <option value="1" @if ($mascota->tiene_chip) selected @endif>Si</option>
+                                        <option value="0" @if (!$mascota->tiene_chip) selected @endif>No</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <hr class="mt-2">
+                            <div class="form-row mt-1">
+                                <label class="col-3 text-dark font-weight-bolder">Chip</label>
+                                <div class="col-8 ml-2 text-secondary">
+                                    <input type="text" id="mascota_chip_edit" class="form-control"
+                                        value="{{ $mascota->chip ?? '' }}">
+                                </div>
+                            </div>
+                            <hr class="mt-2">
+                            <div class="form-row mt-1">
+                                <label class="col-3 text-dark font-weight-bolder">Esterilizado</label>
+                                <div class="col-8 ml-2 text-secondary">
+                                    <select id="mascota_esterilizado_edit" class="form-control">
+                                        <option value="1" @if ($mascota->esterilizado) selected @endif>Si</option>
+                                        <option value="0" @if (!$mascota->esterilizado) selected @endif>No</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <hr class="mt-2">
+                            <div class="form-row mt-1">
+                                <label class="col-3 text-dark font-weight-bolder">F. esterilización</label>
+                                <div class="col-8 ml-2 text-secondary">
+                                    <input type="date" id="mascota_fecha_esterilizacion_edit" class="form-control"
+                                        value="{{ $mascota->fecha_esterilizacion ?? '' }}">
+                                </div>
+                            </div>
+                            <hr class="mt-2">
+                            <div class="form-row mt-1">
+                                <label class="col-3 text-dark font-weight-bolder">Enf. cronica</label>
+                                <div class="col-8 ml-2 text-secondary">
+                                    <input type="text" id="mascota_enfermedad_cronica_edit" class="form-control"
+                                        value="{{ $mascota->enfermedad_cronica ?? '' }}">
+                                </div>
+                            </div>
+                            <div class="form-row mt-3 mb-5">
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 text-center">
+                                    <button type="button" class="btn btn-primary-light-c btn-xxs"
+                                        onclick="guardarInformacionMascota({{ $mascota->id }})"><i class="feather icon-save"></i>
+                                        Guardar información</button>
+                                    <button type="button" class="btn btn-danger-light-c btn-xxs"
+                                        onclick="cancelarInformacionMascota()"><i class="fas fa-trash"></i>Cancelar
+                                        edición</button>
                                 </div>
                             </div>
                         </div>
@@ -386,6 +453,212 @@
                     </div>
                 </div>
             </div>
+            @if (isset($mascota) && $mascota)
+            <div class="card-sidebar">
+                <div class="card-header-sidebar" id="headingResponsable">
+                    <h2 class="mb-0">
+                        <button class="btn btn-light btn-block text-left collapsed text-info" type="button"
+                            data-toggle="collapse" data-target="#collapseResponsable" aria-expanded="false"
+                            aria-controls="collapseResponsable"><i
+                                class="feather icon-chevron-down float-right pt-1 flecha-accordion"></i>
+                            INFORMACIÓN DEL RESPONSABLE
+                        </button>
+                    </h2>
+                </div>
+                <div id="collapseResponsable" class="collapse" aria-labelledby="headingResponsable"
+                    data-parent="#accordionExample">
+                    <div class="card-body-sidebar">
+                        <div id="info_responsable">
+                            <div class="form-row pt-3">
+                                <label class="col-2 text-dark font-weight-bolder">Rut</label>
+                                <div class="col-9 ml-2 text-secondary" id="rut_responsable">
+                                    {{ optional($responsable_mascota)->rut ?? 'Sin registro' }}
+                                </div>
+                            </div>
+                            <hr class="mt-2">
+                            <div class="form-row mt-1">
+                                <label class="col-2 text-dark font-weight-bolder">Nombre</label>
+                                <div class="col-9 ml-2 text-secondary" id="nombre_responsable">
+                                    @if (isset($responsable_mascota))
+                                        {{ $responsable_mascota->nombres }}
+                                    @else
+                                        Sin registro
+                                    @endif
+                                </div>
+                            </div>
+                            <hr class="mt-2">
+                            <div class="form-row mt-1">
+                                <label class="col-2 text-dark font-weight-bolder">Apellidos</label>
+                                <div class="col-9 ml-2 text-secondary" id="apellidos_responsable">
+                                    @if (isset($responsable_mascota))
+                                        {{ $responsable_mascota->apellido_uno }} {{ $responsable_mascota->apellido_dos }}
+                                    @else
+                                        Sin registro
+                                    @endif
+                                </div>
+                            </div>
+                            <hr class="mt-2">
+                            <div class="form-row mt-1">
+                                <label class="col-2 text-dark font-weight-bolder">Email</label>
+                                <div class="col-9 ml-2 text-secondary" id="email_responsable">
+                                    {{ optional($responsable_mascota)->email ?? 'Sin registro' }}
+                                </div>
+                            </div>
+                            <hr class="mt-2">
+                            <div class="form-row mt-1">
+                                <label class="col-2 text-dark font-weight-bolder">Teléfono</label>
+                                <div class="col-9 ml-2 text-secondary" id="telefono_responsable">
+                                    {{ optional($responsable_mascota)->telefono_uno ?? 'Sin registro' }}
+                                </div>
+                            </div>
+                            <hr class="mt-2">
+                            <div class="form-row mt-1">
+                                <label class="col-2 text-dark font-weight-bolder">Dirección</label>
+                                <div class="col-9 ml-2 text-secondary" id="direccion_responsable_text">
+                                    @if (isset($responsable_mascota) && $responsable_mascota->Direccion()->first() != null)
+                                        {{ $responsable_mascota->Direccion()->first()->direccion . ' ' . $responsable_mascota->Direccion()->first()->numero_dir }}
+                                    @else
+                                        Sin registro
+                                    @endif
+                                </div>
+                            </div>
+                            <hr class="mt-2">
+                            <div class="form-row mt-1 text-dark">
+                                <label class="col-2 text-dark font-weight-bolder">Comuna / Región</label>
+                                <div class="col-9 ml-2 text-secondary" id="comuna_region_responsable">
+                                    @if (isset($responsable_mascota) && $responsable_mascota->Direccion()->first() != null && $responsable_mascota->Direccion()->first()->Ciudad()->first() != null)
+                                        {{ $responsable_mascota->Direccion()->first()->Ciudad()->first()->nombre }}<br>
+                                        {{ $responsable_mascota->Direccion()->first()->Ciudad()->first()->Region()->first()->nombre }}
+                                    @else
+                                        Sin registro
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="form-row mt-3 mb-5">
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 text-center">
+                                    <button type="button" class="btn btn-primary-light-c btn-xxs"
+                                        onclick="editarInformacionResponsable()"><i class="feather icon-edit"></i> Editar
+                                        información</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="info_responsable-edit" style="display: none">
+                            <div class="form-row pt-3">
+                                <label class="col-2 text-dark font-weight-bolder">Rut</label>
+                                <div class="col-9 ml-2 text-secondary">
+                                    <input type="text" id="responsable_rut_edit" class="form-control"
+                                        value="{{ optional($responsable_mascota)->rut ?? '' }}">
+                                </div>
+                            </div>
+                            <hr class="mt-2">
+                            <div class="form-row mt-1">
+                                <label class="col-2 text-dark font-weight-bolder">Nombre</label>
+                                <div class="col-9 ml-2 text-secondary">
+                                    <input type="text" id="responsable_nombre_edit" class="form-control"
+                                        value="{{ optional($responsable_mascota)->nombres ?? '' }}">
+                                </div>
+                            </div>
+                            <hr class="mt-2">
+                            <div class="form-row mt-1">
+                                <label class="col-2 text-dark font-weight-bolder">Apellido Paterno</label>
+                                <div class="col-9 ml-2 text-secondary">
+                                    <input type="text" id="responsable_apellido_uno_edit" class="form-control"
+                                        value="{{ optional($responsable_mascota)->apellido_uno ?? '' }}">
+                                </div>
+                            </div>
+                            <hr class="mt-2">
+                            <div class="form-row mt-1">
+                                <label class="col-2 text-dark font-weight-bolder">Apellido Materno</label>
+                                <div class="col-9 ml-2 text-secondary">
+                                    <input type="text" id="responsable_apellido_dos_edit" class="form-control"
+                                        value="{{ optional($responsable_mascota)->apellido_dos ?? '' }}">
+                                </div>
+                            </div>
+                            <hr class="mt-2">
+                            <div class="form-row mt-1">
+                                <label class="col-2 text-dark font-weight-bolder">FN</label>
+                                <div class="col-9 ml-2 text-secondary">
+                                    <input type="date" id="responsable_fn_edit" class="form-control"
+                                        value="{{ optional($responsable_mascota)->fecha_nac ?? '' }}">
+                                </div>
+                            </div>
+                            <hr class="mt-2">
+                            <div class="form-row mt-1">
+                                <label class="col-2 text-dark font-weight-bolder">Sexo</label>
+                                <div class="col-9 ml-2 text-secondary">
+                                    <select id="responsable_sexo_edit" class="form-control">
+                                        <option value="M" @if (optional($responsable_mascota)->sexo == 'M') selected @endif>Masculino</option>
+                                        <option value="F" @if (optional($responsable_mascota)->sexo == 'F') selected @endif>Femenino</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <hr class="mt-2">
+                            <div class="form-row mt-1">
+                                <label class="col-2 text-dark font-weight-bolder">Dirección</label>
+                                <div class="col-9 ml-2 text-secondary">
+                                    <input type="text" id="responsable_dir_edit" class="form-control"
+                                        value="{{ optional(optional($responsable_mascota)->Direccion()->first())->direccion ? optional($responsable_mascota->Direccion()->first())->direccion . ' ' . optional($responsable_mascota->Direccion()->first())->numero_dir : '' }}">
+                                </div>
+                            </div>
+                            <hr class="mt-2">
+                            <div class="form-row mt-1 text-dark">
+                                <label class="col-2 text-dark font-weight-bolder">Región</label>
+                                <div class="col-9 ml-2 text-secondary">
+                                    <select id="responsable_region_edit" class="form-control" onchange="buscar_ciudad_responsable();">
+                                        <option value="0">Seleccione región</option>
+                                        @foreach ($regiones as $region)
+                                            <option value="{{ $region->id }}"
+                                                @if (optional(optional(optional($responsable_mascota)->Direccion()->first())->Ciudad()->first())->Region()->first() && $responsable_mascota->Direccion()->first()->Ciudad()->first()->Region()->first()->id == $region->id) selected @endif>{{ $region->nombre }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <hr class="mt-2">
+                            <div class="form-row mt-1">
+                                <label class="col-2 text-dark font-weight-bolder">Comuna</label>
+                                <div class="col-9 ml-2 text-secondary">
+                                    <select id="responsable_comuna_edit" class="form-control">
+                                        <option value="0">Seleccione comuna</option>
+                                        @foreach ($ciudades as $comuna)
+                                            <option value="{{ $comuna->id }}"
+                                                @if (optional(optional($responsable_mascota)->Direccion()->first())->Ciudad()->first() && $responsable_mascota->Direccion()->first()->Ciudad()->first()->id == $comuna->id) selected @endif>{{ $comuna->nombre }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <hr class="mt-2">
+                            <div class="form-row mt-1">
+                                <label class="col-2 text-dark font-weight-bolder">Email</label>
+                                <div class="col-9 ml-2 text-secondary">
+                                    <input type="text" id="responsable_email_edit" class="form-control"
+                                        value="{{ optional($responsable_mascota)->email ?? '' }}">
+                                </div>
+                            </div>
+                            <hr class="mt-2">
+                            <div class="form-row mt-1">
+                                <label class="col-2 text-dark font-weight-bolder">Teléfono</label>
+                                <div class="col-9 ml-2 text-secondary">
+                                    <input type="text" id="responsable_telefono_edit" class="form-control"
+                                        value="{{ optional($responsable_mascota)->telefono_uno ?? '' }}">
+                                </div>
+                            </div>
+                            <div class="form-row mt-3 mb-5">
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 text-center">
+                                    <button type="button" class="btn btn-primary-light-c btn-xxs"
+                                        onclick="guardarInformacionResponsable({{ optional($responsable_mascota)->id ?? 0 }})"><i class="feather icon-save"></i>
+                                        Guardar información</button>
+                                    <button type="button" class="btn btn-danger-light-c btn-xxs"
+                                        onclick="cancelarInformacionResponsable()"><i class="fas fa-trash"></i>Cancelar
+                                        edición</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endif
             <div class="card-sidebar">
                 <div class="card-header-sidebar" id="headingTwo">
                     <h2 class="mb-0">
@@ -449,7 +722,7 @@
                             <hr class="mt-2">
                             <div class="form-row mt-1">
                                 <label class="col-2 text-dark font-weight-bolder">Dirección</label>
-                                <div class="col-9 ml-2 text-secondary">
+                                <div class="col-9 ml-2 text-secondary" id="direccion_contacto_text">
 
                                     @if ($paciente->ContactosEmergencia()->first() != null)
                                         <span class="info">
@@ -499,7 +772,7 @@
                             </div>
                             <hr class="mt-2">
                             <div class="form-row mt-1">
-                                <label class="col-2 text-dark font-weight-bolder">Tel&eacute;fono</label>
+                                <label class="col-2 text-dark font-weight-bolder">Teléfono</label>
                                 <div class="col-9 ml-2 text-secondary" id="telefono_contacto">
 
                                     @if ($paciente->ContactosEmergencia()->first() != null)
@@ -649,8 +922,6 @@
 
                 </div>
             </div>
-
-        </div>
         <div class="card-sidebar">
             <div class="card-header-sidebar" id="headingThree">
                 <h2 class="mb-0">
@@ -1056,6 +1327,240 @@ window.addEventListener('load', function () {
                     title: "Actualización de Paciente",
                     text: "Falla en Actualización.\nIntente de nuevo.",
                     icon: "error",
+                });
+            }
+        })
+        .fail(function (jqXHR, ajaxOptions, thrownError) {
+            console.log(jqXHR, ajaxOptions, thrownError);
+        });
+    };
+
+    window.editarInformacionMascota = function () {
+        $('#info_mascota').css('display', 'none');
+        $('#info_mascota-edit').css('display', 'block');
+    };
+
+    window.cancelarInformacionMascota = function () {
+        $('#info_mascota').css('display', 'block');
+        $('#info_mascota-edit').css('display', 'none');
+    };
+
+    window.guardarInformacionMascota = function (idMascota) {
+        if (!idMascota) {
+            swal({
+                title: "Mascota",
+                text: "Mascota no encontrada",
+                icon: "error",
+            });
+            return;
+        }
+
+        let data = {
+            tiene_chip: $('#mascota_tiene_chip_edit').val(),
+            chip: $('#mascota_chip_edit').val(),
+            nombre: $('#mascota_nombre_edit').val(),
+            especie_id: $('#mascota_especie_edit').val(),
+            otra_especie: $('#mascota_otra_especie_edit').val(),
+            tamano_id: $('#mascota_tamano_edit').val(),
+            fecha_nacimiento: $('#mascota_fn_edit').val(),
+            sexo: $('#mascota_sexo_edit').val(),
+            esterilizado: $('#mascota_esterilizado_edit').val(),
+            fecha_esterilizacion: $('#mascota_fecha_esterilizacion_edit').val(),
+            enfermedad_cronica: $('#mascota_enfermedad_cronica_edit').val(),
+            _token: CSRF_TOKEN,
+            _method: 'PUT'
+        };
+
+        let url = "{{ isset($mascota) ? route('paciente.mascotas.update', $mascota->id) : '' }}";
+        if (!url) {
+            swal({
+                title: "Mascota",
+                text: "No se pudo determinar la ruta de actualización.",
+                icon: "error",
+            });
+            return;
+        }
+
+        $.ajax({
+            url: url,
+            type: "post",
+            data: data,
+        })
+        .done(function (data) {
+            if (data && data.estado == 1) {
+                let registro = data.registro || {};
+                if (registro.nombre !== undefined) {
+                    $('#mascota_nombre_text').text(registro.nombre);
+                }
+                if (registro.especieMascota && registro.especieMascota.nombre) {
+                    $('#mascota_especie_text').text(registro.especieMascota.nombre);
+                } else if (registro.otra_especie) {
+                    $('#mascota_especie_text').text(registro.otra_especie);
+                }
+                if (registro.sexo !== undefined) {
+                    $('#mascota_sexo_text').text(registro.sexo === 'M' ? 'Macho' : (registro.sexo === 'F' ? 'Hembra' : registro.sexo));
+                }
+                if (registro.fecha_nacimiento !== undefined) {
+                    $('#mascota_fn_text').text(registro.fecha_nacimiento || 'Sin registro');
+                }
+                if (registro.tamanoMascota && registro.tamanoMascota.nombre) {
+                    $('#mascota_tamano_text').text(registro.tamanoMascota.nombre);
+                }
+                if (registro.tiene_chip !== undefined) {
+                    let chipText = registro.tiene_chip ? (registro.chip || 'Si') : 'No';
+                    $('#mascota_chip_text').text(chipText);
+                }
+                if (registro.esterilizado !== undefined) {
+                    $('#mascota_esterilizado_text').text(registro.esterilizado ? 'Si' : 'No');
+                }
+                if (registro.enfermedad_cronica !== undefined) {
+                    $('#mascota_enf_cronica_text').text(registro.enfermedad_cronica || 'Sin registro');
+                }
+
+                swal({
+                    title: "Mascota",
+                    text: "Actualización Exitosa",
+                    icon: "success",
+                });
+                cancelarInformacionMascota();
+            } else {
+                let texto_error = '';
+                if (data && data.error) {
+                    Object.keys(data.error).forEach(function (key) {
+                        texto_error += key + ': ' + data.error[key] + '\\n';
+                    });
+                }
+                swal({
+                    title: "Mascota",
+                    text: (data && data.msj ? data.msj : "Falla en Actualización.") + '\\n' + texto_error,
+                    icon: "error",
+                });
+            }
+        })
+        .fail(function (jqXHR, ajaxOptions, thrownError) {
+            console.log(jqXHR, ajaxOptions, thrownError);
+        });
+    };
+
+    window.editarInformacionResponsable = function () {
+        $('#info_responsable').css('display', 'none');
+        $('#info_responsable-edit').css('display', 'block');
+    };
+
+    window.cancelarInformacionResponsable = function () {
+        $('#info_responsable').css('display', 'block');
+        $('#info_responsable-edit').css('display', 'none');
+    };
+
+    window.guardarInformacionResponsable = function (idResponsable) {
+        if (!idResponsable) {
+            swal({
+                title: "Responsable",
+                text: "Responsable no encontrado",
+                icon: "error",
+            });
+            return;
+        }
+
+        let data = {
+            id: idResponsable,
+            nombre: $('#responsable_nombre_edit').val(),
+            apellido_uno: $('#responsable_apellido_uno_edit').val(),
+            apellido_dos: $('#responsable_apellido_dos_edit').val(),
+            fecha_nacimiento: $('#responsable_fn_edit').val(),
+            sexo: $('#responsable_sexo_edit').val(),
+            direccion: $('#responsable_dir_edit').val(),
+            region: $('#responsable_region_edit').val(),
+            ciudad: $('#responsable_comuna_edit').val(),
+            email: $('#responsable_email_edit').val(),
+            telefono: $('#responsable_telefono_edit').val(),
+            _token: CSRF_TOKEN
+        };
+
+        let url = "{{ route('asistente.paciente.modificar') }}";
+
+        $.ajax({
+            url: url,
+            type: "get",
+            data: data,
+        })
+        .done(function (data) {
+            if (data && data.estado == 1) {
+                let registro = data.paciente || data.registro || {};
+                if (registro.rut !== undefined) {
+                    $('#rut_responsable').text(registro.rut);
+                }
+                if (registro.nombres !== undefined) {
+                    $('#nombre_responsable').text(registro.nombres);
+                }
+                if (registro.apellido_uno !== undefined || registro.apellido_dos !== undefined) {
+                    $('#apellidos_responsable').text((registro.apellido_uno || '') + ' ' + (registro.apellido_dos || ''));
+                }
+                if (registro.email !== undefined) {
+                    $('#email_responsable').text(registro.email);
+                }
+                if (registro.telefono_uno !== undefined) {
+                    $('#telefono_responsable').text(registro.telefono_uno);
+                }
+                if (data.direccion && data.direccion.direccion) {
+                    let numero = data.direccion.numero_dir ? (' ' + data.direccion.numero_dir) : '';
+                    $('#direccion_responsable_text').text(data.direccion.direccion + numero);
+                }
+                if (data.ciudad || data.region) {
+                    let ciudad = data.ciudad && data.ciudad.nombre ? data.ciudad.nombre : '';
+                    let region = data.region && data.region.nombre ? data.region.nombre : '';
+                    $('#comuna_region_responsable').html(ciudad + '<br> ' + region);
+                }
+
+                swal({
+                    title: "Responsable",
+                    text: "Actualización Exitosa",
+                    icon: "success",
+                });
+                cancelarInformacionResponsable();
+            } else {
+                swal({
+                    title: "Responsable",
+                    text: "Falla en Actualización.\nIntente de nuevo.",
+                    icon: "error",
+                });
+            }
+        })
+        .fail(function (jqXHR, ajaxOptions, thrownError) {
+            console.log(jqXHR, ajaxOptions, thrownError);
+        });
+    };
+
+    window.buscar_ciudad_responsable = function (id_ciudad = 0) {
+        let region = $('#responsable_region_edit').val();
+        let url = "{{ route('profesional.buscar_ciudad_region') }}";
+        $.ajax({
+            url: url,
+            type: "get",
+            data: {
+                region: region,
+            },
+        })
+        .done(function (data) {
+            if (data != null) {
+                data = JSON.parse(data);
+                let ciudades = $('#responsable_comuna_edit');
+                ciudades.find('option').remove();
+                ciudades.append('<option value="0">seleccione</option>');
+                $(data).each(function (i, v) {
+                    ciudades.append('<option value="' + v.id + '">' + v.nombre + '</option>');
+                });
+
+                if (id_ciudad != 0) {
+                    ciudades.val(id_ciudad);
+                }
+            } else {
+                swal({
+                    title: "Error",
+                    text: "Error al cargar las ciudades",
+                    icon: "error",
+                    buttons: "Aceptar",
+                    DangerMode: true,
                 });
             }
         })
