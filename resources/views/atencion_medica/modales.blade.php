@@ -34,16 +34,16 @@
         <div class="boton-formularios">
             <input type="checkbox" id="btn-mas">
             <div class="redes">
-                <a id="boton_1" class="fas fa-user fa-2x" data-toggle="canvas" data-target="#antecedentes_paciente" aria-expanded="false" aria-controls="bs-canvas-right" title="Antecedentes del paciente" data-placement="left" style="cursor:pointer;"> </a>
-                <a id="boton_2" class="fas fa-notes-medical fa-2x" data-toggle="canvas" data-target="#formularios_atencion" aria-expanded="false" aria-controls="bs-canvas-right" title="Formularios de atención" data-placement="left" style="cursor:pointer;"></a>
-                <a id="boton_4" class="fas fa-bed fa-2x" data-toggle="canvas" data-target="#formularios_signos_vitales" aria-expanded="false" aria-controls="bs-canvas-right" title="formularios Signos Vitales" data-placement="left" style="cursor:pointer;"></a>
+                <a id="boton_1" class="icono-pcte fa-2x" data-toggle="canvas" data-target="#antecedentes_paciente" aria-expanded="false" aria-controls="bs-canvas-right" title="Antecedentes del Paciente" data-placement="left" style="cursor:pointer;"> </a>
+                <a id="boton_2" class="fas fa-notes-medical fa-2x" data-toggle="canvas" data-target="#formularios_atencion" aria-expanded="false" aria-controls="bs-canvas-right" title="Formularios de Atención" data-placement="left" style="cursor:pointer;"></a>
+                <a id="boton_4" class="icono-signosv" data-toggle="canvas" data-target="#formularios_signos_vitales" aria-expanded="false" aria-controls="bs-canvas-right" title="Formularios Signos Vitales" data-placement="left" style="cursor:pointer;"></a>
 
                 @if($profesional->SubTipoEspecialidad()->first()->nombre == 'Cardiología Adultos' )
                 <a id="boton_3" class="fas fa-heart fa-2x" data-toggle="canvas" data-target="#formularios_cardiologicos" aria-expanded="false" aria-controls="bs-canvas-right" title="Formularios Cardiología" data-placement="left" style="cursor:pointer;"></a>
                  @endif
 
                 @if($profesional->SubTipoEspecialidad()->first()->nombre == 'Otorrinolaringología' )
-                    <a id="boton_3" class="fas fa-deaf fa-2x" data-toggle="canvas" data-target="#formularios_orl" aria-expanded="false" aria-controls="bs-canvas-right" title="Formularios Otorrinolaringología" data-placement="left" ></a>
+                    <a id="boton_3" class="icono-vetgral" data-toggle="canvas" data-target="#formularios_orl" aria-expanded="false" aria-controls="bs-canvas-right" title="Formularios Atención Veterinaria General" data-placement="left" ></a>
                 @endif
 
                 @if($profesional->SubTipoEspecialidad()->first()->nombre == 'Dermatología' )
