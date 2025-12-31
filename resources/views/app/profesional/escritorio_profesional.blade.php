@@ -64,7 +64,7 @@
                             <a href="{{ route('profesional.index_transcripcion_examen') }}">
                                 <div class="card-body text-center px-2" style="cursor:pointer">
                                     <img class="wid-40 text-center" src="{{ asset('images/iconos/examenes.svg') }}">
-                                    <h6 class="mt-1 f-13">Transcripción <br>examenes</h6>
+                                    <h6 class="mt-1 f-13">Transcripción <br>exámenes</h6>
                                 </div>
                             </a>
                         </div>
@@ -194,7 +194,7 @@
                             <a href="{{ route('app.descarga') }}" class="btn" type="button" target="_blank">
                                 <div class="card-body">
                                     <img class="wid-30 mb-3" src="{{ asset('images/iconos/lock.svg') }}">
-                                    <h5 class="my-auto text-white">VETPASS</h5>
+                                    <h5 class="my-auto text-white">DESCARGA TU APP</h5>
                                 </div>
                             </a>
                         </div>
