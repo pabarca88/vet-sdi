@@ -9,14 +9,14 @@
                     <div class="row align-items-center">
                         <div class="col-md-12">
                             <div class="page-header-title">
-                                <h5 class="m-b-10 font-weight-bold">Receta Online</h5>
+                                <h5 class="m-b-10 font-weight-bold">Mis Documentos</h5>
                             </div>
                             <ul class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="{{ route('profesional.home') }}" data-toggle="tooltip"
                                         data-placement="top" title="Volver a mi escritorio"><i
                                             class="feather icon-home"></i></a></li>
                                 <li class="breadcrumb-item">
-                                    <a href="#">Receta Online</a>
+                                    <a href="#">Mis Documentos</a>
                                 </li>
                             </ul>
                         </div>
@@ -85,19 +85,6 @@
                                     src="{{ asset('images/iconos/msje.png') }}" alt="Mis documentos">
                                 <h5>
                                     Mis mensajes
-                                </h5>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card subir">
-                        <a href="{{ ROUTE('profesional.mis_licencias') }}">
-                            <div class="card-body text-center" style="cursor:pointer">
-                                <img class="wid-60 text-center mb-3"
-                                    src="{{ asset('images/iconos/licencia.svg') }}" alt="Mis Licencias">
-                                <h5>
-                                    Mis Licencias
                                 </h5>
                             </div>
                         </a>
