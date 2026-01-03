@@ -1,8 +1,8 @@
 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-    <div class="card-a" style=" border: 1px solid #6c9bd5;">
+    <div class="card-a" style=" border: 1px solid #8a4fa6;">
         <div class="card-header-a" id="cgc" >
         <button class="accor-closed btn pt-1 pb-0 pl-1 btn-block text-left collapsed" type="button"  data-toggle="collapse" data-target="#cgc-c" aria-expanded="false" aria-controls="cgc-c">
-              Nuevo Antecedente / Crónicos / GES / Confidencial
+              Nuevo Antecedente / Crónicos / Vacunas y Desparasitación
             </button>
         </div>
         <div id="cgc-c" class="collapse show" aria-labelledby="cgc" data-parent="#cgc">
@@ -111,7 +111,7 @@
                                         <input type="checkbox" class="custom-control-input" id="modal_ges" name="modal_ges" value="{!! old('modal_ges') !!}">
                                         {{-- <label for="modal_ges" class="cr" data-toggle="modal"
                                                 data-target="#form_ges"></label> --}}
-                                        <label class="custom-control-label" for="modal_ges">GES</label>
+                                        <label class="custom-control-label" for="modal_ges">Vacunas y Desparasitación</label>
                                     </div>
                                 </div>
                             </div>
@@ -134,7 +134,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3">
+                    <!--<div class="col-sm-12 col-md-3 col-lg-3 col-xl-3">
                         <div class="row">
                             <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                                 <div class="form-group">
@@ -154,7 +154,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div>-->
                 </div>
             </div>
         </div>
