@@ -97,6 +97,9 @@
                             <hr class="mt-2">
                             <div class="form-row mt-3 mb-5">
                                 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 text-center">
+                                    <button type="button" class="btn btn-info btn-xxs mr-1" data-toggle="modal"
+                                        data-target="#modal_detalle_mascota_sidebar"><i class="feather icon-eye"></i>
+                                        Ver detalles</button>
                                     <button type="button" class="btn btn-primary-light-c btn-xxs"
                                         onclick="editarInformacionMascota()"><i class="feather icon-edit"></i> Editar
                                         información</button>
@@ -1250,6 +1253,103 @@
         </div>
     </div>
 </div>
+
+@if (isset($mascota) && $mascota)
+    @php
+        $fotoMascota = $mascota->foto_perfil ?: ($mascota->sexo === 'M' ? asset('images/iconos/paciente-m.svg') : asset('images/iconos/paciente-f.svg'));
+        $especieMascota = optional($mascota->especieMascota)->nombre ?? $mascota->otra_especie ?? $mascota->especie ?? 'Sin registro';
+        $chipMascota = $mascota->tiene_chip ? ($mascota->chip ?: 'Si') : 'No';
+        $galeriaMascota = [];
+        if (is_array($mascota->galeria)) {
+            foreach ($mascota->galeria as $bloque) {
+                if (is_array($bloque)) {
+                    foreach ($bloque as $item) {
+                        if (is_string($item) && $item !== '') {
+                            $galeriaMascota[] = $item;
+                        } elseif (is_array($item)) {
+                            foreach ($item as $sub) {
+                                if (is_string($sub) && $sub !== '') {
+                                    $galeriaMascota[] = $sub;
+                                }
+                            }
+                        }
+                    }
+                } elseif (is_string($bloque) && $bloque !== '') {
+                    $galeriaMascota[] = $bloque;
+                }
+            }
+        }
+        $galeriaMascota = array_values(array_unique($galeriaMascota));
+    @endphp
+    <div class="modal fade" id="modal_detalle_mascota_sidebar" tabindex="-1" role="dialog"
+        aria-labelledby="modalDetalleMascotaSidebar" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-info">
+                    <h5 class="modal-title text-white mt-1" id="modalDetalleMascotaSidebar">Detalle de la mascota</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center mb-3">
+                        <img class="wid-80 text-center mt-1 rounded-circle" src="{{ $fotoMascota }}"
+                            alt="Foto Mascota">
+                        <h5 class="mt-2 mb-0">{{ $mascota->nombre ?? 'Mascota' }}</h5>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <p class="mb-1"><strong>Especie:</strong> {{ $especieMascota }}</p>
+                        </div>
+                        <div class="col-sm-6">
+                            <p class="mb-1"><strong>Tamaño:</strong> {{ optional($mascota->tamanoMascota)->nombre ?? $mascota->tamano ?? 'Sin registro' }}</p>
+                        </div>
+                        <div class="col-sm-6">
+                            <p class="mb-1"><strong>Sexo:</strong>
+                                @if ($mascota->sexo == 'M')
+                                    Macho
+                                @elseif ($mascota->sexo == 'F')
+                                    Hembra
+                                @else
+                                    {{ $mascota->sexo ?? 'Sin registro' }}
+                                @endif
+                            </p>
+                        </div>
+                        <div class="col-sm-6">
+                            <p class="mb-1"><strong>Fecha nacimiento:</strong> {{ $mascota->fecha_nacimiento ?? 'Sin registro' }}</p>
+                        </div>
+                        <div class="col-sm-6">
+                            <p class="mb-1"><strong>Chip:</strong> {{ $chipMascota }}</p>
+                        </div>
+                        <div class="col-sm-6">
+                            <p class="mb-1"><strong>Esterilizado:</strong> {{ $mascota->esterilizado ? 'Si' : 'No' }}</p>
+                        </div>
+                        <div class="col-sm-6">
+                            <p class="mb-1"><strong>F. esterilización:</strong> {{ $mascota->fecha_esterilizacion ?? 'Sin registro' }}</p>
+                        </div>
+                        <div class="col-sm-6">
+                            <p class="mb-1"><strong>Enf. crónica:</strong> {{ $mascota->enfermedad_cronica ?? 'Sin registro' }}</p>
+                        </div>
+                    </div>
+                    @if (count($galeriaMascota) > 0)
+                        <div class="mt-3">
+                            <p class="mb-2"><strong>Fotos</strong></p>
+                            <div class="d-flex flex-wrap">
+                                @foreach ($galeriaMascota as $foto)
+                                    <img class="img-thumbnail mr-2 mb-2" src="{{ $foto }}" alt="Foto mascota"
+                                        style="width: 80px; height: 80px; object-fit: cover;">
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+@endif
+
 <script>
 window.addEventListener('load', function () {
     window.editarInformacionContacto = function () {

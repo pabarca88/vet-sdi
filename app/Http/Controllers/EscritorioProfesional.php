@@ -1207,6 +1207,21 @@ class EscritorioProfesional extends Controller
         $prevision = Prevision::all();
         $region = Region::all();
         $paciente = [];
+        $mascotas = collect();
+
+        if ($profesional) {
+            $mascota_ids = FichaAtencion::where('id_profesional', $profesional->id)
+                ->whereNotNull('id_mascota')
+                ->distinct()
+                ->pluck('id_mascota');
+
+            if ($mascota_ids->isNotEmpty()) {
+                $mascotas = Mascota::with(['Responsable.Prevision', 'especieMascota'])
+                    ->whereIn('id', $mascota_ids)
+                    ->orderBy('nombre')
+                    ->get();
+            }
+        }
         // foreach ($ficha_atencion as $f) {
         //     $paciente_temp = Paciente::find($f->id_paciente);
 		// 	if($paciente_temp){
@@ -1233,7 +1248,8 @@ class EscritorioProfesional extends Controller
                 'prevision' => $prevision,
                 'paciente' => $paciente,
                 'profesional' => $profesional,
-                'region' => $region
+                'region' => $region,
+                'mascotas' => $mascotas
             ]
         );
     }
