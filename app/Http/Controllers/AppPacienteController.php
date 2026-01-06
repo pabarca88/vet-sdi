@@ -20,6 +20,7 @@ use App\Models\Hipertension;
 use App\Models\HoraMedica;
 use App\Models\LogUserDevice;
 use App\Models\LugarAtencion;
+use App\Models\Mascota;
 use App\Models\NotificacionConfirmacion;
 use App\Models\OdontogramaPaciente;
 use App\Models\Paciente;
@@ -639,6 +640,64 @@ class AppPacienteController extends Controller
                 'horas' => []
             ]);
         }
+    }
+
+    public function getMisMascotas(Request $request)
+    {
+        // Validación de token X-Auth-Token
+        $authToken = $request->header('X-Auth-Token');
+        if (!$authToken) {
+            return response()->json([
+                'estado' => 0,
+                'mensaje' => 'Token de autenticación requerido'
+            ], 401);
+        }
+
+        // Buscar el token en la base de datos
+        $token = PersonalAccessToken::findToken($authToken);
+        if (!$token) {
+            return response()->json([
+                'estado' => 0,
+                'mensaje' => 'Token de autenticación inválido'
+            ], 401);
+        }
+
+        // Verificar que el token no haya expirado
+        if ($token->expires_at && $token->expires_at->isPast()) {
+            return response()->json([
+                'estado' => 0,
+                'mensaje' => 'Token de autenticación expirado'
+            ], 401);
+        }
+
+        // Obtener el usuario autenticado del token
+        $user = $token->tokenable;
+        if (!$user) {
+            return response()->json([
+                'estado' => 0,
+                'mensaje' => 'Usuario no encontrado'
+            ], 401);
+        }
+
+        $idUsuario = $request->id_paciente ?: $user->id;
+        $paciente = Paciente::where('id_usuario', $idUsuario)->first();
+        if (!$paciente) {
+            return response()->json([
+                'estado' => 0,
+                'mensaje' => 'Paciente no encontrado',
+                'registros' => []
+            ]);
+        }
+
+        $mascotas = Mascota::with(['especieMascota', 'tamanoMascota'])
+            ->where('id_responsable', $paciente->id)
+            ->get();
+
+        return response()->json([
+            'estado' => 1,
+            'msj' => 'registros',
+            'registros' => $mascotas,
+        ]);
     }
 
     public function guardarAtencionMedica(Request $request){
