@@ -33,7 +33,7 @@
                          <textarea class="form-control caja-texto form-control-sm mb-9"  rows="1"  onfocus="this.rows=4" onblur="this.rows=1;" name="enfermedades_previas" id="enfermedades_previas"></textarea>
                     </div>
                     <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-6 col-xxl-6">
-                        <label class="floating-label-activo-sm">Esquema Vacunal</label>
+                        <label class="floating-label-activo-sm">Esquema de Inmunizaciones</label>
                          <textarea class="form-control caja-texto form-control-sm mb-9"  rows="1"  onfocus="this.rows=4" onblur="this.rows=1;" name="enfermedades_previas" id="enfermedades_previas"></textarea>
                     </div>
                     <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3">
@@ -66,11 +66,11 @@
                     </div>
                     <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">
                         <label class="floating-label-activo-sm" for="motivo">Comportamiento del animal</label>
-                         <textarea class="form-control caja-texto form-control-sm"  rows="1"  onfocus="this.rows=4" onblur="this.rows=1;" name="comportamiento_animal" id="comportamiento_animal" placeholder="Escriba la información cómo la describe el propietario"></textarea>
+                         <textarea class="form-control caja-texto form-control-sm"  rows="1"  onfocus="this.rows=4" onblur="this.rows=1;" name="comportamiento_animal" id="comportamiento_animal" placeholder="Escriba la información cómo la describe el Responsable"></textarea>
                     </div>
                     <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">
                         <label class="floating-label-activo-sm" for="motivo">Motivo de consulta</label>
-                        <textarea class="form-control caja-texto form-control-sm"  rows="1"  onfocus="this.rows=4" onblur="this.rows=1;" name="motivo" id="motivo" placeholder="Escriba la información cómo la describe el propietario"></textarea>
+                        <textarea class="form-control caja-texto form-control-sm"  rows="1"  onfocus="this.rows=4" onblur="this.rows=1;" name="motivo" id="motivo" placeholder="Escriba la información cómo la describe el Responsable"></textarea>
                     </div>
                 </div>
                 <br>

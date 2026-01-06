@@ -52,7 +52,7 @@
                         <input type="text" class="form-control form-control-sm" name="" id="" value="">
                     </div>
                     <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-2 col-xxl-2">
-                        <label class="floating-label-activo-sm" for="motivo">% deshidratación</label>
+                        <label class="floating-label-activo-sm" for="motivo">% Deshidratación</label>
                         <input type="text" class="form-control form-control-sm" name="" id="" value="">
                     </div>
 
