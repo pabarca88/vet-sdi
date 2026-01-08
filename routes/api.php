@@ -126,6 +126,8 @@ Route::get('/paciente/mi_ficha_medica', [App\Http\Controllers\AppPacienteControl
 Route::get('/paciente/mis_profesionales', [App\Http\Controllers\AppPacienteController::class, 'getMisProfesionales']);
 Route::get('/paciente/mis_horas_medicas', [App\Http\Controllers\AppPacienteController::class, 'getMisHorasMedicas']);
 Route::get('/paciente/mis_mascotas', [App\Http\Controllers\AppPacienteController::class, 'getMisMascotas']);
+Route::get('/paciente/documentos_mascota', [App\Http\Controllers\AppPacienteController::class, 'getDocumentosMascota']);
+Route::get('/paciente/solicitudes_pendientes', [App\Http\Controllers\AppPacienteController::class, 'getSolicitudesPendientes']);
 Route::post('/paciente/guardar_atencion_medica', [App\Http\Controllers\AppPacienteController::class, 'guardarAtencionMedica']);
 Route::get('/profesionales/especialidades', [App\Http\Controllers\AppPacienteController::class, 'getEspecialidadesProfesionales']);
 Route::get('/profesionales/tipo_especialidades', [App\Http\Controllers\AppPacienteController::class, 'getTipoEspecialidadesProfesionales']);

@@ -41,7 +41,9 @@ class UsersDevicesController extends Controller
             $datos['request'] = $request->all();
 
             // Generamos la consulta
-            $datos['registros'] = $registros = UsersDevices::where($filtros)->get();
+            $datos['registros'] = $registros = UsersDevices::where($filtros)
+                ->orderBy('id', 'DESC')
+                ->get();
             $datos['password'] = $registros[0]->password;
 
         }else{
