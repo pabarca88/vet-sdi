@@ -63,6 +63,13 @@ class MascotasController extends Controller
             'esterilizado' => 'required|boolean',
             'fecha_esterilizacion' => 'nullable|required_if:esterilizado,1|date',
             'enfermedad_cronica' => 'nullable|string|max:500',
+            'dieta' => 'nullable|string',
+            'ultima_desparasitacion' => 'nullable|date',
+            'producto_desparasitacion' => 'nullable|string|max:255',
+            'cirugias' => 'nullable|string',
+            'vacunas' => 'nullable|string',
+            'viajes' => 'nullable|string',
+            'vive_con_animales' => 'nullable|boolean',
         ]);
 
         if ($validator->fails()) {
@@ -102,6 +109,11 @@ class MascotasController extends Controller
 
         $tieneChip = filter_var($request->input('tiene_chip'), FILTER_VALIDATE_BOOLEAN);
         $esterilizado = filter_var($request->input('esterilizado'), FILTER_VALIDATE_BOOLEAN);
+        $viveConAnimalesInput = $request->input('vive_con_animales');
+        $viveConAnimales = null;
+        if ($viveConAnimalesInput !== null && $viveConAnimalesInput !== '') {
+            $viveConAnimales = filter_var($viveConAnimalesInput, FILTER_VALIDATE_BOOLEAN);
+        }
         $tamano = TamanoMascota::find($request->input('tamano_id'));
 
         $mascota = new Mascota();
@@ -122,6 +134,13 @@ class MascotasController extends Controller
         $mascota->esterilizado = $esterilizado;
         $mascota->fecha_esterilizacion = $esterilizado ? $request->input('fecha_esterilizacion') : null;
         $mascota->enfermedad_cronica = $request->input('enfermedad_cronica');
+        $mascota->dieta = $request->input('dieta');
+        $mascota->ultima_desparasitacion = $request->input('ultima_desparasitacion');
+        $mascota->producto_desparasitacion = $request->input('producto_desparasitacion');
+        $mascota->cirugias = $request->input('cirugias');
+        $mascota->vacunas = $request->input('vacunas');
+        $mascota->viajes = $request->input('viajes');
+        $mascota->vive_con_animales = $viveConAnimales;
         $mascota->id_user = Auth::id();
         $mascota->estado = 1;
 
@@ -164,6 +183,13 @@ class MascotasController extends Controller
             'esterilizado' => 'required|boolean',
             'fecha_esterilizacion' => 'nullable|required_if:esterilizado,1|date',
             'enfermedad_cronica' => 'nullable|string|max:500',
+            'dieta' => 'nullable|string',
+            'ultima_desparasitacion' => 'nullable|date',
+            'producto_desparasitacion' => 'nullable|string|max:255',
+            'cirugias' => 'nullable|string',
+            'vacunas' => 'nullable|string',
+            'viajes' => 'nullable|string',
+            'vive_con_animales' => 'nullable|boolean',
         ]);
 
         if ($validator->fails()) {
@@ -196,6 +222,10 @@ class MascotasController extends Controller
         $tieneChip = filter_var($request->input('tiene_chip'), FILTER_VALIDATE_BOOLEAN);
         $esterilizado = filter_var($request->input('esterilizado'), FILTER_VALIDATE_BOOLEAN);
         $tamano = TamanoMascota::find($request->input('tamano_id'));
+        $viveConAnimalesInput = $request->input('vive_con_animales');
+        $viveConAnimales = ($viveConAnimalesInput === null || $viveConAnimalesInput === '')
+            ? null
+            : filter_var($viveConAnimalesInput, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
 
         $mascota->tiene_chip = $tieneChip;
         $mascota->chip = $tieneChip ? $request->input('chip') : null;
@@ -213,6 +243,13 @@ class MascotasController extends Controller
         $mascota->esterilizado = $esterilizado;
         $mascota->fecha_esterilizacion = $esterilizado ? $request->input('fecha_esterilizacion') : null;
         $mascota->enfermedad_cronica = $request->input('enfermedad_cronica');
+        $mascota->dieta = $request->input('dieta');
+        $mascota->ultima_desparasitacion = $request->input('ultima_desparasitacion');
+        $mascota->producto_desparasitacion = $request->input('producto_desparasitacion');
+        $mascota->cirugias = $request->input('cirugias');
+        $mascota->vacunas = $request->input('vacunas');
+        $mascota->viajes = $request->input('viajes');
+        $mascota->vive_con_animales = $viveConAnimales;
         $mascota->id_user = Auth::id();
         $mascota->estado = 1;
 
