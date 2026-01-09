@@ -63,6 +63,7 @@ use App\Models\FichaNeuro;
 use App\Models\FichaOtorrino;
 use App\Models\FichaOrl;
 use App\Models\FichaOtorrinoTipo;
+use App\Models\FichaVeterinariaGeneral;
 use App\Models\GesRegistros;
 use App\Models\Hipertension;
 use App\Models\HoraMedica;
@@ -505,6 +506,20 @@ class ficha_atencionController extends Controller
 
             if (!$hora->save()) {
                 return back()->with('mensaje', 'error');
+            }
+        }
+
+        $fichaVeterinariaGeneral = null;
+        $fichaVeterinariaGeneralData = [];
+        if (!empty($id_ficha_atencion)) {
+            $fichaVeterinariaGeneral = FichaVeterinariaGeneral::where('id_fichas_atenciones', $id_ficha_atencion)
+                ->orderBy('id', 'desc')
+                ->first();
+            if ($fichaVeterinariaGeneral && !empty($fichaVeterinariaGeneral->datos)) {
+                $decoded = json_decode($fichaVeterinariaGeneral->datos, true);
+                if (json_last_error() === JSON_ERROR_NONE) {
+                    $fichaVeterinariaGeneralData = $decoded;
+                }
             }
         }
 
@@ -2621,6 +2636,8 @@ class ficha_atencionController extends Controller
 				'reg_exam_rayo'  => $reg_exam_rayo,
                 'ultimoControl' => $ultimoControl,
                 'laboratorios' => $laboratorios,
+                'fichaVeterinariaGeneral' => $fichaVeterinariaGeneral,
+                'fichaVeterinariaGeneralData' => $fichaVeterinariaGeneralData,
             ]
         );
     }
@@ -7096,6 +7113,86 @@ class ficha_atencionController extends Controller
             return back()->with('error', 'El Diagnóstico es Requerido.\n Su Ficha Clínica NO ha sido Guardada aún. \n Si es solo Control, indicar Control de Patología.')->withInput();;
         }
 
+    }
+
+    /** REGISTRO FICHA ATENCION VETERINARIA GENERAL */
+    public function store_vet_general(Request $request)
+    {
+        $campos_requeridos = 0;
+        $mensaje = '';
+
+        if (empty(trim($request->motivo)) || empty(trim($request->descripcion_hipotesis))) {
+            $campos_requeridos = 1;
+            $mensaje = 'El Motivo y el Diagnóstico son requeridos.\n Su Ficha Clínica NO ha sido guardada aún.';
+        }
+
+        if ($campos_requeridos == 0) {
+            $hora_medica = HoraMedica::where('id', $request->hora_medica)->first();
+            $ficha = FichaAtencion::where('id', $hora_medica->id_ficha_atencion)->first();
+
+            $id_profesional = $request->id_profesional_fc;
+            $id_paciente = $request->id_paciente_fc;
+
+            if (!$ficha) {
+                $ficha = new FichaAtencion;
+            }
+
+            $ficha->motivo = $request->motivo;
+            $ficha->antecedentes = $request->antecedentes;
+            $ficha->examen_fisico = $request->examen_fisico;
+            $ficha->hipotesis_diagnostico = $request->descripcion_hipotesis;
+            $ficha->diagnostico_ce10 = $request->descripcion_cie;
+            $ficha->indicaciones = $request->indicaciones;
+
+            $ges = $request->has('modal_ges') ? 1 : 0;
+            $cronico = $request->has('enf_cronico') ? 1 : 0;
+            $confidencial = $request->has('confidencial') ? 1 : 0;
+
+            $ficha->cronico = $cronico;
+            $ficha->ges = $ges;
+            $ficha->confidencial = $confidencial;
+            $ficha->id_paciente = $id_paciente;
+            $ficha->id_profesional = $id_profesional;
+            $ficha->finalizada = 1;
+
+            if (!$ficha->save()) {
+                return back()->with('error', 'Ficha Clínica con problema al guardar')->withInput();
+            }
+
+            $ficha_vet = new FichaVeterinariaGeneral();
+            $ficha_vet->id_fichas_atenciones = $ficha->id;
+            $ficha_vet->id_paciente = $id_paciente;
+            $ficha_vet->id_profesional = $id_profesional;
+            $ficha_vet->datos = json_encode($request->except(['_token']));
+            $ficha_vet->estado = 1;
+
+            if (!$ficha_vet->save()) {
+                return back()->with('error', 'Ficha Veterinaria General con problema al guardar')->withInput();
+            }
+
+            $tipo_mensaje = 'success';
+            $mensaje = 'Ficha Clínica guardada de forma correcta\n';
+            $mensaje .= 'Ficha Veterinaria General guardada de forma correcta';
+
+            $hora_medica->id_estado = 6;
+            $mensaje_estado_hora_medica = '';
+            if (!$hora_medica->save()) {
+                $mensaje_estado_hora_medica .= 'Hora Medica con Problemas para finalizar.';
+            } else {
+                $mensaje_estado_hora_medica .= 'Hora medica Finalizada con Exito.';
+            }
+            $mensaje .= '\n' . $mensaje_estado_hora_medica;
+
+            if ($request->cerrarsession == 0 || $request->cerrarsession == '') {
+                return \Redirect::route('profesional.mi_agenda', 'lugares_atencion=' . $request->id_lugar_atencion)->with($tipo_mensaje, $mensaje);
+            } else if ($request->cerrarsession == 1) {
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+                return \Redirect::route('home.ingreso');
+            }
+        }
+
+        return back()->with('error', $mensaje)->withInput();
     }
 
     /** REGISTRO FICHA ATENCION Y OTORRINOLARINGOLOGIA*/

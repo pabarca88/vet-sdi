@@ -3256,6 +3256,8 @@ Route::group([
 
 	Route::post('Ficha_Atencion/crear/orl', [App\Http\Controllers\ficha_atencionController::class, 'store_orl'])->name('fichaAtencion.registrar_ficha_orl');
 
+    Route::post('Ficha_Atencion/crear/vet-general', [App\Http\Controllers\ficha_atencionController::class, 'store_vet_general'])->name('fichaAtencion.registrar_ficha_vet_general');
+
     Route::post('Ficha_Atencion/crear/cg', [App\Http\Controllers\ficha_atencionController::class, 'store_cg'])->name('fichaAtencion.registrar_ficha_cg');
 
     Route::post('Ficha_Atencion/crear/cdg', [App\Http\Controllers\ficha_atencionController::class, 'store_cdg'])->name('fichaAtencion.registrar_ficha_cdg');

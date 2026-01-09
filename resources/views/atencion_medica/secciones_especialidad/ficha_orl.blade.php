@@ -61,7 +61,7 @@
                     </div>
                 </div>
                 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                    <form action="{{ route('fichaAtencion.registrar_ficha_orl') }}" method="POST">
+                    <form action="{{ route('fichaAtencion.registrar_ficha_vet_general') }}" method="POST">
                         <input type="hidden" name="examenes" id="examenes" value="{!! old('examenes') !!}">
                         <input type="hidden" name="examenes_esp" id="examenes_esp" value="{!! old('examenes_esp') !!}">
                         <input type="hidden" name="medicamentos" id="medicamentos" value="{!! old('medicamentos') !!}">
@@ -3114,6 +3114,49 @@
                 console.log('tipo examen no especificado');
             }
         }
+
+        function cargar_ficha_vet_general() {
+            var data = @json($fichaVeterinariaGeneralData ?? []);
+            if (!data || Object.keys(data).length === 0) {
+                return;
+            }
+
+            Object.keys(data).forEach(function (key) {
+                var value = data[key];
+                if (value === null || value === '') {
+                    return;
+                }
+
+                var $fields = $('[name="' + key + '"]');
+                if ($fields.length === 0) {
+                    return;
+                }
+
+                $fields.each(function () {
+                    var $field = $(this);
+                    if ($field.is(':checkbox')) {
+                        if (Array.isArray(value)) {
+                            $field.prop('checked', value.indexOf($field.val()) !== -1);
+                        } else {
+                            $field.prop('checked', $field.val() == value);
+                        }
+                        return;
+                    }
+
+                    if ($field.is(':radio')) {
+                        $field.prop('checked', $field.val() == value);
+                        return;
+                    }
+
+                    $field.val(value);
+                    $field.trigger('change');
+                });
+            });
+        }
+
+        $(function () {
+            cargar_ficha_vet_general();
+        });
 
     </script>
 @endsection
