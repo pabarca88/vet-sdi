@@ -165,7 +165,7 @@ class EscritorioProfesional extends Controller
 
     public function eliminar_horario_agenda(Request $request)
     {
-        
+
         // $profesional = Profesional::where('id_usuario', Auth::user()->id);
         $horario = ProfesionalHorario::where('id', $request->id_horario)->first();
         if(!$horario){
@@ -519,13 +519,13 @@ class EscritorioProfesional extends Controller
 
     public function obtener_tto_periodonto(Request $req){
         try {
-           
+
             $evaluaciones = ProcedimientosPeriodoncia::select('procedimientos_periodoncia.*','op.tratamiento','op.id as id_odontograma')
                 ->where('procedimientos_periodoncia.id_ficha_atencion', $req->id_ficha_atencion)
                 ->leftjoin('odontogramas_pacientes as op', 'op.id', 'procedimientos_periodoncia.id_procedimiento')
                 ->orderBy('pieza')
                 ->get();
-           
+
             $vista_evaluaciones = view('atencion_odontologica.include.procedimientos_periodoncia_todos', [
                 'examenes' => $evaluaciones
             ])->render();
@@ -868,7 +868,7 @@ class EscritorioProfesional extends Controller
                                 ->exists();
 
                 $permisos_profesional = PermisoProfesional::where('id_profesional', $profesional->id)->first();
-           
+
                 return view($direccion_escritorio)->with([
                     'region' => $region,
                     'profesional' => $profesional,
@@ -2435,7 +2435,7 @@ class EscritorioProfesional extends Controller
 
     public function cambio_estado_lugar_atencion(Request $request)
     {
-      
+
         $profesional = Profesional::where('id_usuario', Auth::user()->id)->first();
         $ProfesionalLugar = ProfesionalesLugaresAtencion::where('id_lugar_atencion', $request->id_lugar_atencion)->where('id_profesional', $profesional->id)->first();
 
@@ -2742,7 +2742,7 @@ class EscritorioProfesional extends Controller
                 $tto->suturas = $request->suturas_tto_text;
                 $tto->grosor_nylon = intval($request->grosor_nylon);
                 $tto->tiempo_quirurgico = $request->tiempo_quirurgico_tto;
-                $tto->observaciones = $request->observaciones; 
+                $tto->observaciones = $request->observaciones;
                 $tto->estado = 1;
                 $tto->save();
 
@@ -3814,7 +3814,7 @@ return $ficha;
     }
 
     public function mostrar_nueva_pieza_dental_tto(Request $req){
-     
+
         $idCounter = $req->counter ? $req->counter : 0;
         $pieza = $req->pieza;
         $responsable = User::find(Auth::user()->id);
@@ -3977,9 +3977,9 @@ return $ficha;
 
     public function registro_examen(Request $req)
     {
-       
+
         $profesional = Profesional::where('id_usuario', Auth::user()->id)->first();
-  
+
         // Validar datos mínimos
         $req->validate([
             'diagnostico' => 'required|string',
@@ -4004,7 +4004,7 @@ return $ficha;
             ->where('tipo_examen', $req->id_tipo_examen)
             ->orderBy('created_at', 'desc')
             ->get();
-        
+
         $tipo_examen = $req->tipo_examen;
         $sub_tipo_examen = $req->sub_tipo_examen;
         $examen = $req->examen;
@@ -4014,10 +4014,10 @@ return $ficha;
 
         // Verificar si id_examen es un array o un valor único
         $ids_examenes = is_array($req->id_examen) ? $req->id_examen : [$req->id_examen];
-        
+
         $examenes_guardados = 0;
         $examenes_solicitados = [];
-        
+
         // Crear una solicitud para cada id_examen
         foreach ($ids_examenes as $id_examen) {
             $nueva_solicitud_examen = new ExamenSolicitudServicio();
@@ -4026,7 +4026,7 @@ return $ficha;
             $nueva_solicitud_examen->id_paciente = $req->id_paciente;
             $nueva_solicitud_examen->id_ficha_atencion = $req->id_ficha_atencion;
             $nueva_solicitud_examen->id_responsable = Auth::user()->id;
-            
+
             $examen = ExamenMedico::find($id_examen);
 
             // crear un objeto json con los datos del examen para cada id
@@ -4638,7 +4638,7 @@ return $ficha;
                 'array_lugar_atencion' => $array_lugar_atencion,
                 'array_profesional' => $array_profesional,
                 'array_paciente' => $array_paciente,
-                'array_examenes' => $array_examenes 
+                'array_examenes' => $array_examenes
             ];
 
             // return  PdfController::generarPDF($tipo->nombre, compact('imagenes', 'registro', 'array_lugar_atencion', 'array_profesional', 'array_paciente','array_ficha_atencion'), $nombre_archivo, 'pdf_orl_rino',$pdf_tipo);
@@ -4984,7 +4984,7 @@ return $ficha;
 
     public function generar_pdf_presupuesto(Request $req){
         try {
-           
+
             $ficha_atencionController = new ficha_atencionController();
             $paciente = Paciente::find($req->id_paciente);
             $profesional = Profesional::where('id_usuario', Auth::user()->id)->first();
@@ -5002,7 +5002,7 @@ return $ficha;
             $boca_completa_gral_diagnostico_endo = $ficha_atencionController->dameCompletaEndoDiagnostico($paciente->id, $profesional->id_tipo_especialidad);
             $odontograma = $this->dameOdontogramaPaciente($req->id_paciente, $req->id_ficha_atencion, $req->id_lugar_atencion, $profesional->id_tipo_especialidad);
             $valores_odontograma = $this->dameValoresOdontograma($req->id_paciente, $req->id_ficha_atencion, $req->id_lugar_atencion, $profesional->id_tipo_especialidad);
-         
+
             $insumos = $ficha_atencionController->dame_insumos_tratamiento($req->id_paciente, $req->id_ficha_atencion);
 
             // Renderizar la vista del presupuesto dental
@@ -5344,9 +5344,9 @@ return $ficha;
             }else{
                 $rx = new ImagenesDentalPaciente;
             }
-            
+
             $profesional = Profesional::where('id_usuario',Auth::user()->id)->first();
-           
+
             $rx->id_ficha_atencion = $req->id_ficha_atencion;
             $rx->id_paciente = $req->id_paciente;
             $rx->id_profesional = $profesional->id;
@@ -5357,11 +5357,11 @@ return $ficha;
             $rx->observaciones_ex = $req->observaciones_ex;
             $rx->seccion = $req->seccion;
             $rx->zona_y_motivo = $req->zona_motivo ? $req->zona_motivo : 'SIN ZONA NI MOTIVO';
-            
+
             // 🔧 Lógica para acumular observaciones con fecha y hora
             if($req->observaciones && $req->observaciones != ''){
                 $nuevaObservacion = '[' . now()->format('d/m/Y H:i:s') . '] ' . $req->observaciones;
-                
+
                 if($rx->exists && $rx->observaciones && $rx->observaciones != 'SIN OBSERVACIONES'){
                     // Si ya existe un registro con observaciones, agregar la nueva al final
                     $rx->observaciones = $rx->observaciones . "\n" . $nuevaObservacion;
@@ -5375,10 +5375,10 @@ return $ficha;
                     $rx->observaciones = 'SIN OBSERVACIONES';
                 }
             }
-            
+
             $rx->biopsia = $req->biopsia == 'true' ? 1 : 0;
             $rx->estado = 1;
-            
+
             if($rx->save()){
                 if($req->seccion == 'gral'){
                     $imagenes = $this->dameInfoImagenesDentalPaciente($req->id_paciente,'gral');
@@ -5431,15 +5431,15 @@ return $ficha;
     }
 
     public function recargar_imagenes_dental_general_paciente(Request $request){
-     
+
         $examenes = $this->dameExamenesPiezaDentalOraxRx($request->id_paciente);
-     
+
         $v = view('atencion_odontologica.include.examenes_dental_oral_rx_todos',['examenes' => $examenes])->render();
         return ['mensaje' => 'OK', 'v' => $v,'examenes' => $examenes];
     }
 
     public function mostrar_nuevas_imagenes_dental(Request $req){
-  
+
         $idCounter = $req->counter ? $req->counter : 0;
 
         $opt = $req->tipo;
@@ -5457,7 +5457,7 @@ return $ficha;
     }
 
     public function eliminar_pieza_dental_imagenes_paciente(Request $req){
-        
+
         $imagen_info = ImagenesDentalPaciente::find($req->id);
         $seccion =  $imagen_info->seccion;
         if($imagen_info->delete()){
@@ -5529,9 +5529,9 @@ return $ficha;
     }
 
     public function eliminar_pieza_dental_tto_period(Request $req){
-      
+
         $procedimiento = ProcedimientosPeriodoncia::find($req->id);
-     
+
 
         $pieza = $procedimiento->numero_pieza;
         $id_procedimiento = $req->id_procedimiento;
@@ -5549,7 +5549,7 @@ return $ficha;
         $id_profesional = $procedimiento->id_profesional;
         if($procedimiento->delete()){
             $examenes = $this->dameProcedimientosPeriodoncia($id_paciente, $id_profesional, $req->id_ficha_atencion);
-        
+
             $tratamientos_implantologia = TratamientosImplantologia::orderBy('descripcion','asc')->get();
             $materiales_implantologia = MaterialesImplantologia::orderBy('descripcion','asc')->get();
             $dc = new DentalController;
@@ -5562,7 +5562,7 @@ return $ficha;
                 'materiales_implantologia' => $materiales_implantologia,
                 'odontograma' => $odontograma
                 ])->render();
-            
+
                 return ['mensaje' => 'OK', 'v' => $v,'examenes' => $examenes, 'odontograma' => $odontograma,'odontograma_paciente_vista' => $odontograma_paciente_vista];
         }
     }
@@ -5998,14 +5998,14 @@ return $ficha;
     }
 
     public function guardar_pieza_dental_examen_pieza_period(Request $req){
- 
+
         $profesional = Profesional::where('id_usuario',Auth::user()->id)->first();
         $examen = new ExamenesDentalPeriodoncia;
         $examen->id_paciente = $req->id_paciente;
         $examen->id_lugar_atencion = $req->id_lugar_atencion;
         $examen->id_profesional = $profesional->id;
         $examen->id_ficha_atencion = $req->id_ficha_atencion;
-        
+
         // Campos específicos de periodoncia
         $examen->numero_pieza = $req->numero_pieza;
         $examen->sangrado = $req->sangrado;
@@ -6017,7 +6017,7 @@ return $ficha;
         $examen->furca = $req->furca;
         $examen->tipo_sonda = $req->tipo_sonda;
         $examen->obs_perio_pza = $req->observaciones;
-        
+
         // Campos de biopsia
         $examen->biopsia = $req->biopsia == "1" ? "Sí" : "No";
         $examen->zona_motivo = $req->zona_y_motivo;
@@ -6150,7 +6150,7 @@ return $ficha;
 
             // Puedes asignar este array al objeto `$e` si lo necesitas
             $e->decoded_imagenes = $nueva_lista_imagenes; // Agregamos el array decodificado al examen
-          
+
         }
 
         return $examenes;
@@ -6158,7 +6158,7 @@ return $ficha;
             //throw $th;
             return $e->getMessage();
         }
-        
+
     }
 
     public function dameExamenesPiezaDentalOraxRxOdontop($id_paciente){
@@ -6246,28 +6246,28 @@ return $ficha;
 
     public function eliminar_imagen_dental_paciente(Request $req){
         $imagen = ImagenesDentalPaciente::find($req->id);
-        
+
         if (!$imagen) {
             return ['mensaje' => 'error', 'v' => 'Imagen no encontrada'];
         }
-    
+
         $seccion = $imagen->seccion;
         $path = $req->path;
-    
+
         // Con el cast 'array', paths_imagenes YA es un array
         $paths = $imagen->paths_imagenes ?? [];
-    
+
         // Filtramos los paths para eliminar el que coincide
         $filteredPaths = array_filter($paths, function($p) use ($path) {
             return $p['path'] !== $path;
         });
-    
+
         // Reindexamos el array
         $filteredPaths = array_values($filteredPaths);
-    
+
         // Actualizamos - NO necesitas json_encode(), el cast lo hace automáticamente
         $imagen->paths_imagenes = $filteredPaths;
-    
+
         // Guardamos los cambios
         if($imagen->save()){
             // Recargar imágenes según sección
@@ -6276,27 +6276,27 @@ return $ficha;
                     $imagenes = $this->dameInfoImagenesDentalPaciente($imagen->id_paciente, 'gral', $imagen->id_ficha_atencion);
                     $v = view('atencion_odontologica.include.imagenes_dental_todas', ['imagenes' => $imagenes])->render();
                     break;
-                    
+
                 case 'implantologia':
                     $imagenes = $this->dameInfoImagenesDentalPaciente($imagen->id_paciente, 'implantologia', $imagen->id_ficha_atencion);
                     $v = view('atencion_odontologica.include.imagenes_dental_preimplante_todas', ['imagenes' => $imagenes])->render();
                     break;
-                    
+
                 case 'odontop':
                     $imagenes = $this->dameInfoImagenesDentalPaciente($imagen->id_paciente, 'odontop', $imagen->id_ficha_atencion);
                     $v = view('atencion_odontologica.include.imagenes_dental_odontop_todas', ['imagenes' => $imagenes])->render();
                     break;
-                    
+
                 case 'periodoncica':
                     // Periodoncica no usa id_ficha_atencion
                     $imagenes = $this->dameInfoImagenesDentalPaciente($imagen->id_paciente, 'periodoncica');
                     $v = view('atencion_odontologica.include.imagenes_dental_period_todas', ['imagenes' => $imagenes])->render();
                     break;
-                    
+
                 default:
                     return ['mensaje' => 'error', 'v' => 'Sección no válida'];
             }
-    
+
             return ['mensaje' => 'OK', 'v' => $v, 'seccion' => $seccion];
         } else {
             return ['mensaje' => 'error', 'v' => 'No se pudo guardar los cambios'];
@@ -6304,7 +6304,7 @@ return $ficha;
     }
 
     public function guardar_pieza_dental_examen_pieza(Request $req){
-      
+
         if($req->tipo_examen == 'gral'){
             $tipo_examen = 1;
         }else if($req->tipo_examen == 'endo'){
@@ -6312,7 +6312,7 @@ return $ficha;
         }else{
             $tipo_examen = 3; // odontopediatria
         }
-        
+
         $profesional = Profesional::where('id_usuario',Auth::user()->id)->first();
 
         $examen = new ExamenesDentalPieza;
@@ -6340,7 +6340,7 @@ return $ficha;
         $examen->estado = 1; // por defecto activo
         $examen->id_responsable = Auth::user()->id;
         $examen->observaciones = $req->observaciones;
-     
+
         if($examen->save()){
 
             if($tipo_examen == 1){
@@ -6349,12 +6349,12 @@ return $ficha;
             }else if($tipo_examen == 2){
                 $examenes = $this->dameExamenesPiezaDentalPiezaEnd($req->id_paciente, $profesional->id_tipo_especialidad);
                 $v = view('atencion_odontologica.include.examenes_dental_pieza_endodoncia_todos',['examenes' => $examenes])->render();
-             
+
             }else{
                 $examenes = $this->dameExamenesPiezaDentalPiezaOdontop($req->id_paciente, $profesional->id_tipo_especialidad);
                 $v = view('atencion_odontologica.include.examenes_dental_pieza_odontop_todos',['examenes' => $examenes])->render();
             }
-        
+
             $primer_cuadrante = $this->dameExamenesPiezaDentalPiezaPrimerCuadrante($req->id_paciente,'adulto',$profesional->id_tipo_especialidad);
             $segundo_cuadrante = $this->dameExamenesPiezaDentalPiezaSegundoCuadrante($req->id_paciente,'adulto',$profesional->id_tipo_especialidad);
             $tercer_cuadrante = $this->dameExamenesPiezaDentalPiezaTercerCuadrante($req->id_paciente,'adulto',$profesional->id_tipo_especialidad);
@@ -6477,7 +6477,7 @@ return $ficha;
 
         $examen = ExamenesDentalPieza::find($req->id);
         $profesional = Profesional::where('id_usuario',Auth::user()->id)->first();
-    
+
         if($examen->delete()){
             if($req->tipo == 'gral'){
                 $examenes = $this->dameExamenesPiezaDentalPieza($req->id_paciente , $profesional->id_tipo_especialidad, $req->id_ficha_atencion);
@@ -7435,7 +7435,7 @@ return $ficha;
             }else{
                 $valor_uco = 0;
             }
-            
+
         }
 
         if($profesional->id_tipo_especialidad != 18)
@@ -7848,80 +7848,80 @@ public function eliminarPiezaCoronaProtesis(Request $req){
         if($institucion && $institucion->id_tipo_institucion == 2){
             try {
                 // buscamos los servicios internos
-            $servicios_internos = $this->dame_servicios_internos($institucion->id, $institucion->id_lugar_atencion);
+                $servicios_internos = $this->dame_servicios_internos($institucion->id, $institucion->id_lugar_atencion);
 
-            foreach($servicios_internos as $servicio_interno){
-                // preguntamos si es profesional es jefe de algun servicio
-                if($servicio_interno->jefe_servicio && $servicio_interno->jefe_servicio->id == $profesional->id){
-                    return view('app.adm_hospital.servicios.jefe_servicio.escritorio_adm',['servicio' => $servicio_interno])->render();
-                }
-            }
-
-            foreach($servicios_internos as $servicio_interno){
-                // preguntamos si el profesional pertenece al grupo de profesionales del hospital de algun servicio
-                foreach($servicio_interno->profesionales as $profesional_servicio){
-                    if($profesional_servicio->id == $profesional->id && $profesional->id_especialidad == 8){
-                        $enfermera = true;
-                        $tipos_receta = TiposReceta::all();
-                        $controles_ciclo = $this->dameEvolucionesPacienteHosp($servicio_interno->id_paciente);
-                        if(count($controles_ciclo) == 0)
-                        {
-                            // si no hay ciclos de control se inicia en 1 para manejar el id en la vista
-                            $contador_div_evaluaciones = 1;
-                        }else{
-                            // si hay ciclos de control se suma 1 para manejar el id en la vista
-                            $contador_div_evaluaciones = count($controles_ciclo) + 1;
-                        }
-                        foreach($controles_ciclo as $cc)
-                        {
-                            $cc->datos_evolucion = json_decode($cc->datos_evolucion);
-                        }
-                        $curaciones_planas = $this->dameCuracionesPlanasPaciente($servicio_interno->id_paciente);
-                        $curaciones_lpp = $this->dameCuracionesLppPaciente($servicio_interno->id_paciente);
-
-                        $controles_ciclo = $this->dameEvolucionesPacienteHosp($servicio_interno->id_paciente);
-
-                        $detalle_receta_controlador = new DetalleRecetaController();
-                        $recetas = $detalle_receta_controlador->dameTodoDetalleRecetaPaciente($servicio_interno->id_paciente);
-
-                        $resumen_recetas = "";
-                        foreach($recetas as $r){
-                            $resumen_recetas .= "<p>".$r->nombre_medicamento." ".$r->dosis." ".$r->nombre_frecuencia." ".$r->duracion." ".$r->comentario." con fecha ".$r->created_at."</p>";
-                        }
-                        // return view('app.adm_hospital.servicios.enfermera.escritorio_enfermera',[
-                        //     'servicio' => $servicio_interno,
-                        //     'institucion' => $institucion,
-                        //     'enfermera' => $enfermera,
-                        //     'tipos_receta' => $tipos_receta,
-                        //     'controles_ciclo' => $controles_ciclo,
-                        //     'contador_div_evaluaciones' => $contador_div_evaluaciones,
-                        //     'curacion_plana' => $curaciones_planas,
-                        //     'curaciones_lpp' => $curaciones_lpp,
-                        //     'controles_ciclo' => $controles_ciclo,
-                        //     'recetas' => $recetas,
-                        //     'resumen_recetas' => $resumen_recetas
-                        //     ])->render();
-                        $receta_control = RecetaControl::orderBy('Descripcion')->get();
-                        $examenMedico = ExamenMedico::where('cod_parent', 0)->where('habilitado', 1)->orderby('nombre_examen', 'ASC')->get();
-                        $examenControlador = new ExamenMedicoController();
-                        $examenes_solicitados = $examenControlador->dame_examenes_solicitados($servicio_interno->id_paciente);
-                        return view('app.adm_hospital.servicios.enfermera.home',[
-                            'enfermera' => $enfermera,
-                            'institucion' => $institucion,
-                            'servicio' => $servicio_interno,
-                            'tipos_receta' => $tipos_receta,
-                            'receta_control' => $receta_control,
-                            'examenMedico' => $examenMedico,
-                            'examenes_solicitados' => $examenes_solicitados
-                        ])->render();
-                    }
-                    if($profesional_servicio->id == $profesional->id){
-                        return view('app.adm_hospital.servicios.profesionales.escritorio',['servicio' => $servicio_interno])->render();
+                foreach($servicios_internos as $servicio_interno){
+                    // preguntamos si es profesional es jefe de algun servicio
+                    if($servicio_interno->jefe_servicio && $servicio_interno->jefe_servicio->id == $profesional->id){
+                        return view('app.adm_hospital.servicios.jefe_servicio.escritorio_adm',['servicio' => $servicio_interno])->render();
                     }
                 }
-            }
 
-            return $servicios_internos;
+                foreach($servicios_internos as $servicio_interno){
+                    // preguntamos si el profesional pertenece al grupo de profesionales del hospital de algun servicio
+                    foreach($servicio_interno->profesionales as $profesional_servicio){
+                        if($profesional_servicio->id == $profesional->id && $profesional->id_especialidad == 8){
+                            $enfermera = true;
+                            $tipos_receta = TiposReceta::all();
+                            $controles_ciclo = $this->dameEvolucionesPacienteHosp($servicio_interno->id_paciente);
+                            if(count($controles_ciclo) == 0)
+                            {
+                                // si no hay ciclos de control se inicia en 1 para manejar el id en la vista
+                                $contador_div_evaluaciones = 1;
+                            }else{
+                                // si hay ciclos de control se suma 1 para manejar el id en la vista
+                                $contador_div_evaluaciones = count($controles_ciclo) + 1;
+                            }
+                            foreach($controles_ciclo as $cc)
+                            {
+                                $cc->datos_evolucion = json_decode($cc->datos_evolucion);
+                            }
+                            $curaciones_planas = $this->dameCuracionesPlanasPaciente($servicio_interno->id_paciente);
+                            $curaciones_lpp = $this->dameCuracionesLppPaciente($servicio_interno->id_paciente);
+
+                            $controles_ciclo = $this->dameEvolucionesPacienteHosp($servicio_interno->id_paciente);
+
+                            $detalle_receta_controlador = new DetalleRecetaController();
+                            $recetas = $detalle_receta_controlador->dameTodoDetalleRecetaPaciente($servicio_interno->id_paciente);
+
+                            $resumen_recetas = "";
+                            foreach($recetas as $r){
+                                $resumen_recetas .= "<p>".$r->nombre_medicamento." ".$r->dosis." ".$r->nombre_frecuencia." ".$r->duracion." ".$r->comentario." con fecha ".$r->created_at."</p>";
+                            }
+                            // return view('app.adm_hospital.servicios.enfermera.escritorio_enfermera',[
+                            //     'servicio' => $servicio_interno,
+                            //     'institucion' => $institucion,
+                            //     'enfermera' => $enfermera,
+                            //     'tipos_receta' => $tipos_receta,
+                            //     'controles_ciclo' => $controles_ciclo,
+                            //     'contador_div_evaluaciones' => $contador_div_evaluaciones,
+                            //     'curacion_plana' => $curaciones_planas,
+                            //     'curaciones_lpp' => $curaciones_lpp,
+                            //     'controles_ciclo' => $controles_ciclo,
+                            //     'recetas' => $recetas,
+                            //     'resumen_recetas' => $resumen_recetas
+                            //     ])->render();
+                            $receta_control = RecetaControl::orderBy('Descripcion')->get();
+                            $examenMedico = ExamenMedico::where('cod_parent', 0)->where('habilitado', 1)->orderby('nombre_examen', 'ASC')->get();
+                            $examenControlador = new ExamenMedicoController();
+                            $examenes_solicitados = $examenControlador->dame_examenes_solicitados($servicio_interno->id_paciente);
+                            return view('app.adm_hospital.servicios.enfermera.home',[
+                                'enfermera' => $enfermera,
+                                'institucion' => $institucion,
+                                'servicio' => $servicio_interno,
+                                'tipos_receta' => $tipos_receta,
+                                'receta_control' => $receta_control,
+                                'examenMedico' => $examenMedico,
+                                'examenes_solicitados' => $examenes_solicitados
+                            ])->render();
+                        }
+                        if($profesional_servicio->id == $profesional->id){
+                            return view('app.adm_hospital.servicios.profesionales.escritorio',['servicio' => $servicio_interno])->render();
+                        }
+                    }
+                }
+
+                return $servicios_internos;
             } catch (\Exception $e) {
                 //throw $th;
                 return $e->getMessage();

@@ -7,21 +7,8 @@
 </button> -->
 
 @php
-    $especiesMascotas = $especiesMascotas ?? collect();
-    $tamanosMascotas = $tamanosMascotas ?? collect();
-@endphp
-@php
-    if ($especiesMascotas instanceof \Illuminate\Support\Collection) {
-        $especiesMascotas = $especiesMascotas;
-    } else {
-        $especiesMascotas = collect($especiesMascotas);
-    }
-    if ($tamanosMascotas instanceof \Illuminate\Support\Collection) {
-        $tamanosMascotas = $tamanosMascotas;
-    } else {
-        $tamanosMascotas = collect($tamanosMascotas);
-    }
-    if ($especiesMascotas->isEmpty()) {
+    // Asegurar que especiesMascotas siempre tenga valores
+    if (!isset($especiesMascotas) || (is_object($especiesMascotas) && method_exists($especiesMascotas, 'isEmpty') && $especiesMascotas->isEmpty())) {
         $especiesMascotas = collect([
             (object)['id' => 1, 'nombre' => 'Canina', 'slug' => 'canina', 'requiere_detalle' => false],
             (object)['id' => 2, 'nombre' => 'Felina', 'slug' => 'felina', 'requiere_detalle' => false],
@@ -32,14 +19,19 @@
             (object)['id' => 7, 'nombre' => 'Hurones', 'slug' => 'hurones', 'requiere_detalle' => false],
             (object)['id' => 8, 'nombre' => 'Otros', 'slug' => 'otros', 'requiere_detalle' => true],
         ]);
+    } elseif (is_array($especiesMascotas)) {
+        $especiesMascotas = collect($especiesMascotas);
     }
 
-    if ($tamanosMascotas->isEmpty()) {
+    // Asegurar que tamanosMascotas siempre tenga valores
+    if (!isset($tamanosMascotas) || (is_object($tamanosMascotas) && method_exists($tamanosMascotas, 'isEmpty') && $tamanosMascotas->isEmpty())) {
         $tamanosMascotas = collect([
             (object)['id' => 1, 'nombre' => 'Pequeña', 'slug' => 'pequena'],
             (object)['id' => 2, 'nombre' => 'Mediana', 'slug' => 'mediana'],
             (object)['id' => 3, 'nombre' => 'Grande', 'slug' => 'grande'],
         ]);
+    } elseif (is_array($tamanosMascotas)) {
+        $tamanosMascotas = collect($tamanosMascotas);
     }
 @endphp
 

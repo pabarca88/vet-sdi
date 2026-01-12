@@ -150,7 +150,7 @@
             <div class="row user-profile user-card  align-items-center py-1 pb-3 px-4" style="background-color:#ecf0f5;">
                 <div class="col-md-12 d-inline pt-1">
                     <h5 class="text-primary d-inline mt-2 t-tipo-agenda" style="font-size: 1.2rem;" id="titulo_tipo_agenda"></h5>
-                           @include('general.info_simbologia.simbologia_agenda')
+                    @include('general.info_simbologia.simbologia_agenda')
                     @include('general.anular_hora.anular_hora')
                     @include('general.bloqueo_hora.bloque_hora')
 
@@ -269,7 +269,7 @@
 
                         <div id="reserva_datos_paciente" class="row mx-3">
 
-                            
+
                             <table class="table table-borderless table-xs">
                                 <tbody>
                                      <tr>

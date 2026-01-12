@@ -179,10 +179,23 @@
 
 
 @section('page-script')
-    
+
     <script>
-        var especiesMascotas = @json($especiesMascotas);
-        var tamanosMascotas = @json($tamanosMascotas);
+        var especiesMascotas = @json($especiesMascotas->count() > 0 ? $especiesMascotas : collect([
+            ['id' => 1, 'nombre' => 'Canina', 'slug' => 'canina', 'requiere_detalle' => false],
+            ['id' => 2, 'nombre' => 'Felina', 'slug' => 'felina', 'requiere_detalle' => false],
+            ['id' => 3, 'nombre' => 'Pez', 'slug' => 'pez', 'requiere_detalle' => false],
+            ['id' => 4, 'nombre' => 'Aves', 'slug' => 'aves', 'requiere_detalle' => false],
+            ['id' => 5, 'nombre' => 'Reptiles', 'slug' => 'reptiles', 'requiere_detalle' => false],
+            ['id' => 6, 'nombre' => 'Roedores', 'slug' => 'roedores', 'requiere_detalle' => false],
+            ['id' => 7, 'nombre' => 'Hurones', 'slug' => 'hurones', 'requiere_detalle' => false],
+            ['id' => 8, 'nombre' => 'Otros', 'slug' => 'otros', 'requiere_detalle' => true],
+        ]));
+        var tamanosMascotas = @json($tamanosMascotas->count() > 0 ? $tamanosMascotas : collect([
+            ['id' => 1, 'nombre' => 'Pequeña', 'slug' => 'pequena'],
+            ['id' => 2, 'nombre' => 'Mediana', 'slug' => 'mediana'],
+            ['id' => 3, 'nombre' => 'Grande', 'slug' => 'grande'],
+        ]));
         var especieTamanosMascotas = @json($especieTamanosMascotas);
         var especiesLabel = {};
         var tamanoLabel = {};

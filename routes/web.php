@@ -636,7 +636,7 @@ Route::group([
 
     Route::get('/productos/buscar', [App\Http\Controllers\CotizacionController::class, 'buscarProductos'])->name('laboratorio.cotizaciones.buscar_productos');
 
-    
+
 
     // Gestión de cotizaciones
 
@@ -676,7 +676,7 @@ Route::group([
 
     Route::post('/enviar-seguimiento', [App\Http\Controllers\CotizacionController::class, 'enviarSeguimiento'])->name('laboratorio.profesional.enviar_seguimiento_cotizacion');
 
-    
+
 
 });
 
@@ -816,7 +816,7 @@ Route::group([
 
 
     Route::post('/guardar-ubicacion', [App\Http\Controllers\UbicacionController::class, 'store'])->name('guardar.ubicacion');
-    
+
 
     Route::get('dependientes/cargar/lista', [App\Http\Controllers\PacientesDependientesController::class, 'ver_registro_paciente'])->name('paciente.dependientes.ver_registros');
 
@@ -1433,11 +1433,7 @@ Route::group([
 
     Route::get('cambio_estado_lugar_atencion', [App\Http\Controllers\EscritorioProfesional::class, 'cambio_estado_lugar_atencion'])->name('profesional.cambio_estado_lugar_atencion');
 
-
-
     Route::get('/buscar_rut', [App\Http\Controllers\EscritorioProfesional::class, 'buscar_rut_paciente'])->name('profesional.buscar_rut_paciente');
-
-
 
     Route::get('buscar_hora_medica', [App\Http\Controllers\EscritorioProfesional::class, 'buscar_hora_medica'])->name('profesional.buscar_hora_medica');
 
@@ -3071,7 +3067,7 @@ Route::group([
 
 
 
-     // Registrar campaña publicitaria 
+     // Registrar campaña publicitaria
 
     Route::post('/registrar-campania',[App\Http\Controllers\LaboratorioController::class, 'registrarCampaniaPublicitaria'])->name('laboratorio.registrar_campania_publicitaria');
 
@@ -3087,7 +3083,7 @@ Route::group([
 
     Route::post('/bodega/registrar/item',[App\Http\Controllers\ComprasController::class, 'guardarItemFacturaLaboratorio'])->name('laboratorio.bodega.guardarItemFactura');
 
-    
+
 
 
 
@@ -5481,13 +5477,13 @@ Route::group([
 
 ], function () {
 
-    
+
 
     /*  Escritorio JefeTurno */
 
     Route::get('inicio', [App\Http\Controllers\EscritorioJefeTurnoController::class, 'index'])->name('jefe.turno.home');
 
-    
+
 
 });
 

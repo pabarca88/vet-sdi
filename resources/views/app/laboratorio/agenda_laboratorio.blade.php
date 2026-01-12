@@ -153,7 +153,9 @@
                         <div class="card">
                             <div class="card-header bg-info">
                                     <h4 class="font-weight-bold d-inline f-20 text-white">Laboratorio:&nbsp;&nbsp;</h4><!--Nombre del Laboratorio--><span class=" f-20 d-inline text-white">Laboratorio Clínico</span> <!--Tipo de Laboratorio-->
-                                
+                                @include('general.info_simbologia.simbologia_agenda')
+                    @include('general.anular_hora.anular_hora')
+                    @include('general.bloqueo_hora.bloque_hora')
                             </div>
                             <div class="card-body">
                                 <div class="col-md-12">
@@ -200,7 +202,7 @@
                     <h5 class="modal-title text-white text-center">Tomar horas</h5>
                     <button id="cerrar_tomar_hora" type="button" class="close" data-bs-dismiss="modal" aria-label="Close" ><span aria-hidden="true">×</span>
                 </button>
-                   
+
                 </div>
                 <div class="modal-body">
                     {{--  BUSCADOR DE RUT  --}}
@@ -434,7 +436,7 @@
                                             </div>
                                         </td>
                                     </tr>
-                                   
+
                                    <!-- <tr class="paciente_edit" style="display: none;">
                                         <hr>
                                     </tr>-->
@@ -1444,7 +1446,7 @@
 
                         eventClick: function(info) {
                             $('#seccion_examenes').html('');
-                     
+
                             let id_hora_medica = info.event.id;
                             let url = "{{ route('agenda.buscar_hora_medica') }}"
 
