@@ -33,6 +33,7 @@ use App\Models\Direccion;
 use App\Models\Empresas;
 use App\Models\EmpresasConvenios;
 use App\Models\Especialidad;
+use App\Models\EspecieMascota;
 use App\Models\EvolucionPacienteHospital;
 use App\Models\EvaluacionPeriodoncia;
 use App\Models\EvolucionUrgencia;
@@ -78,6 +79,7 @@ use App\Models\Instituciones;
 use App\Models\InsumosTratamientosDental;
 use App\Models\LugarAtencion;
 use App\Models\LiquidacionRecibo;
+use App\Models\Mascota;
 use App\Models\LogUsersDevices;
 use App\Models\MensajesProfesional;
 use App\Models\MensajesDifusion;
@@ -1205,6 +1207,21 @@ class EscritorioProfesional extends Controller
         $prevision = Prevision::all();
         $region = Region::all();
         $paciente = [];
+        $mascotas = collect();
+
+        if ($profesional) {
+            $mascota_ids = FichaAtencion::where('id_profesional', $profesional->id)
+                ->whereNotNull('id_mascota')
+                ->distinct()
+                ->pluck('id_mascota');
+
+            if ($mascota_ids->isNotEmpty()) {
+                $mascotas = Mascota::with(['Responsable.Prevision', 'especieMascota'])
+                    ->whereIn('id', $mascota_ids)
+                    ->orderBy('nombre')
+                    ->get();
+            }
+        }
         // foreach ($ficha_atencion as $f) {
         //     $paciente_temp = Paciente::find($f->id_paciente);
 		// 	if($paciente_temp){
@@ -1231,7 +1248,8 @@ class EscritorioProfesional extends Controller
                 'prevision' => $prevision,
                 'paciente' => $paciente,
                 'profesional' => $profesional,
-                'region' => $region
+                'region' => $region,
+                'mascotas' => $mascotas
             ]
         );
     }
@@ -2328,6 +2346,22 @@ class EscritorioProfesional extends Controller
             $profesional = Profesional::where('id_usuario', $user)->first();
         }
 
+        $mascota = null;
+        if (!empty($hora_medica->id_mascota)) {
+            $mascota = Mascota::with(['especieMascota', 'tamanoMascota'])->find($hora_medica->id_mascota);
+            if ($mascota && !$mascota->especieMascota) {
+                $especieId = null;
+                if (!empty($mascota->especie_id)) {
+                    $especieId = $mascota->especie_id;
+                } elseif (!empty($mascota->especie) && is_numeric($mascota->especie)) {
+                    $especieId = (int) $mascota->especie;
+                }
+                if ($especieId) {
+                    $mascota->setRelation('especieMascota', EspecieMascota::find($especieId));
+                }
+            }
+        }
+
 		$fecha_ultima_atencion = HoraMedica::select('horas_medicas.fecha_consulta','fichas_atenciones.*')
         ->join('fichas_atenciones','horas_medicas.id_ficha_atencion','fichas_atenciones.id')
         ->where('horas_medicas.id_paciente', $hora_medica->id_paciente)
@@ -2391,6 +2425,7 @@ class EscritorioProfesional extends Controller
             'edad' => $edad,
             'responsable' => $responsable,
             'procedimiento' => $procedimiento,
+            'mascota' => $mascota,
         );
     }
 
@@ -8551,6 +8586,7 @@ public function eliminarPiezaCoronaProtesis(Request $req){
             $paciente['edad'] = 99;
             $paciente['nombre_responsable'] = '';
             $paciente['id_responsable'] = '';
+            $paciente['mascotas'] = [];
             $paciente['regiones'] = $regiones;
 
             return json_encode($paciente);
@@ -8595,6 +8631,9 @@ public function eliminarPiezaCoronaProtesis(Request $req){
             $paciente['nombre_responsable'] = $nombres_representante;
             $paciente['id_responsable'] = $id_representante;
             $paciente['acompanante'] = $registro_temp;
+            $paciente['mascotas'] = Mascota::with(['especieMascota', 'tamanoMascota'])
+                ->where('id_responsable', $paciente->id)
+                ->get();
 
 
         }
@@ -8877,6 +8916,7 @@ public function eliminarPiezaCoronaProtesis(Request $req){
         $hora_medica = new HoraMedica();
         $hora_medica->id_presupuesto = $request->id_presupuesto ?? null;
         $hora_medica->id_paciente = $request->reserva_hora_id;
+        $hora_medica->id_mascota = $request->id_mascota ?? null;
         $hora_medica->id_profesional = $profesional->id;
         $hora_medica->id_ficha_otros_prof = $profesional->id;
         $hora_medica->id_estado = '1';

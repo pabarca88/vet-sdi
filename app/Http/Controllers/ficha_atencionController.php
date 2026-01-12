@@ -63,6 +63,7 @@ use App\Models\FichaNeuro;
 use App\Models\FichaOtorrino;
 use App\Models\FichaOrl;
 use App\Models\FichaOtorrinoTipo;
+use App\Models\FichaVeterinariaGeneral;
 use App\Models\GesRegistros;
 use App\Models\Hipertension;
 use App\Models\HoraMedica;
@@ -76,7 +77,11 @@ use App\Models\Licencia;
 use App\Models\LicenciaPPF;
 use App\Models\LugarAtencion;
 use App\Models\MarcasImplantes;
+use App\Models\EspecieMascota;
+use App\Models\Mascota;
+use App\Models\PresupuestoMascota;
 use App\Models\Paciente;
+use App\Models\TamanoMascota;
 use App\Models\PacienteContactoEmergencia;
 use App\Models\PacienteTriage;
 use App\Models\PagosPresupuestoDental;
@@ -103,6 +108,7 @@ use App\Models\TipoExamen;
 use App\Models\User;
 use App\Models\UsoPersonal;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use App\Models\FichaCirugiaDigestivaGeneralAdulto;
 use App\Models\FichaDermo;
 use App\Models\FichaDermoImg;
@@ -260,6 +266,34 @@ class ficha_atencionController extends Controller
         $hora = HoraMedica::where('id', $request->id_hora_realizar)->first();
 
         $paciente = Paciente::where('id', $hora->id_paciente)->first();
+        $mascota = null;
+        $mascota_edad = null;
+        $responsable_mascota = null;
+        $ficha_atencion_mascota = null;
+        if (!empty($hora->id_mascota)) {
+            $mascota = Mascota::with('especieMascota')->find($hora->id_mascota);
+            if ($mascota && !empty($mascota->fecha_nacimiento)) {
+                $mascota_edad = Carbon::parse($mascota->fecha_nacimiento)->age;
+            }
+            if ($mascota && !$mascota->especieMascota) {
+                $especieId = null;
+                if (!empty($mascota->especie_id)) {
+                    $especieId = $mascota->especie_id;
+                } elseif (!empty($mascota->especie) && is_numeric($mascota->especie)) {
+                    $especieId = (int) $mascota->especie;
+                }
+                if ($especieId) {
+                    $mascota->setRelation('especieMascota', EspecieMascota::find($especieId));
+                }
+            }
+            if ($mascota) {
+                $responsable_mascota = $mascota->Responsable()->first();
+                $ficha_atencion_mascota = DB::table('fichas_atenciones')
+                    ->where('id_mascota', $mascota->id)
+                    ->orderBy('id', 'desc')
+                    ->first();
+            }
+        }
 
         $necesita_plan_tratamiento = false;
         $tiene_controles = false;
@@ -319,6 +353,8 @@ class ficha_atencionController extends Controller
         $direccion_txt_region_paciente = '';
         $regiones = Region::all();
         $ciudades = Ciudad::all();
+        $especies_mascotas = EspecieMascota::orderBy('nombre')->get();
+        $tamanos_mascotas = TamanoMascota::orderBy('nombre')->get();
 
         if($direccion_paciente)
         {
@@ -452,6 +488,7 @@ class ficha_atencionController extends Controller
         {
             $nueva_ficha_atencion = new FichaAtencion();
             $nueva_ficha_atencion->id_paciente = $paciente->id;
+            $nueva_ficha_atencion->id_mascota = $request->id_mascota ?? $hora->id_mascota ?? null;
             $nueva_ficha_atencion->id_profesional = $profesional->id;
             $nueva_ficha_atencion->id_lugar_atencion = $request->lugar_atencion_id;
 
@@ -469,6 +506,20 @@ class ficha_atencionController extends Controller
 
             if (!$hora->save()) {
                 return back()->with('mensaje', 'error');
+            }
+        }
+
+        $fichaVeterinariaGeneral = null;
+        $fichaVeterinariaGeneralData = [];
+        if (!empty($id_ficha_atencion)) {
+            $fichaVeterinariaGeneral = FichaVeterinariaGeneral::where('id_fichas_atenciones', $id_ficha_atencion)
+                ->orderBy('id', 'desc')
+                ->first();
+            if ($fichaVeterinariaGeneral && !empty($fichaVeterinariaGeneral->datos)) {
+                $decoded = json_decode($fichaVeterinariaGeneral->datos, true);
+                if (json_last_error() === JSON_ERROR_NONE) {
+                    $fichaVeterinariaGeneralData = $decoded;
+                }
             }
         }
 
@@ -2404,6 +2455,10 @@ class ficha_atencionController extends Controller
                 'placeholder_examen_fisico' => $placeholder_examen_fisico,
                 'url_tratamientos_autocomplete' => $url_tratamientos_autocomplete,
                 'paciente' => $paciente,
+                'mascota' => $mascota,
+                'mascota_edad' => $mascota_edad,
+                'responsable_mascota' => $responsable_mascota,
+                'ficha_atencion_mascota' => $ficha_atencion_mascota,
                 'proxima_fecha_atencion' => $proxima_fecha_atencion,
                 'tons_dental' => $tons_dental,
                 'hora_inicio_atencion' => isset($hora_inicio_fecha_atencion) ? $hora_inicio_fecha_atencion : '',
@@ -2508,6 +2563,8 @@ class ficha_atencionController extends Controller
                 'fichas' => $fichas,
                 'ciudades' => $ciudades,
                 'regiones' => $regiones,
+                'especies_mascotas' => $especies_mascotas,
+                'tamanos_mascotas' => $tamanos_mascotas,
                 'tipo_examen' => $tipoExamen,
                 'control_peso' => $control_peso,
                 'hipertension' => $hipertension,
@@ -2579,8 +2636,70 @@ class ficha_atencionController extends Controller
 				'reg_exam_rayo'  => $reg_exam_rayo,
                 'ultimoControl' => $ultimoControl,
                 'laboratorios' => $laboratorios,
+                'fichaVeterinariaGeneral' => $fichaVeterinariaGeneral,
+                'fichaVeterinariaGeneralData' => $fichaVeterinariaGeneralData,
             ]
         );
+    }
+
+    public function guardarPresupuestoMascota(Request $request)
+    {
+        $validator = \Validator::make($request->all(), [
+            'id_paciente' => 'required|integer',
+            'id_profesional' => 'required|integer',
+            'id_ficha_atencion' => 'required|integer',
+            'id_lugar_atencion' => 'required|integer',
+            'datos_atencion' => 'nullable|string',
+            'estado' => 'nullable|integer',
+            'aprobado' => 'nullable|integer',
+            'fecha_control' => 'nullable|date',
+            'fecha' => 'nullable|date',
+            'otros' => 'nullable|string',
+            'observaciones' => 'nullable|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'estado' => 0,
+                'msj' => 'Datos inválidos',
+                'error' => $validator->errors(),
+            ], 422);
+        }
+
+        $datosAtencionRaw = $request->input('datos_atencion');
+        if ($datosAtencionRaw !== null && $datosAtencionRaw !== '') {
+            $decoded = json_decode($datosAtencionRaw, true);
+            $datosAtencion = json_last_error() === JSON_ERROR_NONE ? $decoded : ['detalle' => $datosAtencionRaw];
+        } else {
+            $datosAtencion = [];
+        }
+
+        $presupuesto = new PresupuestoMascota();
+        $presupuesto->id_paciente = $request->input('id_paciente');
+        $presupuesto->id_profesional = $request->input('id_profesional');
+        $presupuesto->id_ficha_atencion = $request->input('id_ficha_atencion');
+        $presupuesto->id_lugar_atencion = $request->input('id_lugar_atencion');
+        $presupuesto->id_tipo_tratamiento = $request->input('id_tipo_tratamiento');
+        $presupuesto->datos_atencion = $datosAtencion;
+        $presupuesto->estado = $request->input('estado');
+        $presupuesto->aprobado = $request->input('aprobado');
+        $presupuesto->fecha_control = $request->input('fecha_control');
+        $presupuesto->fecha = $request->input('fecha');
+        $presupuesto->otros = $request->input('otros');
+        $presupuesto->observaciones = $request->input('observaciones');
+
+        if (!$presupuesto->save()) {
+            return response()->json([
+                'estado' => 0,
+                'msj' => 'No se pudo guardar el presupuesto',
+            ], 500);
+        }
+
+        return response()->json([
+            'estado' => 1,
+            'msj' => 'Presupuesto registrado',
+            'id' => $presupuesto->id,
+        ]);
     }
 
     public function dame_comunas_contacto_emergencia($id_paciente){
@@ -6994,6 +7113,86 @@ class ficha_atencionController extends Controller
             return back()->with('error', 'El Diagnóstico es Requerido.\n Su Ficha Clínica NO ha sido Guardada aún. \n Si es solo Control, indicar Control de Patología.')->withInput();;
         }
 
+    }
+
+    /** REGISTRO FICHA ATENCION VETERINARIA GENERAL */
+    public function store_vet_general(Request $request)
+    {
+        $campos_requeridos = 0;
+        $mensaje = '';
+
+        if (empty(trim($request->motivo)) || empty(trim($request->descripcion_hipotesis))) {
+            $campos_requeridos = 1;
+            $mensaje = 'El Motivo y el Diagnóstico son requeridos.\n Su Ficha Clínica NO ha sido guardada aún.';
+        }
+
+        if ($campos_requeridos == 0) {
+            $hora_medica = HoraMedica::where('id', $request->hora_medica)->first();
+            $ficha = FichaAtencion::where('id', $hora_medica->id_ficha_atencion)->first();
+
+            $id_profesional = $request->id_profesional_fc;
+            $id_paciente = $request->id_paciente_fc;
+
+            if (!$ficha) {
+                $ficha = new FichaAtencion;
+            }
+
+            $ficha->motivo = $request->motivo;
+            $ficha->antecedentes = $request->antecedentes;
+            $ficha->examen_fisico = $request->examen_fisico;
+            $ficha->hipotesis_diagnostico = $request->descripcion_hipotesis;
+            $ficha->diagnostico_ce10 = $request->descripcion_cie;
+            $ficha->indicaciones = $request->indicaciones;
+
+            $ges = $request->has('modal_ges') ? 1 : 0;
+            $cronico = $request->has('enf_cronico') ? 1 : 0;
+            $confidencial = $request->has('confidencial') ? 1 : 0;
+
+            $ficha->cronico = $cronico;
+            $ficha->ges = $ges;
+            $ficha->confidencial = $confidencial;
+            $ficha->id_paciente = $id_paciente;
+            $ficha->id_profesional = $id_profesional;
+            $ficha->finalizada = 1;
+
+            if (!$ficha->save()) {
+                return back()->with('error', 'Ficha Clínica con problema al guardar')->withInput();
+            }
+
+            $ficha_vet = new FichaVeterinariaGeneral();
+            $ficha_vet->id_fichas_atenciones = $ficha->id;
+            $ficha_vet->id_paciente = $id_paciente;
+            $ficha_vet->id_profesional = $id_profesional;
+            $ficha_vet->datos = json_encode($request->except(['_token']));
+            $ficha_vet->estado = 1;
+
+            if (!$ficha_vet->save()) {
+                return back()->with('error', 'Ficha Veterinaria General con problema al guardar')->withInput();
+            }
+
+            $tipo_mensaje = 'success';
+            $mensaje = 'Ficha Clínica guardada de forma correcta\n';
+            $mensaje .= 'Ficha Veterinaria General guardada de forma correcta';
+
+            $hora_medica->id_estado = 6;
+            $mensaje_estado_hora_medica = '';
+            if (!$hora_medica->save()) {
+                $mensaje_estado_hora_medica .= 'Hora Medica con Problemas para finalizar.';
+            } else {
+                $mensaje_estado_hora_medica .= 'Hora medica Finalizada con Exito.';
+            }
+            $mensaje .= '\n' . $mensaje_estado_hora_medica;
+
+            if ($request->cerrarsession == 0 || $request->cerrarsession == '') {
+                return \Redirect::route('profesional.mi_agenda', 'lugares_atencion=' . $request->id_lugar_atencion)->with($tipo_mensaje, $mensaje);
+            } else if ($request->cerrarsession == 1) {
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+                return \Redirect::route('home.ingreso');
+            }
+        }
+
+        return back()->with('error', $mensaje)->withInput();
     }
 
     /** REGISTRO FICHA ATENCION Y OTORRINOLARINGOLOGIA*/

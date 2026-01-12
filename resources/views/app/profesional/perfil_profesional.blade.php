@@ -532,7 +532,7 @@
                             {{-- formulario para agregar  --}}
                             <div class="row">
                                 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                                    <h5 class="f-20 text-c-blue d-inline mr-2 pt-1">Antecedentes acedémicos</h5>
+                                    <h5 class="f-20 d-inline mr-2 pt-1">Antecedentes acedémicos</h5>
                                     <button type="button" class="btn btn-info btn-sm d-inline float-right mb-2"
                                         onclick="info_academica_m();"><i class="fas fa-plus"></i> Añadir</button>
                                 </div>

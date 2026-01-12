@@ -18,3 +18,4 @@ MATERIALES/Template/tema.zip
 # Ignorar zips/pesados
 *.zip
 MATERIALES/
+.DS_Store

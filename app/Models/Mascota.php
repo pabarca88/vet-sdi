@@ -32,6 +32,13 @@ class Mascota extends Model
         'esterilizado',
         'fecha_esterilizacion',
         'enfermedad_cronica',
+        'dieta',
+        'ultima_desparasitacion',
+        'producto_desparasitacion',
+        'cirugias',
+        'vacunas',
+        'viajes',
+        'vive_con_animales',
         'id_user',
         'estado',
     ];
@@ -42,6 +49,8 @@ class Mascota extends Model
         'tiene_chip' => 'boolean',
         'esterilizado' => 'boolean',
         'fecha_esterilizacion' => 'date',
+        'ultima_desparasitacion' => 'date',
+        'vive_con_animales' => 'boolean',
     ];
 
     public function Responsable()

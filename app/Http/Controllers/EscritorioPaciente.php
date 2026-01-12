@@ -51,6 +51,7 @@ use App\Models\Interconsulta;
 use App\Models\LogUsersDevices;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Convenio;
 
 use App\Models\OdontogramaPaciente;
 
@@ -188,6 +189,50 @@ class EscritorioPaciente extends Controller
             /** formulario nuevos */
             return view('auth.Registros.registro_paciente')->with(['region' => $region, 'prevision' => $prevision]);
         }
+    }
+
+    public function convenios()
+    {
+        $paciente = Paciente::where('id_usuario', Auth::user()->id)->first();
+
+        return view('app.paciente.convenios')->with([
+            'paciente' => $paciente,
+        ]);
+    }
+
+    public function guardarConvenio(Request $request)
+    {
+        $validator = \Validator::make($request->all(), [
+            'numero_convenio' => 'required|integer',
+            'id_tipo_convenio' => 'required|integer',
+            'id_tipo_producto_' => 'required|integer',
+            'descuento' => 'required|numeric',
+            'id_tipo_cobro' => 'required|integer',
+            'id_tipo_pago' => 'required|integer',
+            'condiciones' => 'required|string|max:255',
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+
+        $paciente = Paciente::where('id_usuario', Auth::user()->id)->first();
+
+        $convenio = new Convenio();
+        $convenio->numero_convenio = $request->input('numero_convenio');
+        $convenio->id_tipo_convenio = $request->input('id_tipo_convenio');
+        $convenio->id_tipo_producto_ = $request->input('id_tipo_producto_');
+        $convenio->descuento = $request->input('descuento');
+        $convenio->id_responsable = $paciente ? $paciente->id : 0;
+        $convenio->id_tipo_cobro = $request->input('id_tipo_cobro');
+        $convenio->id_tipo_pago = $request->input('id_tipo_pago');
+        $convenio->condiciones = $request->input('condiciones');
+
+        if (!$convenio->save()) {
+            return back()->with('error', 'No se pudo guardar el convenio.')->withInput();
+        }
+
+        return redirect()->route('paciente.convenios')->with('success', 'Convenio registrado.');
     }
 
     public function agendarHora($id_profesion_ = 0,$id_especialidad_ = 0,$id_subespecialidad_ = 0)

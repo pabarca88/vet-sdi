@@ -19,7 +19,9 @@ use App\Models\GrupoSanguineo;
 use App\Models\Hipertension;
 use App\Models\HoraMedica;
 use App\Models\LogUserDevice;
+use App\Models\LogUsersDevices;
 use App\Models\LugarAtencion;
+use App\Models\Mascota;
 use App\Models\NotificacionConfirmacion;
 use App\Models\OdontogramaPaciente;
 use App\Models\Paciente;
@@ -32,6 +34,7 @@ use App\Models\Region;
 use App\Models\Recomendacion;
 use App\Models\RecomendacionDetalle;
 use App\Models\ResultadoExamen;
+use App\Models\ConConsentimientosPcte;
 use App\Models\SubTipoEspecialidad;
 use App\Models\TipoEspecialidad;
 use App\Models\ContactoEmergencia;
@@ -639,6 +642,219 @@ class AppPacienteController extends Controller
                 'horas' => []
             ]);
         }
+    }
+
+    public function getMisMascotas(Request $request)
+    {
+        // Validación de token X-Auth-Token
+        $authToken = $request->header('X-Auth-Token');
+        if (!$authToken) {
+            return response()->json([
+                'estado' => 0,
+                'mensaje' => 'Token de autenticación requerido'
+            ], 401);
+        }
+
+        // Buscar el token en la base de datos
+        $token = PersonalAccessToken::findToken($authToken);
+        if (!$token) {
+            return response()->json([
+                'estado' => 0,
+                'mensaje' => 'Token de autenticación inválido'
+            ], 401);
+        }
+
+        // Verificar que el token no haya expirado
+        if ($token->expires_at && $token->expires_at->isPast()) {
+            return response()->json([
+                'estado' => 0,
+                'mensaje' => 'Token de autenticación expirado'
+            ], 401);
+        }
+
+        // Obtener el usuario autenticado del token
+        $user = $token->tokenable;
+        if (!$user) {
+            return response()->json([
+                'estado' => 0,
+                'mensaje' => 'Usuario no encontrado'
+            ], 401);
+        }
+
+        $idUsuario = $request->id_paciente ?: $user->id;
+        $paciente = Paciente::where('id_usuario', $idUsuario)->first();
+        if (!$paciente) {
+            return response()->json([
+                'estado' => 0,
+                'mensaje' => 'Paciente no encontrado',
+                'registros' => []
+            ]);
+        }
+
+        $mascotas = Mascota::with(['especieMascota', 'tamanoMascota'])
+            ->where('id_responsable', $paciente->id)
+            ->get();
+
+        return response()->json([
+            'estado' => 1,
+            'msj' => 'registros',
+            'registros' => $mascotas,
+        ]);
+    }
+
+    public function getDocumentosMascota(Request $request)
+    {
+        [$user, $authError] = $this->resolveAuthUser($request);
+        if ($authError) {
+            return $authError;
+        }
+
+        $idMascota = $request->id_mascota;
+        if (empty($idMascota)) {
+            return response()->json([
+                'estado' => 0,
+                'mensaje' => 'Mascota requerida',
+                'documentos' => []
+            ]);
+        }
+
+        $idUsuario = $request->id_paciente ?: $user->id;
+        $paciente = Paciente::where('id_usuario', $idUsuario)->first();
+        if (!$paciente) {
+            return response()->json([
+                'estado' => 0,
+                'mensaje' => 'Paciente no encontrado',
+                'documentos' => []
+            ]);
+        }
+
+        $mascota = Mascota::where('id', $idMascota)
+            ->where('id_responsable', $paciente->id)
+            ->first();
+        if (!$mascota) {
+            return response()->json([
+                'estado' => 0,
+                'mensaje' => 'Mascota no encontrada',
+                'documentos' => []
+            ]);
+        }
+
+        $fichaIds = FichaAtencion::where('id_mascota', $mascota->id)
+            ->where('id_paciente', $paciente->id)
+            ->pluck('id');
+
+        if ($fichaIds->isEmpty()) {
+            return response()->json([
+                'estado' => 1,
+                'mensaje' => 'Sin documentos',
+                'documentos' => []
+            ]);
+        }
+
+        $consentimientos = ConConsentimientosPcte::with(['Consentimiento' => function ($query) {
+                $query->select('id', 'nombre');
+            }])
+            ->whereIn('id_fc', $fichaIds)
+            ->orderBy('id', 'DESC')
+            ->get();
+
+        $baseUrl = rtrim(config('app.url') ?: env('APP_URL', ''), '/');
+        $documentos = [];
+
+        foreach ($consentimientos as $consentimiento) {
+            $nombre = $consentimiento->Consentimiento->nombre ?? 'Consentimiento informado';
+            $fecha = $consentimiento->fecha_cons ?: ($consentimiento->created_at ? $consentimiento->created_at->format('Y-m-d') : null);
+            $pdfUrl = $baseUrl ? $baseUrl . '/consentimiento/pdf?id_consentimiento=' . $consentimiento->id . '&id_ficha_atencion=' . $consentimiento->id_fc : null;
+
+            $documentos[] = [
+                'id' => $consentimiento->id,
+                'tipo' => 'Consentimiento informado',
+                'nombre' => $nombre,
+                'fecha_emision' => $fecha,
+                'id_ficha_atencion' => $consentimiento->id_fc,
+                'estado' => $consentimiento->confirmacion,
+                'pdf_url' => $pdfUrl,
+            ];
+        }
+
+        return response()->json([
+            'estado' => 1,
+            'mensaje' => 'documentos',
+            'documentos' => $documentos
+        ]);
+    }
+
+    public function getSolicitudesPendientes(Request $request)
+    {
+        [$user, $authError] = $this->resolveAuthUser($request);
+        if ($authError) {
+            return $authError;
+        }
+
+        $registros = LogUsersDevices::where('id_user_recept', $user->id)
+            ->where('estado', 0)
+            ->whereIn('tipo', [4])
+            ->orderBy('id', 'DESC')
+            ->get();
+
+        $pendientes = [];
+        foreach ($registros as $registro) {
+            $data = json_decode($registro->msg, false);
+            $consentimiento = $data->nombre_consentimiento ?? 'Consentimiento informado';
+            $profesional = $data->nombre_profesional ?? '';
+            $mensaje = "Tiene pendiente confirmar un Consentimiento <span class='color-azul txt_bold'>{$consentimiento}</span>, para el Dr. {$profesional}. Puede leerlo en su escritorio de Paciente o email.";
+
+            $pendientes[] = [
+                'id' => $registro->id,
+                'tipo' => $registro->tipo,
+                'msg_estado' => $mensaje,
+                'token' => $registro->token,
+                'created_at' => $registro->created_at,
+            ];
+        }
+
+        return response()->json([
+            'estado' => 1,
+            'mensaje' => 'pendientes',
+            'cantidad' => count($pendientes),
+            'registros' => $pendientes,
+        ]);
+    }
+
+    protected function resolveAuthUser(Request $request)
+    {
+        $authToken = $request->header('X-Auth-Token');
+        if (!$authToken) {
+            return [null, response()->json([
+                'estado' => 0,
+                'mensaje' => 'Token de autenticación requerido'
+            ], 401)];
+        }
+
+        $token = PersonalAccessToken::findToken($authToken);
+        if (!$token) {
+            return [null, response()->json([
+                'estado' => 0,
+                'mensaje' => 'Token de autenticación inválido'
+            ], 401)];
+        }
+
+        if ($token->expires_at && $token->expires_at->isPast()) {
+            return [null, response()->json([
+                'estado' => 0,
+                'mensaje' => 'Token de autenticación expirado'
+            ], 401)];
+        }
+
+        $user = $token->tokenable;
+        if (!$user) {
+            return [null, response()->json([
+                'estado' => 0,
+                'mensaje' => 'Usuario no encontrado'
+            ], 401)];
+        }
+
+        return [$user, null];
     }
 
     public function guardarAtencionMedica(Request $request){

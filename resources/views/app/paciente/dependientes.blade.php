@@ -1,6 +1,23 @@
 @extends('template.usuario.template')
 
-
+@section('page-styles')
+<style>
+    #modal_ficha_mascota table {
+        table-layout: fixed;
+        width: 100%;
+    }
+    #modal_ficha_mascota th,
+    #modal_ficha_mascota td {
+        white-space: normal;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
+    #modal_ficha_mascota th:nth-child(1),
+    #modal_ficha_mascota td:nth-child(1) {
+        width: 120px;
+    }
+</style>
+@endsection
 
 @section('content')
 
@@ -211,8 +228,8 @@
     <div class="modal fade" id="modal_ficha_mascota" tabindex="-1" role="dialog" aria-labelledby="modalFichaMascota" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
-                <div class="modal-header bg-primary">
-                    <h5 class="modal-title text-white mt-1" id="modalFichaMascota">Ficha medica <span id="modal_ficha_mascota_nombre"></span></h5>
+                <div class="modal-header bg-info">
+                    <h5 class="modal-title text-white mt-1" id="modalFichaMascota">Ficha Médica <span id="modal_ficha_mascota_nombre"></span></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body">
@@ -222,6 +239,7 @@
                                 <tr>
                                     <th>Fecha</th>
                                     <th>Diagnostico</th>
+                                    <th>Indicaciones</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -230,11 +248,12 @@
                                         <tr>
                                             <td>{{ \Carbon\Carbon::parse($ficha->created_at)->format('d/m/Y') }}</td>
                                             <td>{{ $ficha->hipotesis_diagnostico ?: '-' }}</td>
+                                            <td>{{ $ficha->indicaciones ?: '-' }}</td>
                                         </tr>
                                     @endforeach
                                 @else
                                     <tr>
-                                        <td colspan="2" class="text-center">Sin registros</td>
+                                        <td colspan="3" class="text-center">Sin registros</td>
                                     </tr>
                                 @endif
                             </tbody>
@@ -1480,7 +1499,7 @@
                             html += '            <p class="mb-0">'+especie_label+'</p>';
                             html += '            <div class="mt-2 d-flex justify-content-center">';
                             html += '                <button type="button" class="btn btn-info btn-sm mr-1 btn-ver-mascota" data-id="'+value.id+'">Ver mascota</button>';
-                            html += '                <button type="button" class="btn btn-primary btn-sm btn-ver-ficha" data-id="'+value.id+'">Ficha medica</button>';
+                            html += '                <button type="button" class="btn btn-primary btn-sm btn-ver-ficha" data-id="'+value.id+'">Ficha Médica</button>';
                             html += '            </div>';
                             html += '        </div>';
                             html += '    </div>';

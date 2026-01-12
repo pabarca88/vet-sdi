@@ -61,9 +61,9 @@
                                     <div class="card-body text-center" style="cursor:pointer">
                                         <img class="wid-70 text-center mb-3"
                                             src="{{ asset('images/iconos/diagnosticos-frecuentes.svg') }}"
-                                            alt=" Configuración Diagnósticos CIE-10">
+                                            alt=" Configuración Diagnósticos">
                                         <h5>
-                                            Configuración Diagnósticos CIE-10
+                                            Configuración Diagnósticos
                                         </h5>
                                     </div>
                                 </a>
@@ -74,8 +74,8 @@
                                 <a href="#">
                                     <div class="card-body text-center" style="cursor:pointer">
                                         <img class="wid-70 text-center mb-3"
-                                            src="{{ asset('images/iconos/configurar-lab.png') }}"
-                                            alt="Diagnósticos Frecuentes CIE 10">
+                                            src="{{ asset('images/iconos/configurar-lab.svg') }}"
+                                            alt="Configurar laboratorios">
                                         <h5>
                                             Configurar mis laboratorios
                                         </h5>
@@ -120,7 +120,7 @@
                                 <a href="#">
                                     <div class="card-body text-center" style="cursor:pointer">
                                         <img class="wid-70 text-center mb-3"
-                                        src="{{ asset('images/iconos/configurar-ficha-medica.png') }}"
+                                        src="{{ asset('images/iconos/configurar-ficha-medica.svg') }}"
 
                                         alt="Profesional">
                                         <h5 class="f-16">
@@ -184,7 +184,7 @@
                                 <a href="{{ ROUTE('profesional.mantencion_equipo') }}">
                                     <div class="card-body text-center" style="cursor:pointer">
                                         <img class="wid-70 text-center mb-3"
-                                        src="{{ asset('images/iconos/usuario_asistente.svg') }}"
+                                        src="{{ asset('images/iconos/equipoqx.png') }}"
 
                                         alt="Profesional">
                                         <h5 class="f-16">

@@ -723,6 +723,8 @@ Route::group([
     Route::get('Reservar_Hora/{profesion}/{especialidad}/{subespecialidad}', [App\Http\Controllers\EscritorioPaciente::class, 'agendarHora'])->name('paciente.agendar_hora_filtro');
 
     Route::get('Mi_Profesionales', [App\Http\Controllers\EscritorioPaciente::class, 'miProfesionales'])->name('paciente.mis_profesionales');
+    Route::get('Convenios', [App\Http\Controllers\EscritorioPaciente::class, 'convenios'])->name('paciente.convenios');
+    Route::post('Convenios', [App\Http\Controllers\EscritorioPaciente::class, 'guardarConvenio'])->name('paciente.convenios.guardar');
 
     Route::get('desvincular_profesional/{id_usuario}/{id_profesional}', [App\Http\Controllers\EscritorioPaciente::class, 'miProfesionales'])->name('paciente.desvincular_profesional');
 
@@ -1408,6 +1410,7 @@ Route::group([
     Route::get('mi_asistente_lugar_atencion', [App\Http\Controllers\EscritorioProfesional::class, 'mi_asistente_lugar_atencion'])->name('profesional.mi_asistente_lugar_atencion');
 
     Route::get('Paciente/Ficha_consulta', [App\Http\Controllers\ficha_atencionController::class, 'index'])->name('profesional.realizar_consulta');
+    Route::post('Paciente/Presupuesto_mascota', [App\Http\Controllers\ficha_atencionController::class, 'guardarPresupuestoMascota'])->name('profesional.presupuesto_mascota.guardar');
 
     Route::get('Paciente/Ficha_consulta/sdi', [App\Http\Controllers\ficha_atencionController::class, 'index_sdi'])->name('profesional.realizar_consulta_sdi');
 
@@ -3248,6 +3251,8 @@ Route::group([
     Route::post('Ficha_Atencion/crear', [App\Http\Controllers\ficha_atencionController::class, 'store'])->name('fichaAtencion.registrar_ficha');
 
 	Route::post('Ficha_Atencion/crear/orl', [App\Http\Controllers\ficha_atencionController::class, 'store_orl'])->name('fichaAtencion.registrar_ficha_orl');
+
+    Route::post('Ficha_Atencion/crear/vet-general', [App\Http\Controllers\ficha_atencionController::class, 'store_vet_general'])->name('fichaAtencion.registrar_ficha_vet_general');
 
     Route::post('Ficha_Atencion/crear/cg', [App\Http\Controllers\ficha_atencionController::class, 'store_cg'])->name('fichaAtencion.registrar_ficha_cg');
 

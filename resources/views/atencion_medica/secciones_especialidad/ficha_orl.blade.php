@@ -39,8 +39,11 @@
                         <li class="nav-item-secciones">
                             <a class="nav-secciones active text-uppercase" id="atencion_orl-tab" data-toggle="tab" href="#atencion_orl" role="tab" aria-controls="atencion_orl" aria-selected="true">Atención especialidad</a>
                         </li>
-                        <li class="nav-item-secciones">
+                       {{-- <li class="nav-item-secciones">
                             <a class="nav-secciones text-uppercase" id="rinofibro-tab" data-toggle="tab" href="#rinofibro" role="tab" aria-controls="rinofibro" aria-selected="false">Rinofibrolaringoscopía</a>
+                        </li>--}}
+                        <li class="nav-item-secciones">
+                            <a class="nav-secciones text-uppercase" id="presupuesto-mascota-tab" data-toggle="tab" href="#presupuesto-mascota" role="tab" aria-controls="presupuesto-mascota" aria-selected="false">Presupuestos</a>
                         </li>
                         {{--  <li class="nav-item-secciones">
                             <a class="nav-secciones text-uppercase" id="ocho_par-tab" data-toggle="tab" href="#ocho_par" role="tab" aria-controls="ocho_par" aria-selected="false">8° par</a>
@@ -58,7 +61,7 @@
                     </div>
                 </div>
                 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                    <form action="{{ route('fichaAtencion.registrar_ficha_orl') }}" method="POST">
+                    <form action="{{ route('fichaAtencion.registrar_ficha_vet_general') }}" method="POST">
                         <input type="hidden" name="examenes" id="examenes" value="{!! old('examenes') !!}">
                         <input type="hidden" name="examenes_esp" id="examenes_esp" value="{!! old('examenes_esp') !!}">
                         <input type="hidden" name="medicamentos" id="medicamentos" value="{!! old('medicamentos') !!}">
@@ -88,6 +91,7 @@
                                     @include('general.secciones_ficha.seccion_menor', ['tipo_ficha' => "1"])
                                     <!--Cierre: Formulario / Menor de edad-->
                                     @include('general.secciones_ficha.motivo')
+                                        @include('general.secciones_ficha.examenfisico')
                                     <!--MOTIVO CONSULTA-->
                                     {{-- <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                                         <div class="card-a">
@@ -121,7 +125,7 @@
                                     </div> --}}
 
                                     <!--EXAMEN ESPECIALIDAD - DETALLES-->
-                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                    {{--<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                                         <div class="card-a">
                                             <div class="card-header-a" id="exam_esp_orl">
                                                 <button class="accor-closed btn pt-1 pb-0 pl-1 btn-block text-left card-act-open collapsed" type="button" data-toggle="collapse" data-target="#exam_esp_orl_c" aria-expanded="false" aria-controls="exam_esp_orl_c">
@@ -427,7 +431,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div>--}}
 
                                     <!--Formulario / Signos vitales y otros-->
                                     {{--  @include('general.secciones_ficha.signos_vitales')  --}}
@@ -530,6 +534,57 @@
                                     <button type="button" class="btn btn-danger mt-1" onclick="visualizar_pdf_examen('rfl');">Ver Examen PDF</button>
                                 </div>
                                 <!-- CIERRE: GUARDAR EXAMEN -->
+                            </div>
+                            <div class="tab-pane fade" id="presupuesto-mascota" role="tabpanel" aria-labelledby="presupuesto-mascota-tab">
+                                <div class="row">
+                                    <div class="col-md-12 mb-0">
+                                        <h6 class="f-18 text-c-blue mb-2">Presupuesto mascota (ejemplo)</h6>
+                                    </div>
+                                </div>
+                                <div class="card-a">
+                                    <div class="card-body-aten-a">
+                                        <input type="hidden" id="presupuesto_mascota_id_paciente" value="{{ $paciente->id }}">
+                                        <input type="hidden" id="presupuesto_mascota_id_profesional" value="{{ $profesional->id }}">
+                                        <input type="hidden" id="presupuesto_mascota_id_ficha_atencion" value="{{ $id_ficha_atencion }}">
+                                        <input type="hidden" id="presupuesto_mascota_id_lugar_atencion" value="{{ $id_lugar_atencion }}">
+                                        <div class="form-row">
+                                            <div class="form-group col-md-3">
+                                                <label class="floating-label-activo-sm">Fecha</label>
+                                                <input type="date" class="form-control form-control-sm" id="presupuesto_mascota_fecha">
+                                            </div>
+                                            <div class="form-group col-md-3">
+                                                <label class="floating-label-activo-sm">Fecha control</label>
+                                                <input type="date" class="form-control form-control-sm" id="presupuesto_mascota_fecha_control">
+                                            </div>
+                                            <div class="form-group col-md-2">
+                                                <label class="floating-label-activo-sm">Estado</label>
+                                                <input type="number" class="form-control form-control-sm" id="presupuesto_mascota_estado">
+                                            </div>
+                                            <div class="form-group col-md-2">
+                                                <label class="floating-label-activo-sm">Aprobado</label>
+                                                <input type="number" class="form-control form-control-sm" id="presupuesto_mascota_aprobado">
+                                            </div>
+                                            <div class="form-group col-md-12">
+                                                <label class="floating-label-activo-sm">Datos de atención</label>
+                                                <textarea class="form-control form-control-sm" rows="3" id="presupuesto_mascota_datos"></textarea>
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label class="floating-label-activo-sm">Otros</label>
+                                                <input type="text" class="form-control form-control-sm" id="presupuesto_mascota_otros">
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label class="floating-label-activo-sm">Observaciones</label>
+                                                <input type="text" class="form-control form-control-sm" id="presupuesto_mascota_observaciones">
+                                            </div>
+                                            <div class="col-md-12 text-center mb-3">
+                                                <button type="button" class="btn btn-info" id="btn_guardar_presupuesto_mascota">Guardar presupuesto</button>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div id="presupuesto_mascota_resultado" class="text-center"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <!--INFORME EXAMEN DEL 8° PAR CRANEANO-->
                             {{--  <div class="tab-pane fade" id="ocho_par" role="tabpanel" aria-labelledby="ocho_par-tab">
@@ -1922,6 +1977,44 @@
 @section('page-script-ficha-atencion')
     <script>
         $(document).ready(function() {
+            $('#btn_guardar_presupuesto_mascota').on('click', function() {
+                var payload = {
+                    _token: '{{ csrf_token() }}',
+                    id_paciente: $('#presupuesto_mascota_id_paciente').val(),
+                    id_profesional: $('#presupuesto_mascota_id_profesional').val(),
+                    id_ficha_atencion: $('#presupuesto_mascota_id_ficha_atencion').val(),
+                    id_lugar_atencion: $('#presupuesto_mascota_id_lugar_atencion').val(),
+                    fecha: $('#presupuesto_mascota_fecha').val(),
+                    fecha_control: $('#presupuesto_mascota_fecha_control').val(),
+                    estado: $('#presupuesto_mascota_estado').val(),
+                    aprobado: $('#presupuesto_mascota_aprobado').val(),
+                    datos_atencion: $('#presupuesto_mascota_datos').val(),
+                    otros: $('#presupuesto_mascota_otros').val(),
+                    observaciones: $('#presupuesto_mascota_observaciones').val()
+                };
+
+                $.ajax({
+                    url: '{{ route('profesional.presupuesto_mascota.guardar') }}',
+                    type: 'POST',
+                    data: payload
+                })
+                .done(function(resp) {
+                    $('#presupuesto_mascota_resultado')
+                        .removeClass('text-danger')
+                        .addClass('text-success')
+                        .text(resp.msj || 'Presupuesto guardado.');
+                })
+                .fail(function(xhr) {
+                    var mensaje = 'Error al guardar presupuesto.';
+                    if (xhr.responseJSON && xhr.responseJSON.msj) {
+                        mensaje = xhr.responseJSON.msj;
+                    }
+                    $('#presupuesto_mascota_resultado')
+                        .removeClass('text-success')
+                        .addClass('text-danger')
+                        .text(mensaje);
+                });
+            });
                      /** MENSAJE*/
        /** CARGAR mensaje */
             $('#mensaje_ficha').html(' Solo el campo dignóstico es obligatorio el resto es opcional.');
@@ -3021,6 +3114,49 @@
                 console.log('tipo examen no especificado');
             }
         }
+
+        function cargar_ficha_vet_general() {
+            var data = @json($fichaVeterinariaGeneralData ?? []);
+            if (!data || Object.keys(data).length === 0) {
+                return;
+            }
+
+            Object.keys(data).forEach(function (key) {
+                var value = data[key];
+                if (value === null || value === '') {
+                    return;
+                }
+
+                var $fields = $('[name="' + key + '"]');
+                if ($fields.length === 0) {
+                    return;
+                }
+
+                $fields.each(function () {
+                    var $field = $(this);
+                    if ($field.is(':checkbox')) {
+                        if (Array.isArray(value)) {
+                            $field.prop('checked', value.indexOf($field.val()) !== -1);
+                        } else {
+                            $field.prop('checked', $field.val() == value);
+                        }
+                        return;
+                    }
+
+                    if ($field.is(':radio')) {
+                        $field.prop('checked', $field.val() == value);
+                        return;
+                    }
+
+                    $field.val(value);
+                    $field.trigger('change');
+                });
+            });
+        }
+
+        $(function () {
+            cargar_ficha_vet_general();
+        });
 
     </script>
 @endsection

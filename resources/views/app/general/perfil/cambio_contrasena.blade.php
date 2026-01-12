@@ -2,7 +2,7 @@
     <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
         <!--CARD CONTRASEÑA PERSONAL-->
         <div class="card">
-            <div class="card-header d-flex align-items-center justify-content-between bg-primary">
+            <div class="card-header d-flex align-items-center justify-content-between bg-info">
                 <h5 class="mb-0 text-white">Contraseña personal</h5>
                 <button type="button" class="btn btn-light btn-icon m-0 float-right" data-toggle="collapse" data-target=".pass_personal" aria-expanded="false" aria-controls="pass_personal_1 pass_personal_2">
                     <i class="feather icon-edit"></i>

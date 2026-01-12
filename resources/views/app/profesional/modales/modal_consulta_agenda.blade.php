@@ -24,21 +24,21 @@
                             <table class="table table-borderless table-xs text-break table-responsive modal-agenda">
                                 <tbody>
                                     <tr>
-                                        <th><strong class="f-18 text-purple">Información del paciente</strong></th>
+                                        <th><strong class="f-18 text-purple">Información de la mascota</strong></th>
                                     </tr>
                                      <tr>
                                         <th scope="row">
                                             <strong>Nombre mascota</strong>
                                         <td>
-                                            <span id="datos_consulta_fecha_ultima"></span>
+                                            <span id="datos_consulta_mascota_nombre"></span>
                                         </td>
                                         </th>
                                     </tr>
                                     <tr>
                                         <th scope="row">
-                                            <strong>Raza</strong>
+                                            <strong>Especie</strong>
                                         <td>
-                                            <span id="datos_consulta_fecha_ultima"></span>
+                                            <span id="datos_consulta_mascota_raza"></span>
                                         </td>
                                         </th>
                                     </tr>
@@ -46,7 +46,7 @@
                                         <th scope="row">
                                             <strong>Estirilizado</strong>
                                         <td>
-                                            <span>SI</span>
+                                            <span id="datos_consulta_mascota_esterilizado"></span>
                                         </td>
                                         </th>
                                     </tr>
@@ -54,21 +54,21 @@
                                         <th scope="row">
                                             <strong>Última consulta</strong>
                                         <td>
-                                            <span id="datos_consulta_fecha_ultima"></span>
+                                            <span id="datos_consulta_mascota_ultima_consulta"></span>
                                         </td>
                                         </th>
                                     </tr>
-                                     <tr>
+                                     <!-- <tr>
                                         <th scope="row">
                                             <strong class="f-18 text-purple">Fecha última consulta</strong>
                                         <td>
-                                            <span id="datos_consulta_fecha_ultima"></span>
+                                            <span id="datos_consulta_mascota_fecha_ultima"></span>
                                         </td>
                                         </th>
-                                    </tr>
+                                    </tr> -->
 
                                     <tr>
-                                        <th><strong>Información del cliente</strong></th>
+                                        <th><strong class="f-18 text-purple">Información del responsable</strong></th>
                                     </tr>
                                     <tr>
                                         <th scope="row">
@@ -272,6 +272,7 @@
                         @csrf
                         <input type="hidden" name="id_hora_realizar" id="id_hora_realizar" val="">
                         <input type="hidden" name="lugar_atencion_id" id="lugar_atencion_id" value="{{ $lugar_atencion }}">
+                        <input type="hidden" name="id_mascota" id="id_mascota" value="">
 
                         <button type="submit" id="hm_atender_hora" class="btn btn-info btn-sm"><i class="feather icon-check"></i> Atender</button>
                     </form>

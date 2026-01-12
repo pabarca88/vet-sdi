@@ -73,7 +73,10 @@ class EscritorioDependientesController extends Controller
                     'prevision' => $prevision,
                     'region' => $region,
                     'paciente' => $paciente,
-                    'fichasMascota' => FichaAtencion::where('id_paciente', 3)->orderBy('id', 'desc')->get(),
+                    'fichasMascota' => FichaAtencion::with('PresupuestosMascota')
+                        ->where('id_paciente', 3)
+                        ->orderBy('id', 'desc')
+                        ->get(),
 
                 ]);
 
@@ -128,7 +131,10 @@ class EscritorioDependientesController extends Controller
                     'tipo_dependencias' => $request->tipo_dependencia,
                     'prevision' => $prevision,
                     'region' => $region,
-                    'fichasMascota' => FichaAtencion::where('id_paciente', 3)->orderBy('id', 'desc')->get(),
+                    'fichasMascota' => FichaAtencion::with('PresupuestosMascota')
+                        ->where('id_paciente', 3)
+                        ->orderBy('id', 'desc')
+                        ->get(),
                 ]);
             }
         }

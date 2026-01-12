@@ -5,14 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Parametro;
+use App\Models\Mascota;
 
 class HoraMedica extends Model
 {
     use HasFactory;
     protected $table = 'horas_medicas';
 
-	 protected $fillable = [
+    protected $fillable = [
         'id_paciente',
+        'id_mascota',
         'descripcion',  // Reemplaza con el nombre real del primer campo
     ];
 
@@ -24,6 +26,11 @@ class HoraMedica extends Model
     public function Paciente()
     {
         return $this->hasOne(Paciente::class,'id','id_paciente');
+    }
+
+    public function Mascota()
+    {
+        return $this->hasOne(Mascota::class, 'id', 'id_mascota');
     }
 
     public function Profesional()

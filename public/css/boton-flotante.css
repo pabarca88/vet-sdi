@@ -16,7 +16,7 @@
 .redes a, .btn-mas label{
     display: block!important;
     text-decoration: none!important;
-    background: #72B02C!important;
+    background: #40abaf!important;
     color: #fff!important;
     width: 55px!important;
     height: 55px!important;
@@ -28,8 +28,8 @@
 
 }
 .redes a:hover{
-    background: #fff!important;
-    color: #61A514!important;
+    background: #a169c6!important;
+    color: #fff!important;
 }
 .redes a{
     margin-bottom: -15px!important;
@@ -116,8 +116,70 @@
 
 
 
+/**ICONOS PARA BOTON DE MODALS **/
+
+   /**PACIENTE*/
+   .icono-pcte {
+    position: relative;
+    padding-left: 40px; /* espacio para el ícono */
+    cursor: pointer;
+  }
+  
+  .icono-pcte::before {
+    content: "";
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 30px;
+    height: 30px;
+    background-image: url('../images/iconosidebar/paciente.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+  
+    /**SIGNOS VITALES*/
+  .icono-signosv {
+    position: relative;
+    padding-left: 40px; /* espacio para el ícono */
+    cursor: pointer;
+  }
+  
+  .icono-signosv::before {
+    content: "";
+    position: absolute;
+    left: 13px;
+    top: 54%;
+    transform: translateY(-50%);
+    width: 30px;
+    height: 30px;
+    background-image: url('../images/iconosidebar/signovital.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+  
 
 
+  /**VET GENERAL*/
+  .icono-vetgral {
+    position: relative;
+    padding-left: 40px; /* espacio para el ícono */
+    cursor: pointer;
+  }
+  
+  .icono-vetgral::before {
+    content: "";
+    position: absolute;
+    left: 9px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 37px;
+    height: 37px;
+    background-image: url('../images/iconosidebar/vetgral.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+  
 
 
 

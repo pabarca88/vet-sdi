@@ -12,7 +12,7 @@
                                 <li class="breadcrumb-item"><a href="{{ ROUTE('paciente.home') }}"
                                         data-toggle="tooltip" data-placement="top" title="Volver a mi escritorio"><i
                                             class="feather icon-home"></i></a></li>
-                                <li class="breadcrumb-item"><a href="{{ ROUTE('paciente.receta.licencia') }}">Medicamentos</a></li>
+                                <li class="breadcrumb-item"><a href="{{ ROUTE('paciente.receta.licencia') }}">Registro de Medicamentos</a></li>
                             </ul>
                         </div>
                     </div>

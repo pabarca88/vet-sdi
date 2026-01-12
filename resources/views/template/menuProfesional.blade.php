@@ -64,11 +64,19 @@
                     </li>
                 </ul>
                 <div id="info_cliente" class="mt-5 p-3" style="color:#1c9693; border: 1px solid  #5ebdba; margin: 8px;padding: 8px; margin-top: 125px; border-radius:15px; background-color:#d2f0f7;">
-                    <h6 class="mb-3" style="font-size: 12px; font-weight: bold; color:#137370;">INFORMACION DEL PACIENTE</h6>
-                    <p style="color:#137370;">{{ $paciente->nombres }} {{ $paciente->apellido_uno }} {{ $paciente->apellido_dos }}</p>
-                    <p style="color:#137370;">{{ $paciente->edad }}</p>
-                    <p style="color:#137370;">{{ $paciente->rut }}</p>
-                    <p style="color:#137370;">{{ $paciente->prevision->nombre }}</p>
+                    @if(isset($mascota) && $mascota)
+                        <h6 class="mb-3" style="font-size: 12px; font-weight: bold; color:#137370;">INFORMACION DE LA MASCOTA</h6>
+                        <p style="color:#137370;">Nombre: {{ $mascota->nombre }}</p>
+                        <p style="color:#137370;">Edad: {{ $mascota_edad ?? '' }} años</p>
+                        <p style="color:#137370;">Sexo: {{ $mascota->sexo }}</p>
+                        <p style="color:#137370;">Especie: {{ $mascota->especieMascota->nombre ?? $mascota->especie }}</p>
+                    @else
+                        <h6 class="mb-3" style="font-size: 12px; font-weight: bold; color:#137370;">INFORMACION DEL PACIENTE</h6>
+                        <p style="color:#137370;">{{ $paciente->nombres }} {{ $paciente->apellido_uno }} {{ $paciente->apellido_dos }}</p>
+                        <p style="color:#137370;">{{ $paciente->edad }}</p>
+                        <p style="color:#137370;">{{ $paciente->rut }}</p>
+                        <p style="color:#137370;">{{ $paciente->prevision->nombre }}</p>
+                    @endif
 
                     {{-- @if(isset($control_peso) && count($control_peso) > 0)
                     <p style="color:#137370;">Obesidad</p>
@@ -164,11 +172,19 @@
                     </li>
                 </ul>
                 <div id="info_cliente" class="mt-5 p-3" style="color:#1c9693; border: 1px solid  #5ebdba; margin: 8px;padding: 8px; margin-top: 125px; border-radius:15px; background-color:#d2f0f7;">
-                    <h6 class="mb-3" style="font-size: 12px; font-weight: bold; color:#137370;">INFORMACION DEL PACIENTE</h6>
-                    <p style="color:#137370;">{{ $paciente->nombres }} {{ $paciente->apellido_uno }} {{ $paciente->apellido_dos }}</p>
-                    <p style="color:#137370;">{{ $paciente->edad }}</p>
-                    <p style="color:#137370;">{{ $paciente->rut }}</p>
-                    <p style="color:#137370;">{{ $paciente->prevision->nombre }}</p>
+                    @if(isset($mascota) && $mascota)
+                        <h6 class="mb-3" style="font-size: 12px; font-weight: bold; color:#137370;">INFORMACION DE LA MASCOTA</h6>
+                        <p style="color:#137370;">{{ $mascota->nombre }}</p>
+                        <p style="color:#137370;">{{ $mascota_edad ?? '' }}</p>
+                        <p style="color:#137370;">{{ $mascota->sexo }}</p>
+                        <p style="color:#137370;">{{ $mascota->especieMascota->nombre ?? $mascota->otra_especie }}</p>
+                    @else
+                        <h6 class="mb-3" style="font-size: 12px; font-weight: bold; color:#137370;">INFORMACION DEL PACIENTE</h6>
+                        <p style="color:#137370;">{{ $paciente->nombres }} {{ $paciente->apellido_uno }} {{ $paciente->apellido_dos }}</p>
+                        <p style="color:#137370;">{{ $paciente->edad }}</p>
+                        <p style="color:#137370;">{{ $paciente->rut }}</p>
+                        <p style="color:#137370;">{{ $paciente->prevision->nombre }}</p>
+                    @endif
 
                     {{-- @if(isset($control_peso) && count($control_peso) > 0)
                     <p style="color:#137370;">Obesidad</p>
@@ -240,4 +256,3 @@
         window.location.href = temp;
     }
 </script>
-
