@@ -7118,15 +7118,20 @@ class ficha_atencionController extends Controller
     /** REGISTRO FICHA ATENCION VETERINARIA GENERAL */
     public function store_vet_general(Request $request)
     {
-        $campos_requeridos = 0;
-        $mensaje = '';
+        $validator = \Validator::make($request->all(), [
+            'motivo' => 'required',
+            'descripcion_hipotesis' => 'required',
+        ], [
+            'motivo.required' => 'El Motivo es requerido.',
+            'descripcion_hipotesis.required' => 'El Diagnóstico es requerido.',
+        ]);
 
-        if (empty(trim($request->motivo)) || empty(trim($request->descripcion_hipotesis))) {
-            $campos_requeridos = 1;
-            $mensaje = 'El Motivo y el Diagnóstico son requeridos.\n Su Ficha Clínica NO ha sido guardada aún.';
+        if ($validator->fails()) {
+            $mensaje = "El Motivo y el Diagnóstico son requeridos.\n Su Ficha Clínica NO ha sido guardada aún.";
+            return back()->withErrors($validator)->with('error', $mensaje)->withInput();
         }
 
-        if ($campos_requeridos == 0) {
+        {
             $hora_medica = HoraMedica::where('id', $request->hora_medica)->first();
             $ficha = FichaAtencion::where('id', $hora_medica->id_ficha_atencion)->first();
 
@@ -7159,11 +7164,64 @@ class ficha_atencionController extends Controller
                 return back()->with('error', 'Ficha Clínica con problema al guardar')->withInput();
             }
 
-            $ficha_vet = new FichaVeterinariaGeneral();
-            $ficha_vet->id_fichas_atenciones = $ficha->id;
-            $ficha_vet->id_paciente = $id_paciente;
-            $ficha_vet->id_profesional = $id_profesional;
-            $ficha_vet->datos = json_encode($request->except(['_token']));
+            $datos = $request->except(['_token']);
+            $imagenes_atencion = [];
+            if (!empty($request->input_lista_imagenes)) {
+                $array_imagenes = json_decode($request->input_lista_imagenes, true);
+                if (json_last_error() === JSON_ERROR_NONE && is_array($array_imagenes)) {
+                    $paciente = Paciente::find($id_paciente);
+                    $base_nombre = $paciente && !empty($paciente->rut) ? $paciente->rut : 'paciente_'.$id_paciente;
+
+                    foreach ($array_imagenes as $value) {
+                        if (!is_array($value) || count($value) < 4) {
+                            continue;
+                        }
+
+                        $nombre_real = $value[1] ?? '';
+                        $nombre_temp = $value[2] ?? '';
+                        $file_extension = $value[3] ?? '';
+
+                        if ($nombre_temp === '' || $file_extension === '') {
+                            continue;
+                        }
+
+                        $nombre_final = $base_nombre.'_'.$ficha->id.'_'.date('YmdHis').'_'.uniqid().'.'.$file_extension;
+                        $resultado = CargaImagenController::moverImagen($nombre_temp, 'img_examen', $nombre_final);
+
+                        if (!empty($resultado['estado'])) {
+                            $imagenes_atencion[] = [
+                                'url' => $resultado['proceso']['url'] ?? '',
+                                'nombre_original' => $nombre_real,
+                                'nombre_archivo' => $nombre_final,
+                                'extension' => $file_extension,
+                            ];
+                        } else {
+                            $imagenes_atencion[] = [
+                                'nombre_original' => $nombre_real,
+                                'nombre_temp' => $nombre_temp,
+                                'extension' => $file_extension,
+                                'error' => $resultado['msj'] ?? 'error',
+                            ];
+                        }
+                    }
+                }
+            }
+
+            if (!empty($imagenes_atencion)) {
+                $datos['imagenes_atencion'] = $imagenes_atencion;
+            }
+            unset($datos['input_lista_imagenes']);
+
+            $ficha_vet = FichaVeterinariaGeneral::where('id_fichas_atenciones', $ficha->id)
+                ->orderBy('id', 'desc')
+                ->first();
+            if (!$ficha_vet) {
+                $ficha_vet = new FichaVeterinariaGeneral();
+                $ficha_vet->id_fichas_atenciones = $ficha->id;
+                $ficha_vet->id_paciente = $id_paciente;
+                $ficha_vet->id_profesional = $id_profesional;
+            }
+            $ficha_vet->datos = json_encode($datos);
             $ficha_vet->estado = 1;
 
             if (!$ficha_vet->save()) {
@@ -7183,16 +7241,8 @@ class ficha_atencionController extends Controller
             }
             $mensaje .= '\n' . $mensaje_estado_hora_medica;
 
-            if ($request->cerrarsession == 0 || $request->cerrarsession == '') {
-                return \Redirect::route('profesional.mi_agenda', 'lugares_atencion=' . $request->id_lugar_atencion)->with($tipo_mensaje, $mensaje);
-            } else if ($request->cerrarsession == 1) {
-                $request->session()->invalidate();
-                $request->session()->regenerateToken();
-                return \Redirect::route('home.ingreso');
-            }
+            return \Redirect::route('profesional.mi_agenda', 'lugares_atencion=' . $request->id_lugar_atencion)->with($tipo_mensaje, $mensaje);
         }
-
-        return back()->with('error', $mensaje)->withInput();
     }
 
     /** REGISTRO FICHA ATENCION Y OTORRINOLARINGOLOGIA*/

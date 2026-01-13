@@ -509,8 +509,8 @@
                                     <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                                         <div class="row mb-3">
                                             <div class="col-md-12 text-center">
-                                                <input type="submit" class="btn btn-purple mt-1" onclick="$('#cerrarsession').val('1');agregar_medicamentos_ficha(); agregar_examenes_ficha(); " value="Guardar Ficha y Finalizar su Consulta">
-                                                <input type="submit" class="btn btn-success mt-1" onclick="agregar_medicamentos_ficha(); agregar_examenes_ficha(); " value="Guardar Ficha e ir a su Agenda">
+                                                <input type="submit" class="btn btn-purple mt-1" onclick="return validar_guardar_ficha_vet_general(true);" value="Guardar Ficha y Finalizar su Consulta">
+                                                <input type="submit" class="btn btn-success mt-1" onclick="return validar_guardar_ficha_vet_general(false);" value="Guardar Ficha e ir a su Agenda">
                                             </div>
                                         </div>
                                     </div>
@@ -530,7 +530,7 @@
                                 </div>
                                 <!-- GUARDAR EXAMEN -->
                                 <div class="col-md-12 text-center mb-3">
-                                    <input type="submit" class="btn btn-success mt-1" onclick="agregar_medicamentos_ficha(); agregar_examenes_ficha(); " value="Guardar Examen e ir a su Agenda">
+                                    <input type="submit" class="btn btn-success mt-1" onclick="return validar_guardar_ficha_vet_general(false);" value="Guardar Examen e ir a su Agenda">
                                     <button type="button" class="btn btn-danger mt-1" onclick="visualizar_pdf_examen('rfl');">Ver Examen PDF</button>
                                 </div>
                                 <!-- CIERRE: GUARDAR EXAMEN -->
@@ -2258,7 +2258,7 @@
             // },
             success: function(file, response){
                 // console.log('-------------success-----------------------');
-                cargar_lista_imagenes();
+                registrar_imagen_respuesta(response);
 
                 if (file.previewElement) {
                     return file.previewElement.classList.add("dz-success");
@@ -2283,7 +2283,7 @@
             },
             removedfile(file) {
                 // console.log('-------------removedfile-----------------------');
-                cargar_lista_imagenes();
+                eliminar_imagen_archivo(file);
                 if (file.previewElement != null && file.previewElement.parentNode != null) {
                     file.previewElement.parentNode.removeChild(file.previewElement);
                 }
@@ -2298,6 +2298,47 @@
 
 
         var lista_imagenes = [];
+        function actualizar_input_lista_imagenes() {
+            $('#input_lista_imagenes').val(JSON.stringify(lista_imagenes));
+        }
+
+        function registrar_imagen_respuesta(response) {
+            if (!response) {
+                return;
+            }
+            var img_temp = typeof response === 'string' ? JSON.parse(response) : response;
+            if (!img_temp || !img_temp.img) {
+                return;
+            }
+
+            lista_imagenes.push([
+                url = img_temp.img.url,
+                nombre_origian = img_temp.img.original_file_name,
+                nombre_img = img_temp.img.nombre_img,
+                file_extension = img_temp.img.file_extension,
+            ]);
+            actualizar_input_lista_imagenes();
+        }
+
+        function eliminar_imagen_archivo(file) {
+            var raw_response = file && (file.xhr ? file.xhr.response : file.response);
+            if (!raw_response) {
+                actualizar_input_lista_imagenes();
+                return;
+            }
+
+            var img_temp = typeof raw_response === 'string' ? JSON.parse(raw_response) : raw_response;
+            if (!img_temp || !img_temp.img || !img_temp.img.nombre_img) {
+                actualizar_input_lista_imagenes();
+                return;
+            }
+
+            lista_imagenes = lista_imagenes.filter(function (item) {
+                return item[2] !== img_temp.img.nombre_img;
+            });
+            actualizar_input_lista_imagenes();
+        }
+
         function cargar_lista_imagenes()
         {
             // console.log('--------------cargar_lista_imagenes----------------------');
@@ -2307,17 +2348,17 @@
             {
                 if(value.status == "success")
                 {
-                    if(value.xhr !== undefined)
+                    if(value.xhr !== undefined || value.response !== undefined)
                     {
-                        var img_temp = JSON.parse(value.xhr.response);
+                        var raw_response = value.xhr !== undefined ? value.xhr.response : value.response;
+                        var img_temp = typeof raw_response === 'string' ? JSON.parse(raw_response) : raw_response;
                         lista_imagenes[index] = [
                             url=img_temp.img.url,
                             nombre_origian= img_temp.img.original_file_name,
                             nombre_img = img_temp.img.nombre_img,
                             file_extension = img_temp.img.file_extension,
                         ];
-                        $('#input_lista_imagenes').val('');
-                        $('#input_lista_imagenes').val(JSON.stringify(lista_imagenes));
+                        actualizar_input_lista_imagenes();
                     }
                 }
             });
@@ -2945,6 +2986,56 @@
             $('#examenes').val(JSON.stringify(rows));
         }
 
+        function validar_guardar_ficha_vet_general(cerrarSesion) {
+            var motivo = $.trim($('[name="motivo"]').first().val() || '');
+            var diagnostico = $.trim($('[name="descripcion_hipotesis"]').first().val() || '');
+
+            if (motivo === '' || diagnostico === '') {
+                swal({
+                    title: "Registro de Ficha Clínica.",
+                    text: "El Motivo y el Diagnóstico son requeridos.\n Su Ficha Clínica NO ha sido guardada aún.",
+                    icon: "error",
+                });
+                return false;
+            }
+
+            if (cerrarSesion) {
+                $('#cerrarsession').val('1');
+            } else {
+                $('#cerrarsession').val('0');
+            }
+
+            agregar_medicamentos_ficha();
+            agregar_examenes_ficha();
+            return true;
+        }
+
+        $(function () {
+            if (typeof Dropzone === 'undefined') {
+                return;
+            }
+
+            var dropzoneElement = document.getElementById('mis-imagenes');
+            if (!dropzoneElement) {
+                return;
+            }
+
+            var existing = null;
+            if (Dropzone.instances && Dropzone.instances.length) {
+                Dropzone.instances.forEach(function (instance) {
+                    if (instance.element && instance.element.id === 'mis-imagenes') {
+                        existing = instance;
+                    }
+                });
+            }
+
+            if (existing) {
+                myDropzone = existing;
+            } else {
+                myDropzone = new Dropzone('#mis-imagenes', Dropzone.options.misImagenes);
+            }
+        });
+
         function cargar_profesional(rut, input_nombre, input_id, div_solicitar)
         {
             rut = $(rut).val();
@@ -3115,13 +3206,16 @@
             }
         }
 
-        function cargar_ficha_vet_general() {
-            var data = @json($fichaVeterinariaGeneralData ?? []);
+        function aplicar_datos_formulario(data) {
             if (!data || Object.keys(data).length === 0) {
                 return;
             }
 
             Object.keys(data).forEach(function (key) {
+                if (key === '_token') {
+                    return;
+                }
+
                 var value = data[key];
                 if (value === null || value === '') {
                     return;
@@ -3138,7 +3232,7 @@
                         if (Array.isArray(value)) {
                             $field.prop('checked', value.indexOf($field.val()) !== -1);
                         } else {
-                            $field.prop('checked', $field.val() == value);
+                            $field.prop('checked', $field.val() == value || value === true);
                         }
                         return;
                     }
@@ -3152,6 +3246,14 @@
                     $field.trigger('change');
                 });
             });
+        }
+
+        function cargar_ficha_vet_general() {
+            var data = @json($fichaVeterinariaGeneralData ?? []);
+            aplicar_datos_formulario(data);
+
+            var oldData = @json(session()->getOldInput() ?? []);
+            aplicar_datos_formulario(oldData);
         }
 
         $(function () {
