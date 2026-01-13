@@ -77,7 +77,7 @@
 
                     <div class="card">
 
-                        <div class="card-body bg-info py-3 rounded">
+                        <div class="card-body bg-info py-3 rounded-xl">
 
                             <div class="row">
 
@@ -90,7 +90,7 @@
                                     {{-- @if ( $tipo_dependencias != '4' ) --}}
 
                                         <button type="button" class="btn btn-light btn-sm d-inline float-md-right" id="btn-agregar-dep" name="btn-agregar-dep"><i class="fas fa-plus"></i> Agregar mascota</button>
-
+                                     
 
                                     {{-- @endif --}}
 
@@ -113,7 +113,6 @@
 
 
             <!-- TABLA DE DEPENDIENTES-->
-
              <div class="row row-cols-1 row-cols-md-2" id="card-lista-dependientes">
                 @if (isset($mascotas) && $mascotas->count() > 0)
                     @foreach ($mascotas as $mascota)
@@ -129,11 +128,12 @@
                             <div class="card card-mascota" data-id="{{ $mascota->id }}">
                                 <div class="card-body text-center" style="cursor:pointer">
                                     <img class="wid-60 text-center mt-1 rounded-circle" src="{{ $imgMascota }}">
-                                    <h5 class="mt-2 mb-0">{{ $mascota->nombre }}</h5>
+                                    <h5 class="mt-2 mb-0 text-capitalize">{{ $mascota->nombre }}</h5>
                                     <p class="mb-0">{{ $labelEspecie }}</p>
                                     <div class="mt-2 d-flex justify-content-center">
                                         <button type="button" class="btn btn-info btn-sm mr-1 btn-ver-mascota" data-id="{{ $mascota->id }}">Ver mascota</button>
                                         <button type="button" class="btn btn-primary btn-sm btn-ver-ficha" data-id="{{ $mascota->id }}">Ficha medica</button>
+                                        <button type="button" class="btn btn-purple btn-sm" data-id="{{ $mascota->id }}">Escritorio</button>
                                     </div>
                                 </div>
                             </div>
@@ -151,7 +151,7 @@
                                             @else
                                                 <img class="wid-60 text-center mt-1 rounded-circle" src="{{ asset('images/iconos/paciente-f.svg') }}">
                                             @endif
-                                            <h5 class="mt-2 mb-0">{{ $registro->paciente->nombres.' '.$registro->paciente->apellido_uno. ' '.$registro->paciente->apellido_dos }}</h5>
+                                            <h5 class="mt-2 mb-0 text-uppercase">{{ $registro->paciente->nombres.' '.$registro->paciente->apellido_uno. ' '.$registro->paciente->apellido_dos }}</h5>
                                         </div>
                                     </a>
                                 </div>
@@ -176,22 +176,26 @@
     @include('app.paciente.modales.dependientes.agregar_acompanante')
     @include('app.paciente.modales.dependientes.ver_acomp')
     @include('app.paciente.modales.dependientes.agregar')
-
+    <!--MODAL DETALLE MASCOTA-->
     <div class="modal fade" id="modal_detalle_mascota" tabindex="-1" role="dialog" aria-labelledby="modalDetalleMascota" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header bg-info">
-                    <h5 class="modal-title text-white mt-1" id="modalDetalleMascota">Detalle de la mascota</h5>
+                    <h5 class="modal-title text-white mt-1" id="modalDetalleMascota">Información de la mascota </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body">
                     <div class="text-center mb-3">
                         <img id="modal_mascota_img" class="wid-60 text-center mt-1 rounded-circle" src="{{ asset('images/iconos/paciente-m.svg') }}" alt="Foto Mascota">
-                        <h5 class="mt-2 mb-0" id="modal_mascota_nombre"></h5>
+                        <h5 class="mt-2 mb-0 text-uppercase" id="modal_mascota_nombre"></h5>
                     </div>
+                    
                     <div class="row">
                         <div class="col-sm-6">
                             <p class="mb-1"><strong>Especie:</strong> <span id="modal_mascota_especie">-</span></p>
+                        </div>
+                         <div class="col-sm-6">
+                            <p class="mb-1"><strong>Raza:</strong> <span id="">-</span></p>
                         </div>
                         <div class="col-sm-6">
                             <p class="mb-1"><strong>Tamaño:</strong> <span id="modal_mascota_tamano">-</span></p>
@@ -217,14 +221,14 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" id="btn_eliminar_mascota">Eliminar</button>
-                    <button type="button" class="btn btn-info" id="btn_editar_mascota">Editar</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-danger btn-sm" id="btn_eliminar_mascota"><i class="feather icon-x"></i> Eliminar</button>
+                    <button type="button" class="btn btn-info btn-sm" id="btn_editar_mascota"><i class="feather icon-edit"></i> Editar</button>
+                    <!--<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>-->
                 </div>
             </div>
         </div>
     </div>
-
+    <!--MODAL FICHA MEDICA-->
     <div class="modal fade" id="modal_ficha_mascota" tabindex="-1" role="dialog" aria-labelledby="modalFichaMascota" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
@@ -238,7 +242,7 @@
                             <thead>
                                 <tr>
                                     <th>Fecha</th>
-                                    <th>Diagnostico</th>
+                                    <th>Diagnóstico</th>
                                     <th>Indicaciones</th>
                                 </tr>
                             </thead>
@@ -467,9 +471,6 @@
   });
 </script>
     <script>
-        // IMPORTANTE: desactiva auto-discover de Dropzone
-        Dropzone.autoDiscover = false;
-
         var mascotasCache = {};
         var mascotaEditandoId = null;
         var mascotasIniciales = @json(isset($mascotas) ? $mascotas : []);
@@ -862,16 +863,6 @@
             $('#imagenes_ven_post').val('');
             $('#input_lista_ven_imagenes').val('');
             $('#obs_fotos_ven').val('');
-
-            // Limpiar Dropzones
-            if (myDropzone_ven_pre) {
-                myDropzone_ven_pre.removeAllFiles(true);
-            }
-            if (myDropzone_ven_post) {
-                myDropzone_ven_post.removeAllFiles(true);
-            }
-            lista_ven_imagenes = {};
-
             $('#btn_registrar').show();
             lista_ven_imagenes = {};
         }
@@ -1498,8 +1489,9 @@
                             html += '            <h5 class="mt-2 mb-0">'+value.nombre+'</h5>';
                             html += '            <p class="mb-0">'+especie_label+'</p>';
                             html += '            <div class="mt-2 d-flex justify-content-center">';
-                            html += '                <button type="button" class="btn btn-info btn-sm mr-1 btn-ver-mascota" data-id="'+value.id+'">Ver mascota</button>';
-                            html += '                <button type="button" class="btn btn-primary btn-sm btn-ver-ficha" data-id="'+value.id+'">Ficha Médica</button>';
+                            html += '                <button type="button" class="btn btn-info btn-xxs mr-1 btn-ver-mascota" data-id="'+value.id+'"><i class="feather icon-user"></i> Ver mascota</button>';
+                            html += '                <button type="button" class="btn btn-primary mr-1 btn-xxs btn-ver-ficha" data-id="'+value.id+'"><i class="feather icon-file-plus"></i> Ficha medica</button>';
+                                html += '                <button type="button" class="btn btn-purple btn-xxs" data-id="'+value.id+'"><i class="feather icon-monitor"></i> Escritorio</button>';
                             html += '            </div>';
                             html += '        </div>';
                             html += '    </div>';
@@ -1524,110 +1516,5 @@
                 console.log(jqXHR, ajaxOptions, thrownError)
             });
         }
-
-        // ====== INICIALIZACIÓN DE DROPZONE ======
-        var lista_ven_imagenes = {};
-        var myDropzone_ven_pre = null;
-        var myDropzone_ven_post = null;
-
-        function cargar_lista_ven_imagenes(obj_dropzone, alias_examen) {
-            lista_ven_imagenes[alias_examen] = [];
-
-            let temp = obj_dropzone.getAcceptedFiles();
-            $.each(temp, function(index, value) {
-                if (value.status === "success" && value.xhr) {
-                    var img_temp = JSON.parse(value.xhr.response);
-
-                    lista_ven_imagenes[alias_examen][index] = [
-                        url = img_temp.img.url,
-                        nombre_origian = img_temp.img.original_file_name,
-                        nombre_img = img_temp.img.nombre_img,
-                        file_extension = img_temp.img.file_extension,
-                    ];
-
-                    $('#input_lista_ven_imagenes').val(JSON.stringify(lista_ven_imagenes));
-                }
-            });
-        }
-
-        function destroyDZ(selector) {
-            var el = document.querySelector(selector);
-            if (el && el.dropzone) {
-                el.dropzone.destroy();
-            }
-        }
-
-        function initVenDropzones() {
-            if (!document.querySelector("#mi-imagen-ven-pre")) return;
-            if (!document.querySelector("#mi-imagen-ven-post")) return;
-
-            destroyDZ("#mi-imagen-ven-pre");
-            destroyDZ("#mi-imagen-ven-post");
-
-            myDropzone_ven_pre = new Dropzone("#mi-imagen-ven-pre", {
-                url: "{{ route('profesional.imagen.carga') }}",
-                method: "post",
-                headers: { "X-CSRF-TOKEN": CSRF_TOKEN },
-                acceptedFiles: "image/jpeg,image/png,image/jpg,.jpeg,.jpg,.png,image/*",
-                maxFilesize: 6,
-                maxFiles: 12,
-                addRemoveLinks: true,
-                createImageThumbnails: true,
-                paramName: "file",
-                dictInvalidFileType: "No puedes subir archivos de este tipo.",
-                dictFileTooBig: "El archivo es demasiado grande. Max 6 MiB.",
-
-                success: function(file, response) {
-                    $('#imagenes_ven_pre').val(response.img.url ?? response.img.nombre_img);
-                    cargar_lista_ven_imagenes(myDropzone_ven_pre, "ven_pre");
-                },
-
-                error: function(file, message, xhr) {
-                    console.log("VEN_PRE ERROR:", message);
-                    if (xhr && xhr.responseText) console.log("VEN_PRE SERVER:", xhr.responseText);
-                },
-
-                removedfile: function(file) {
-                    $('#imagenes_ven_pre').val('');
-                    cargar_lista_ven_imagenes(myDropzone_ven_pre, "ven_pre");
-                    if (file.previewElement) file.previewElement.remove();
-                }
-            });
-
-            myDropzone_ven_post = new Dropzone("#mi-imagen-ven-post", {
-                url: "{{ route('profesional.imagen.carga') }}",
-                method: "post",
-                headers: { "X-CSRF-TOKEN": CSRF_TOKEN },
-                acceptedFiles: "image/jpeg,image/png,image/jpg,.jpeg,.jpg,.png,image/*",
-                maxFilesize: 6,
-                maxFiles: 12,
-                addRemoveLinks: true,
-                createImageThumbnails: true,
-                paramName: "file",
-                dictInvalidFileType: "No puedes subir archivos de este tipo.",
-                dictFileTooBig: "El archivo es demasiado grande. Max 6 MiB.",
-
-                success: function(file, response) {
-                    $('#imagenes_ven_post').val(response.img.nombre_img);
-                    cargar_lista_ven_imagenes(myDropzone_ven_post, "ven_post");
-                },
-
-                error: function(file, message, xhr) {
-                    console.log("VEN_POST ERROR:", message);
-                    if (xhr && xhr.responseText) console.log("VEN_POST SERVER:", xhr.responseText);
-                },
-
-                removedfile: function(file) {
-                    $('#imagenes_ven_post').val('');
-                    cargar_lista_ven_imagenes(myDropzone_ven_post, "ven_post");
-                    if (file.previewElement) file.previewElement.remove();
-                }
-            });
-        }
-
-        // Inicializar Dropzone cuando se abre el modal
-        $(document).on("shown.bs.modal", "#modal_agregar_dep_nuevo", function() {
-            initVenDropzones();
-        });
     </script>
 @endsection

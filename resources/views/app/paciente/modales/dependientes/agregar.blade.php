@@ -305,15 +305,23 @@
                         <textarea class="form-control form-control-sm"   rows="1"  onfocus="this.rows=3" onblur="this.rows=1;" name="obs_espec_masc" id="obs_espec_masc"></textarea>
                     </div>
                 </div>
+                 <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                    <div class="form-group">
+                        <label class="floating-label-activo-sm"><span class="requerido" style="color: red;" id="requerido_modal_agregar_dep_nuevo_tamano">*</span>Raza</label>
+                        <select class="form-control form-control-sm">
+                            <option value="">Seleccione</option>
+                        </select>
+                    </div>
+                </div>
 
                 <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
                     <div class="form-group">
-                        <label class="floating-label-activo-sm"><span class="requerido" style="color: red;" id="requerido_modal_agregar_dep_nuevo_tamano">*</span>Tipo de mascota (tamaño)</label>
+                        <label class="floating-label-activo-sm"><span class="requerido" style="color: red;" id="requerido_modal_agregar_dep_nuevo_tamano">*</span>Tipo de mascota (Tamaño)</label>
                         <select class="form-control form-control-sm" name="modal_agregar_dep_nuevo_tamano" id="modal_agregar_dep_nuevo_tamano">
                             <option value="">Seleccione</option>
-                            @foreach(($tamanosMascotas ?? []) as $tamano)
-                                <option value="{{ $tamano->id }}">{{ $tamano->nombre }}</option>
-                            @endforeach
+                            <option value="1">Pequeño</option>
+                            <option value="2">Mediano</option>
+                            <option value="3">Grande</option>
                         </select>
                     </div>
                 </div>
@@ -335,7 +343,7 @@
                     </div>
                 </div>
 
-                <div class="col-sm-12">
+                <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
                     <div class="form-group">
                         <label class="floating-label-activo-sm" for="modal_agregar_dep_nuevo_enfermedad_cronica">Enfermedad crónica o frecuente</label>
                         <textarea class="form-control form-control-sm" rows="1" onfocus="this.rows=3" onblur="this.rows=1;" name="modal_agregar_dep_nuevo_enfermedad_cronica" id="modal_agregar_dep_nuevo_enfermedad_cronica"></textarea>

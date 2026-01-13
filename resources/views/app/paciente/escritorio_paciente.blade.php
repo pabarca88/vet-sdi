@@ -28,40 +28,40 @@
                 <div class="card-deck">
                     <div class="card subir">
                         <a href="{{ ROUTE('paciente.dependientes.infante.definitiva', ['tipo_dependencia' => '1' ]) }}">
-                            <div class="card-body text-center" style="cursor:pointer">
-                                <img class="wid-60 text-center mt-1" src="{{ asset('images/iconos/huella.png') }}">
-                                <h5 class="mt-2"> Mis Mascotas y Compañeros</h5>
+                            <div class="card-body text-center py-3" style="cursor:pointer">
+                                <img class="wid-50 text-center mt-2" src="{{ asset('images/iconos/mascotas.svg') }}">
+                                <h5 class="mt-2"> Mis <br>mascotas</h5>
                             </div>
                         </a>
                     </div>
                     <div class="card subir">
                           <a href="{{ ROUTE('paciente.mascotas.inscripcion_alimentos') }}"> 
-                            <div class="card-body text-center" style="cursor:pointer">
-                                <img class="wid-60 text-center" src="{{ asset('images/iconos/alimento.png') }}">
-                                <h5 class="mt-2"> Inscribir mi consumo de alimentos </h5>
+                            <div class="card-body text-center py-3" style="cursor:pointer">
+                                <img class="wid-50 text-center mt-2" src="{{ asset('images/iconos/alimento.png') }}">
+                                <h5 class="mt-2"> Registro de <br>mis alimentos </h5>
                             </div>
                         </a>
                     </div>
                     <div class="card subir">
                         <a href="{{ ROUTE('paciente.mascotas.inscripcion_medicamentos') }}">
-                            <div class="card-body text-center" style="cursor:pointer">
-                                <img class="wid-60 text-center mt-1" src="{{ asset('images/iconos/i-medic.svg') }}">
-                                <h5 class="mt-2"> Inscribir Mis Medicamentos</h5>
+                            <div class="card-body text-center py-3" style="cursor:pointer">
+                                <img class="wid-50 text-center mt-2" src="{{ asset('images/iconos/i-medic.svg') }}">
+                                <h5 class="mt-2"> Registro de <br>mis medicamentos</h5>
                             </div>
                         </a>
                     </div>
                     <div class="card subir">
                         <a href="{{ ROUTE('paciente.convenios') }}">
-                            <div class="card-body text-center" style="cursor:pointer">
-                                <img class="wid-60 text-center mt-1" src="{{ asset('images/iconos/convenios.png') }}">
-                                <h5 class="mt-2"> Mis convenios de atención</h5>
+                            <div class="card-body text-center py-3" style="cursor:pointer">
+                                <img class="wid-50 text-center mt-2" src="{{ asset('images/iconos/convenios.png') }}">
+                                <h5 class="mt-2"> Mis convenios <br>de atención</h5>
                             </div>
                         </a>
                     </div>
                     {{--  <div class="card subir">
                         <a href="https://www.cronicos.cl/" class="btn" type="button">
-                            <div class="card-body text-center" style="cursor:pointer">
-                                <img class="wid-60 text-center" src="{{ asset('images/iconos/profesionales.svg') }}">
+                            <div class="card-body text-center py-3" style="cursor:pointer">
+                                <img class="wid-50 text-center" src="{{ asset('images/iconos/profesionales.svg') }}">
                                 <h5 class="mt-2"> Controles de Crónicos</h5>
                             </div>
                         </a>
@@ -74,8 +74,8 @@
                             </div>
                         </a>  --}}
                         {{--  <a href="{{ ROUTE('check_sdi') }}?urla=Inicio&urln=Mi_Ficha_Medica">
-                            <div class="card-body text-center" style="cursor:pointer">
-                                <img class="wid-60 text-center" src="{{ asset('images/iconos/fmu.svg') }}">
+                            <div class="card-body text-center py-3" style="cursor:pointer">
+                                <img class="wid-50 text-center" src="{{ asset('images/iconos/fmu.svg') }}">
                                 <h5 class="mt-1"> Controles de Crónicos </h5>
                             </div>
                         </a>  --}}
@@ -90,7 +90,7 @@
         <div class="row m-b-30" >
             <div class="col-md-8">
                 <div class="card h-100 pb-0" >
-                    <div class="card-header text-center "style="background-color:rgb(122 37 155)">
+                    <div class="card-header text-center bg-purple ">
                         <h4 class="text-white d-inline text-center f-22">Mis horas agendadas</h4>
                     </div>
                     <div class="card-body pt-4 pb-0" style="height:290px;">
@@ -110,7 +110,7 @@
                                 <tbody>
                                     <tr>
                                         <td class="align-middle">
-                                            <button href="#!" class="btn btn-success btn-icon"
+                                            <button href="#!" class="btn btn-info btn-icon"
                                                 data-toggle="tooltip" data-placement="top" title="Confirmar hora">
                                                 <i class="feather icon-check"></i>
                                             </button>
@@ -137,7 +137,7 @@
                                     </tr>
                                     <tr>
                                         <td class="align-middle">
-                                            <button href="#!" class="btn btn-success btn-icon"
+                                            <button href="#!" class="btn btn-info btn-icon"
                                                 data-toggle="tooltip" data-placement="top" title="Confirmar Hora">
                                                 <i class="feather icon-check"></i>
                                             </button>
@@ -164,7 +164,7 @@
                                     </tr>
                                     <tr>
                                         <td class="align-middle">
-                                            <button href="#!" class="btn btn-success btn-icon"
+                                            <button href="#!" class="btn btn-info btn-icon"
                                                 data-toggle="tooltip" data-placement="top" title="Confirmar Hora">
                                                 <i class="feather icon-check"></i>
                                             </button>
@@ -197,7 +197,6 @@
             </div>
             <div class="col-md-4">
                 <div class="card subir text-center h-100" >
-                     
                         <a href="{{ ROUTE('paciente.mascotas.promociones_especiales') }}" >
                             <img class="img-fluid card-img-top" src="{{ asset('images/iconos/publicidad.png') }}"
                             alt="Flujo de caja"style="height:290px;">    
@@ -220,9 +219,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card-deck">
-                 
-                    
-					<div class="card social-widget-card  opacidad px-0"style="background-color:rgb(122 37 155)">
+                 	<div class="card social-widget-card  opacidad px-0 bg-purple">
 						<a href="{{ route('app.descarga') }}" class="btn" type="button" target="_blank">
 							<div class="card-body">
 								<img class="wid-30 mb-3" src="{{ asset('images/iconos/lock.svg') }}">

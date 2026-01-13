@@ -535,57 +535,185 @@
                                 </div>
                                 <!-- CIERRE: GUARDAR EXAMEN -->
                             </div>
+                            <!--PRESUPUESTO CLINICO MASCOTA-->
                             <div class="tab-pane fade" id="presupuesto-mascota" role="tabpanel" aria-labelledby="presupuesto-mascota-tab">
                                 <div class="row">
                                     <div class="col-md-12 mb-0">
-                                        <h6 class="f-18 text-c-blue mb-2">Presupuesto mascota (ejemplo)</h6>
+                                        <h6 class="f-18 text-c-blue mb-2">Presupuesto Clínico N° 3</h6>
                                     </div>
                                 </div>
-                                <div class="card-a">
-                                    <div class="card-body-aten-a">
-                                        <input type="hidden" id="presupuesto_mascota_id_paciente" value="{{ $paciente->id }}">
-                                        <input type="hidden" id="presupuesto_mascota_id_profesional" value="{{ $profesional->id }}">
-                                        <input type="hidden" id="presupuesto_mascota_id_ficha_atencion" value="{{ $id_ficha_atencion }}">
-                                        <input type="hidden" id="presupuesto_mascota_id_lugar_atencion" value="{{ $id_lugar_atencion }}">
-                                        <div class="form-row">
-                                            <div class="form-group col-md-3">
-                                                <label class="floating-label-activo-sm">Fecha</label>
-                                                <input type="date" class="form-control form-control-sm" id="presupuesto_mascota_fecha">
-                                            </div>
-                                            <div class="form-group col-md-3">
-                                                <label class="floating-label-activo-sm">Fecha control</label>
-                                                <input type="date" class="form-control form-control-sm" id="presupuesto_mascota_fecha_control">
-                                            </div>
-                                            <div class="form-group col-md-2">
-                                                <label class="floating-label-activo-sm">Estado</label>
-                                                <input type="number" class="form-control form-control-sm" id="presupuesto_mascota_estado">
-                                            </div>
-                                            <div class="form-group col-md-2">
-                                                <label class="floating-label-activo-sm">Aprobado</label>
-                                                <input type="number" class="form-control form-control-sm" id="presupuesto_mascota_aprobado">
-                                            </div>
-                                            <div class="form-group col-md-12">
-                                                <label class="floating-label-activo-sm">Datos de atención</label>
-                                                <textarea class="form-control form-control-sm" rows="3" id="presupuesto_mascota_datos"></textarea>
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <label class="floating-label-activo-sm">Otros</label>
-                                                <input type="text" class="form-control form-control-sm" id="presupuesto_mascota_otros">
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <label class="floating-label-activo-sm">Observaciones</label>
-                                                <input type="text" class="form-control form-control-sm" id="presupuesto_mascota_observaciones">
-                                            </div>
-                                            <div class="col-md-12 text-center mb-3">
-                                                <button type="button" class="btn btn-info" id="btn_guardar_presupuesto_mascota">Guardar presupuesto</button>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div id="presupuesto_mascota_resultado" class="text-center"></div>
-                                            </div>
-                                        </div>
+                                <input type="hidden" id="presupuesto_mascota_id_paciente" value="{{ $paciente->id }}">
+                                <input type="hidden" id="presupuesto_mascota_id_profesional" value="{{ $profesional->id }}">
+                                <input type="hidden" id="presupuesto_mascota_id_ficha_atencion" value="{{ $id_ficha_atencion }}">
+                                <input type="hidden" id="presupuesto_mascota_id_lugar_atencion" value="{{ $id_lugar_atencion }}">
+                                <!--<div class="form-row">
+                                    <div class="form-group col-md-3">
+                                        <label class="floating-label-activo-sm">Fecha</label>
+                                        <input type="date" class="form-control form-control-sm" id="presupuesto_mascota_fecha">
                                     </div>
-                                </div>
-                            </div>
+                                    <div class="form-group col-md-3">
+                                        <label class="floating-label-activo-sm">Fecha control</label>
+                                        <input type="date" class="form-control form-control-sm" id="presupuesto_mascota_fecha_control">
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label class="floating-label-activo-sm">Estado</label>
+                                        <input type="number" class="form-control form-control-sm" id="presupuesto_mascota_estado">
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label class="floating-label-activo-sm">Aprobado</label>
+                                        <input type="number" class="form-control form-control-sm" id="presupuesto_mascota_aprobado">
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label class="floating-label-activo-sm">Datos de atención</label>
+                                        <textarea class="form-control form-control-sm" rows="3" id="presupuesto_mascota_datos"></textarea>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="floating-label-activo-sm">Otros</label>
+                                        <input type="text" class="form-control form-control-sm" id="presupuesto_mascota_otros">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="floating-label-activo-sm">Observaciones</label>
+                                        <input type="text" class="form-control form-control-sm" id="presupuesto_mascota_observaciones">
+                                    </div>
+                                    <div class="col-md-12 text-center mb-3">
+                                        <button type="button" class="btn btn-info" id="btn_guardar_presupuesto_mascota">Guardar presupuesto</button>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div id="presupuesto_mascota_resultado" class="text-center"></div>
+                                    </div>
+                                </div>-->
+                                <!--NUEVO PRESUPUESTO-->
+                                <div class="row">
+                                    <div class="col-md-12 mb-0">
+		                                <div class="card">
+		                                    <div class="card-body">
+		                                        <input type="hidden" id="presupuesto_mascota_id_paciente" value="{{ $paciente->id }}">
+		                                        <input type="hidden" id="presupuesto_mascota_id_profesional" value="{{ $profesional->id }}">
+		                                        <input type="hidden" id="presupuesto_mascota_id_ficha_atencion" value="{{ $id_ficha_atencion }}">
+		                                        <input type="hidden" id="presupuesto_mascota_id_lugar_atencion" value="{{ $id_lugar_atencion }}">
+		                                        <div class="form-row">
+		                                        	<div class="form-group col-md-4">
+		                                                <label class="floating-label-activo-sm">Nombre del presupuesto</label>
+		                                                <input type="text" class="form-control form-control-sm" id="presupuesto_mascota_nombre">
+		                                            </div>
+		                                        	<div class="form-group col-md-6">
+		                                                <label class="floating-label-activo-sm">Clínica</label>
+		                                                <input type="text" class="form-control form-control-sm" id="presupuesto_mascota_clinica">
+		                                            </div>
+		                                            <div class="form-group col-md-2">
+		                                                <label class="floating-label-activo-sm">Fecha</label>
+		                                                <input type="date" class="form-control form-control-sm" id="presupuesto_mascota_fecha">
+		                                            </div>
+		                                            <div class="form-group col-md-4">
+		                                                <label class="floating-label-activo-sm">Animal</label>
+		                                                <input type="text" class="form-control form-control-sm" id="presupuesto_mascota_animal">
+		                                            </div>
+		                                            <div class="form-group col-md-4">
+		                                                <label class="floating-label-activo-sm">Especie</label>
+		                                                <input type="text" class="form-control form-control-sm" id="presupuesto_mascota_especie">
+		                                            </div>
+		                                            <div class="form-group col-md-4">
+		                                                <label class="floating-label-activo-sm">Identificación</label>
+		                                                <input type="text" class="form-control form-control-sm" id="presupuesto_mascota_identificacion" placeholder="Microchip u otra documentación acreditativa">
+		                                            </div>
+		                                            <div class="form-group col-md-12">
+		                                                <label class="floating-label-activo-sm">Observaciones</label>
+		                                                <input type="text" class="form-control form-control-sm" id="presupuesto_mascota_observaciones">
+		                                            </div>
+		                                        </div>
+		                                   </div>
+		                                </div>
+		                            </div>
+		                        </div>
+		                        <div class="row">
+                                    <div class="col-md-12 mb-0">
+	                                    <div class="card">
+		                                    <div class="card-body">
+		                                           <div class="form-row">
+		                                           	<div class="col-12">
+		                                           		<button type="button" class="btn mb-3 btn-info float-right"><i class="feather icon-plus"></i>Añadir Item</button>
+		                                           	</div>
+		                                           </div>
+		                                           <div class="form-row">
+		                                           		<div class="col-12">
+		                                           			<div class="table-responsive">
+		                                           				<table class="table table-sm table-bordered">
+																  <thead>
+																    <tr>
+																      <th scope="col">Item</th>
+																      <th scope="col">Descripción</th>
+																      <th scope="col">Valor Unitario</th>
+																      <th scope="col">Cantidad</th>
+																      <th scope="col">Valor Total</th>
+																      <th scope="col">Descuento</th>
+																      <th scope="col">Acciones</th>
+																    </tr>
+																  </thead>
+																  <tbody>
+																    <tr>
+																      <td>1</td>
+																      <td>Tipo procedimiento o Insumo</td>
+																      <td>$5.000</td>
+																      <td>1</td>
+																      <td>$5.000</td>
+																      <td>0%</td>
+																      <td><button type="button" class="btn btn-icon btn-danger"><i class="feather icon-x"></i></button></td>
+																    </tr>
+																    <tr>
+																      <td>2</td>
+																      <td>Tipo procedimiento o Insumo</td>
+																      <td>$10.000</td>
+																      <td>2</td>
+																      <td>$20.000</td>
+																      <td>0%</td>
+																      <td><button type="button" class="btn btn-icon btn-danger"><i class="feather icon-x"></i></button></td>
+																    </tr>
+																  </tbody>
+																</table>
+		                                           			</div>
+		                                           		</div>
+		                                           		<div class="col-12">
+		                                           			<div class="table-responsive float-md-right" style="width: 300px">
+		                                           				<table class="table table-sm table-bordered">
+																  <tbody>
+																    <tr>
+																      <th class="bg-light">Descuento</th>
+																      <td>0%</td>
+																    </tr>
+																    <tr>
+																      <th class="bg-light">Subtotal </th>
+																      <td>$30.000</td>
+																    </tr>
+																    <tr>
+																      <th class="bg-light">IVA (19%)</th>
+																      <td>$30.000</td>
+																    </tr>
+																    <tr>
+																      <th class="bg-purple text-white">TOTAL</th>
+																      <th class="text-purple">$30.000</th>
+																    </tr>
+																  </tbody>
+																</table>
+		                                           			</div>
+		                                           		</div>
+		                                           </div>
+		                                           <hr>
+		                                           <div class="form-row">
+		                                            <div class="col-md-12 text-center mb-3">
+		                                            	<button type="button" class="btn btn-sm btn-danger" id="btn_pdf_presupuesto_mascota"><i class="fas fa-file-pdf"></i> Generar PDF</button>
+		                                            	<button type="button" class="btn btn-sm btn-primary" id="btn_envia_email_presupuesto_mascota"><i class="feather icon-mail"></i> Enviar a email</button>
+		                                                <button type="button" onclick="window.print()" class="btn btn-sm btn-secondary" id="btn_imprimir_presupuesto_mascota"><i class="feather icon-printer"></i> Imprimir</button>
+		                                                <button type="button" class="btn btn-sm btn-info" id="btn_guardar_presupuesto_mascota"><i class="feather icon-save"></i> Guardar presupuesto</button>
+		                                            </div>
+		                                            <div class="col-md-12">
+		                                                <div id="presupuesto_mascota_resultado" class="text-center"></div>
+		                                            </div>
+		                                        </div>
+		                                    </div>
+	                            		</div>
+	                            	</div>
+                        		</div>
+		                    </div>
                             <!--INFORME EXAMEN DEL 8° PAR CRANEANO-->
                             {{--  <div class="tab-pane fade" id="ocho_par" role="tabpanel" aria-labelledby="ocho_par-tab">
                                 <div class="row">
