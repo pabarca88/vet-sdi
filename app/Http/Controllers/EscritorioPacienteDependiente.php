@@ -12,6 +12,8 @@ use App\Models\Especialidad;
 
 use App\Models\FichaAtencion;
 
+use App\Models\Mascota;
+
 use App\Models\Paciente;
 
 use App\Models\PacientesDependientes;
@@ -80,58 +82,25 @@ class EscritorioPacienteDependiente extends Controller
 
         $paciente_responsable = Paciente::where('id_usuario', Auth::user()->id)->first();
 
-        /** dependiente */
-
-        $paciente_dependiente = Paciente::where('id', $request->id_dependiente_activo)->first();
-
-
-        /** validar dependencia */
-
-        $filtro = array();
-
-        $filtro[] = array('id_responsable', $paciente_responsable->id);
-
-        $filtro[] = array('id_paciente', $paciente_dependiente->id);
-
-        $relacion = PacientesDependientes::where($filtro)->first();
-
-
-
-        if($relacion)
-
-        {
-
-            $region = Region::all();
-
-            $prevision = Prevision::all();
-
-
-
-            if (isset($paciente_dependiente)) {
-
-                return view('app.paciente_dependiente.escritorio_paciente_dependiente')->with([
-                    'paciente' => $paciente_dependiente, 
-                    'responsable' => $paciente_responsable,
-                    'mascota' => $paciente_dependiente
-                ]);
-
-            }
-
-
-
-            return view('auth.Registros.registro_paciente')->with(['region' => $region, 'prevision' => $prevision]);
-
+        if (!$paciente_responsable) {
+            return back()->with('error', 'Responsable no encontrado');
         }
 
-        else
+        /** dependiente (solo mascotas) */
 
-        {
+        $mascota_dependiente = Mascota::where('id', $request->id_dependiente_activo)
+            ->where('id_responsable', $paciente_responsable->id)
+            ->first();
 
-            back()->with('error', 'Dependiente no registrado bajo su tutela');
-
+        if ($mascota_dependiente) {
+            return view('app.paciente_dependiente.escritorio_paciente_dependiente')->with([
+                'paciente' => $mascota_dependiente,
+                'responsable' => $paciente_responsable,
+                'mascota' => $mascota_dependiente
+            ]);
         }
 
-
+        return back()->with('error', 'Dependiente no registrado bajo su tutela');
 
     }
 
@@ -464,4 +433,3 @@ class EscritorioPacienteDependiente extends Controller
 
 
 }
-

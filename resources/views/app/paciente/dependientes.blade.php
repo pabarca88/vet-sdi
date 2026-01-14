@@ -133,7 +133,7 @@
                                     <div class="mt-2 d-flex justify-content-center">
                                         <button type="button" class="btn btn-info btn-sm mr-1 btn-ver-mascota" data-id="{{ $mascota->id }}">Ver mascota</button>
                                         <button type="button" class="btn btn-primary btn-sm btn-ver-ficha" data-id="{{ $mascota->id }}">Ficha medica</button>
-                                        <button type="button" class="btn btn-purple btn-sm" data-id="{{ $mascota->id }}">Escritorio</button>
+                                        <button type="button" class="btn btn-purple btn-sm btn-escritorio-mascota" data-id="{{ $mascota->id }}">Escritorio</button>
                                     </div>
                                 </div>
                             </div>
@@ -836,6 +836,13 @@
                 }
             });
 
+            $(document).on('click', '.btn-escritorio-mascota', function(e){
+                e.stopPropagation();
+                var idMascota = $(this).data('id') || $(this).closest('.card-mascota').data('id');
+                var escritorioUrl = "{{ route('paciente.dependiente.home', ['id_dependiente_activo' => ':id']) }}";
+                window.location.href = escritorioUrl.replace(':id', idMascota);
+            });
+
             $(document).on('click', '.card-mascota', function(){
                 var idMascota = $(this).data('id');
                 mostrarDetalleMascota(idMascota);
@@ -1491,7 +1498,7 @@
                             html += '            <div class="mt-2 d-flex justify-content-center">';
                             html += '                <button type="button" class="btn btn-info btn-xxs mr-1 btn-ver-mascota" data-id="'+value.id+'"><i class="feather icon-user"></i> Ver mascota</button>';
                             html += '                <button type="button" class="btn btn-primary mr-1 btn-xxs btn-ver-ficha" data-id="'+value.id+'"><i class="feather icon-file-plus"></i> Ficha medica</button>';
-                                html += '                <button type="button" class="btn btn-purple btn-xxs" data-id="'+value.id+'"><i class="feather icon-monitor"></i> Escritorio</button>';
+                                html += '                <button type="button" class="btn btn-purple btn-xxs btn-escritorio-mascota" data-id="'+value.id+'"><i class="feather icon-monitor"></i> Escritorio</button>';
                             html += '            </div>';
                             html += '        </div>';
                             html += '    </div>';

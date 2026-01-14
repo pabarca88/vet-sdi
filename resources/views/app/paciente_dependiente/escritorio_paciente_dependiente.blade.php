@@ -18,7 +18,7 @@
 
                         <div class="page-header-title">
 
-                            <h5 class="m-b-10 font-weight-bold">Escritorio de {{ $mascota->nombres }}</h5>
+                            <h5 class="m-b-10 font-weight-bold">Escritorio de {{ $mascota->nombres ?? $mascota->nombre }}</h5>
 
                         </div>
 
@@ -26,7 +26,7 @@
 
                             <li class="breadcrumb-item">
 
-                                <a href="{{ ROUTE('paciente.dependiente.home', ['id_dependiente_activo'=> $paciente->id]) }}">Mi Escritorio </a>
+                                <a href="{{ ROUTE('paciente.dependiente.home', ['id_dependiente_activo'=> $mascota->id]) }}">Mi Escritorio </a>
 
                             </li>
 
@@ -52,7 +52,7 @@
 
                     <div class="card subir">
 
-                        <a href="{{ ROUTE('paciente.dependiente.agendar_hora', ['id_dependiente_activo'=> $paciente->id]) }}">
+                        <a href="{{ ROUTE('paciente.dependiente.agendar_hora', ['id_dependiente_activo'=> $mascota->id]) }}">
 
                             <div class="card-body text-center" style="cursor:pointer">
 
@@ -68,7 +68,7 @@
 
                     <div class="card subir">
 
-                        <a href="{{ ROUTE('paciente.dependiente.mis_profesionales', ['id_dependiente_activo'=> $paciente->id]) }}">
+                        <a href="{{ ROUTE('paciente.dependiente.mis_profesionales', ['id_dependiente_activo'=> $mascota->id]) }}">
 
                             <div class="card-body text-center" style="cursor:pointer">
 
@@ -133,7 +133,7 @@
 
                     <div class="card subir">
 
-                        <a href="{{ ROUTE('paciente.dependiente.receta', ['id_dependiente_activo'=> $paciente->id]) }}">
+                        <a href="{{ ROUTE('paciente.dependiente.receta', ['id_dependiente_activo'=> $mascota->id]) }}">
 
                             <div class="card-body text-center" style="cursor:pointer">
 
@@ -450,4 +450,3 @@
 </div>
 
 @endsection
-
