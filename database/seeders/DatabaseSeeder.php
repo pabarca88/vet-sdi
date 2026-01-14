@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             EspeciesMascotasSeeder::class,
             TamanosMascotasSeeder::class,
             EspecieTamanoMascotaSeeder::class,
+            RazasMascotasSeeder::class,
             TipoCuentaBancariaSeeder::class,
         ]);
     }

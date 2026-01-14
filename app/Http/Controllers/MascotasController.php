@@ -7,6 +7,7 @@ use App\Models\PacientesDependientes;
 use App\Models\Mascota;
 use App\Models\EspecieMascota;
 use App\Models\EspecieTamanoMascota;
+use App\Models\RazaMascota;
 use App\Models\TamanoMascota;
 use App\Models\FichaAtencion;
 use Illuminate\Http\Request;
@@ -53,6 +54,7 @@ class MascotasController extends Controller
             'chip' => 'nullable|required_if:tiene_chip,1|string|max:255',
             'nombre' => 'required|string|max:255',
             'especie_id' => 'required|integer|exists:especies_mascotas,id',
+            'raza_id' => 'nullable|integer|exists:razas_mascotas,id',
             'otra_especie' => 'nullable|string|max:500',
             'tamano_id' => 'required|integer|exists:tamanos_mascotas,id',
             'fecha_nacimiento' => 'nullable|date',
@@ -97,6 +99,18 @@ class MascotasController extends Controller
                 'estado' => 0,
                 'msj' => 'La combinación de especie y tamaño no es válida',
             ];
+        }
+
+        if ($request->filled('raza_id')) {
+            $razaValida = RazaMascota::where('id', $request->input('raza_id'))
+                ->where('especie_id', $request->input('especie_id'))
+                ->exists();
+            if (!$razaValida) {
+                return [
+                    'estado' => 0,
+                    'msj' => 'La raza no pertenece a la especie seleccionada',
+                ];
+            }
         }
 
         $galeria = $request->input('galeria');
@@ -123,6 +137,7 @@ class MascotasController extends Controller
         $mascota->nombre = $request->input('nombre');
         $mascota->especie_id = $request->input('especie_id');
         $mascota->especie = $request->input('especie_id');
+        $mascota->raza_id = $request->filled('raza_id') ? $request->input('raza_id') : null;
         $mascota->otra_especie = $request->input('otra_especie');
         $mascota->tamano_id = $request->input('tamano_id');
         $mascota->tamano = $tamano ? $tamano->slug : null;
@@ -148,7 +163,7 @@ class MascotasController extends Controller
             return [
                 'estado' => 1,
                 'msj' => 'Mascota registrada con exito.',
-                'registro' => $mascota->load(['especieMascota', 'tamanoMascota']),
+                'registro' => $mascota->load(['especieMascota', 'razaMascota', 'tamanoMascota']),
             ];
         }
 
@@ -173,6 +188,7 @@ class MascotasController extends Controller
             'chip' => 'nullable|required_if:tiene_chip,1|string|max:255',
             'nombre' => 'required|string|max:255',
             'especie_id' => 'required|integer|exists:especies_mascotas,id',
+            'raza_id' => 'nullable|integer|exists:razas_mascotas,id',
             'otra_especie' => 'nullable|string|max:500',
             'tamano_id' => 'required|integer|exists:tamanos_mascotas,id',
             'fecha_nacimiento' => 'nullable|date',
@@ -211,6 +227,18 @@ class MascotasController extends Controller
             ];
         }
 
+        if ($request->filled('raza_id')) {
+            $razaValida = RazaMascota::where('id', $request->input('raza_id'))
+                ->where('especie_id', $request->input('especie_id'))
+                ->exists();
+            if (!$razaValida) {
+                return [
+                    'estado' => 0,
+                    'msj' => 'La raza no pertenece a la especie seleccionada',
+                ];
+            }
+        }
+
         $galeria = $request->input('galeria');
         if (is_string($galeria)) {
             $decoded = json_decode($galeria, true);
@@ -232,6 +260,7 @@ class MascotasController extends Controller
         $mascota->nombre = $request->input('nombre');
         $mascota->especie_id = $request->input('especie_id');
         $mascota->especie = $request->input('especie_id');
+        $mascota->raza_id = $request->filled('raza_id') ? $request->input('raza_id') : null;
         $mascota->otra_especie = $request->input('otra_especie');
         $mascota->tamano_id = $request->input('tamano_id');
         $mascota->tamano = $tamano ? $tamano->slug : null;
@@ -257,7 +286,7 @@ class MascotasController extends Controller
             return [
                 'estado' => 1,
                 'msj' => 'Mascota actualizada con exito.',
-                'registro' => $mascota->load(['especieMascota', 'tamanoMascota']),
+                'registro' => $mascota->load(['especieMascota', 'razaMascota', 'tamanoMascota']),
             ];
         }
 
@@ -277,7 +306,7 @@ class MascotasController extends Controller
             ];
         }
 
-        $mascotas = Mascota::with(['especieMascota', 'tamanoMascota'])->where('id_responsable', $paciente->id)->get();
+        $mascotas = Mascota::with(['especieMascota', 'razaMascota', 'tamanoMascota'])->where('id_responsable', $paciente->id)->get();
 
         return [
             'estado' => 1,
@@ -323,6 +352,18 @@ class MascotasController extends Controller
 
     public function promociones_generales(){
         return view('app.paciente_dependiente.promociones_generales');
+    }
+
+    public function razasPorEspecie($especie)
+    {
+        $razas = RazaMascota::where('especie_id', $especie)
+            ->orderBy('nombre')
+            ->get(['id', 'nombre', 'especie_id']);
+
+        return [
+            'estado' => 1,
+            'razas' => $razas,
+        ];
     }
      public function registro_vacunas(Request $request){
      

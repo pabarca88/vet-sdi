@@ -21,6 +21,7 @@ class Mascota extends Model
         'nombre',
         'especie',
         'especie_id',
+        'raza_id',
         'otra_especie',
         'tamano',
         'tamano_id',
@@ -61,6 +62,11 @@ class Mascota extends Model
     public function especieMascota()
     {
         return $this->belongsTo(EspecieMascota::class, 'especie_id');
+    }
+
+    public function razaMascota()
+    {
+        return $this->belongsTo(RazaMascota::class, 'raza_id');
     }
 
     public function tamanoMascota()

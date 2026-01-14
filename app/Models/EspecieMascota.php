@@ -25,4 +25,9 @@ class EspecieMascota extends Model
     {
         return $this->belongsToMany(TamanoMascota::class, 'especie_tamano_mascota', 'especie_id', 'tamano_id');
     }
+
+    public function razas()
+    {
+        return $this->hasMany(RazaMascota::class, 'especie_id');
+    }
 }

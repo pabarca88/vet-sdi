@@ -477,6 +477,8 @@
         var especiesMascotas = @json($especiesMascotas);
         var tamanosMascotas = @json($tamanosMascotas);
         var especieTamanosMascotas = @json($especieTamanosMascotas);
+        var rutaRazasMascotas = "{{ route('paciente.mascotas.razas', ['especie' => '__id__']) }}";
+        var razasMascotasCache = {};
 
         function construirMapaNombre(listado)
         {
@@ -554,7 +556,42 @@
             }
         }
 
-        function handleEspecieChange()
+        function actualizarOpcionesRaza(especieId, razaSeleccionada)
+        {
+            var select = $('#modal_agregar_dep_nuevo_raza');
+            if (!select.length) return;
+
+            select.html('<option value=\"\">Seleccione</option>');
+            if (!especieId || especieId === '0') return;
+
+            if (razasMascotasCache[especieId]) {
+                poblarRazasSelect(select, razasMascotasCache[especieId], razaSeleccionada);
+                return;
+            }
+
+            $.get(rutaRazasMascotas.replace('__id__', especieId))
+                .done(function(data){
+                    var razas = (data && data.razas) ? data.razas : [];
+                    razasMascotasCache[especieId] = razas;
+                    poblarRazasSelect(select, razas, razaSeleccionada);
+                })
+                .fail(function(){
+                    select.html('<option value=\"\">Seleccione</option>');
+                });
+        }
+
+        function poblarRazasSelect(select, razas, razaSeleccionada)
+        {
+            select.html('<option value=\"\">Seleccione</option>');
+            (razas || []).forEach(function(raza){
+                select.append('<option value=\"'+raza.id+'\">'+raza.nombre+'</option>');
+            });
+            if (razaSeleccionada) {
+                select.val(String(razaSeleccionada));
+            }
+        }
+
+        function handleEspecieChange(razaSeleccionada)
         {
             var especieSeleccionada = $('#espec_masc').val();
             var requiereDetalle = requiereDetalleEspecie(especieSeleccionada);
@@ -564,6 +601,7 @@
                 $('#obs_espec_masc').val('');
             }
             actualizarOpcionesTamano(especieSeleccionada);
+            actualizarOpcionesRaza(especieSeleccionada, razaSeleccionada);
         }
 
         function obtenerLabelEspecie(especie, otra)
@@ -704,7 +742,7 @@
 
             var especieId = mascota.especie_id || mascota.especie || '0';
             $('#espec_masc').val(especieId);
-            handleEspecieChange();
+            handleEspecieChange(mascota.raza_id || '');
             $('#obs_espec_masc').val(mascota.otra_especie || '');
 
             var tamanoId = mascota.tamano_id || mascota.tamano || '';
@@ -860,6 +898,7 @@
             $('#espec_masc').val('0');
             handleEspecieChange();
             $('#modal_agregar_dep_nuevo_tamano').val('');
+            $('#modal_agregar_dep_nuevo_raza').val('');
             $('#modal_agregar_dep_nuevo_fecha_nac').val('');
             $('#modal_agregar_dep_nuevo_sexo').val('0');
             $('#modal_agregar_dep_nuevo_esterilizado').val('');
@@ -1314,6 +1353,7 @@
             var chip = $('#modal_agregar_dep_nuevo_rut').val();
             var nombre = $('#modal_agregar_dep_nuevo_nombres_paciente').val();
             var especie = $('#espec_masc').val();
+            var raza = $('#modal_agregar_dep_nuevo_raza').val();
             var otra_especie = $('#obs_espec_masc').val();
             var tamano = $('#modal_agregar_dep_nuevo_tamano').val();
             var esterilizado = $('#modal_agregar_dep_nuevo_esterilizado').val();
@@ -1337,6 +1377,11 @@
             {
                 valido = 0;
                 mensaje += 'Especie: requerido\n';
+            }
+            if($('#modal_agregar_dep_nuevo_raza option').length > 1 && raza == '')
+            {
+                valido = 0;
+                mensaje += 'Raza: requerido\n';
             }
             if(requiereDetalleEspecie(especie) && otra_especie == '')
             {
@@ -1385,11 +1430,12 @@
                     datos._method = 'PUT';
                 }
                 datos.tiene_chip = tiene_chip;
-                datos.chip = (tiene_chip === '1') ? chip : '';
-                datos.nombre = nombre;
-                datos.especie_id = especie;
-                datos.otra_especie = otra_especie;
-                datos.tamano_id = tamano;
+            datos.chip = (tiene_chip === '1') ? chip : '';
+            datos.nombre = nombre;
+            datos.especie_id = especie;
+            datos.raza_id = raza;
+            datos.otra_especie = otra_especie;
+            datos.tamano_id = tamano;
                 datos.esterilizado = esterilizado;
                 datos.fecha_esterilizacion = (esterilizado === '1') ? fecha_esterilizacion : '';
                 datos.enfermedad_cronica = enfermedad_cronica;
