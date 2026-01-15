@@ -113,7 +113,7 @@
 
 
             <!-- TABLA DE DEPENDIENTES-->
-             <div class="row row-cols-1 row-cols-md-2" id="card-lista-dependientes">
+             <div class="row row-cols-1 row-cols-md-2 d-none" id="card-lista-dependientes">
                 @if (isset($mascotas) && $mascotas->count() > 0)
                     @foreach ($mascotas as $mascota)
                         @php
@@ -1499,6 +1499,7 @@
 
             let url  = '{{ route("paciente.mascotas.lista") }}';
             var datos = {};
+            var $lista = $('#card-lista-dependientes');
 
             $.ajax({
                 url: url,
@@ -1507,7 +1508,7 @@
             })
             .done(function(data) {
                 mascotasCache = {};
-                $('#card-lista-dependientes').html('');
+                $lista.html('');
                 var html = '';
                 if (data.estado == 1)
                 {
@@ -1562,11 +1563,14 @@
                     html = '<h4 class="">Sin Mascotas Registradas</h4>';
                 }
 
-                $('#card-lista-dependientes').html(html);
+                $lista.html(html);
 
             })
             .fail(function(jqXHR, ajaxOptions, thrownError) {
                 console.log(jqXHR, ajaxOptions, thrownError)
+            })
+            .always(function() {
+                $lista.removeClass('d-none');
             });
         }
     </script>
