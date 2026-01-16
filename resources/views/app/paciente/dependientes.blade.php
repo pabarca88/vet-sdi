@@ -195,7 +195,7 @@
                             <p class="mb-1"><strong>Especie:</strong> <span id="modal_mascota_especie">-</span></p>
                         </div>
                          <div class="col-sm-6">
-                            <p class="mb-1"><strong>Raza:</strong> <span id="">-</span></p>
+                            <p class="mb-1"><strong>Raza:</strong> <span id="modal_mascota_raza">-</span></p>
                         </div>
                         <div class="col-sm-6">
                             <p class="mb-1"><strong>Tamaño:</strong> <span id="modal_mascota_tamano">-</span></p>
@@ -614,6 +614,45 @@
             return label || '-';
         }
 
+        function obtenerLabelRazaDesdeListado(razas, razaId)
+        {
+            if(!razaId) return '-';
+            var encontrada = (razas || []).find(function(raza){
+                return parseInt(raza.id) === parseInt(razaId);
+            });
+            return (encontrada && encontrada.nombre) ? encontrada.nombre : '-';
+        }
+
+        function obtenerLabelRaza(mascota)
+        {
+            if(!mascota) return '-';
+            if(mascota.raza_mascota && mascota.raza_mascota.nombre) return mascota.raza_mascota.nombre;
+            if(mascota.razaMascota && mascota.razaMascota.nombre) return mascota.razaMascota.nombre;
+            var razaId = mascota.raza_id || mascota.raza;
+            var especieId = mascota.especie_id || mascota.especie;
+            if(razaId && razasMascotasCache[especieId])
+            {
+                return obtenerLabelRazaDesdeListado(razasMascotasCache[especieId], razaId);
+            }
+            return '-';
+        }
+
+        function actualizarDetalleRaza(mascota)
+        {
+            if(!mascota) return;
+            var razaId = mascota.raza_id || mascota.raza;
+            var especieId = mascota.especie_id || mascota.especie;
+            if(!razaId || !especieId) return;
+            if(razasMascotasCache[especieId]) return;
+
+            $.get(rutaRazasMascotas.replace('__id__', especieId))
+                .done(function(data){
+                    var razas = (data && data.razas) ? data.razas : [];
+                    razasMascotasCache[especieId] = razas;
+                    $('#modal_mascota_raza').text(obtenerLabelRazaDesdeListado(razas, razaId));
+                });
+        }
+
         function obtenerLabelTamano(tamanoId)
         {
             if(tamanoLabel[tamanoId]) return tamanoLabel[tamanoId];
@@ -712,6 +751,7 @@
             var especieId = mascota.especie_id || mascota.especie;
             var tamanoId = mascota.tamano_id || mascota.tamano;
             $('#modal_mascota_especie').text(obtenerLabelEspecie(especieId, mascota.otra_especie));
+            $('#modal_mascota_raza').text(obtenerLabelRaza(mascota));
             $('#modal_mascota_tamano').text(obtenerLabelTamano(tamanoId));
             $('#modal_mascota_sexo').text(obtenerLabelSexo(mascota.sexo));
             $('#modal_mascota_fecha').text(formatearFecha(mascota.fecha_nacimiento));
@@ -721,6 +761,7 @@
             $('#modal_mascota_fecha_esterilizacion').text(esterilizado ? formatearFecha(mascota.fecha_esterilizacion) : '-');
             $('#modal_mascota_enfermedad_cronica').text(mascota.enfermedad_cronica ? mascota.enfermedad_cronica : '-');
             $('#modal_mascota_img').attr('src', obtenerImagenMascota(mascota));
+            actualizarDetalleRaza(mascota);
 
             $modal.appendTo('body');
             $modal.modal('show');
