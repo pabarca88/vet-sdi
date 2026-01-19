@@ -1,6 +1,6 @@
 
-<div class="">
-    <div class="user-profile user-card mt-0"style="background-color: #ecf0f5!important;">
+<br>
+    <div class="user-profile user-card mt-0 mt-n4" style="background-color: #ecf0f5!important;">
         <div class="col-md-12 py-0 px-1 shadow-none">
             <div class="row mx-0">
                 <div class="col-md-12">
@@ -8,7 +8,7 @@
             </div>
             <div class="row mx-1  mt-3">
                 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                    <h4 class="text-c-blue text-center f-24">Ficha Médica Única</h4>
+                    <h4 class="text-c-blue text-center f-24">Ficha Veterinaria Única</h4>
                     {{--<button type="button" class="btn btn-xs btn-danger d-inline float-right ml-2 mb-2"><i class="feather icon-x"></i> Cerrar</button> --}}
                 </div>
             </div>
@@ -16,8 +16,200 @@
                 <!--DATOS MÉDICOS-->
                 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                     <div class="row">
+                        <!--NOMBRE-->
+                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-4 col-xxl-3">
+                            <div class="card rounded-xl" id="enf-cron">
+                                        @php
+                                            $cantidad_ante_cronicos = 0;
+                                            $cantidad_ante_alergias = 0;
+                                            $cantidad_ante_discapacidad = 0;
+                                        @endphp
+                                        @foreach ($antecedentes as $data)
+                                            @if($data->id_tipo_antecedente==2)
+                                                @php
+                                                    $cantidad_ante_cronicos++;
+                                                @endphp
+                                            @endif
+                                            @if($data->id_tipo_antecedente==6)
+                                                @php
+                                                    $cantidad_ante_alergias++;
+                                                @endphp
+                                            @endif
+                                            @if($data->id_tipo_antecedente==8)
+                                                @php
+                                                    $cantidad_ante_discapacidad++;
+                                                @endphp
+                                            @endif
+                                        @endforeach
+                                        <input type="hidden" name="id_paciente" id="id_paciente" value="{{ $paciente->id }}">
+                                        <div class="row px-2 py-1">
+                                            <div class="col-sm-12 col-md-12">
+                                                <div class="media">
+                                                  <img class="img-radius img-fluid wid-70 mr-3 align-self-center" id="profile-image" src="{{ $paciente->foto_perfil ? $paciente->foto_perfil : asset('images/iconos/usuario_profesional.svg') }}" alt="User image">
+                                                    <div class="media-body">
+                                                        <div class="row">
+                                                            <div class="col-12 mb-3">
+                                                                <h6 class="f-16"><span class="text-c-blue">{{$paciente->nombres}} {{$paciente->apellido_uno}} {{$paciente->apellido_dos}} </span><br><small>N° Microchip ({{$paciente->rut}})</small><h6>
+                                                            </div>
+
+                                                            <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 mb-2">
+                                                                    <h6 class="f-16"><span class="text-c-blue">{{ \Carbon\Carbon::parse($paciente->fecha_nac)->age }} Años</span> <br><small>({{ date('d-m-Y', strtotime($paciente->fecha_nac)) }})</small></h6>
+                                                            </div>
+                                                            <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 mb-2">
+                                                                @php
+                                                                    $sexos = array(
+                                                                        'M' => 'Masculino',
+                                                                        'F' => 'Femenino'
+                                                                    );
+                                                                @endphp
+                                                                <h6 class="f-16"><span class="text-c-blue">{{$sexos[$paciente->sexo]}}</span></h6>
+                                                                <p>Sexo</p>
+                                                            </div>
+                                                            <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 mb-2">
+                                                                <h6 class="f-16"><span class="text-c-blue">N/N</span></h6>
+                                                                <p>Especie</p>
+                                                            </div>
+                                                            <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 mb-2">
+                                                                <h6 class="f-16"><span class="text-c-blue">-</span></h6>
+                                                                <p>Raza</p>
+                                                            </div>
+                                                            <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 mb-2">
+                                                                <h6 class="f-16"><span class="text-c-blue">-</span></h6>
+                                                                <p>Tamaño</p>
+                                                            </div>
+                                                            <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 mb-2">
+                                                                <h6 class="f-16"><span class="text-c-blue">Blanco</span></h6>
+                                                                <p>Color</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+       
+                                
+
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-8 col-xxl-9">
+                            <div class="form-row">
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="card mb-2">
+                                        <div class="card-body px-2 py-1">
+                                            <div class="media">
+                                              <img src="{{ asset('images/iconos/gruposanguineo.png') }}"  class="wid-35 rounded-xl mr-3 align-self-center mr-3" alt="...">
+                                              <div class="media-body">
+                                                <h5 class="mt-0 mb-1 pt-1 text-danger">Grupo Sanguíneo</h5>
+                                                <h5 class="mt-0 text-danger">B+</h5>
+                                              </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="card mb-2">
+                                        <div class="card-body px-2 py-1">
+                                            <div class="media">
+                                              <img src="{{ asset('images/iconos/alergias.png') }}"  class="wid-35 rounded-xl mr-3 align-self-center mr-3" alt="...">
+                                              <div class="media-body">
+                                                <h5 class="mt-0 mb-1 pt-1">Alergias</h5>
+                                                <h5 class="mt-0 text-danger">SI</h5>
+                                              </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="card mb-2">
+                                        <div class="card-body px-2 py-1">
+                                            <div class="media">
+                                              <img src="{{ asset('images/iconos/peso.png') }}"  class="wid-35 rounded-xl mr-3 align-self-center mr-3" alt="...">
+                                              <div class="media-body">
+                                                <h5 class="mt-0 mb-1 pt-1">Peso</h5>
+                                                <h5 class="mt-0 text-c-blue">2 kg y 34 gr</h5>
+                                              </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="card mb-2">
+                                        <div class="card-body px-2 py-1">
+                                            <div class="media">
+                                              <img src="{{ asset('images/iconos/enfermedad-cronica.png') }}"  class="wid-35 rounded-xl mr-3 align-self-center mr-3" alt="...">
+                                              <div class="media-body">
+                                                <h5 class="mt-0 mb-1 pt-1">Paciente crónico</h5>
+                                                <h5 class="mt-0 text-c-blue">NO</h5>
+                                              </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="card mb-2">
+                                        <div class="card-body px-2 py-1">
+                                             <div class="media">
+                                            <img src="{{ asset('images/iconos/transfusion.jpg') }}"  class="wid-35 rounded-xl mr-3 align-self-center mr-3" alt="...">
+                                              <div class="media-body">
+                                                <h5 class="mt-0 mb-1 pt-1">Transfusiones</h5>
+                                                <h5 class="mt-0 text-danger">SI</h5>
+                                              </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="card mb-2">
+                                        <div class="card-body px-2 py-1">
+                                             <div class="media">
+                                            <img src="{{ asset('images/iconos/discapacidad.png') }}"  class="wid-35 rounded-xl mr-3 align-self-center mr-3" alt="...">
+                                              <div class="media-body">
+                                                <h5 class="mt-0 mb-1 pt-1">Discapacidad</h5>
+                                                <h5 class="mt-0">-</h5>
+                                              </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="card mb-2">
+                                        <div class="card-body px-2 py-1">
+                                             <div class="media">
+                                            <img src="{{ asset('images/iconos/esterilizacion.png') }}"  class="wid-35 rounded-xl mr-3 align-self-center mr-3" alt="...">
+                                              <div class="media-body">
+                                                <h5 class="mt-0 mb-1 pt-1">Esterilizado/a</h5>
+                                                <h5 class="mt-0">SI</h5>
+                                              </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="card mb-2">
+                                        <div class="card-body px-2 py-1">
+                                             <div class="media">
+                                            <img src="{{ asset('images/iconos/microchip.png') }}"  class="wid-35 rounded-xl mr-3 align-self-center mr-3" alt="...">
+                                              <div class="media-body">
+                                                <h5 class="mt-0 mb-1 pt-1">N° Microchip</h5>
+                                                <h5 class="mt-0">38293892</h5>
+                                              </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <button class="btn btn-purple-light-c rounded-xl pt-3 pb-4 btn-block collapsed" type="button" data-toggle="collapse" data-target="#cabecera_info" aria-expanded="false" aria-controls="cabecera_info">
+                                        <i class="feather icon-plus"></i> Ver más información
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!--INFO-->
                         <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                            <div class="card-informacion  pt-2">
+                            <div class="card  rounded-xl">
                                 <div class="card-header-fmu" id="enf-cron">
                                         @php
                                             $cantidad_ante_cronicos = 0;
@@ -42,91 +234,81 @@
                                             @endif
                                         @endforeach
                                         <input type="hidden" name="id_paciente" id="id_paciente" value="{{ $paciente->id }}">
-                                        <div class="row px-2 pt-2">
-                                        	<div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 mb-2">
-                                        		<h6 class="f-16">{{$paciente->nombres}} {{$paciente->apellido_uno}} {{$paciente->apellido_dos}} <small>({{$paciente->rut}})</small><h6>
-                                        	</div>
-                                        	<div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 mb-2">
-                                        		<h6 class="f-16">Grupo sanguíneo: <span style="color: #ff0000;font-weight: bold;">{{$grupo_sanguineo->nombre_gs}}</span></h6>
-                                        	</div>
-                                        	<div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 mb-2">
-                                        		<h6 class="f-16">{{ \Carbon\Carbon::parse($paciente->fecha_nac)->age }} Años <small>({{ date('d-m-Y', strtotime($paciente->fecha_nac)) }})</small></h6>
-                                        	</div>
-                                        	<div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 mb-2">
-                                                @php
-                                                    $sexos = array(
-                                                        'M' => 'Masculino',
-                                                        'F' => 'Femenino'
-                                                    );
-                                                @endphp
-                                        		<h6 class="f-16">Sexo: {{$sexos[$paciente->sexo]}}</h6>
-                                        	</div>
-                                        	<div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 mb-2">
-                                        		 <h6 class="f-16">Paciente Crónico: {!! ($antecedentes_paciente->transfusion == '1'?'<span style="color: #ff0000;font-weight: bold;">SI</span>':'<span style="color: #000000;font-weight: bold;">NO</span>') !!}</h6>
-                                        	</div>
-                                        	<div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 mb-2">
-                                        		<h6 class="f-16">Transfusiones: {!! ($cantidad_ante_cronicos > 0?'<span style="color: #ff0000;font-weight: bold;">SI</span>':'<span style="color: #000000;font-weight: bold;">NO</span>') !!}</h6>
-                                        	</div>
-                                        	<div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 mb-2">
-                                        		<h6 class="f-16">Alergias:  {!! ($cantidad_ante_alergias > 0?'<span style="color: #ff0000;font-weight: bold;">SI</span>':'<span style="color: #000000;font-weight: bold;">NO</span>') !!}</h6>
-                                        	</div>
-                                        	<div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 mb-2">
-                                        		<h6 class="f-16">Discapacidad: {!! ($cantidad_ante_discapacidad > 0?'<span style="color: #ff0000;font-weight: bold;">SI</span>':'<span style="color: #000000;font-weight: bold;">NO</span>') !!}</h6>
-                                        	</div>
-                                        	<div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 mb-2 col align-self-end">
-                                        		<button class="fa-solid btn btn-xxs btn-info-light-c collapsed" type="button" data-toggle="collapse" data-target="#cabecera_info" aria-expanded="false" aria-controls="cabecera_info">
-				                   				    <i class="feather icon-plus"></i> Ver más información
-                                                </button>
-                                        	</div>
-                                        </div>
                                 </div>
-
+                                <!--INFO OCULTA DEL PACIENTE, SE DESPLIEGA SI SE PRESIONA EL BTN-->
                                 <div id="cabecera_info" class="collapse" aria-labelledby="enf-cron" data-parent="#cabecera_info">
-                                    <div class="card-body-aten-a" style="padding-top: 0px!important;">
+                                    <div class="card-body pt-2" style="padding-top: 0px!important;">
                                         <div class="row">
-											<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 pb-0">
-												<ul class="nav nav-tabs profile-tabs nav-fill mt-1" id="myTab" role="tablist">
-													<li class="nav-item">
-														<a class="nav-link-aten text-reset active" id="seccion_ident_contacto-tab" data-toggle="tab" href="#seccion_ident_contacto" role="tab" aria-controls="seccion_ident_contacto" aria-selected="true">Contacto</a>
-													</li>
-													<li class="nav-item">
-														<a class="nav-link-aten text-reset" id="seccion_enfer_cronicas-tab" data-toggle="tab" href="#seccion_enfer_cronicas" role="tab" aria-controls="seccion_enfer_cronicas" aria-selected="false">Enfermedades Crónicas</a>
-													</li>
-													<li class="nav-item">
-														<a class="nav-link-aten text-reset" id="seccion_alergias-tab" data-toggle="tab" href="#seccion_alergias" role="tab" aria-controls="seccion_alergias" aria-selected="false">Alergias</a>
-													</li>
-													<li class="nav-item">
-														<a class="nav-link-aten text-reset" id="seccion_ultimas_cirugia-tab" data-toggle="tab" href="#seccion_ultimas_cirugia" role="tab" aria-controls="seccion_ultimas_cirugia" aria-selected="false">Últimas Cirugias</a>
-													</li>
-													<li class="nav-item">
-														<a class="nav-link-aten text-reset" id="seccion_ultimo_tratamiento-tab" data-toggle="tab" href="#seccion_ultimo_tratamiento" role="tab" aria-controls="seccion_ultimo_tratamiento" aria-selected="false">Últimos Tratamientos</a>
-													</li>
-													<li class="nav-item">
-														<a class="nav-link-aten text-reset" id="discap-tab" data-toggle="tab" href="#discap" role="tab" aria-controls="discap" aria-selected="false">Discapacidad</a>
-													</li>
-												</ul>
-											</div>
-										</div>
+                                            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 pb-0">
+                                                <ul class="nav nav-tabs profile-tabs nav-fill mt-1 mb-3" id="myTab" role="tablist">
+                                                    <li class="nav-item">
+                                                        <a class="nav-link-aten text-reset active" id="seccion_ident_contacto-tab" data-toggle="tab" href="#seccion_ident_contacto" role="tab" aria-controls="seccion_ident_contacto" aria-selected="true">Info. Del Responsable</a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link-aten text-reset" id="seccion_enfer_cronicas-tab" data-toggle="tab" href="#seccion_enfer_cronicas" role="tab" aria-controls="seccion_enfer_cronicas" aria-selected="false">Enfermedades Crónicas</a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link-aten text-reset" id="seccion_alergias-tab" data-toggle="tab" href="#seccion_alergias" role="tab" aria-controls="seccion_alergias" aria-selected="false">Alergias</a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link-aten text-reset" id="seccion_ultimas_cirugia-tab" data-toggle="tab" href="#seccion_ultimas_cirugia" role="tab" aria-controls="seccion_ultimas_cirugia" aria-selected="false">Últimas Cirugias</a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link-aten text-reset" id="seccion_ultimo_tratamiento-tab" data-toggle="tab" href="#seccion_ultimo_tratamiento" role="tab" aria-controls="seccion_ultimo_tratamiento" aria-selected="false">Últimos Tratamientos</a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link-aten text-reset" id="discap-tab" data-toggle="tab" href="#discap" role="tab" aria-controls="discap" aria-selected="false">Discapacidad</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
 
                                         <div class="row">
                                             <div class="col-md-12 pb-2">
                                                 <div class="tab-content" id="at-oftalmo">
-                                                    {{-- INFORMACION DE CONTACTO --}}
+                                                    {{-- INFORMACION DE RESPONSABLE --}}
                                                     <div class="tab-pane fade show active" id="seccion_ident_contacto" role="tabpanel" aria-labelledby="seccion_ident_contacto-tab">
                                                         <div class="row">
-                                                            <div class="col-sm-6 col-md-4">
-																@if( $direccion )
-																	<p><i class="feather icon-home"></i><strong> Dirección</strong> <br>{{$direccion->direccion}} {{$direccion->numero}}, {{$direccion->ciudad->nombre}}, {{$direccion->ciudad->region->nombre}}</p>
-																@else
-																	<p><i class="feather icon-home"></i><strong> Dirección</strong> <br></p>
-																@endif
-
+                                                            <div class="col-sm-6 col-md-6 col-lg-6 col-xl-3 col-xxl-3">
+                                                               <div class="media">
+                                                                    <img src="{{ asset('images/iconos/persona-info.png') }}"  class="wid-35 rounded-circle align-self-start mr-2" alt="...">
+                                                                    <div class="media-body">
+                                                                        <h6 class="mt-0 mb-1 pt-1">Responsable</h6>
+                                                                        <h6 class="mt-0 text-c-blue">Daniela Sepúlveda</h6> <small class="mt-0 text-c-blue">18.382.693-K</small>
+                                                                        
+                                                                    </div>
+                                                               </div>
                                                             </div>
-                                                            <div class="col-sm-6 col-md-4">
-                                                                <p><i class="feather icon-phone"></i><strong> Telefono</strong> <br>{{$paciente->telefono_uno}} / {{$paciente->telefono_dos}}</p>
+                                                            <div class="col-sm-6 col-md-6 col-lg-6 col-xl-3 col-xxl-3">
+                                                                @if( $direccion )
+                                                                  <div class="media">
+                                                                        <img src="{{ asset('images/iconos/direccion-info.png') }}"  class="wid-35 rounded-circle align-self-start mr-2" alt="...">
+                                                                        <div class="media-body">
+                                                                            <h6 class="mt-0 mb-1 pt-1">Dirección</h6>
+                                                                            <h6 class="mt-0 text-c-blue">{{$direccion->direccion}} {{$direccion->numero}}, {{$direccion->ciudad->nombre}}, {{$direccion->ciudad->region->nombre}}</h6>
+                                                                        </div>
+                                                                  </div>
+                                                                @else
+                                                                    
+                                                                @endif
                                                             </div>
-                                                            <div class="col-sm-6 col-md-4">
-                                                                <p><i class="feather icon-mail"></i><strong> Email</strong> <br>{{$paciente->email}}</p>
+                                                            <div class="col-sm-6 col-md-6 col-lg-6 col-xl-3 col-xxl-3">
+                                                                <div class="media">
+                                                                    <img src="{{ asset('images/iconos/tel-info.png') }}"  class="wid-35 rounded-circle align-self-start mr-2" alt="...">
+                                                                    <div class="media-body">
+                                                                        <h6 class="mt-0 mb-1 pt-1">Teléfono</h6>
+                                                                        <h6 class="mt-0 text-c-blue">{{$paciente->telefono_uno}} / {{$paciente->telefono_dos}}</h6>
+                                                                    </div>
+                                                               </div>
+                                                            </div>
+                                                            <div class="col-sm-6 col-md-6 col-lg-6 col-xl-3 col-xxl-3">
+                                                                <div class="media">
+                                                                    <img src="{{ asset('images/iconos/email-info.png') }}"  class="wid-35 rounded-circle align-self-start mr-2" alt="...">
+                                                                    <div class="media-body">
+                                                                        <h6 class="mt-0 mb-1 pt-1">Email</h6>
+                                                                        <h6 class="mt-0 text-c-blue">{{$paciente->email}}</h6>
+                                                                    </div>
+                                                               </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -278,22 +460,22 @@
                     </div>
                     <div class="row">
                         <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 mb-3">
-                            {{-- <button type="button" class="btn btn-xs btn-primary mb-1" onclick="cirugias_fmu();">Cirugías</button> --}}
-                            {{-- <button type="button" class="btn btn-xs btn-primary mb-1" onclick="alergias_fmu();">Alergias</button> --}}
-                            <button type="button" class="btn btn-xs btn-primary mb-1" onclick="responsables_fmu();"><i class="feather icon-users"></i> Responsables</button>
-                            <button type="button" class="btn btn-xs btn-primary mb-1" onclick="confidencial_fmu();"><i class="feather icon-lock"></i> Confidencial</button>
-                            {{-- <button type="button" class="btn btn-xs btn-primary mb-1" onclick="trat_act_fmu();"><i class="feather icon-file-plus"></i> Tratamientos activos</button> --}}
-                            <button type="button" class="btn btn-xs btn-danger mb-1" onclick="c_sos_fmu();"><i class="feather icon-phone"></i> Contacto de emergencia</button>
+                            {{-- <button type="button" class="btn btn-xs btn-primary-light-c mb-1" onclick="cirugias_fmu();">Cirugías</button> --}}
+                            {{-- <button type="button" class="btn btn-xs btn-primary-light-c mb-1" onclick="alergias_fmu();">Alergias</button> --}}
+                            <button type="button" class="btn btn-xs btn-purple-light-c mb-1" onclick="responsables_fmu();"><i class="feather icon-users"></i> Responsables</button>
+                            <button type="button" class="btn btn-xs btn-purple-light-c mb-1" onclick="confidencial_fmu();"><i class="feather icon-lock"></i> Información Confidencial</button>
+                            {{-- <button type="button" class="btn btn-xs btn-primary-light-c mb-1" onclick="trat_act_fmu();"><i class="feather icon-file-plus"></i> Tratamientos activos</button> --}}
+                            <button type="button" class="btn btn-xs btn-danger-light-c mb-1" onclick="c_sos_fmu();"><i class="feather icon-phone"></i> Contacto de emergencia</button>
                         </div>
                     </div>
 
                     <div class="row">
                         {{-- Tratamientos en curso --}}
-                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-3 mb-3">
+                        <div class="col-sm-6 col-md-6 col-lg-6 col-xl-3 mb-3">
                              <div class="card border-card-purple h-100">
                                 <div class="card-body px-2 py-3">
                                     <div class="media">
-                                      <img src="{{ asset('images/iconos/tto-curso.png') }}" class=" wid-45 rounded-xl mr-3" alt="Tratamientos en curso">
+                                      <img src="{{ asset('images/iconos/tto-curso.png') }}" class=" wid-35 rounded-xl mr-3" alt="Tratamientos en curso">
                                       <div class="media-body">
                                         <h5 class="f-16 text-purple font-weight-bold">Tratamientos en curso</h5>
                                         <ul>
@@ -330,11 +512,11 @@
                         </div>
 
                         {{-- Medicamentos crónicos --}}
-                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-3 mb-3">
+                        <div class="col-sm-6 col-md-6 col-lg-6 col-xl-3 mb-3">
                             <div class="card border-card-danger h-100">
                                 <div class="card-body px-2 py-3">
                                     <div class="media">
-                                      <img src="{{ asset('images/iconos/meds-cronicos.png') }}" class="wid-45 rounded-xl mr-3" alt="Medicamentos Crónicos">
+                                      <img src="{{ asset('images/iconos/meds-cronicos.png') }}" class="wid-35 rounded-xl mr-3" alt="Medicamentos Crónicos">
                                         <div class="media-body">
                                             <h5 class="f-16 text-danger font-weight-bold">Medicamentos crónicos</h5>
                                             <ul>
@@ -347,19 +529,19 @@
                         </div>
 
                         {{-- Cirugías recientes --}}
-                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-3 mb-3">
-                             <div class="card  border-card-info h-100">
+                        <div class="col-sm-6 col-md-6 col-lg-6 col-xl-3 mb-3">
+                             <div class="card  border-card-purple h-100">
                                 <div class="card-body px-2 py-3">
                                     <div class="media">
-                                      <img src="{{ asset('images/iconos/ant-qx.png') }}" class=" wid-45 rounded-xl mr-3" alt="CX Recientes">
+                                      <img src="{{ asset('images/iconos/ant-qx.png') }}" class=" wid-35 rounded-xl mr-3" alt="CX Recientes">
                                         <div class="media-body">
-                                            <h5 class="f-16 text-info font-weight-bold">Cirugías recientes</h5>
+                                            <h5 class="f-16 text-purple font-weight-bold">Cirugías recientes</h5>
                                             <ul>
                                                 @if(isset($antecedentes))
                                                 @foreach ($antecedentes as $data)
                                                     @if($data->id_tipo_antecedente==3)
                                                         {{-- <li>{!! $data->antecedente_data->procedimiento.'<br/>&nbsp;&nbsp;&nbsp;- '.substr($data->comentario, 0, 30) !!}</li> --}}
-                                                        <li class="text-capitalize"> <i class="fas fa-caret-right text-info"></i> {!! $data->antecedente_data->procedimiento.' - '.$data->comentario !!}</li>
+                                                        <li class="text-capitalize"> <i class="fas fa-caret-right text-purple"></i> {!! $data->antecedente_data->procedimiento.' - '.$data->comentario !!}</li>
                                                     @else
                                                         {{-- <li>No hay registros</li> --}}
                                                     @endif
@@ -373,8 +555,8 @@
                         </div>
 
                         {{-- Medicamentos recientes --}}
-                        {{-- <div class="col-sm-12 col-md-6 col-lg-6 col-xl-3 mb-3"> --}}
-                            {{-- <div class="card border-card-primary h-100"> --}}
+                        {{-- <div class="col-sm-6 col-md-6 col-lg-6 col-xl-3 mb-3"> --}}
+                            {{-- <div class="card border-card-purple h-100"> --}}
                                 {{-- <div class="card-body"> --}}
                                     {{-- <ul> --}}
                                         {{-- <li><strong>Medicamentos recientes</strong></li> --}}
@@ -385,13 +567,13 @@
                         {{-- </div> --}}
 
                         {{-- Prótesis y ortesis --}}
-                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-3 mb-3">
-                            <div class="card border-card-primary h-100">
+                        <div class="col-sm-6 col-md-6 col-lg-6 col-xl-3 mb-3">
+                            <div class="card border-card-purple h-100">
                                 <div class="card-body px-2 py-3">
                                     <div class="media">
-                                      <img src="{{ asset('images/iconos/prot-ort.png') }}" class=" wid-45 rounded-xl mr-3" alt="Prótesis y Ortesis">
+                                      <img src="{{ asset('images/iconos/prot-ort.png') }}" class=" wid-35 rounded-xl mr-3" alt="Prótesis y Ortesis">
                                         <div class="media-body">
-                                            <h5 class="f-16 text-c-blue font-weight-bold">Prótesis y Ortesis</h5>
+                                            <h5 class="f-16 text-purple font-weight-bold">Prótesis y Ortesis</h5>
                                             <ul>
                                                 <li>No hay registros</li>
                                             </ul>
@@ -407,12 +589,91 @@
                         <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 mt-2">
                             <h5 class="f-20 text-c-blue mb-3">Historial médico</h5>
                         </div>
+
+                         <!--HISTORIAL - Historial Médico-->
+                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                            <div class="card-a">
+                                <div class="card-header-a" id="histo_medico">
+                                    <button class="accor-closed btn pt-1 pb-0 pl-1 btn-block text-left card-act-open collapsed"  type="button" data-toggle="collapse" data-target="#histo_medico_c" aria-expanded="false" aria-controls="histo_medico_c">
+                                    Historial Médico
+                                    </button>
+                                </div>
+                                <div id="histo_medico_c" class="collapse" aria-labelledby="histo_medico" data-parent="#histo_medico">
+                                    <div class="card-body-aten-a">
+                                        <div class="row mt-3">
+                                            <div class="col-sm-12 pb-4">
+                                                <table id="tabla_fmu_historal_medico" class="display table table-striped table-xs dt-responsive nowrap pb-4" style="width:100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="align-middle">Fecha</th>
+                                                            <th class="align-middle">Profesional</th>
+                                                            <th class="align-middle">Diagnóstico</th>
+                                                            <th class="align-middle">Ficha</th>
+                                                            <th class="align-middle">Exámenes</th>
+                                                            <th class="align-middle">Recetas</th>
+                                                            <th class="align-middle">Archivos </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @if (isset($fichas) && $fichas->count() > 0)
+                                                            @foreach ($fichas as $f)
+                                                                <tr>
+                                                                    <td class="align-middle">
+                                                                        {{ \Carbon\Carbon::parse($f->created_at)->format('d-m-Y') }}
+                                                                    </td>
+
+                                                                    <td class="align-middle">
+                                                                        @if($f->profesional)
+                                                                        {{ $f->profesional->nombre }} {{ $f->profesional->apellido_uno }} {{ $f->profesional->apellido_dos }}<br>
+
+                                                                        @endif
+                                                                    </td>
+
+                                                                    <td class="align-middle">{{ $f->hipotesis_diagnostico ? $f->hipotesis_diagnostico : ''}}</td>
+
+                                                                    <td class="align-middle">
+                                                                        {{-- <a class="btn btn-xxs btn-info-light-c has-ripple"  @if (isset($f->id)) onclick="buscar_ficha_fmu({{ $f->id }});" @endif><i class="feather icon-file-plus"></i> Ver</a> --}}
+                                                                        <button type="button" class="btn btn-xxs btn-info-light-c" @if (isset($f->id)) onclick="buscar_ficha_atencion_atencion_previa_fmu({{ $f->id }});" @endif><i class="feather icon-file-text"></i> Ver</button>
+                                                                    </td>
+
+                                                                    <td class="align-middle">
+                                                                        {{-- <a class="badge badge-light-success" @if (isset($f->id)) onclick="buscar_examenes_fmu({{ $f->id }});" @endif><i class="feather icon-activity"></i> Ver</a> --}}
+                                                                        <button type="button" class="btn btn-xxs btn-success-light-c" @if (isset($f->id)) onclick="buscar_examenes_fmu({{ $f->id }});" @endif><i class="feather icon-activity"></i> Ver</button>
+                                                                    </td>
+
+                                                                    <td class="align-middle">
+                                                                        {{-- <a class="badge badge-light-warning"  @if (isset($f->id)) onclick="buscar_receta_fmu({{ $f->id }});" @endif><i class="feather icon-file-plus"></i> Ver</a> --}}
+                                                                        <button type="button" class="btn btn-xxs btn-warning-light-c"  @if (isset($f->id)) onclick="buscar_receta_fmu({{ $f->id }});" @endif><i class="feather icon-file-plus"></i> Ver</button>
+                                                                    </td>
+
+                                                                    <td class="align-middle">
+                                                                        {{-- <a class="badge badge-light-warning"  @if (isset($f->id)) onclick="buscar_archivo_fmu({{ $f->id }});" @endif><i class="feather icon-file-plus"></i> Ver</a> --}}
+                                                                        <button type="button" class="btn btn-xxs btn-purple-light-c" @if (isset($f->id)) onclick="buscar_archivo_fmu({{ $f->id }});" @endif><i class="feather icon-folder"></i> Ver</button>
+                                                                    </td>
+
+
+                                                                </tr>
+                                                            @endforeach
+                                                        @else
+                                                            <span>
+                                                                <h5>no existen registros</h5>
+                                                            </span>
+                                                        @endif
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <!--HISTORIAL - Últimos Examenes-->
                         <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                            <div class="card-fmu">
-                                <div class="card-header-fmu" id="ult_exam">
+                            <div class="card-a">
+                                <div class="card-header-a" id="ult_exam">
                                     <button class="accor-closed btn pt-1 pb-0 pl-1 btn-block text-left card-act-open collapsed"  type="button" data-toggle="collapse" data-target="#ult_exam_c" aria-expanded="false" aria-controls="ult_exam_c">
-                                    Últimos exámenes
+                                    Últimos Exámenes
                                     </button>
                                 </div>
                                 <div id="ult_exam_c" class="collapse" aria-labelledby="ult_exam" data-parent="#ult_exam">
@@ -490,12 +751,170 @@
                             </div>
                         </div>
 
+
+                        <!--HISTORIAL - Registro vacunas -->
+                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                            <div class="card-a">
+                                <div class="card-header-a" id="vacunas">
+                                    <button class="accor-closed btn pt-1 pb-0 pl-1 btn-block text-left card-act-open collapsed"  type="button" data-toggle="collapse" data-target="#vacunas_c" aria-expanded="false" aria-controls="vacunas_c">
+                                    Registro de Vacunas
+                                    </button>
+                                </div>
+                                <div id="vacunas_c" class="collapse" aria-labelledby="vacunas" data-parent="#vacunas">
+                                    <div class="card-body-aten-a">
+                                        <form>
+                                            <div class="form-row">
+                                                <div class="col-12">
+                                                    <div class="table-responsive">
+                                                        <table id="tabla_recetas_paciente_ro"
+                                        class="display table table-striped dt-responsive nowrap table-sm"
+                                        style="width:100%">
+                                        <thead>
+                                            <tr>
+                                                <th class="align-middle">Edad</th>
+                                                <th class="align-middle">Fecha dosis</th>
+                                                <th class="align-middle">Vacuna</th>
+                                                <th class="align-middle">Próx.Dosis</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="align-middle">
+                                                   1 mes y 5 días
+                                                </td>
+                                                <td class="align-middle">
+                                                    <span class="badge badge-secondary">00-00-2025</span>
+                                                </td>
+                                                <td class="align-middle">
+                                                    Triplefelina
+                                                </td>
+                                                <td class="align-middle text-center">
+                                                    <span class="badge badge-info">11-12-2025</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="align-middle">
+                                                   2 meses y 15 días
+                                                </td> 
+                                                <td class="align-middle">
+                                                    <span class="badge badge-secondary">00-00-2025</span>
+                                                </td>
+                                                <td class="align-middle">
+                                                    Triplefelina
+                                                </td>
+                                                <td class="align-middle text-center">
+                                                    <span class="badge badge-info">11-12-2025</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="align-middle">
+                                                   4 meses y 19 días
+                                                </td>
+                                                <td class="align-middle">
+                                                    <span class="badge badge-secondary">00-00-2025</span>
+                                                </td>
+                                                <td class="align-middle">
+                                                    Rabia
+                                                </td>
+                                                <td class="align-middle text-center">
+                                                    <span class="badge badge-info">11-12-2025</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--HISTORIAL - Registro desparasitación -->
+                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                            <div class="card-a">
+                                <div class="card-header-a" id="desparasitacion">
+                                    <button class="accor-closed btn pt-1 pb-0 pl-1 btn-block text-left card-act-open collapsed"  type="button" data-toggle="collapse" data-target="#desparasitacion_c" aria-expanded="false" aria-controls="desparasitacion_c">
+                                    Registro de Desparasitación
+                                    </button>
+                                </div>
+                                <div id="desparasitacion_c" class="collapse" aria-labelledby="desparasitacion" data-parent="#desparasitacion">
+                                    <div class="card-body-aten-a">
+                                        <form>
+                                            <div class="form-row">
+                                                <div class="col-12">
+                                                    <div class="table-responsive">
+                                                        <table id="tabla_recetas_paciente_ro"
+                                                                    class="display table table-striped dt-responsive nowrap table-sm"
+                                                                    style="width:100%">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th class="align-middle">Fecha dosis</th>
+                                                                            <th class="align-middle">Antiparasitario</th>
+                                                                            <th class="align-middle">Tipo</th>
+                                                                            <th class="align-middle">Próx.Dosis</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td class="align-middle">
+                                                                                <span class="badge badge-secondary">00-00-2025</span>
+                                                                            </td>
+                                                                            <td class="align-middle">
+                                                                                Milpro
+                                                                            </td>
+                                                                            <td class="align-middle">
+                                                                                Interno
+                                                                            </td>
+                                                                            <td class="align-middle text-center">
+                                                                                <span class="badge badge-info">11-12-2025</span>
+                                                                            </td>
+                                                                        </tr>
+                                                                         <tr>
+                                                                            <td class="align-middle">
+                                                                                <span class="badge badge-secondary">00-00-2025</span>
+                                                                            </td>
+                                                                            <td class="align-middle">
+                                                                                Nextgard Combo
+                                                                            </td>
+                                                                            <td class="align-middle">
+                                                                                Interno y Externo
+                                                                            </td>
+                                                                            <td class="align-middle text-center">
+                                                                                <span class="badge badge-info">11-12-2025</span>
+                                                                            </td>
+                                                                        </tr>
+                                                                         <tr>
+                                                                            <td class="align-middle">
+                                                                                <span class="badge badge-secondary">00-00-2025</span>
+                                                                            </td>
+                                                                            <td class="align-middle">
+                                                                                Frontlin
+                                                                            </td>
+                                                                            <td class="align-middle">
+                                                                                Externo
+                                                                            </td>
+                                                                            <td class="align-middle text-center">
+                                                                                <span class="badge badge-info">11-12-2025</span>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <!--HISTORIAL - Control de enfermedades cronicas -->
                         <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                             <div class="card-a">
                                 <div class="card-header-a" id="cont_enfer_cron">
                                     <button class="accor-closed btn pt-1 pb-0 pl-1 btn-block text-left card-act-open collapsed"  type="button" data-toggle="collapse" data-target="#cont_enfer_cron_c" aria-expanded="false" aria-controls="cont_enfer_cron_c">
-                                    Control de enfermedades crónicas
+                                    Control de Enfermedades Crónicas
                                     </button>
                                 </div>
                                 <div id="cont_enfer_cron_c" class="collapse" aria-labelledby="cont_enfer_cron" data-parent="#cont_enfer_cron">
@@ -542,31 +961,15 @@
                             </div>
                         </div>
 
-                        <!--HISTORIAL - Historial odontologico -->
+                        <!--HISTORIAL - Historial Quirúrgico -->
                         <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                             <div class="card-a">
-                                <div class="card-header-a" id="odonto">
-                                    <button class="accor-closed btn pt-1 pb-0 pl-1 btn-block text-left card-act-open collapsed"  type="button" data-toggle="collapse" data-target="#odonto_c" aria-expanded="false" aria-controls="odonto_c">
-                                    Historial odontológico
+                                <div class="card-header-a" id="qx">
+                                    <button class="accor-closed btn pt-1 pb-0 pl-1 btn-block text-left card-act-open collapsed"  type="button" data-toggle="collapse" data-target="#qx_c" aria-expanded="false" aria-controls="qx_c">
+                                    Historial Quirúrgico
                                     </button>
                                 </div>
-                                <div id="odonto_c" class="collapse" aria-labelledby="odonto" data-parent="#odonto">
-                                    <div class="card-body-aten-a">
-                                        @include('atencion_odontologica.generales.odontograma_adulto')
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!--HISTORIAL - Historial niño sano -->
-                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                            <div class="card-a">
-                                <div class="card-header-a" id="nino_sano">
-                                    <button class="accor-closed btn pt-1 pb-0 pl-1 btn-block text-left card-act-open collapsed"  type="button" data-toggle="collapse" data-target="#nino_sano_c" aria-expanded="false" aria-controls="nino_sano_c">
-                                    Historial de niño sano
-                                    </button>
-                                </div>
-                                <div id="nino_sano_c" class="collapse" aria-labelledby="mot-consulta" data-parent="#nino_sano">
+                                <div id="qx_c" class="collapse" aria-labelledby="qx" data-parent="#qx">
                                     <div class="card-body-aten-a">
                                         <form>
                                             <div class="form-row">
@@ -578,89 +981,27 @@
                             </div>
                         </div>
 
-                        <!--HISTORIAL - Historial Médico-->
+                        <!--HISTORIAL - Historial odontologico -->
                         <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                             <div class="card-a">
-                                <div class="card-header-a" id="histo_medico">
-                                    <button class="accor-closed btn pt-1 pb-0 pl-1 btn-block text-left card-act-open collapsed"  type="button" data-toggle="collapse" data-target="#histo_medico_c" aria-expanded="false" aria-controls="histo_medico_c">
-                                    Historial Médico
+                                <div class="card-header-a" id="odonto">
+                                    <button class="accor-closed btn pt-1 pb-0 pl-1 btn-block text-left card-act-open collapsed"  type="button" data-toggle="collapse" data-target="#odonto_c" aria-expanded="false" aria-controls="odonto_c">
+                                    Historial Odontológico
                                     </button>
                                 </div>
-                                <div id="histo_medico_c" class="collapse" aria-labelledby="histo_medico" data-parent="#histo_medico">
+                                <div id="odonto_c" class="collapse" aria-labelledby="odonto" data-parent="#odonto">
                                     <div class="card-body-aten-a">
-                                        <div class="row mt-3">
-                                            <div class="col-sm-12 pb-4">
-                                                <table id="tabla_fmu_historal_medico" class="display table table-striped table-xs dt-responsive nowrap pb-4" style="width:100%">
-                                                    <thead>
-                                                        <tr>
-                                                            <th class="text-center align-middle">Fecha</th>
-                                                            <th class="text-center align-middle">Profesional</th>
-                                                            <th class="text-center align-middle">Diagnóstico</th>
-                                                            <th class="text-center align-middle">Ficha</th>
-                                                            <th class="text-center align-middle">Exámenes</th>
-                                                            <th class="text-center align-middle">Recetas</th>
-                                                            <th class="text-center align-middle">Archivos </th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @if (isset($fichas) && $fichas->count() > 0)
-                                                            @foreach ($fichas as $f)
-                                                                <tr>
-                                                                    <td class="text-center align-middle">
-                                                                        {{ \Carbon\Carbon::parse($f->created_at)->format('d-m-Y') }}
-                                                                    </td>
-
-                                                                    <td class="text-center align-middle">
-                                                                        {{ $f->profesional->nombre }} {{ $f->profesional->apellido_uno }} {{ $f->profesional->apellido_dos }}<br>
-
-
-                                                                    </td>
-
-                                                                    <td class="text-center align-middle">{{ $f->hipotesis_diagnostico ? $f->hipotesis_diagnostico : ''}}</td>
-
-                                                                    <td class="text-center align-middle">
-                                                                        {{-- <a class="btn btn-xxs btn-info-light-c has-ripple"  @if (isset($f->id)) onclick="buscar_ficha_fmu({{ $f->id }});" @endif><i class="feather icon-file-plus"></i> Ver</a> --}}
-                                                                        <button type="button" class="btn btn-xxs btn-info-light-c" @if (isset($f->id)) onclick="buscar_ficha_atencion_atencion_previa_fmu({{ $f->id }});" @endif><i class="feather icon-file-text"></i> Ver</button>
-                                                                    </td>
-
-                                                                    <td class="text-center align-middle">
-                                                                        {{-- <a class="badge badge-light-success" @if (isset($f->id)) onclick="buscar_examenes_fmu({{ $f->id }});" @endif><i class="feather icon-activity"></i> Ver</a> --}}
-                                                                        <button type="button" class="btn btn-xxs btn-success-light-c" @if (isset($f->id)) onclick="buscar_examenes_fmu({{ $f->id }});" @endif><i class="feather icon-activity"></i> Ver</button>
-                                                                    </td>
-
-                                                                    <td class="text-center align-middle">
-                                                                        {{-- <a class="badge badge-light-warning"  @if (isset($f->id)) onclick="buscar_receta_fmu({{ $f->id }});" @endif><i class="feather icon-file-plus"></i> Ver</a> --}}
-                                                                        <button type="button" class="btn btn-xxs btn-warning-light-c"  @if (isset($f->id)) onclick="buscar_receta_fmu({{ $f->id }});" @endif><i class="feather icon-file-plus"></i> Ver</button>
-                                                                    </td>
-
-                                                                    <td class="text-center align-middle">
-                                                                        {{-- <a class="badge badge-light-warning"  @if (isset($f->id)) onclick="buscar_archivo_fmu({{ $f->id }});" @endif><i class="feather icon-file-plus"></i> Ver</a> --}}
-                                                                        <button type="button" class="btn btn-xxs btn-purple-light-c" @if (isset($f->id)) onclick="buscar_archivo_fmu({{ $f->id }});" @endif><i class="feather icon-folder"></i> Ver</button>
-                                                                    </td>
-
-
-                                                                </tr>
-                                                            @endforeach
-                                                        @else
-                                                            <span>
-                                                                <h5>no existen registros</h5>
-                                                            </span>
-                                                        @endif
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
+                                        @include('atencion_odontologica.generales.odontograma_adulto')
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div>               
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
-</div>
+
 
 <!-- data tables css -->
 <link rel="stylesheet" href="{{ asset('css/ficha_medica_unica.css') }}">
@@ -804,9 +1145,9 @@
             }
         }
 
-        function dame_id_paciente(){
-            return $('#id_paciente_fc').val();
-        }
+        // function dame_id_paciente(){
+        //     return $('#id_paciente_fc').val();
+        // }
     </script>
 
 @include('atencion_odontologica.modals.odontograma.modal_odontograma')
