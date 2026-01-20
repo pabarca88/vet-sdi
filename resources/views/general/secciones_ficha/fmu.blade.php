@@ -8,7 +8,7 @@
             </div>
             <div class="row mx-1  mt-3">
                 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                    <h4 class="text-c-blue text-center f-24">Ficha Veterinaria Única</h4>
+                    <h4 class="text-c-blue text-center mb-4 mt-3 f-26">Ficha Veterinaria Única</h4>
                     {{--<button type="button" class="btn btn-xs btn-danger d-inline float-right ml-2 mb-2"><i class="feather icon-x"></i> Cerrar</button> --}}
                 </div>
             </div>
@@ -127,7 +127,7 @@
                                               <img src="{{ asset('images/iconos/peso.png') }}"  class="wid-35 rounded-xl mr-3 align-self-center mr-3" alt="...">
                                               <div class="media-body">
                                                 <h5 class="mt-0 mb-1 pt-1">Peso</h5>
-                                                <h5 class="mt-0 text-c-blue">2 kg y 34 gr</h5>
+                                                <h5 class="mt-0 text-info">2 kg y 34 gr</h5>
                                               </div>
                                             </div>
                                         </div>
@@ -140,7 +140,7 @@
                                               <img src="{{ asset('images/iconos/enfermedad-cronica.png') }}"  class="wid-35 rounded-xl mr-3 align-self-center mr-3" alt="...">
                                               <div class="media-body">
                                                 <h5 class="mt-0 mb-1 pt-1">Paciente crónico</h5>
-                                                <h5 class="mt-0 text-c-blue">NO</h5>
+                                                <h5 class="mt-0 text-info">NO</h5>
                                               </div>
                                             </div>
                                         </div>
@@ -179,7 +179,7 @@
                                             <img src="{{ asset('images/iconos/esterilizacion.png') }}"  class="wid-35 rounded-xl mr-3 align-self-center mr-3" alt="...">
                                               <div class="media-body">
                                                 <h5 class="mt-0 mb-1 pt-1">Esterilizado/a</h5>
-                                                <h5 class="mt-0">SI</h5>
+                                                <h5 class="mt-0 text-info">SI</h5>
                                               </div>
                                             </div>
                                         </div>
@@ -192,14 +192,14 @@
                                             <img src="{{ asset('images/iconos/microchip.png') }}"  class="wid-35 rounded-xl mr-3 align-self-center mr-3" alt="...">
                                               <div class="media-body">
                                                 <h5 class="mt-0 mb-1 pt-1">N° Microchip</h5>
-                                                <h5 class="mt-0">38293892</h5>
+                                                <h5 class="mt-0 text-info">38293892</h5>
                                               </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-12 col-md-4">
-                                    <button class="btn btn-purple-light-c rounded-xl pt-3 pb-4 btn-block collapsed" type="button" data-toggle="collapse" data-target="#cabecera_info" aria-expanded="false" aria-controls="cabecera_info">
+                                    <button class="btn btn-purple-light-c shadow-sm rounded-xl pt-3 pb-4 btn-block collapsed" type="button" data-toggle="collapse" data-target="#cabecera_info" aria-expanded="false" aria-controls="cabecera_info">
                                         <i class="feather icon-plus"></i> Ver más información
                                     </button>
                                 </div>
@@ -210,7 +210,7 @@
                         <!--INFO-->
                         <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                             <div class="card  rounded-xl">
-                                <div class="card-header-fmu" id="enf-cron">
+                                <div class="card-header-fmu border-none" style="border:0px!important;" id="enf-cron">
                                         @php
                                             $cantidad_ante_cronicos = 0;
                                             $cantidad_ante_alergias = 0;
@@ -472,12 +472,12 @@
                     <div class="row">
                         {{-- Tratamientos en curso --}}
                         <div class="col-sm-6 col-md-6 col-lg-6 col-xl-3 mb-3">
-                             <div class="card border-card-purple h-100">
+                             <div class="card border-card-info h-100">
                                 <div class="card-body px-2 py-3">
                                     <div class="media">
                                       <img src="{{ asset('images/iconos/tto-curso.png') }}" class=" wid-35 rounded-xl mr-3" alt="Tratamientos en curso">
                                       <div class="media-body">
-                                        <h5 class="f-16 text-purple font-weight-bold">Tratamientos en curso</h5>
+                                        <h5 class="f-16 text-info font-weight-bold">Tratamientos en curso</h5>
                                         <ul>
                                                 @if (isset($tratamiento_activo))
                                                     @foreach ( $tratamiento_activo as $receta)
@@ -530,18 +530,18 @@
 
                         {{-- Cirugías recientes --}}
                         <div class="col-sm-6 col-md-6 col-lg-6 col-xl-3 mb-3">
-                             <div class="card  border-card-purple h-100">
+                             <div class="card  border-card-info h-100">
                                 <div class="card-body px-2 py-3">
                                     <div class="media">
                                       <img src="{{ asset('images/iconos/ant-qx.png') }}" class=" wid-35 rounded-xl mr-3" alt="CX Recientes">
                                         <div class="media-body">
-                                            <h5 class="f-16 text-purple font-weight-bold">Cirugías recientes</h5>
+                                            <h5 class="f-16 text-info font-weight-bold">Cirugías recientes</h5>
                                             <ul>
                                                 @if(isset($antecedentes))
                                                 @foreach ($antecedentes as $data)
                                                     @if($data->id_tipo_antecedente==3)
                                                         {{-- <li>{!! $data->antecedente_data->procedimiento.'<br/>&nbsp;&nbsp;&nbsp;- '.substr($data->comentario, 0, 30) !!}</li> --}}
-                                                        <li class="text-capitalize"> <i class="fas fa-caret-right text-purple"></i> {!! $data->antecedente_data->procedimiento.' - '.$data->comentario !!}</li>
+                                                        <li class="text-capitalize"> <i class="fas fa-caret-right text-info"></i> {!! $data->antecedente_data->procedimiento.' - '.$data->comentario !!}</li>
                                                     @else
                                                         {{-- <li>No hay registros</li> --}}
                                                     @endif
@@ -568,12 +568,12 @@
 
                         {{-- Prótesis y ortesis --}}
                         <div class="col-sm-6 col-md-6 col-lg-6 col-xl-3 mb-3">
-                            <div class="card border-card-purple h-100">
+                            <div class="card border-card-info h-100">
                                 <div class="card-body px-2 py-3">
                                     <div class="media">
                                       <img src="{{ asset('images/iconos/prot-ort.png') }}" class=" wid-35 rounded-xl mr-3" alt="Prótesis y Ortesis">
                                         <div class="media-body">
-                                            <h5 class="f-16 text-purple font-weight-bold">Prótesis y Ortesis</h5>
+                                            <h5 class="f-16 text-info font-weight-bold">Prótesis y Ortesis</h5>
                                             <ul>
                                                 <li>No hay registros</li>
                                             </ul>
