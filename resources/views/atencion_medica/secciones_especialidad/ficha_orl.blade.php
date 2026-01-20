@@ -694,21 +694,31 @@
 		                                           			<div class="table-responsive float-md-right" style="width: 300px">
 		                                           				<table class="table table-sm table-bordered">
 																  <tbody>
+																	@php
+																		$subtotal_presupuesto_vet = 0;
+																		foreach ($presupuestos_vet as $presupuesto_vet) {
+																			$valor_unitario = $presupuesto_vet->valor_tratamiento ?? $presupuesto_vet->valor ?? 0;
+																			$cantidad = $presupuesto_vet->cantidad ?? 1;
+																			$subtotal_presupuesto_vet += ($valor_unitario * $cantidad);
+																		}
+																		$iva_presupuesto_vet = $subtotal_presupuesto_vet * 0.19;
+																		$total_presupuesto_vet = $subtotal_presupuesto_vet + $iva_presupuesto_vet;
+																	@endphp
 																    <tr>
 																      <th class="bg-light">Descuento</th>
 																      <td>0%</td>
 																    </tr>
 																    <tr>
 																      <th class="bg-light">Subtotal </th>
-																      <td>$30.000</td>
+																      <td id="presupuesto_vet_subtotal">${{ number_format($subtotal_presupuesto_vet, 0, ',', '.') }}</td>
 																    </tr>
 																    <tr>
 																      <th class="bg-light">IVA (19%)</th>
-																      <td>$30.000</td>
+																      <td id="presupuesto_vet_iva">${{ number_format($iva_presupuesto_vet, 0, ',', '.') }}</td>
 																    </tr>
 																    <tr>
 																      <th class="bg-purple text-white">TOTAL</th>
-																      <th class="text-purple">$30.000</th>
+																      <th class="text-purple" id="presupuesto_vet_total">${{ number_format($total_presupuesto_vet, 0, ',', '.') }}</th>
 																    </tr>
 																  </tbody>
 																</table>
@@ -2175,6 +2185,26 @@
                 });
             }
 
+            function parsearMoneda(texto) {
+                if (!texto) return 0;
+                var limpio = texto.replace(/[^0-9]/g, '');
+                return limpio ? Number(limpio) : 0;
+            }
+
+            function actualizarTotalesPresupuesto() {
+                var subtotal = 0;
+                $('#presupuesto_vet_items tr').each(function() {
+                    var valorTotal = parsearMoneda($(this).find('td').eq(4).text());
+                    subtotal += valorTotal;
+                });
+                var iva = Math.round(subtotal * 0.19);
+                var total = subtotal + iva;
+
+                $('#presupuesto_vet_subtotal').text(formatearMoneda(subtotal));
+                $('#presupuesto_vet_iva').text(formatearMoneda(iva));
+                $('#presupuesto_vet_total').text(formatearMoneda(total));
+            }
+
             $('#btn_agregar_presupuesto_vet').on('click', function() {
                 var diagnosticoId = $('#presupuesto_vet_diagnostico').val();
                 var tratamientoId = $('#presupuesto_vet_tratamiento').val();
@@ -2223,6 +2253,7 @@
                     $('#presupuesto_vet_diagnostico').val('');
                     $('#presupuesto_vet_tratamiento').val('');
                     actualizarCorrelativoPresupuesto();
+                    actualizarTotalesPresupuesto();
                 })
                 .fail(function(xhr) {
                     var mensaje = 'Error al agregar item.';
@@ -2232,6 +2263,7 @@
                     alert(mensaje);
                 });
             });
+            actualizarTotalesPresupuesto();
                      /** MENSAJE*/
        /** CARGAR mensaje */
             $('#mensaje_ficha').html(' Solo el campo dignóstico es obligatorio el resto es opcional.');
