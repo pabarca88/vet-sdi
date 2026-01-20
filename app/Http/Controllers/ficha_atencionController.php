@@ -2440,6 +2440,27 @@ class ficha_atencionController extends Controller
 
         $trabajos_laboratorio = $this->dame_trabajos_laboratorio($paciente->id, $id_ficha_atencion, $request->lugar_atencion, $profesional->id);
 
+        $diagnosticos_vet = DB::table('diagnosticos_vet')
+            ->where('estado', 1)
+            ->orderBy('descripcion')
+            ->get();
+        $tratamientos_vet = DB::table('tratamientos_vet')
+            ->where('estado', 1)
+            ->orderBy('descripcion')
+            ->get();
+        $presupuestos_vet = DB::table('presupuestos_vet as pv')
+            ->leftJoin('diagnosticos_vet as dv', 'pv.id_diagnostico', '=', 'dv.id')
+            ->leftJoin('tratamientos_vet as tv', 'pv.id_tratamiento', '=', 'tv.id')
+            ->select(
+                'pv.*',
+                'dv.descripcion as diagnostico',
+                'tv.descripcion as tratamiento',
+                'tv.valor as valor_tratamiento'
+            )
+            ->where('pv.id_ficha_atencion', $id_ficha_atencion)
+            ->orderBy('pv.created_at')
+            ->get();
+
         
         
         return view($ruta_blade)->with(
@@ -2535,6 +2556,9 @@ class ficha_atencionController extends Controller
                 'sexto_cuadrante_endodoncia' => $sexto_cuadrante_endodoncia,
                 'tratamientos' => $tratamientos_dentales,
                 'diagnosticos' => $diagnosticos_dentales,
+                'diagnosticos_vet' => $diagnosticos_vet,
+                'tratamientos_vet' => $tratamientos_vet,
+                'presupuestos_vet' => $presupuestos_vet,
                 'odontograma' => $odontograma,
                 'odontograma_historial' => $odontograma_historial,
                 'presupuesto' => $presupuesto_dental,
@@ -2699,6 +2723,67 @@ class ficha_atencionController extends Controller
             'estado' => 1,
             'msj' => 'Presupuesto registrado',
             'id' => $presupuesto->id,
+        ]);
+    }
+
+    public function guardarPresupuestoVetItem(Request $request)
+    {
+        $validator = \Validator::make($request->all(), [
+            'id_paciente' => 'nullable|integer',
+            'id_profesional' => 'nullable|integer',
+            'id_ficha_atencion' => 'nullable|integer',
+            'id_lugar_atencion' => 'nullable|integer',
+            'id_diagnostico' => 'required|integer',
+            'id_tratamiento' => 'required|integer',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'estado' => 0,
+                'msj' => 'Datos invalidos',
+                'error' => $validator->errors(),
+            ], 422);
+        }
+
+        $diagnostico = DB::table('diagnosticos_vet')->where('id', $request->id_diagnostico)->first();
+        if (!$diagnostico) {
+            return response()->json([
+                'estado' => 0,
+                'msj' => 'Diagnostico no encontrado',
+            ], 404);
+        }
+
+        $tratamiento = DB::table('tratamientos_vet')->where('id', $request->id_tratamiento)->first();
+        if (!$tratamiento) {
+            return response()->json([
+                'estado' => 0,
+                'msj' => 'Tratamiento no encontrado',
+            ], 404);
+        }
+
+        $id = DB::table('presupuestos_vet')->insertGetId([
+            'id_paciente' => $request->id_paciente,
+            'id_profesional' => $request->id_profesional,
+            'id_ficha_atencion' => $request->id_ficha_atencion,
+            'id_lugar_atencion' => $request->id_lugar_atencion,
+            'id_diagnostico' => $request->id_diagnostico,
+            'id_tratamiento' => $request->id_tratamiento,
+            'cantidad' => 1,
+            'valor' => $tratamiento->valor ?? null,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        return response()->json([
+            'estado' => 1,
+            'msj' => 'Item agregado al presupuesto',
+            'item' => [
+                'id' => $id,
+                'diagnostico' => $diagnostico->descripcion,
+                'tratamiento' => $tratamiento->descripcion,
+                'valor' => $tratamiento->valor,
+                'cantidad' => 1,
+            ],
         ]);
     }
 

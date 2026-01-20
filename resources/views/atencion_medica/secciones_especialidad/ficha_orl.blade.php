@@ -539,7 +539,7 @@
                             <div class="tab-pane fade" id="presupuesto-mascota" role="tabpanel" aria-labelledby="presupuesto-mascota-tab">
                                 <div class="row">
                                     <div class="col-md-12 mb-0">
-                                        <h6 class="f-18 text-c-blue mb-2">Presupuesto Clínico N° 3</h6>
+                                        <h6 class="f-18 text-c-blue mb-2">Presupuesto Clínico N° 33</h6>
                                     </div>
                                 </div>
                                 <input type="hidden" id="presupuesto_mascota_id_paciente" value="{{ $paciente->id }}">
@@ -629,9 +629,29 @@
                                     <div class="col-md-12 mb-0">
 	                                    <div class="card">
 		                                    <div class="card-body">
-		                                           <div class="form-row">
-		                                           	<div class="col-12">
-		                                           		<button type="button" class="btn mb-3 btn-info float-right"><i class="feather icon-plus"></i>Añadir Item</button>
+		                                           <div class="form-row align-items-end">
+		                                           	<div class="form-group col-md-6">
+		                                           		<label class="floating-label-activo-sm">Diagnóstico</label>
+		                                           		<select class="form-control form-control-sm" id="presupuesto_vet_diagnostico">
+		                                           			<option value="">Seleccione</option>
+		                                           			@foreach ($diagnosticos_vet as $diagnostico_vet)
+		                                           				<option value="{{ $diagnostico_vet->id }}">{{ $diagnostico_vet->descripcion }}</option>
+		                                           			@endforeach
+		                                           		</select>
+		                                           	</div>
+		                                           	<div class="form-group col-md-4">
+		                                           		<label class="floating-label-activo-sm">Tratamiento</label>
+		                                           		<select class="form-control form-control-sm" id="presupuesto_vet_tratamiento">
+		                                           			<option value="">Seleccione</option>
+		                                           			@foreach ($tratamientos_vet as $tratamiento_vet)
+		                                           				<option value="{{ $tratamiento_vet->id }}" data-valor="{{ $tratamiento_vet->valor ?? 0 }}">{{ $tratamiento_vet->descripcion }}</option>
+		                                           			@endforeach
+		                                           		</select>
+		                                           	</div>
+		                                           	<div class="form-group col-md-2">
+		                                           		<button type="button" class="btn btn-sm btn-info btn-block" id="btn_agregar_presupuesto_vet">
+		                                           			<i class="feather icon-plus"></i>Añadir a presupuesto
+		                                           		</button>
 		                                           	</div>
 		                                           </div>
 		                                           <div class="form-row">
@@ -649,25 +669,23 @@
 																      <th scope="col">Acciones</th>
 																    </tr>
 																  </thead>
-																  <tbody>
-																    <tr>
-																      <td>1</td>
-																      <td>Tipo procedimiento o Insumo</td>
-																      <td>$5.000</td>
-																      <td>1</td>
-																      <td>$5.000</td>
-																      <td>0%</td>
-																      <td><button type="button" class="btn btn-icon btn-danger"><i class="feather icon-x"></i></button></td>
-																    </tr>
-																    <tr>
-																      <td>2</td>
-																      <td>Tipo procedimiento o Insumo</td>
-																      <td>$10.000</td>
-																      <td>2</td>
-																      <td>$20.000</td>
-																      <td>0%</td>
-																      <td><button type="button" class="btn btn-icon btn-danger"><i class="feather icon-x"></i></button></td>
-																    </tr>
+																  <tbody id="presupuesto_vet_items">
+																  	@foreach ($presupuestos_vet as $presupuesto_vet)
+																  		@php
+																  			$valor_unitario = $presupuesto_vet->valor_tratamiento ?? $presupuesto_vet->valor ?? 0;
+																  			$cantidad = $presupuesto_vet->cantidad ?? 1;
+																  			$valor_total = $valor_unitario * $cantidad;
+																  		@endphp
+																  		<tr data-id="{{ $presupuesto_vet->id }}">
+																  			<td>{{ $loop->iteration }}</td>
+																  			<td>{{ $presupuesto_vet->diagnostico }} / {{ $presupuesto_vet->tratamiento }}</td>
+																  			<td>${{ number_format($valor_unitario, 0, ',', '.') }}</td>
+																  			<td>{{ $cantidad }}</td>
+																  			<td>${{ number_format($valor_total, 0, ',', '.') }}</td>
+																  			<td>0%</td>
+																  			<td>-</td>
+																  		</tr>
+																  	@endforeach
 																  </tbody>
 																</table>
 		                                           			</div>
@@ -2141,6 +2159,77 @@
                         .removeClass('text-success')
                         .addClass('text-danger')
                         .text(mensaje);
+                });
+            });
+
+            function formatearMoneda(valor) {
+                if (valor === null || valor === undefined) return '-';
+                var numero = Number(valor);
+                if (Number.isNaN(numero)) return '-';
+                return '$' + numero.toLocaleString('es-CL');
+            }
+
+            function actualizarCorrelativoPresupuesto() {
+                $('#presupuesto_vet_items tr').each(function(index) {
+                    $(this).find('td:first').text(index + 1);
+                });
+            }
+
+            $('#btn_agregar_presupuesto_vet').on('click', function() {
+                var diagnosticoId = $('#presupuesto_vet_diagnostico').val();
+                var tratamientoId = $('#presupuesto_vet_tratamiento').val();
+
+                if (!diagnosticoId || !tratamientoId) {
+                    alert('Seleccione diagnostico y tratamiento.');
+                    return;
+                }
+
+                var payload = {
+                    _token: '{{ csrf_token() }}',
+                    id_paciente: $('#presupuesto_mascota_id_paciente').val(),
+                    id_profesional: $('#presupuesto_mascota_id_profesional').val(),
+                    id_ficha_atencion: $('#presupuesto_mascota_id_ficha_atencion').val(),
+                    id_lugar_atencion: $('#presupuesto_mascota_id_lugar_atencion').val(),
+                    id_diagnostico: diagnosticoId,
+                    id_tratamiento: tratamientoId
+                };
+
+                $.ajax({
+                    url: '{{ route('profesional.presupuesto_vet.guardar_item') }}',
+                    type: 'POST',
+                    data: payload
+                })
+                .done(function(resp) {
+                    if (!resp || resp.estado !== 1 || !resp.item) {
+                        return;
+                    }
+                    var item = resp.item;
+                    var valor = item.valor || 0;
+                    var cantidad = item.cantidad || 1;
+                    var total = valor * cantidad;
+
+                    $('#presupuesto_vet_items').append(
+                        '<tr data-id="' + item.id + '">' +
+                        '<td></td>' +
+                        '<td>' + item.diagnostico + ' / ' + item.tratamiento + '</td>' +
+                        '<td>' + formatearMoneda(valor) + '</td>' +
+                        '<td>' + cantidad + '</td>' +
+                        '<td>' + formatearMoneda(total) + '</td>' +
+                        '<td>0%</td>' +
+                        '<td>-</td>' +
+                        '</tr>'
+                    );
+
+                    $('#presupuesto_vet_diagnostico').val('');
+                    $('#presupuesto_vet_tratamiento').val('');
+                    actualizarCorrelativoPresupuesto();
+                })
+                .fail(function(xhr) {
+                    var mensaje = 'Error al agregar item.';
+                    if (xhr.responseJSON && xhr.responseJSON.msj) {
+                        mensaje = xhr.responseJSON.msj;
+                    }
+                    alert(mensaje);
                 });
             });
                      /** MENSAJE*/

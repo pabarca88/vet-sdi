@@ -15,6 +15,8 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
         $this->call([
+            TratamientosVetSeeder::class,
+            DiagnosticosVetSeeder::class,
             EspeciesMascotasSeeder::class,
             TamanosMascotasSeeder::class,
             EspecieTamanoMascotaSeeder::class,

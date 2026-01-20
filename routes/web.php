@@ -1414,6 +1414,7 @@ Route::group([
 
     Route::get('Paciente/Ficha_consulta', [App\Http\Controllers\ficha_atencionController::class, 'index'])->name('profesional.realizar_consulta');
     Route::post('Paciente/Presupuesto_mascota', [App\Http\Controllers\ficha_atencionController::class, 'guardarPresupuestoMascota'])->name('profesional.presupuesto_mascota.guardar');
+    Route::post('Paciente/Presupuesto_vet/item', [App\Http\Controllers\ficha_atencionController::class, 'guardarPresupuestoVetItem'])->name('profesional.presupuesto_vet.guardar_item');
 
     Route::get('Paciente/Ficha_consulta/sdi', [App\Http\Controllers\ficha_atencionController::class, 'index_sdi'])->name('profesional.realizar_consulta_sdi');
 
