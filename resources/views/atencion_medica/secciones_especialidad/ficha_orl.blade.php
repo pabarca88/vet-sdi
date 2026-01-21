@@ -683,7 +683,11 @@
 																  			<td>{{ $cantidad }}</td>
 																  			<td>${{ number_format($valor_total, 0, ',', '.') }}</td>
 																  			<td>0%</td>
-																  			<td>-</td>
+																  			<td>
+																  				<button type="button" class="btn btn-icon btn-danger btn-eliminar-presupuesto-vet" data-id="{{ $presupuesto_vet->id }}">
+																  					<i class="feather icon-x"></i>
+																  				</button>
+																  			</td>
 																  		</tr>
 																  	@endforeach
 																  </tbody>
@@ -2210,7 +2214,11 @@
                 var tratamientoId = $('#presupuesto_vet_tratamiento').val();
 
                 if (!diagnosticoId || !tratamientoId) {
-                    alert('Seleccione diagnostico y tratamiento.');
+                    swal({
+                        title: 'Aviso',
+                        text: 'Seleccione diagnostico y tratamiento.',
+                        icon: 'warning',
+                    });
                     return;
                 }
 
@@ -2246,7 +2254,11 @@
                         '<td>' + cantidad + '</td>' +
                         '<td>' + formatearMoneda(total) + '</td>' +
                         '<td>0%</td>' +
-                        '<td>-</td>' +
+                        '<td>' +
+                        '<button type="button" class="btn btn-icon btn-danger btn-eliminar-presupuesto-vet" data-id="' + item.id + '">' +
+                        '<i class="feather icon-x"></i>' +
+                        '</button>' +
+                        '</td>' +
                         '</tr>'
                     );
 
@@ -2254,13 +2266,106 @@
                     $('#presupuesto_vet_tratamiento').val('');
                     actualizarCorrelativoPresupuesto();
                     actualizarTotalesPresupuesto();
+                    swal({
+                        title: 'Agregado',
+                        text: 'Tratamiento agregado al presupuesto.',
+                        icon: 'success',
+                    });
                 })
                 .fail(function(xhr) {
                     var mensaje = 'Error al agregar item.';
                     if (xhr.responseJSON && xhr.responseJSON.msj) {
                         mensaje = xhr.responseJSON.msj;
                     }
-                    alert(mensaje);
+                    swal({
+                        title: 'Error',
+                        text: mensaje,
+                        icon: 'error',
+                    });
+                });
+            });
+
+            $('#presupuesto_vet_items').on('click', '.btn-eliminar-presupuesto-vet', function() {
+                var id = $(this).data('id');
+                if (!id) return;
+
+                $.ajax({
+                    url: '{{ route('profesional.presupuesto_vet.eliminar_item') }}',
+                    type: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        id: id
+                    }
+                })
+                .done(function(resp) {
+                    if (!resp || resp.estado !== 1) {
+                        return;
+                    }
+                    $('#presupuesto_vet_items').find('tr[data-id="' + id + '"]').remove();
+                    actualizarCorrelativoPresupuesto();
+                    actualizarTotalesPresupuesto();
+                })
+                .fail(function(xhr) {
+                    var mensaje = 'Error al eliminar item.';
+                    if (xhr.responseJSON && xhr.responseJSON.msj) {
+                        mensaje = xhr.responseJSON.msj;
+                    }
+                    swal({
+                        title: 'Error',
+                        text: mensaje,
+                        icon: 'error',
+                    });
+                });
+            });
+
+            $('#btn_pdf_presupuesto_mascota').on('click', function() {
+                var payload = {
+                    _token: '{{ csrf_token() }}',
+                    id_paciente: $('#presupuesto_mascota_id_paciente').val(),
+                    id_ficha_atencion: $('#presupuesto_mascota_id_ficha_atencion').val(),
+                    id_lugar_atencion: $('#presupuesto_mascota_id_lugar_atencion').val()
+                };
+
+                $.ajax({
+                    url: '{{ route('profesional.generar_pdf_presupuesto_vet') }}',
+                    type: 'POST',
+                    data: payload
+                })
+                .done(function(resp) {
+                    if (resp && resp.ruta) {
+                        swal({
+                            title: 'Reporte generado',
+                            text: 'El reporte se ha generado correctamente.',
+                            icon: 'success',
+                            button: 'Aceptar'
+                        }).then(function() {
+                            var width = 800;
+                            var height = 600;
+                            var left = (screen.width - width) / 2;
+                            var top = (screen.height - height) / 2;
+                            window.open(resp.ruta, 'Presupuesto veterinario', 'width=' + width + ',height=' + height + ',top=' + top + ',left=' + left);
+                        });
+                        return;
+                    }
+
+                    swal({
+                        title: 'Error',
+                        text: 'Ha ocurrido un error al generar el reporte.',
+                        icon: 'error',
+                        button: 'Aceptar'
+                    });
+                })
+                .fail(function(xhr) {
+                    var mensaje = 'Error al generar PDF.';
+                    if (xhr.responseJSON && xhr.responseJSON.msj) {
+                        mensaje = xhr.responseJSON.msj;
+                    }
+                    swal({
+                        title: 'Error',
+                        text: mensaje,
+                        icon: 'error',
+                        button: 'Aceptar'
+                    });
                 });
             });
             actualizarTotalesPresupuesto();

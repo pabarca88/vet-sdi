@@ -5072,6 +5072,152 @@ return $ficha;
 
     }
 
+    public function generar_pdf_presupuesto_vet(Request $req)
+    {
+        try {
+            $ficha_atencion = FichaAtencion::find($req->id_ficha_atencion);
+            if (!$ficha_atencion) {
+                return response()->json(['msj' => 'Ficha no encontrada'], 404);
+            }
+
+            $lugar_atencion_id = $req->id_lugar_atencion ?: $ficha_atencion->id_lugar_atencion;
+            $lugar_atencion = LugarAtencion::with('direccion')->find($lugar_atencion_id);
+            $profesional = Profesional::find($ficha_atencion->id_profesional);
+            $paciente = Paciente::find($ficha_atencion->id_paciente);
+            $mascota = $ficha_atencion->id_mascota ? Mascota::find($ficha_atencion->id_mascota) : null;
+
+            $items_db = DB::table('presupuestos_vet as pv')
+                ->leftJoin('diagnosticos_vet as dv', 'pv.id_diagnostico', '=', 'dv.id')
+                ->leftJoin('tratamientos_vet as tv', 'pv.id_tratamiento', '=', 'tv.id')
+                ->select(
+                    'pv.cantidad',
+                    'pv.valor',
+                    'dv.descripcion as diagnostico',
+                    'tv.descripcion as tratamiento',
+                    'tv.valor as valor_tratamiento'
+                )
+                ->where('pv.id_ficha_atencion', $ficha_atencion->id)
+                ->orderBy('pv.created_at')
+                ->get();
+
+            $detalle_items = [];
+            $subtotal = 0;
+            foreach ($items_db as $item) {
+                $valor_unitario = $item->valor_tratamiento ?? $item->valor ?? 0;
+                $cantidad = $item->cantidad ?? 1;
+                $valor_total = $valor_unitario * $cantidad;
+                $subtotal += $valor_total;
+                $detalle_items[] = [
+                    'descripcion' => ($item->diagnostico ?: '-') . ' / ' . ($item->tratamiento ?: '-'),
+                    'valor_unitario' => $valor_unitario,
+                    'cantidad' => $cantidad,
+                    'valor_total' => $valor_total,
+                ];
+            }
+            $iva = round($subtotal * 0.19);
+            $total = $subtotal + $iva;
+
+            $temp_token = CertificadoController::certificadoDocumento($ficha_atencion->id, $profesional->id, $paciente->id, 1);
+            if ($temp_token['estado'] == 1) {
+                $token_documento = $temp_token['certificado'];
+                $url_documento = CertificadoController::generarUrlDocumento($token_documento);
+                $qr_documento = GeneradorQrController::generar($url_documento);
+            } else {
+                $temp_token = CertificadoController::certificadoDocumento($ficha_atencion->id, rand(111, 999), $paciente->id, 1);
+                $token_documento = $temp_token['certificado'];
+                $url_documento = CertificadoController::generarUrlDocumento($token_documento);
+                $qr_documento = GeneradorQrController::generar($url_documento);
+            }
+
+            $temp_token = CertificadoController::certificadoProfesional($profesional->id, 1, 1, $ficha_atencion->id);
+            if ($temp_token['estado'] == 1) {
+                $token_profesional = $temp_token['certificado'];
+                $url_profesional = CertificadoController::generarUrlProfesional($token_profesional);
+                $qr_profesional = GeneradorQrController::generar($url_documento);
+            } else {
+                $temp_token = CertificadoController::certificadoProfesional(rand(1114, 999), 1, 1, $ficha_atencion->id);
+                $token_profesional = $temp_token['certificado'];
+                $url_profesional = CertificadoController::generarUrlProfesional($token_profesional);
+                $qr_profesional = GeneradorQrController::generar($url_documento);
+            }
+
+            $qr_id = GeneradorQrController::generar(encrypt($ficha_atencion->id));
+
+            $array_ficha_atencion = [
+                'id' => $ficha_atencion->id,
+                'created_at' => $ficha_atencion->created_at->format('d/m/Y'),
+                'token' => $token_documento,
+                'url' => $url_documento,
+                'qr' => $qr_documento,
+                'qr_id' => $qr_id,
+            ];
+
+            $array_lugar_atencion = [
+                'id' => $lugar_atencion->id ?? null,
+                'nombre' => $lugar_atencion->nombre ?? '',
+                'direccion' => $lugar_atencion && $lugar_atencion->direccion
+                    ? $lugar_atencion->direccion->direccion . ' ' . $lugar_atencion->direccion->numero_dir . ', ' . $lugar_atencion->direccion->Ciudad()->first()->nombre
+                    : '',
+                'region' => $lugar_atencion && $lugar_atencion->direccion
+                    ? $lugar_atencion->direccion->Ciudad()->first()->Region()->first()->nombre
+                    : '',
+            ];
+
+            $direccion_paciente = $paciente->Direccion()->first();
+            $array_profesional = [
+                'id' => $profesional->id,
+                'nombre' => $profesional->nombre . ' ' . $profesional->apellido_uno . ' ' . $profesional->apellido_dos,
+                'rut' => $profesional->rut,
+                'direccion' => $profesional->direccion->direccion . ' ' . $profesional->direccion->numero_dir . ', ' . $profesional->direccion->Ciudad()->first()->nombre,
+                'especialidad' => (optional($profesional->SubTipoEspecialidad()->first())->nombre ?: $profesional->TipoEspecialidad()->first()->nombre),
+                'id_especialidad' => $profesional->id_especialidad,
+                'num_colegio' => $profesional->num_colegio,
+                'region' => $profesional->direccion->Ciudad()->first()->Region()->first()->nombre,
+                'token' => $token_profesional,
+                'url' => $url_profesional,
+                'qr' => $qr_profesional,
+            ];
+            $array_paciente = [
+                'id' => $paciente->id,
+                'nombre' => $paciente->nombres . ' ' . $paciente->apellido_uno . ' ' . $paciente->apellido_dos,
+                'fecha_nac' => $paciente->fecha_nac,
+                'rut' => $paciente->rut,
+                'sexo' => $paciente->sexo,
+                'direccion' => $direccion_paciente
+                    ? $direccion_paciente->direccion . ' ' . $direccion_paciente->numero_dir . ', ' . $direccion_paciente->Ciudad()->first()->nombre
+                    : '',
+            ];
+
+            $mascota = [
+                'nombre' => $mascota ? $mascota->nombre : '',
+            ];
+
+            $items = $detalle_items;
+
+            $totales = [
+                'subtotal' => $subtotal,
+                'iva' => $iva,
+                'total' => $total,
+            ];
+
+            $pdf = PdfController::generarPDF(
+                'PRESUPUESTO VETERINARIO',
+                compact('array_ficha_atencion', 'array_lugar_atencion', 'array_profesional', 'array_paciente', 'mascota', 'items', 'totales'),
+                'Presupuesto Vet ' . $paciente->rut,
+                'presupuesto_vet',
+                'G'
+            );
+
+            if (isset($pdf->estado) && $pdf->estado == 1) {
+                return response()->json(['ruta' => $pdf->pdf_url]);
+            }
+
+            return response()->json(['msj' => 'Error al generar PDF'], 500);
+        } catch (\Exception $e) {
+            return response()->json(['msj' => $e->getMessage()], 500);
+        }
+    }
+
     public function generar_pdf_presupuesto_hist(Request $req){
         try {
 

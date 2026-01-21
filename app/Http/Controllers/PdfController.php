@@ -64,7 +64,11 @@ class PdfController extends Controller
                 /** DESAROLLO */
                 // if($pdf->save('storage/pdf/' . $nombre_pdf . '.pdf'))
                 /** PRODUCCION */
-                if($pdf->save('public/storage/pdf/' . $nombre_pdf . '.pdf'))
+                $directorio = public_path('storage/pdf');
+                if (!is_dir($directorio)) {
+                    mkdir($directorio, 0775, true);
+                }
+                if($pdf->save($directorio . '/' . $nombre_pdf . '.pdf'))
                 {
                     $datos['estado'] = 1;
                     $datos['msj'] = 'pdf generado';

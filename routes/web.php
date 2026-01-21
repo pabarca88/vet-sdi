@@ -1351,6 +1351,7 @@ Route::group([
     Route::post('/actualizar_tratamiento_dental',[App\Http\Controllers\EscritorioProfesional::class, 'actualizar_tratamiento_dental'])->name('profesional.actualizar_tratamiento_dental');
 
     Route::post('/generar_pdf_presupuesto',[App\Http\Controllers\EscritorioProfesional::class, 'generar_pdf_presupuesto'])->name('profesional.generar_pdf_presupuesto_dental');
+    Route::post('/generar_pdf_presupuesto_vet',[App\Http\Controllers\EscritorioProfesional::class, 'generar_pdf_presupuesto_vet'])->name('profesional.generar_pdf_presupuesto_vet');
 
     Route::post('/generar_pdf_presupuesto_hist',[App\Http\Controllers\EscritorioProfesional::class, 'generar_pdf_presupuesto_hist'])->name('profesional.generar_pdf_presupuesto_dental_hist');
 
@@ -1415,6 +1416,7 @@ Route::group([
     Route::get('Paciente/Ficha_consulta', [App\Http\Controllers\ficha_atencionController::class, 'index'])->name('profesional.realizar_consulta');
     Route::post('Paciente/Presupuesto_mascota', [App\Http\Controllers\ficha_atencionController::class, 'guardarPresupuestoMascota'])->name('profesional.presupuesto_mascota.guardar');
     Route::post('Paciente/Presupuesto_vet/item', [App\Http\Controllers\ficha_atencionController::class, 'guardarPresupuestoVetItem'])->name('profesional.presupuesto_vet.guardar_item');
+    Route::post('Paciente/Presupuesto_vet/item/eliminar', [App\Http\Controllers\ficha_atencionController::class, 'eliminarPresupuestoVetItem'])->name('profesional.presupuesto_vet.eliminar_item');
 
     Route::get('Paciente/Ficha_consulta/sdi', [App\Http\Controllers\ficha_atencionController::class, 'index_sdi'])->name('profesional.realizar_consulta_sdi');
 

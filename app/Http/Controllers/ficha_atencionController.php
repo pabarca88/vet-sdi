@@ -2787,6 +2787,35 @@ class ficha_atencionController extends Controller
         ]);
     }
 
+    public function eliminarPresupuestoVetItem(Request $request)
+    {
+        $validator = \Validator::make($request->all(), [
+            'id' => 'required|integer',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'estado' => 0,
+                'msj' => 'Datos invalidos',
+                'error' => $validator->errors(),
+            ], 422);
+        }
+
+        $eliminado = DB::table('presupuestos_vet')->where('id', $request->id)->delete();
+
+        if (!$eliminado) {
+            return response()->json([
+                'estado' => 0,
+                'msj' => 'Item no encontrado',
+            ], 404);
+        }
+
+        return response()->json([
+            'estado' => 1,
+            'msj' => 'Item eliminado',
+        ]);
+    }
+
     public function dame_comunas_contacto_emergencia($id_paciente){
         $paciente = Paciente::find($id_paciente);
         // verificar si el paciente tiene contacto de emergencia
