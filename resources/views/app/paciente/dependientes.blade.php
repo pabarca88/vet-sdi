@@ -561,7 +561,7 @@
             var select = $('#modal_agregar_dep_nuevo_raza');
             if (!select.length) return;
 
-            select.html('<option value=\"\">Seleccione</option>');
+            select.html('<option value=\"\">Seleccione</option><option value=\"sin\">Sin raza</option>');
             if (!especieId || especieId === '0') return;
 
             if (razasMascotasCache[especieId]) {
@@ -576,13 +576,13 @@
                     poblarRazasSelect(select, razas, razaSeleccionada);
                 })
                 .fail(function(){
-                    select.html('<option value=\"\">Seleccione</option>');
+                    select.html('<option value=\"\">Seleccione</option><option value=\"sin\">Sin raza</option>');
                 });
         }
 
         function poblarRazasSelect(select, razas, razaSeleccionada)
         {
-            select.html('<option value=\"\">Seleccione</option>');
+            select.html('<option value=\"\">Seleccione</option><option value=\"sin\">Sin raza</option>');
             (razas || []).forEach(function(raza){
                 select.append('<option value=\"'+raza.id+'\">'+raza.nombre+'</option>');
             });
@@ -783,19 +783,27 @@
 
             var especieId = mascota.especie_id || mascota.especie || '0';
             $('#espec_masc').val(especieId);
-            handleEspecieChange(mascota.raza_id || '');
+            var razaSeleccionada = mascota.raza_id || '';
+            if(!razaSeleccionada) razaSeleccionada = 'sin';
+            handleEspecieChange(razaSeleccionada);
             $('#obs_espec_masc').val(mascota.otra_especie || '');
 
             var tamanoId = mascota.tamano_id || mascota.tamano || '';
             $('#modal_agregar_dep_nuevo_tamano').val(tamanoId);
 
-            $('#modal_agregar_dep_nuevo_fecha_nac').val(formatearFechaInput(mascota.fecha_nacimiento));
+            var fechaNacimiento = formatearFechaInput(mascota.fecha_nacimiento);
+            $('#modal_agregar_dep_nuevo_fecha_nac').val(fechaNacimiento);
+            $('#modal_agregar_dep_nuevo_fecha_nac_desconocida').prop('checked', !fechaNacimiento);
+            toggleFechaNacimientoDesconocida();
             $('#modal_agregar_dep_nuevo_sexo').val(mascota.sexo || '0');
 
             var esterilizado = (mascota.esterilizado === true || mascota.esterilizado === 1 || mascota.esterilizado === '1');
             $('#modal_agregar_dep_nuevo_esterilizado').val(esterilizado ? '1' : '0');
             toggleEsterilizacion();
-            $('#modal_agregar_dep_nuevo_fecha_esterilizacion').val(esterilizado ? formatearFechaInput(mascota.fecha_esterilizacion) : '');
+            var fechaEsterilizacion = esterilizado ? formatearFechaInput(mascota.fecha_esterilizacion) : '';
+            $('#modal_agregar_dep_nuevo_fecha_esterilizacion').val(fechaEsterilizacion);
+            $('#modal_agregar_dep_nuevo_fecha_esterilizacion_desconocida').prop('checked', esterilizado && !fechaEsterilizacion);
+            toggleFechaEsterilizacionDesconocida();
 
             $('#modal_agregar_dep_nuevo_enfermedad_cronica').val(mascota.enfermedad_cronica || '');
 
@@ -894,6 +902,7 @@
             handleEspecieChange();
             toggleEsterilizacion();
             toggleChipInput();
+            toggleFechaNacimientoDesconocida();
             registrarMascotasIniciales();
             cargarDependientes();
 
@@ -941,11 +950,15 @@
             $('#modal_agregar_dep_nuevo_tamano').val('');
             $('#modal_agregar_dep_nuevo_raza').val('');
             $('#modal_agregar_dep_nuevo_fecha_nac').val('');
+            $('#modal_agregar_dep_nuevo_fecha_nac_desconocida').prop('checked', false);
             $('#modal_agregar_dep_nuevo_sexo').val('0');
             $('#modal_agregar_dep_nuevo_esterilizado').val('');
             $('#modal_agregar_dep_nuevo_fecha_esterilizacion').val('');
+            $('#modal_agregar_dep_nuevo_fecha_esterilizacion_desconocida').prop('checked', false);
             $('#modal_agregar_dep_nuevo_enfermedad_cronica').val('');
             toggleEsterilizacion();
+            toggleFechaNacimientoDesconocida();
+            toggleFechaEsterilizacionDesconocida();
             $('#imagenes_ven_pre').val('');
             $('#imagenes_ven_post').val('');
             $('#input_lista_ven_imagenes').val('');
@@ -978,8 +991,32 @@
             var mostrar = (esterilizado === '1');
             $('#contenedor_fecha_esterilizacion').toggle(mostrar);
             $('#requerido_modal_agregar_dep_nuevo_fecha_esterilizacion').toggle(mostrar);
-            $('#modal_agregar_dep_nuevo_fecha_esterilizacion').prop('required', mostrar);
             if(!mostrar)
+            {
+                $('#modal_agregar_dep_nuevo_fecha_esterilizacion').val('');
+                $('#modal_agregar_dep_nuevo_fecha_esterilizacion_desconocida').prop('checked', false);
+            }
+            toggleFechaEsterilizacionDesconocida();
+        }
+
+        function toggleFechaNacimientoDesconocida()
+        {
+            var desconocida = $('#modal_agregar_dep_nuevo_fecha_nac_desconocida').is(':checked');
+            $('#modal_agregar_dep_nuevo_fecha_nac').prop('disabled', desconocida);
+            if(desconocida)
+            {
+                $('#modal_agregar_dep_nuevo_fecha_nac').val('');
+            }
+        }
+
+        function toggleFechaEsterilizacionDesconocida()
+        {
+            var esterilizado = $('#modal_agregar_dep_nuevo_esterilizado').val();
+            var mostrar = (esterilizado === '1');
+            var desconocida = $('#modal_agregar_dep_nuevo_fecha_esterilizacion_desconocida').is(':checked');
+            $('#modal_agregar_dep_nuevo_fecha_esterilizacion').prop('disabled', mostrar && desconocida);
+            $('#modal_agregar_dep_nuevo_fecha_esterilizacion').prop('required', mostrar && !desconocida);
+            if(mostrar && desconocida)
             {
                 $('#modal_agregar_dep_nuevo_fecha_esterilizacion').val('');
             }
@@ -1394,7 +1431,8 @@
             var chip = $('#modal_agregar_dep_nuevo_rut').val();
             var nombre = $('#modal_agregar_dep_nuevo_nombres_paciente').val();
             var especie = $('#espec_masc').val();
-            var raza = $('#modal_agregar_dep_nuevo_raza').val();
+            var razaSeleccionada = $('#modal_agregar_dep_nuevo_raza').val();
+            var raza = (razaSeleccionada === 'sin') ? '' : razaSeleccionada;
             var otra_especie = $('#obs_espec_masc').val();
             var tamano = $('#modal_agregar_dep_nuevo_tamano').val();
             var esterilizado = $('#modal_agregar_dep_nuevo_esterilizado').val();
@@ -1402,6 +1440,8 @@
             var enfermedad_cronica = $('#modal_agregar_dep_nuevo_enfermedad_cronica').val();
             var fecha_nac = $('#modal_agregar_dep_nuevo_fecha_nac').val();
             var sexo = $('#modal_agregar_dep_nuevo_sexo').val();
+            var fecha_nac_desconocida = $('#modal_agregar_dep_nuevo_fecha_nac_desconocida').is(':checked');
+            var fecha_esterilizacion_desconocida = $('#modal_agregar_dep_nuevo_fecha_esterilizacion_desconocida').is(':checked');
             var foto_perfil = $('#imagenes_ven_pre').val();
             var galeria = $('#input_lista_ven_imagenes').val();
             var observaciones = $('#obs_fotos_ven').val();
@@ -1419,7 +1459,7 @@
                 valido = 0;
                 mensaje += 'Especie: requerido\n';
             }
-            if($('#modal_agregar_dep_nuevo_raza option').length > 1 && raza == '')
+            if($('#modal_agregar_dep_nuevo_raza option').length > 1 && razaSeleccionada == '')
             {
                 valido = 0;
                 mensaje += 'Raza: requerido\n';
@@ -1439,12 +1479,12 @@
                 valido = 0;
                 mensaje += 'Esterilizado: requerido\n';
             }
-            if(esterilizado === '1' && fecha_esterilizacion === '')
+            if(esterilizado === '1' && fecha_esterilizacion === '' && !fecha_esterilizacion_desconocida)
             {
                 valido = 0;
                 mensaje += 'Fecha de esterilización: requerido\n';
             }
-            if(fecha_nac == '')
+            if(fecha_nac == '' && !fecha_nac_desconocida)
             {
                 valido = 0;
                 mensaje += 'Fecha Nacimiento: requerido\n';
@@ -1478,9 +1518,9 @@
             datos.otra_especie = otra_especie;
             datos.tamano_id = tamano;
                 datos.esterilizado = esterilizado;
-                datos.fecha_esterilizacion = (esterilizado === '1') ? fecha_esterilizacion : '';
+                datos.fecha_esterilizacion = (esterilizado === '1' && !fecha_esterilizacion_desconocida) ? fecha_esterilizacion : '';
                 datos.enfermedad_cronica = enfermedad_cronica;
-                datos.fecha_nacimiento = fecha_nac;
+                datos.fecha_nacimiento = fecha_nac_desconocida ? '' : fecha_nac;
                 datos.sexo = sexo;
                 datos.foto_perfil = foto_perfil;
                 datos.galeria = galeria;

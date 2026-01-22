@@ -310,6 +310,7 @@
                         <label class="floating-label-activo-sm"><span class="requerido" style="color: red;" id="requerido_modal_agregar_dep_nuevo_raza">*</span>Raza</label>
                         <select class="form-control form-control-sm" name="modal_agregar_dep_nuevo_raza" id="modal_agregar_dep_nuevo_raza">
                             <option value="">Seleccione</option>
+                            <option value="sin">Sin raza</option>
                         </select>
                     </div>
                 </div>
@@ -340,6 +341,10 @@
                     <div class="form-group">
                         <label class="floating-label-activo-sm" for="modal_agregar_dep_nuevo_fecha_esterilizacion"><span class="requerido" style="color: red; display:none;" id="requerido_modal_agregar_dep_nuevo_fecha_esterilizacion">*</span>Fecha de esterilización</label>
                         <input type="date" class="form-control form-control-sm" name="modal_agregar_dep_nuevo_fecha_esterilizacion" id="modal_agregar_dep_nuevo_fecha_esterilizacion" max="{{ date('Y-m-d') }}">
+                        <div class="form-check mt-1">
+                            <input class="form-check-input" type="checkbox" id="modal_agregar_dep_nuevo_fecha_esterilizacion_desconocida" onchange="toggleFechaEsterilizacionDesconocida();">
+                            <label class="form-check-label" for="modal_agregar_dep_nuevo_fecha_esterilizacion_desconocida">No se conoce</label>
+                        </div>
                     </div>
                 </div>
 
@@ -358,6 +363,10 @@
                         <label class="floating-label-activo-sm"><span class="requerido" style="color: red;" id="requerido_modal_agregar_dep_nuevo_fecha_nac">*</span>F. Nacimiento</label>
 
                         <input type="date" class="form-control form-control-sm" name="modal_agregar_dep_nuevo_fecha_nac" id="modal_agregar_dep_nuevo_fecha_nac" max="{{ date('Y-m-d') }}" onchange="validar_requeridos('modal_agregar_dep_nuevo_fecha_nac');">
+                        <div class="form-check mt-1">
+                            <input class="form-check-input" type="checkbox" id="modal_agregar_dep_nuevo_fecha_nac_desconocida" onchange="toggleFechaNacimientoDesconocida();">
+                            <label class="form-check-label" for="modal_agregar_dep_nuevo_fecha_nac_desconocida">No se conoce</label>
+                        </div>
 
                     </div>
 
