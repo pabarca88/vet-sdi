@@ -16,7 +16,7 @@
                                 <li class="breadcrumb-item">
                                     <a href="{{ route('profesional.home') }}" data-toggle="tooltip" data-placement="top" title="Volver a mi escritorio"><i class="feather icon-home"></i></a>
                                 </li>
-                                <li class="breadcrumb-item"><a href="#">Responsables de mis mascotas </a></li>
+                                <li class="breadcrumb-item"><a href="#">Mascotas</a></li>
                             </ul>
                         </div>
                     </div>
@@ -31,7 +31,7 @@
                     <div class="card-header text-center bg-info">
                         <div class="row">
                             <div class="col-sm-12 col-md-12 col-lg mb-1 align-botton d-flex justify-content-between">
-                                <h4 class="text-white f-20 d-inline ml-4 mt-1 float-left">Responsables de mis mascotas</h4>
+                                <h4 class="text-white f-20 d-inline ml-4 mt-1 float-left">Mascotas</h4>
                                 <button class="btn btn-purple btn-sm  d-inline float-md-right" onclick="enviar_difusion_pacientes()"><i class="feather icon-mail"></i>  Enviar mensaje de difusión</button>
                             </div>
                         </div>
@@ -44,7 +44,6 @@
                                         style="width:100%">
                                         <thead>
                                             <tr>
-                                                <th>Responsable</th>
                                                 <th>Mascota</th>
                                                 <th>Especie</th>
                                                 <th>Raza</th>
@@ -57,10 +56,6 @@
                                             @forelse ($mascotas as $mascota)
                                                 @php
                                                     $responsable = $mascota->Responsable;
-                                                    $nombreResponsable = $responsable
-                                                        ? trim($responsable->nombres . ' ' . $responsable->apellido_uno . ' ' . $responsable->apellido_dos)
-                                                        : 'Sin registro';
-                                                    $rutResponsable = $responsable->rut ?? '';
                                                     $especie = optional($mascota->especieMascota)->nombre ?? $mascota->especie ?? '-';
                                                     $raza = $mascota->otra_especie ?? '-';
                                                     $convenio = optional(optional($responsable)->Prevision)->nombre ?? '-';
@@ -91,12 +86,6 @@
                                                     $galeriaMascota = array_values(array_unique($galeriaMascota));
                                                 @endphp
                                                 <tr>
-                                                    <td>
-                                                        {{ $nombreResponsable }}
-                                                        @if (!empty($rutResponsable))
-                                                            <br><strong>{{ $rutResponsable }}</strong>
-                                                        @endif
-                                                    </td>
                                                     <td>{{ $mascota->nombre ?? '-' }}</td>
                                                     <td>{{ $especie }}</td>
                                                     <td>{{ $raza }}</td>
@@ -122,7 +111,7 @@
                                                 </tr>
                                             @empty
                                                 <tr>
-                                                    <td colspan="7" class="text-center">Sin registros</td>
+                                                    <td colspan="6" class="text-center">Sin registros</td>
                                                 </tr>
                                             @endforelse
                                         </tbody>
