@@ -2368,6 +2368,51 @@
                     });
                 });
             });
+
+            $('#btn_envia_email_presupuesto_mascota').on('click', function() {
+                var payload = {
+                    _token: '{{ csrf_token() }}',
+                    id_paciente: $('#presupuesto_mascota_id_paciente').val(),
+                    id_ficha_atencion: $('#presupuesto_mascota_id_ficha_atencion').val(),
+                    id_lugar_atencion: $('#presupuesto_mascota_id_lugar_atencion').val()
+                };
+
+                $.ajax({
+                    url: '{{ route('profesional.enviar_presupuesto_vet_email') }}',
+                    type: 'POST',
+                    data: payload
+                })
+                .done(function(resp) {
+                    if (resp && resp.estado === 1) {
+                        swal({
+                            title: 'Presupuesto enviado',
+                            text: resp.msj || 'El presupuesto se envió correctamente.',
+                            icon: 'success',
+                            button: 'Aceptar'
+                        });
+                        return;
+                    }
+
+                    swal({
+                        title: 'Error',
+                        text: (resp && resp.msj) ? resp.msj : 'No fue posible enviar el presupuesto.',
+                        icon: 'error',
+                        button: 'Aceptar'
+                    });
+                })
+                .fail(function(xhr) {
+                    var mensaje = 'Error al enviar presupuesto.';
+                    if (xhr.responseJSON && xhr.responseJSON.msj) {
+                        mensaje = xhr.responseJSON.msj;
+                    }
+                    swal({
+                        title: 'Error',
+                        text: mensaje,
+                        icon: 'error',
+                        button: 'Aceptar'
+                    });
+                });
+            });
             actualizarTotalesPresupuesto();
                      /** MENSAJE*/
        /** CARGAR mensaje */

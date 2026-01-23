@@ -1352,6 +1352,7 @@ Route::group([
 
     Route::post('/generar_pdf_presupuesto',[App\Http\Controllers\EscritorioProfesional::class, 'generar_pdf_presupuesto'])->name('profesional.generar_pdf_presupuesto_dental');
     Route::post('/generar_pdf_presupuesto_vet',[App\Http\Controllers\EscritorioProfesional::class, 'generar_pdf_presupuesto_vet'])->name('profesional.generar_pdf_presupuesto_vet');
+    Route::post('/enviar_presupuesto_vet_email',[App\Http\Controllers\EscritorioProfesional::class, 'enviar_presupuesto_vet_email'])->name('profesional.enviar_presupuesto_vet_email');
 
     Route::post('/generar_pdf_presupuesto_hist',[App\Http\Controllers\EscritorioProfesional::class, 'generar_pdf_presupuesto_hist'])->name('profesional.generar_pdf_presupuesto_dental_hist');
 
