@@ -2370,6 +2370,7 @@
             });
 
             $('#btn_envia_email_presupuesto_mascota').on('click', function() {
+                var $btn = $(this);
                 var payload = {
                     _token: '{{ csrf_token() }}',
                     id_paciente: $('#presupuesto_mascota_id_paciente').val(),
@@ -2377,12 +2378,24 @@
                     id_lugar_atencion: $('#presupuesto_mascota_id_lugar_atencion').val()
                 };
 
+                $btn.prop('disabled', true);
+                swal({
+                    title: 'Enviando...',
+                    text: 'Por favor espere.',
+                    icon: 'info',
+                    buttons: false,
+                    closeOnClickOutside: false,
+                    closeOnEsc: false
+                });
+
                 $.ajax({
                     url: '{{ route('profesional.enviar_presupuesto_vet_email') }}',
                     type: 'POST',
                     data: payload
                 })
                 .done(function(resp) {
+                    $btn.prop('disabled', false);
+                    swal.close();
                     if (resp && resp.estado === 1) {
                         swal({
                             title: 'Presupuesto enviado',
@@ -2401,6 +2414,8 @@
                     });
                 })
                 .fail(function(xhr) {
+                    $btn.prop('disabled', false);
+                    swal.close();
                     var mensaje = 'Error al enviar presupuesto.';
                     if (xhr.responseJSON && xhr.responseJSON.msj) {
                         mensaje = xhr.responseJSON.msj;

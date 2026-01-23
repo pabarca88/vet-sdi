@@ -99,7 +99,6 @@ use App\Models\Profesional;
 use App\Models\ProfesionalTons;
 use App\Models\PresupuestosDental;
 use App\Mail\PresupuestoInsumosMail;
-use App\Mail\PresupuestoVetMail;
 use App\Models\ProcedimientosImplantes;
 use App\Models\ProcedimientosImplantesRehab;
 use App\Models\ProcedimientosPostImplantes;
@@ -5227,15 +5226,17 @@ return $ficha;
                 return response()->json(['estado' => 0, 'msj' => 'Ficha no encontrada'], 404);
             }
 
-            $paciente = Paciente::find($ficha_atencion->id_paciente);
-            if (!$paciente || empty($paciente->email)) {
-                return response()->json(['estado' => 0, 'msj' => 'El paciente no tiene un correo electrónico registrado.'], 422);
-            }
-
             $lugar_atencion_id = $req->id_lugar_atencion ?: $ficha_atencion->id_lugar_atencion;
             $lugar_atencion = LugarAtencion::with('direccion')->find($lugar_atencion_id);
             $profesional = Profesional::find($ficha_atencion->id_profesional);
+            $paciente = Paciente::find($ficha_atencion->id_paciente);
             $mascota = $ficha_atencion->id_mascota ? Mascota::find($ficha_atencion->id_mascota) : null;
+            $dueno = $mascota ? $mascota->Responsable()->first() : null;
+            $destinatario = $dueno ?: $paciente;
+
+            if (!$destinatario || empty($destinatario->email)) {
+                return response()->json(['estado' => 0, 'msj' => 'El dueño de la mascota no tiene un correo electrónico registrado.'], 422);
+            }
 
             $items_db = DB::table('presupuestos_vet as pv')
                 ->leftJoin('diagnosticos_vet as dv', 'pv.id_diagnostico', '=', 'dv.id')
@@ -5368,12 +5369,36 @@ return $ficha;
                 return response()->json(['estado' => 0, 'msj' => 'No se encontró el PDF generado.'], 500);
             }
 
-            $pdfContent = file_get_contents($pdfPath);
-            Mail::to($paciente->email)->send(
-                new PresupuestoVetMail($ficha_atencion, $profesional, $paciente, $pdfContent)
-            );
+            $blade = 'presupuesto_vet';
+            $to = [
+                [
+                    'email' => $destinatario->email,
+                    'name' => trim(($destinatario->nombres ?? '') . ' ' . ($destinatario->apellido_uno ?? '') . ' ' . ($destinatario->apellido_dos ?? '')),
+                ],
+            ];
+            $cc = [];
+            $bcc = [];
+            $asunto = 'Presupuesto veterinario';
+            $body = [
+                'destinatario' => $destinatario,
+                'paciente' => $paciente,
+                'profesional' => $profesional,
+                'mascota' => $mascota,
+            ];
+            $archivo = [
+                [
+                    'url' => $pdfPath,
+                    'mime' => 'application/pdf',
+                ],
+            ];
+            $id_institucion = $lugar_atencion->id_institucion ?? '';
 
-            return response()->json(['estado' => 1, 'msj' => 'Presupuesto enviado correctamente al correo del paciente.']);
+            $result_mail = SendMailController::envioCorreo($blade, $to, $cc, $bcc, $asunto, $body, $archivo, $id_institucion);
+            if (isset($result_mail['estado']) && $result_mail['estado'] == 1) {
+                return response()->json(['estado' => 1, 'msj' => 'Presupuesto enviado correctamente al correo del dueño.']);
+            }
+
+            return response()->json(['estado' => 0, 'msj' => $result_mail['msj'] ?? 'No fue posible enviar el correo.'], 500);
         } catch (\Exception $e) {
             return response()->json(['estado' => 0, 'msj' => 'Error al enviar el presupuesto: ' . $e->getMessage()], 500);
         }
