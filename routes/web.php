@@ -723,8 +723,12 @@ Route::group([
     Route::get('Reservar_Hora/{profesion}/{especialidad}/{subespecialidad}', [App\Http\Controllers\EscritorioPaciente::class, 'agendarHora'])->name('paciente.agendar_hora_filtro');
 
     Route::get('Mi_Profesionales', [App\Http\Controllers\EscritorioPaciente::class, 'miProfesionales'])->name('paciente.mis_profesionales');
-    Route::get('Convenios', [App\Http\Controllers\EscritorioPaciente::class, 'convenios'])->name('paciente.convenios');
-    Route::post('Convenios', [App\Http\Controllers\EscritorioPaciente::class, 'guardarConvenio'])->name('paciente.convenios.guardar');
+Route::get('Convenios', [App\Http\Controllers\EscritorioPaciente::class, 'convenios'])->name('paciente.convenios');
+Route::post('Convenios', [App\Http\Controllers\EscritorioPaciente::class, 'guardarConvenio'])->name('paciente.convenios.guardar');
+Route::post('Convenios/nuevo', [App\Http\Controllers\EscritorioPaciente::class, 'guardarConvenioUsuario'])->name('paciente.convenios.nuevo');
+Route::post('Convenios/eliminar', [App\Http\Controllers\EscritorioPaciente::class, 'eliminarConvenioUsuario'])->name('paciente.convenios.eliminar');
+Route::post('Convenios/dame', [App\Http\Controllers\EscritorioPaciente::class, 'dameConvenioUsuario'])->name('paciente.convenios.dame');
+Route::post('Convenios/editar', [App\Http\Controllers\EscritorioPaciente::class, 'editarConvenioUsuario'])->name('paciente.convenios.editar');
 
     Route::get('desvincular_profesional/{id_usuario}/{id_profesional}', [App\Http\Controllers\EscritorioPaciente::class, 'miProfesionales'])->name('paciente.desvincular_profesional');
 

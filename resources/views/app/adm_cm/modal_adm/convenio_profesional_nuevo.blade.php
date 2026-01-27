@@ -17,18 +17,23 @@
                                     {{-- ENTREGA DE BONOS DE ASISTENTE AL PROFESIONAL O ENCARGADO - TIPO NO PROGRAMA--}}
                                     <li class="nav-item">
                                         <a class="btn btn-sm btn-outline-info mr-1 active" id="pills-convenio_personal_profesional-tab" data-toggle="pill" href="#pills-convenio_personal_profesional" role="tab" aria-controls="pills-convenio_personal_profesional" aria-selected="true">
-                                            Convenios a Empresas
+                                            Empresas
                                         </a>
                                     </li>
 
                                     <li class="nav-item">
                                         <a class="btn btn-sm btn-outline-info mr-1" id="pills-convenio_institucion_isapres-tab" data-toggle="pill" href="#pills-convenio_institucion_isapres" role="tab" aria-controls="pills-convenio_institucion_isapres" aria-selected="true">
-                                            Convenios a Instituciones
+                                            Instituciones
                                         </a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="btn btn-sm btn-outline-info mr-1" id="pills-convenio_ffaa_caja_comp-tab" data-toggle="pill" href="#pills-convenio_ffaa_caja_comp" role="tab" aria-controls="pills-convenio_institucion_isapres" aria-selected="true">
-                                            Convenios a FFAA y Cajas de compensación
+                                            FFAA y Cajas de compensación
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="btn btn-sm btn-outline-info mr-1" id="pills-convenio_especiales-tab" data-toggle="pill" href="#pills-convenio_especiales" role="tab" aria-controls="pills-convenio_especiales" aria-selected="true">
+                                            Especiales
                                         </a>
                                     </li>
                                 </ul>
@@ -389,26 +394,7 @@
                                         </div>
                                         <div class="row" id="contenedor_nuevo_convenio_prevision">
                                             <div class="col-md-12">
-                                                <table class="table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Previsión</th>
-                                                            <th>Tipo Convenio</th>
-                                                            <th>Porcentaje</th>
-                                                            <th>Acciones</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody id="contenedor_tipos_convenios_prevision">
-                                                        @foreach ($convenios_prevision as $c)
-                                                            <tr>
-                                                                <td>{{ $c->nombre_convenio }}</td>
-                                                                <td>{{ $c->descripcion }} </td>
-                                                                <td>{{ $c->porcentaje }} %</td>
-                                                                <td><button type="button" class="btn btn-outline-danger btn-sm" onclick="eliminar_tipo_convenio_prevision({{ $c->id }})"><i class="fas fa-trash"></i></button></td>
-                                                            </tr>
-                                                        @endforeach
-                                                    </tbody>
-                                                </table>
+
                                                 <div class="row d-none" id="contenedor_tipo_convenio_prevision">
                                                     <div class="col-md-12">
                                                         <div class="form-group flex-grow-1 me-2">
@@ -433,8 +419,44 @@
                                                             <input type="text" class="form-control form-control-sm" name="porcentaje_dcto_prevision1" id="porcentaje_dcto_prevision1">
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-4">
-                                                        <button type="button" class="btn btn-success btn-sm float-right" onclick="guardar_tipo_convenio_prevision(1)"><i class="fas fa-save"></i></button>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label class="floating-label-activo-sm">Lugar de Atención</label>
+                                                            <select name="lugar_atencion_convenio_prevision1" id="lugar_atencion_convenio_prevision1" class="form-control form-control-sm">
+                                                                <option value="0">Seleccione</option>
+                                                                @foreach($lugares_atencion as $key_la => $value_la)
+                                                                    <option value="{{ $value_la->lugar_atencion_id }}">{{ $value_la->lugar_atencion_nombre }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="col-md-1">
+                                                                                                                <button type="button" class="btn btn-success btn-sm float-right" onclick="guardar_tipo_convenio_prevision(1)"><i class="fas fa-save"></i></button>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label class="floating-label-activo-sm">Valor</label>
+                                                            <input type="number" class="form-control form-control-sm" id="valor_prevision1" name="valor_prevision1">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label class="floating-label-activo-sm">Valor Garantía</label>
+                                                            <input type="number" class="form-control form-control-sm" id="valor_garantia_prevision1" name="valor_garantia_prevision1">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label class="floating-label-activo-sm">Copago Fonasa</label>
+                                                            <input type="number" class="form-control form-control-sm" id="copago_fonasa_prevision1" name="copago_fonasa_prevision1">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label class="floating-label-activo-sm">Bono Fonasa</label>
+                                                            <input type="number" class="form-control form-control-sm" id="bono_fonasa_prevision1" name="bono_fonasa_prevision1">
+                                                        </div>
                                                     </div>
                                                     <div class="col-md-4">
                                                         <div class="form-group">
@@ -627,30 +649,7 @@
                                             </div>
                                         </div>
                                         <div class="row" id="contenedor_nuevo_convenio_ffa">
-                                            <div class="col-md-12">
-                                                <table class="table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>FFAA</th>
-                                                            <th>Tipo Convenio</th>
-                                                            <th>Porcentaje</th>
-                                                            <th>Acciones</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody id="contenedor_tipos_convenios_ffa">
-                                                        @if(isset($convenios_ffa))
-                                                        @foreach ($convenios_ffa as $c)
-                                                            <tr>
-                                                                <td>{{ $c->nombre_convenio }}</td>
-                                                                <td>{{ $c->descripcion }} </td>
-                                                                <td>{{ $c->porcentaje }} %</td>
-                                                                <td><button type="button" class="btn btn-outline-danger btn-sm" onclick="eliminar_tipo_convenio_prevision({{ $c->id }})"><i class="fas fa-trash"></i></button></td>
-                                                            </tr>
-                                                        @endforeach
-                                                        @endif
-                                                    </tbody>
-                                                </table>
-                                                <div class="row d-none" id="contenedor_tipo_convenio_ffa">
+                                            <div class="row d-none" id="contenedor_tipo_convenio_ffa">
                                                     <div class="col-md-12">
                                                         <div class="form-group flex-grow-1 me-2">
                                                             <label class="floating-label-activo-sm">Nombre Convenio</label>
@@ -674,7 +673,18 @@
                                                             <input type="text" class="form-control form-control-sm" name="porcentaje_dcto_ffa1" id="porcentaje_dcto_ffa1">
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label class="floating-label-activo-sm">Lugar de Atención</label>
+                                                            <select name="lugar_atencion_convenio_ffa1" id="lugar_atencion_convenio_ffa1" class="form-control form-control-sm">
+                                                                <option value="0">Seleccione</option>
+                                                                @foreach($lugares_atencion as $key_la => $value_la)
+                                                                    <option value="{{ $value_la->lugar_atencion_id }}">{{ $value_la->lugar_atencion_nombre }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-1">
                                                         <button type="button" class="btn btn-success btn-sm float-right" onclick="guardar_tipo_convenio_ffa(1)"><i class="fas fa-save"></i></button>
                                                     </div>
                                                     <div class="col-md-4">
@@ -706,7 +716,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
                                             <div class="col-md-12" id="contenedor_tipos_convenio_ffa"></div>
 
 
@@ -725,6 +734,125 @@
                                         {{-- <button type="button" class="btn btn-outline-primary btn-sm float-right mx-2">Solicitar incorporación nuevo convenio</button> --}}
                                         {{-- <button class="btn btn-outline-success btn-sm float-right" onclick="guardar_nuevo_convenio_profesional()"><i class="fas fa-save"></i> Guardar</button> --}}
                                     </div>
+                                    <div class="tab-pane fade show " id="pills-convenio_especiales" role="tabpanel" aria-labelledby="pills-convenio_especiales-tab">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="floating-label-activo-sm">Lugar Atención</label>
+                                                    <select name="lugar_atencion_convenio" id="lugar_atencion_convenio" class="form-control form-control-sm">
+                                                        <option value="0">Seleccione</option>
+                                                        @foreach($lugares_atencion as $key_la => $value_la)
+                                                            <option value="{{ $value_la->lugar_atencion_id }}">{{ $value_la->lugar_atencion_nombre }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="floating-label-activo-sm">Nombre Convenio</label>
+                                                    <input type="text" class="form-control form-control-sm" id="nombre_convenio" name="nombre_convenio">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="floating-label-activo-sm">Tipo Convenio</label>
+                                                    <select name="tipo_convenio" id="tipo_convenio" class="form-control form-control-sm">
+                                                        <option value="0">Seleccione</option>
+                                                        @foreach($tipos_convenio as $key_tc => $value_tc)
+                                                            <option value="{{ $value_tc->id }}">{{ $value_tc->nombre }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="floating-label-activo-sm">Porcentaje</label>
+                                                    <input type="text" class="form-control form-control-sm" name="porcentaje_dcto" id="porcentaje_dcto">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="floating-label-activo-sm">Tipo Convenio Inst</label>
+                                                    <select name="tipo_convenio_institucion" id="tipo_convenio_institucion" class="form-control form-control-sm ">
+                                                        <option value="0">Seleccione</option>
+                                                        @foreach($tipos_convenio_institucion as $key_tc => $value_tc)
+                                                            <option value="{{ $value_tc->id }}">{{ $value_tc->nombre }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="floating-label-activo-sm">Fecha Inicial</label>
+                                                    <input type="date" class="form-control form-control-sm" value="<?php echo date('Y-m-d') ?>" id="fecha_inicial_pago_convenio" name="fecha_inicial_pago_convenio">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="floating-label-activo-sm">Fecha Final</label>
+                                                    <input type="date" class="form-control form-control-sm" value="" id="fecha_final_pago_convenio" name="fecha_final_pago_convenio">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="form-group ">
+                                                    <label class="floating-label-activo-sm" for="productos_convenio_">Productos a Convenir</label>
+                                                    <select class="form-control form-control-sm" name="productos_convenio_" id="productos_convenio_" multiple="multiple">
+                                                        @foreach($tipoproducto_convenios as $tp)
+                                                            <option value="{{ $tp->id }}">{{ $tp->descripcion }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {{-- <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="floating-label-activo-sm">Rut representante</label>
+                                                    <input type="text" class="form-control form-control-sm" oninput="formatoRut(this)" id="rut_representante_convenio" name="rut_representante_convenio">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="floating-label-activo-sm">Nombre representante</label>
+                                                    <input type="text" class="form-control form-control-sm" id="nombre_representante_convenio" name="nombre_representante_convenio">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="floating-label-activo-sm">Telefono</label>
+                                                    <input type="text" class="form-control form-control-sm" id="telefono_representante_convenio" name="telefono_representante_convenio">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="floating-label-activo-sm">Email</label>
+                                                    <input type="text" class="form-control form-control-sm" id="email_representante_convenio" name="email_representante_convenio">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="floating-label-activo-sm">Direccion</label>
+                                                    <input type="text" class="form-control form-control-sm" id="direccion_representante_convenio" name="direccion_representante_convenio">
+                                                </div>
+                                            </div>
+                                        </div> --}}
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label class="floating-label-activo-sm">Observaciones</label>
+                                                    <textarea name="observaciones_nuevo_convenio" id="observaciones_nuevo_convenio" cols="30" rows="10" class="form-control form-control-sm"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-outline-success btn-sm float-right" onclick="guardar_nuevo_convenio_institucion()"><i class="fas fa-save"></i> Guardar</button>
+                                    </div>
+
                                 </div>
 
                             </div>
@@ -739,6 +867,37 @@
 </div>
 <input type="hidden" name="id_empresa" id="id_empresa">
 <script>
+    function render_tabla_convenios_usuarios(convenios) {
+        if (!$('#tabla_convenios_profesional').length) {
+            return;
+        }
+        if ($.fn.DataTable.isDataTable('#tabla_convenios_profesional')) {
+            $('#tabla_convenios_profesional').DataTable().destroy();
+        }
+        $('#tabla_convenios_profesional tbody').empty();
+        convenios.forEach(convenio => {
+            let fila = '<tr>';
+            fila += '<td class="align-middle text-center">' + (convenio.convenios || '-') + '</td>';
+            fila += '<td class="align-middle text-center">-</td>';
+            fila += '<td class="align-middle text-center">' + (convenio.tipo_atencion || '-') + '</td>';
+            fila += '<td class="align-middle text-center">' + (convenio.fecha_inicio || '-') + '</td>';
+            fila += '<td class="align-middle text-center">' + (convenio.fecha_fin || '-') + '</td>';
+            let porcentaje = (convenio.porcentaje === null || convenio.porcentaje === undefined || convenio.porcentaje === '') ? '-' : (convenio.porcentaje + '%');
+            fila += '<td class="align-middle text-center">' + porcentaje + '</td>';
+            fila += '<td class="align-middle text-center">';
+            fila += '<button class="btn btn-warning btn-sm has-ripple" onclick="dame_convenio(' + convenio.id + ')" data-toggle="modal" data-target="#editarConvenioInstitucion"><i class="fa fa-edit" aria-hidden="true"></i></button>';
+            fila += '<button type="button" class="btn btn-danger btn-sm has-ripple" onclick="eliminar_convenio(' + convenio.id + ')"><i class="fas fa-trash"></i> </button>';
+            fila += '</td>';
+            fila += '</tr>';
+            $('#tabla_convenios_profesional tbody').append(fila);
+        });
+        $('#tabla_convenios_profesional').DataTable({
+            "language": {
+                "url": "{{ asset('js/Spanish.json') }}"
+            }
+        });
+    }
+
     function evaluar_convenio(id) {
         // var result = false;
         // if ($('#convenio_' + id).is(':checked')) {
@@ -1038,12 +1197,30 @@
             _token: CSRF_TOKEN
         }
 
+        const guardarUrl = window.convenioNuevoUrl || '{{ ROUTE("profesional.guardar_tipo_convenio") }}';
         $.ajax({
-            url: '{{ ROUTE("profesional.guardar_tipo_convenio") }}',
+            url: guardarUrl,
             type: 'POST',
             data: data,
             success: function(data){
                 console.log(data);
+                if (window.convenioNuevoUrl) {
+                    if (data.estado == 1) {
+                        swal({
+                            title: 'Exito',
+                            text: data.msj || data.mensaje,
+                            icon: 'success'
+                        });
+                        render_tabla_convenios_usuarios(data.convenios || []);
+                    } else {
+                        swal({
+                            title: 'Error',
+                            text: data.msj || data.mensaje,
+                            icon: 'error'
+                        });
+                    }
+                    return;
+                }
                 if(data.estado == 1){
                     swal({
                         title: 'Exito',
@@ -1101,6 +1278,7 @@
     function guardar_tipo_convenio_prevision(count){
         let nombre_convencion = $('#nombre_convenio_prevision'+count).val();
         let tipo_convenio = $('#tipo_convenio_prevision'+count).val();
+        let id_lugar_atencion = $('#lugar_atencion_convenio_prevision'+count).val();
         let porcentaje = $('#porcentaje_dcto_prevision'+count).val();
         let fecha_inicio = $('#fecha_inicial_pago_convenio_prevision'+count).val();
         let fecha_termino = $('#fecha_final_pago_convenio_prevision'+count).val();
@@ -1113,6 +1291,11 @@
         if(nombre_convencion == ''){
             valido = 0;
             mensaje += '<li>Debe ingresar un nombre de convenio</li>';
+        }
+
+        if(id_lugar_atencion == 0){
+            valido = 0;
+            mensaje += '<li>Debe seleccionar un lugar de atención</li>';
         }
 
         if(tipo_convenio == 0){
@@ -1178,6 +1361,7 @@
         let data = {
             nombre_convenio: nombre_convencion,
             tipo_convenio: tipo_convenio,
+            id_lugar_atencion: id_lugar_atencion,
             porcentaje: porcentaje,
             fecha_inicio: fecha_inicio,
             fecha_termino: fecha_termino,
@@ -1189,12 +1373,30 @@
         }
 
         console.log(data);
+        const guardarUrl = window.convenioNuevoUrl || '{{ ROUTE("profesional.guardar_tipo_convenio") }}';
         $.ajax({
-            url: '{{ ROUTE("profesional.guardar_tipo_convenio") }}',
+            url: guardarUrl,
             type: 'POST',
             data: data,
             success: function(data){
                 console.log(data);
+                if (window.convenioNuevoUrl) {
+                    if (data.estado == 1) {
+                        swal({
+                            title: 'Exito',
+                            text: data.msj || data.mensaje,
+                            icon: 'success'
+                        });
+                        render_tabla_convenios_usuarios(data.convenios || []);
+                    } else {
+                        swal({
+                            title: 'Error',
+                            text: data.msj || data.mensaje,
+                            icon: 'error'
+                        });
+                    }
+                    return;
+                }
                 if(data.estado == 1){
                     swal({
                         title: 'Exito',
@@ -1220,13 +1422,29 @@
                     $('#tabla_convenios_profesional tbody').empty();
                     let convenios = data.convenios;
                     convenios.forEach(convenio => {
+                        // Procesar los convenios
+                        let conveniosHtml = '';
+                        if (convenio.convenios_array && convenio.convenios_array.length > 0) {
+                            convenio.convenios_array.forEach(conv => {
+                                conveniosHtml += '<span class="badge badge-info mb-1">' + conv + '</span><br>';
+                            });
+                        } else {
+                            conveniosHtml = '<span class="text-muted">Sin convenios</span>';
+                        }
+
+                        let tipoAtencion = convenio.tipo_atencion || '';
+                        let valor = convenio.valor ? '$' + Number(convenio.valor).toLocaleString('es-CL') : '$0';
+                        let valorGarantia = convenio.valor_garantia ? '$' + Number(convenio.valor_garantia).toLocaleString('es-CL') : '<span class="text-muted">-</span>';
+                        let valorCopagoFonasa = convenio.valor_copago_fonasa ? '$' + Number(convenio.valor_copago_fonasa).toLocaleString('es-CL') : '<span class="text-muted">-</span>';
+                        let valorBonFonasa = convenio.valor_bon_fonasa ? '$' + Number(convenio.valor_bon_fonasa).toLocaleString('es-CL') : '<span class="text-muted">-</span>';
+
                         let fila = '<tr>';
-                        fila += '<td class="align-middle text-center">' + convenio.nombre_convenio + '</td>';
-                        fila += '<td class="align-middle text-center">' + convenio.rut_empresa + '</td>';
-                        fila += '<td class="align-middle text-center">' + convenio.tipo_convenio + '</td>';
-                        fila += '<td class="align-middle text-center">' + convenio.fecha_inicio + '</td>';
-                        fila += '<td class="align-middle text-center">' + convenio.fecha_termino + '</td>';
-                        fila += '<td class="align-middle text-center">' + convenio.porcentaje + ' %</td>';
+                        fila += '<td class="align-middle text-center">' + conveniosHtml + '</td>';
+                        fila += '<td class="align-middle text-center">' + tipoAtencion + '</td>';
+                        fila += '<td class="align-middle text-right">' + valor + '</td>';
+                        fila += '<td class="align-middle text-right">' + valorGarantia + '</td>';
+                        fila += '<td class="align-middle text-right">' + valorCopagoFonasa + '</td>';
+                        fila += '<td class="align-middle text-right">' + valorBonFonasa + '</td>';
                         fila += '<td class="align-middle text-center">';
                         fila += '<button class="btn btn-warning btn-sm has-ripple" onclick="dame_convenio(' + convenio.id + ')" data-toggle="modal" data-target="#editarConvenioInstitucion"><i class="fa fa-edit" aria-hidden="true"></i></button>';
                         fila += '<button type="button" class="btn btn-danger btn-sm has-ripple" onclick="eliminar_convenio(' + convenio.id + ')"><i class="fas fa-trash"></i> </button>';
@@ -1252,6 +1470,7 @@
 
     function guardar_tipo_convenio_ffa(count){
         let nombre_convencion = $('#nombre_convenio_ffa'+count).val();
+        let id_lugar_atencion = $('#lugar_atencion_convenio_ffa'+count).val();
         let tipo_convenio = $('#tipo_convenio_ffa'+count).val();
         let porcentaje = $('#porcentaje_dcto_ffa'+count).val();
         let fecha_inicio = $('#fecha_inicial_pago_convenio_ffa'+count).val();
@@ -1265,6 +1484,11 @@
         if(nombre_convencion == ''){
             valido = 0;
             mensaje += '<li>Debe ingresar un nombre de convenio</li>';
+        }
+
+        if(id_lugar_atencion == 0){
+            valido = 0;
+            mensaje += '<li>Debe seleccionar un lugar de atención</li>';
         }
 
         if(tipo_convenio == 0){
@@ -1329,6 +1553,7 @@
 
         let data = {
             nombre_convenio: nombre_convencion,
+            id_lugar_atencion: id_lugar_atencion,
             tipo_convenio: tipo_convenio,
             porcentaje: porcentaje,
             fecha_inicio: fecha_inicio,
@@ -1341,12 +1566,30 @@
         }
 
         console.log(data);
+        const guardarUrl = window.convenioNuevoUrl || '{{ ROUTE("profesional.guardar_tipo_convenio") }}';
         $.ajax({
-            url: '{{ ROUTE("profesional.guardar_tipo_convenio") }}',
+            url: guardarUrl,
             type: 'POST',
             data: data,
             success: function(data){
                 console.log(data);
+                if (window.convenioNuevoUrl) {
+                    if (data.estado == 1) {
+                        swal({
+                            title: 'Exito',
+                            text: data.msj || data.mensaje,
+                            icon: 'success'
+                        });
+                        render_tabla_convenios_usuarios(data.convenios || []);
+                    } else {
+                        swal({
+                            title: 'Error',
+                            text: data.msj || data.mensaje,
+                            icon: 'error'
+                        });
+                    }
+                    return;
+                }
                 if(data.estado == 1){
                     swal({
                         title: 'Exito',
@@ -1372,13 +1615,29 @@
                     $('#tabla_convenios_profesional tbody').empty();
                     let convenios = data.convenios;
                     convenios.forEach(convenio => {
+                        // Procesar los convenios
+                        let conveniosHtml = '';
+                        if (convenio.convenios_array && convenio.convenios_array.length > 0) {
+                            convenio.convenios_array.forEach(conv => {
+                                conveniosHtml += '<span class="badge badge-info mb-1">' + conv + '</span><br>';
+                            });
+                        } else {
+                            conveniosHtml = '<span class="text-muted">Sin convenios</span>';
+                        }
+
+                        let tipoAtencion = convenio.tipo_atencion || '';
+                        let valor = convenio.valor ? '$' + Number(convenio.valor).toLocaleString('es-CL') : '$0';
+                        let valorGarantia = convenio.valor_garantia ? '$' + Number(convenio.valor_garantia).toLocaleString('es-CL') : '<span class="text-muted">-</span>';
+                        let valorCopagoFonasa = convenio.valor_copago_fonasa ? '$' + Number(convenio.valor_copago_fonasa).toLocaleString('es-CL') : '<span class="text-muted">-</span>';
+                        let valorBonFonasa = convenio.valor_bon_fonasa ? '$' + Number(convenio.valor_bon_fonasa).toLocaleString('es-CL') : '<span class="text-muted">-</span>';
+
                         let fila = '<tr>';
-                        fila += '<td class="align-middle text-center">' + convenio.nombre_convenio + '</td>';
-                        fila += '<td class="align-middle text-center">' + convenio.rut_empresa + '</td>';
-                        fila += '<td class="align-middle text-center">' + convenio.tipo_convenio + '</td>';
-                        fila += '<td class="align-middle text-center">' + convenio.fecha_inicio + '</td>';
-                        fila += '<td class="align-middle text-center">' + convenio.fecha_termino + '</td>';
-                        fila += '<td class="align-middle text-center">' + convenio.porcentaje + ' %</td>';
+                        fila += '<td class="align-middle text-center">' + conveniosHtml + '</td>';
+                        fila += '<td class="align-middle text-center">' + tipoAtencion + '</td>';
+                        fila += '<td class="align-middle text-right">' + valor + '</td>';
+                        fila += '<td class="align-middle text-right">' + valorGarantia + '</td>';
+                        fila += '<td class="align-middle text-right">' + valorCopagoFonasa + '</td>';
+                        fila += '<td class="align-middle text-right">' + valorBonFonasa + '</td>';
                         fila += '<td class="align-middle text-center">';
                         fila += '<button class="btn btn-warning btn-sm has-ripple" onclick="dame_convenio(' + convenio.id + ')" data-toggle="modal" data-target="#editarConvenioInstitucion"><i class="fa fa-edit" aria-hidden="true"></i></button>';
                         fila += '<button type="button" class="btn btn-danger btn-sm has-ripple" onclick="eliminar_convenio(' + convenio.id + ')"><i class="fas fa-trash"></i> </button>';
@@ -1404,7 +1663,7 @@
 
     function eliminar_tipo_convenio(id){
         swal({
-            title: "uro que desea ELIMINAR el tipo de convenio?",
+            title: "¿Esta seguro que desea ELIMINAR el tipo de convenio?",
             text: "Favor confirme o cancele la solicitud",
             icon: "warning",
             buttons: ["Cancelar", "Confirmar"],
@@ -1417,7 +1676,7 @@
     }
 
     function confirmar_eliminar_tipo_convenio(id){
-        let url = "{{ ROUTE('profesional.eliminar_tipo_convenio') }}";
+        let url = window.convenioEliminarUrl || "{{ ROUTE('profesional.eliminar_tipo_convenio') }}";
         let data = {
             id: id,
             id_empresa: $('#id_empresa').val(),
@@ -1429,6 +1688,23 @@
             data: data,
             success: function(data){
                 console.log(data);
+                if (window.convenioEliminarUrl) {
+                    if (data.estado == 1) {
+                        swal({
+                            title: 'Exito',
+                            text: data.msj || data.mensaje,
+                            icon: 'success'
+                        });
+                        render_tabla_convenios_usuarios(data.convenios || []);
+                    } else {
+                        swal({
+                            title: 'Error',
+                            text: data.msj || data.mensaje,
+                            icon: 'error'
+                        });
+                    }
+                    return;
+                }
                 if(data.estado == 1){
                     swal({
                         title: 'Exito',
@@ -1481,7 +1757,7 @@
     }
 
     function confirmar_eliminar_tipo_convenio_prevision(id){
-        let url = "{{ ROUTE('profesional.eliminar_tipo_convenio') }}";
+        let url = window.convenioEliminarUrl || "{{ ROUTE('profesional.eliminar_tipo_convenio') }}";
         let data = {
             id: id,
             id_empresa: $('#id_empresa').val(),
@@ -1493,6 +1769,23 @@
             data: data,
             success: function(data){
                 console.log(data);
+                if (window.convenioEliminarUrl) {
+                    if (data.estado == 1) {
+                        swal({
+                            title: 'Exito',
+                            text: data.msj || data.mensaje,
+                            icon: 'success'
+                        });
+                        render_tabla_convenios_usuarios(data.convenios || []);
+                    } else {
+                        swal({
+                            title: 'Error',
+                            text: data.msj || data.mensaje,
+                            icon: 'error'
+                        });
+                    }
+                    return;
+                }
                 if(data.estado == 1){
                     swal({
                         title: 'Exito',

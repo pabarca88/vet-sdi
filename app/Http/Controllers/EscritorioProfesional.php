@@ -33,7 +33,6 @@ use App\Models\Direccion;
 use App\Models\Empresas;
 use App\Models\EmpresasConvenios;
 use App\Models\Especialidad;
-use App\Models\EspecieMascota;
 use App\Models\EvolucionPacienteHospital;
 use App\Models\EvaluacionPeriodoncia;
 use App\Models\EvolucionUrgencia;
@@ -79,7 +78,6 @@ use App\Models\Instituciones;
 use App\Models\InsumosTratamientosDental;
 use App\Models\LugarAtencion;
 use App\Models\LiquidacionRecibo;
-use App\Models\Mascota;
 use App\Models\LogUsersDevices;
 use App\Models\MensajesProfesional;
 use App\Models\MensajesDifusion;
@@ -1207,21 +1205,6 @@ class EscritorioProfesional extends Controller
         $prevision = Prevision::all();
         $region = Region::all();
         $paciente = [];
-        $mascotas = collect();
-
-        if ($profesional) {
-            $mascota_ids = FichaAtencion::where('id_profesional', $profesional->id)
-                ->whereNotNull('id_mascota')
-                ->distinct()
-                ->pluck('id_mascota');
-
-            if ($mascota_ids->isNotEmpty()) {
-                $mascotas = Mascota::with(['Responsable.Prevision', 'especieMascota'])
-                    ->whereIn('id', $mascota_ids)
-                    ->orderBy('nombre')
-                    ->get();
-            }
-        }
         // foreach ($ficha_atencion as $f) {
         //     $paciente_temp = Paciente::find($f->id_paciente);
 		// 	if($paciente_temp){
@@ -1248,8 +1231,7 @@ class EscritorioProfesional extends Controller
                 'prevision' => $prevision,
                 'paciente' => $paciente,
                 'profesional' => $profesional,
-                'region' => $region,
-                'mascotas' => $mascotas
+                'region' => $region
             ]
         );
     }
@@ -2346,22 +2328,6 @@ class EscritorioProfesional extends Controller
             $profesional = Profesional::where('id_usuario', $user)->first();
         }
 
-        $mascota = null;
-        if (!empty($hora_medica->id_mascota)) {
-            $mascota = Mascota::with(['especieMascota', 'tamanoMascota'])->find($hora_medica->id_mascota);
-            if ($mascota && !$mascota->especieMascota) {
-                $especieId = null;
-                if (!empty($mascota->especie_id)) {
-                    $especieId = $mascota->especie_id;
-                } elseif (!empty($mascota->especie) && is_numeric($mascota->especie)) {
-                    $especieId = (int) $mascota->especie;
-                }
-                if ($especieId) {
-                    $mascota->setRelation('especieMascota', EspecieMascota::find($especieId));
-                }
-            }
-        }
-
 		$fecha_ultima_atencion = HoraMedica::select('horas_medicas.fecha_consulta','fichas_atenciones.*')
         ->join('fichas_atenciones','horas_medicas.id_ficha_atencion','fichas_atenciones.id')
         ->where('horas_medicas.id_paciente', $hora_medica->id_paciente)
@@ -2425,7 +2391,6 @@ class EscritorioProfesional extends Controller
             'edad' => $edad,
             'responsable' => $responsable,
             'procedimiento' => $procedimiento,
-            'mascota' => $mascota,
         );
     }
 
@@ -5070,338 +5035,6 @@ return $ficha;
             return $e->getMessage();
         }
 
-    }
-
-    public function generar_pdf_presupuesto_vet(Request $req)
-    {
-        try {
-            $ficha_atencion = FichaAtencion::find($req->id_ficha_atencion);
-            if (!$ficha_atencion) {
-                return response()->json(['msj' => 'Ficha no encontrada'], 404);
-            }
-
-            $lugar_atencion_id = $req->id_lugar_atencion ?: $ficha_atencion->id_lugar_atencion;
-            $lugar_atencion = LugarAtencion::with('direccion')->find($lugar_atencion_id);
-            $profesional = Profesional::find($ficha_atencion->id_profesional);
-            $paciente = Paciente::find($ficha_atencion->id_paciente);
-            $mascota = $ficha_atencion->id_mascota ? Mascota::find($ficha_atencion->id_mascota) : null;
-
-            $items_db = DB::table('presupuestos_vet as pv')
-                ->leftJoin('diagnosticos_vet as dv', 'pv.id_diagnostico', '=', 'dv.id')
-                ->leftJoin('tratamientos_vet as tv', 'pv.id_tratamiento', '=', 'tv.id')
-                ->select(
-                    'pv.cantidad',
-                    'pv.valor',
-                    'dv.descripcion as diagnostico',
-                    'tv.descripcion as tratamiento',
-                    'tv.valor as valor_tratamiento'
-                )
-                ->where('pv.id_ficha_atencion', $ficha_atencion->id)
-                ->orderBy('pv.created_at')
-                ->get();
-
-            $detalle_items = [];
-            $subtotal = 0;
-            foreach ($items_db as $item) {
-                $valor_unitario = $item->valor_tratamiento ?? $item->valor ?? 0;
-                $cantidad = $item->cantidad ?? 1;
-                $valor_total = $valor_unitario * $cantidad;
-                $subtotal += $valor_total;
-                $detalle_items[] = [
-                    'descripcion' => ($item->diagnostico ?: '-') . ' / ' . ($item->tratamiento ?: '-'),
-                    'valor_unitario' => $valor_unitario,
-                    'cantidad' => $cantidad,
-                    'valor_total' => $valor_total,
-                ];
-            }
-            $iva = round($subtotal * 0.19);
-            $total = $subtotal + $iva;
-
-            $temp_token = CertificadoController::certificadoDocumento($ficha_atencion->id, $profesional->id, $paciente->id, 1);
-            if ($temp_token['estado'] == 1) {
-                $token_documento = $temp_token['certificado'];
-                $url_documento = CertificadoController::generarUrlDocumento($token_documento);
-                $qr_documento = GeneradorQrController::generar($url_documento);
-            } else {
-                $temp_token = CertificadoController::certificadoDocumento($ficha_atencion->id, rand(111, 999), $paciente->id, 1);
-                $token_documento = $temp_token['certificado'];
-                $url_documento = CertificadoController::generarUrlDocumento($token_documento);
-                $qr_documento = GeneradorQrController::generar($url_documento);
-            }
-
-            $temp_token = CertificadoController::certificadoProfesional($profesional->id, 1, 1, $ficha_atencion->id);
-            if ($temp_token['estado'] == 1) {
-                $token_profesional = $temp_token['certificado'];
-                $url_profesional = CertificadoController::generarUrlProfesional($token_profesional);
-                $qr_profesional = GeneradorQrController::generar($url_documento);
-            } else {
-                $temp_token = CertificadoController::certificadoProfesional(rand(1114, 999), 1, 1, $ficha_atencion->id);
-                $token_profesional = $temp_token['certificado'];
-                $url_profesional = CertificadoController::generarUrlProfesional($token_profesional);
-                $qr_profesional = GeneradorQrController::generar($url_documento);
-            }
-
-            $qr_id = GeneradorQrController::generar(encrypt($ficha_atencion->id));
-
-            $array_ficha_atencion = [
-                'id' => $ficha_atencion->id,
-                'created_at' => $ficha_atencion->created_at->format('d/m/Y'),
-                'token' => $token_documento,
-                'url' => $url_documento,
-                'qr' => $qr_documento,
-                'qr_id' => $qr_id,
-            ];
-
-            $array_lugar_atencion = [
-                'id' => $lugar_atencion->id ?? null,
-                'nombre' => $lugar_atencion->nombre ?? '',
-                'direccion' => $lugar_atencion && $lugar_atencion->direccion
-                    ? $lugar_atencion->direccion->direccion . ' ' . $lugar_atencion->direccion->numero_dir . ', ' . $lugar_atencion->direccion->Ciudad()->first()->nombre
-                    : '',
-                'region' => $lugar_atencion && $lugar_atencion->direccion
-                    ? $lugar_atencion->direccion->Ciudad()->first()->Region()->first()->nombre
-                    : '',
-            ];
-
-            $direccion_paciente = $paciente->Direccion()->first();
-            $array_profesional = [
-                'id' => $profesional->id,
-                'nombre' => $profesional->nombre . ' ' . $profesional->apellido_uno . ' ' . $profesional->apellido_dos,
-                'rut' => $profesional->rut,
-                'direccion' => $profesional->direccion->direccion . ' ' . $profesional->direccion->numero_dir . ', ' . $profesional->direccion->Ciudad()->first()->nombre,
-                'especialidad' => (optional($profesional->SubTipoEspecialidad()->first())->nombre ?: $profesional->TipoEspecialidad()->first()->nombre),
-                'id_especialidad' => $profesional->id_especialidad,
-                'num_colegio' => $profesional->num_colegio,
-                'region' => $profesional->direccion->Ciudad()->first()->Region()->first()->nombre,
-                'token' => $token_profesional,
-                'url' => $url_profesional,
-                'qr' => $qr_profesional,
-            ];
-            $array_paciente = [
-                'id' => $paciente->id,
-                'nombre' => $paciente->nombres . ' ' . $paciente->apellido_uno . ' ' . $paciente->apellido_dos,
-                'fecha_nac' => $paciente->fecha_nac,
-                'rut' => $paciente->rut,
-                'sexo' => $paciente->sexo,
-                'direccion' => $direccion_paciente
-                    ? $direccion_paciente->direccion . ' ' . $direccion_paciente->numero_dir . ', ' . $direccion_paciente->Ciudad()->first()->nombre
-                    : '',
-            ];
-
-            $mascota = [
-                'nombre' => $mascota ? $mascota->nombre : '',
-            ];
-
-            $items = $detalle_items;
-
-            $totales = [
-                'subtotal' => $subtotal,
-                'iva' => $iva,
-                'total' => $total,
-            ];
-
-            $pdf = PdfController::generarPDF(
-                'PRESUPUESTO VETERINARIO',
-                compact('array_ficha_atencion', 'array_lugar_atencion', 'array_profesional', 'array_paciente', 'mascota', 'items', 'totales'),
-                'Presupuesto Vet ' . $paciente->rut,
-                'presupuesto_vet',
-                'G'
-            );
-
-            if (isset($pdf->estado) && $pdf->estado == 1) {
-                return response()->json(['ruta' => $pdf->pdf_url]);
-            }
-
-            return response()->json(['msj' => 'Error al generar PDF'], 500);
-        } catch (\Exception $e) {
-            return response()->json(['msj' => $e->getMessage()], 500);
-        }
-    }
-
-    public function enviar_presupuesto_vet_email(Request $req)
-    {
-        try {
-            $ficha_atencion = FichaAtencion::find($req->id_ficha_atencion);
-            if (!$ficha_atencion) {
-                return response()->json(['estado' => 0, 'msj' => 'Ficha no encontrada'], 404);
-            }
-
-            $lugar_atencion_id = $req->id_lugar_atencion ?: $ficha_atencion->id_lugar_atencion;
-            $lugar_atencion = LugarAtencion::with('direccion')->find($lugar_atencion_id);
-            $profesional = Profesional::find($ficha_atencion->id_profesional);
-            $paciente = Paciente::find($ficha_atencion->id_paciente);
-            $mascota = $ficha_atencion->id_mascota ? Mascota::find($ficha_atencion->id_mascota) : null;
-            $dueno = $mascota ? $mascota->Responsable()->first() : null;
-            $destinatario = $dueno ?: $paciente;
-
-            if (!$destinatario || empty($destinatario->email)) {
-                return response()->json(['estado' => 0, 'msj' => 'El dueño de la mascota no tiene un correo electrónico registrado.'], 422);
-            }
-
-            $items_db = DB::table('presupuestos_vet as pv')
-                ->leftJoin('diagnosticos_vet as dv', 'pv.id_diagnostico', '=', 'dv.id')
-                ->leftJoin('tratamientos_vet as tv', 'pv.id_tratamiento', '=', 'tv.id')
-                ->select(
-                    'pv.cantidad',
-                    'pv.valor',
-                    'dv.descripcion as diagnostico',
-                    'tv.descripcion as tratamiento',
-                    'tv.valor as valor_tratamiento'
-                )
-                ->where('pv.id_ficha_atencion', $ficha_atencion->id)
-                ->orderBy('pv.created_at')
-                ->get();
-
-            $detalle_items = [];
-            $subtotal = 0;
-            foreach ($items_db as $item) {
-                $valor_unitario = $item->valor_tratamiento ?? $item->valor ?? 0;
-                $cantidad = $item->cantidad ?? 1;
-                $valor_total = $valor_unitario * $cantidad;
-                $subtotal += $valor_total;
-                $detalle_items[] = [
-                    'descripcion' => ($item->diagnostico ?: '-') . ' / ' . ($item->tratamiento ?: '-'),
-                    'valor_unitario' => $valor_unitario,
-                    'cantidad' => $cantidad,
-                    'valor_total' => $valor_total,
-                ];
-            }
-            $iva = round($subtotal * 0.19);
-            $total = $subtotal + $iva;
-
-            $temp_token = CertificadoController::certificadoDocumento($ficha_atencion->id, $profesional->id, $paciente->id, 1);
-            if ($temp_token['estado'] == 1) {
-                $token_documento = $temp_token['certificado'];
-                $url_documento = CertificadoController::generarUrlDocumento($token_documento);
-                $qr_documento = GeneradorQrController::generar($url_documento);
-            } else {
-                $temp_token = CertificadoController::certificadoDocumento($ficha_atencion->id, rand(111, 999), $paciente->id, 1);
-                $token_documento = $temp_token['certificado'];
-                $url_documento = CertificadoController::generarUrlDocumento($token_documento);
-                $qr_documento = GeneradorQrController::generar($url_documento);
-            }
-
-            $temp_token = CertificadoController::certificadoProfesional($profesional->id, 1, 1, $ficha_atencion->id);
-            if ($temp_token['estado'] == 1) {
-                $token_profesional = $temp_token['certificado'];
-                $url_profesional = CertificadoController::generarUrlProfesional($token_profesional);
-                $qr_profesional = GeneradorQrController::generar($url_documento);
-            } else {
-                $temp_token = CertificadoController::certificadoProfesional(rand(1114, 999), 1, 1, $ficha_atencion->id);
-                $token_profesional = $temp_token['certificado'];
-                $url_profesional = CertificadoController::generarUrlProfesional($token_profesional);
-                $qr_profesional = GeneradorQrController::generar($url_documento);
-            }
-
-            $qr_id = GeneradorQrController::generar(encrypt($ficha_atencion->id));
-
-            $array_ficha_atencion = [
-                'id' => $ficha_atencion->id,
-                'created_at' => $ficha_atencion->created_at->format('d/m/Y'),
-                'token' => $token_documento,
-                'url' => $url_documento,
-                'qr' => $qr_documento,
-                'qr_id' => $qr_id,
-            ];
-
-            $array_lugar_atencion = [
-                'id' => $lugar_atencion->id ?? null,
-                'nombre' => $lugar_atencion->nombre ?? '',
-                'direccion' => $lugar_atencion && $lugar_atencion->direccion
-                    ? $lugar_atencion->direccion->direccion . ' ' . $lugar_atencion->direccion->numero_dir . ', ' . $lugar_atencion->direccion->Ciudad()->first()->nombre
-                    : '',
-                'region' => $lugar_atencion && $lugar_atencion->direccion
-                    ? $lugar_atencion->direccion->Ciudad()->first()->Region()->first()->nombre
-                    : '',
-            ];
-
-            $direccion_paciente = $paciente->Direccion()->first();
-            $array_profesional = [
-                'id' => $profesional->id,
-                'nombre' => $profesional->nombre . ' ' . $profesional->apellido_uno . ' ' . $profesional->apellido_dos,
-                'rut' => $profesional->rut,
-                'direccion' => $profesional->direccion->direccion . ' ' . $profesional->direccion->numero_dir . ', ' . $profesional->direccion->Ciudad()->first()->nombre,
-                'especialidad' => (optional($profesional->SubTipoEspecialidad()->first())->nombre ?: $profesional->TipoEspecialidad()->first()->nombre),
-                'id_especialidad' => $profesional->id_especialidad,
-                'num_colegio' => $profesional->num_colegio,
-                'region' => $profesional->direccion->Ciudad()->first()->Region()->first()->nombre,
-                'token' => $token_profesional,
-                'url' => $url_profesional,
-                'qr' => $qr_profesional,
-            ];
-            $array_paciente = [
-                'id' => $paciente->id,
-                'nombre' => $paciente->nombres . ' ' . $paciente->apellido_uno . ' ' . $paciente->apellido_dos,
-                'fecha_nac' => $paciente->fecha_nac,
-                'rut' => $paciente->rut,
-                'sexo' => $paciente->sexo,
-                'direccion' => $direccion_paciente
-                    ? $direccion_paciente->direccion . ' ' . $direccion_paciente->numero_dir . ', ' . $direccion_paciente->Ciudad()->first()->nombre
-                    : '',
-            ];
-
-            $mascota = [
-                'nombre' => $mascota ? $mascota->nombre : '',
-            ];
-
-            $items = $detalle_items;
-
-            $totales = [
-                'subtotal' => $subtotal,
-                'iva' => $iva,
-                'total' => $total,
-            ];
-
-            $pdf = PdfController::generarPDF(
-                'PRESUPUESTO VETERINARIO',
-                compact('array_ficha_atencion', 'array_lugar_atencion', 'array_profesional', 'array_paciente', 'mascota', 'items', 'totales'),
-                'Presupuesto Vet ' . $paciente->rut,
-                'presupuesto_vet',
-                'G'
-            );
-
-            if (!isset($pdf->estado) || $pdf->estado != 1 || empty($pdf->pdf)) {
-                return response()->json(['estado' => 0, 'msj' => 'Error al generar PDF'], 500);
-            }
-
-            $pdfPath = public_path('storage/pdf/' . $pdf->pdf);
-            if (!is_file($pdfPath)) {
-                return response()->json(['estado' => 0, 'msj' => 'No se encontró el PDF generado.'], 500);
-            }
-
-            $blade = 'presupuesto_vet';
-            $to = [
-                [
-                    'email' => $destinatario->email,
-                    'name' => trim(($destinatario->nombres ?? '') . ' ' . ($destinatario->apellido_uno ?? '') . ' ' . ($destinatario->apellido_dos ?? '')),
-                ],
-            ];
-            $cc = [];
-            $bcc = [];
-            $asunto = 'Presupuesto veterinario';
-            $body = [
-                'destinatario' => $destinatario,
-                'paciente' => $paciente,
-                'profesional' => $profesional,
-                'mascota' => $mascota,
-            ];
-            $archivo = [
-                [
-                    'url' => $pdfPath,
-                    'mime' => 'application/pdf',
-                ],
-            ];
-            $id_institucion = $lugar_atencion->id_institucion ?? '';
-
-            $result_mail = SendMailController::envioCorreo($blade, $to, $cc, $bcc, $asunto, $body, $archivo, $id_institucion);
-            if (isset($result_mail['estado']) && $result_mail['estado'] == 1) {
-                return response()->json(['estado' => 1, 'msj' => 'Presupuesto enviado correctamente al correo del dueño.']);
-            }
-
-            return response()->json(['estado' => 0, 'msj' => $result_mail['msj'] ?? 'No fue posible enviar el correo.'], 500);
-        } catch (\Exception $e) {
-            return response()->json(['estado' => 0, 'msj' => 'Error al enviar el presupuesto: ' . $e->getMessage()], 500);
-        }
     }
 
     public function generar_pdf_presupuesto_hist(Request $req){
@@ -8215,80 +7848,80 @@ public function eliminarPiezaCoronaProtesis(Request $req){
         if($institucion && $institucion->id_tipo_institucion == 2){
             try {
                 // buscamos los servicios internos
-                $servicios_internos = $this->dame_servicios_internos($institucion->id, $institucion->id_lugar_atencion);
+            $servicios_internos = $this->dame_servicios_internos($institucion->id, $institucion->id_lugar_atencion);
 
-                foreach($servicios_internos as $servicio_interno){
-                    // preguntamos si es profesional es jefe de algun servicio
-                    if($servicio_interno->jefe_servicio && $servicio_interno->jefe_servicio->id == $profesional->id){
-                        return view('app.adm_hospital.servicios.jefe_servicio.escritorio_adm',['servicio' => $servicio_interno])->render();
+            foreach($servicios_internos as $servicio_interno){
+                // preguntamos si es profesional es jefe de algun servicio
+                if($servicio_interno->jefe_servicio && $servicio_interno->jefe_servicio->id == $profesional->id){
+                    return view('app.adm_hospital.servicios.jefe_servicio.escritorio_adm',['servicio' => $servicio_interno])->render();
+                }
+            }
+
+            foreach($servicios_internos as $servicio_interno){
+                // preguntamos si el profesional pertenece al grupo de profesionales del hospital de algun servicio
+                foreach($servicio_interno->profesionales as $profesional_servicio){
+                    if($profesional_servicio->id == $profesional->id && $profesional->id_especialidad == 8){
+                        $enfermera = true;
+                        $tipos_receta = TiposReceta::all();
+                        $controles_ciclo = $this->dameEvolucionesPacienteHosp($servicio_interno->id_paciente);
+                        if(count($controles_ciclo) == 0)
+                        {
+                            // si no hay ciclos de control se inicia en 1 para manejar el id en la vista
+                            $contador_div_evaluaciones = 1;
+                        }else{
+                            // si hay ciclos de control se suma 1 para manejar el id en la vista
+                            $contador_div_evaluaciones = count($controles_ciclo) + 1;
+                        }
+                        foreach($controles_ciclo as $cc)
+                        {
+                            $cc->datos_evolucion = json_decode($cc->datos_evolucion);
+                        }
+                        $curaciones_planas = $this->dameCuracionesPlanasPaciente($servicio_interno->id_paciente);
+                        $curaciones_lpp = $this->dameCuracionesLppPaciente($servicio_interno->id_paciente);
+
+                        $controles_ciclo = $this->dameEvolucionesPacienteHosp($servicio_interno->id_paciente);
+
+                        $detalle_receta_controlador = new DetalleRecetaController();
+                        $recetas = $detalle_receta_controlador->dameTodoDetalleRecetaPaciente($servicio_interno->id_paciente);
+
+                        $resumen_recetas = "";
+                        foreach($recetas as $r){
+                            $resumen_recetas .= "<p>".$r->nombre_medicamento." ".$r->dosis." ".$r->nombre_frecuencia." ".$r->duracion." ".$r->comentario." con fecha ".$r->created_at."</p>";
+                        }
+                        // return view('app.adm_hospital.servicios.enfermera.escritorio_enfermera',[
+                        //     'servicio' => $servicio_interno,
+                        //     'institucion' => $institucion,
+                        //     'enfermera' => $enfermera,
+                        //     'tipos_receta' => $tipos_receta,
+                        //     'controles_ciclo' => $controles_ciclo,
+                        //     'contador_div_evaluaciones' => $contador_div_evaluaciones,
+                        //     'curacion_plana' => $curaciones_planas,
+                        //     'curaciones_lpp' => $curaciones_lpp,
+                        //     'controles_ciclo' => $controles_ciclo,
+                        //     'recetas' => $recetas,
+                        //     'resumen_recetas' => $resumen_recetas
+                        //     ])->render();
+                        $receta_control = RecetaControl::orderBy('Descripcion')->get();
+                        $examenMedico = ExamenMedico::where('cod_parent', 0)->where('habilitado', 1)->orderby('nombre_examen', 'ASC')->get();
+                        $examenControlador = new ExamenMedicoController();
+                        $examenes_solicitados = $examenControlador->dame_examenes_solicitados($servicio_interno->id_paciente);
+                        return view('app.adm_hospital.servicios.enfermera.home',[
+                            'enfermera' => $enfermera,
+                            'institucion' => $institucion,
+                            'servicio' => $servicio_interno,
+                            'tipos_receta' => $tipos_receta,
+                            'receta_control' => $receta_control,
+                            'examenMedico' => $examenMedico,
+                            'examenes_solicitados' => $examenes_solicitados
+                        ])->render();
+                    }
+                    if($profesional_servicio->id == $profesional->id){
+                        return view('app.adm_hospital.servicios.profesionales.escritorio',['servicio' => $servicio_interno])->render();
                     }
                 }
+            }
 
-                foreach($servicios_internos as $servicio_interno){
-                    // preguntamos si el profesional pertenece al grupo de profesionales del hospital de algun servicio
-                    foreach($servicio_interno->profesionales as $profesional_servicio){
-                        if($profesional_servicio->id == $profesional->id && $profesional->id_especialidad == 8){
-                            $enfermera = true;
-                            $tipos_receta = TiposReceta::all();
-                            $controles_ciclo = $this->dameEvolucionesPacienteHosp($servicio_interno->id_paciente);
-                            if(count($controles_ciclo) == 0)
-                            {
-                                // si no hay ciclos de control se inicia en 1 para manejar el id en la vista
-                                $contador_div_evaluaciones = 1;
-                            }else{
-                                // si hay ciclos de control se suma 1 para manejar el id en la vista
-                                $contador_div_evaluaciones = count($controles_ciclo) + 1;
-                            }
-                            foreach($controles_ciclo as $cc)
-                            {
-                                $cc->datos_evolucion = json_decode($cc->datos_evolucion);
-                            }
-                            $curaciones_planas = $this->dameCuracionesPlanasPaciente($servicio_interno->id_paciente);
-                            $curaciones_lpp = $this->dameCuracionesLppPaciente($servicio_interno->id_paciente);
-
-                            $controles_ciclo = $this->dameEvolucionesPacienteHosp($servicio_interno->id_paciente);
-
-                            $detalle_receta_controlador = new DetalleRecetaController();
-                            $recetas = $detalle_receta_controlador->dameTodoDetalleRecetaPaciente($servicio_interno->id_paciente);
-
-                            $resumen_recetas = "";
-                            foreach($recetas as $r){
-                                $resumen_recetas .= "<p>".$r->nombre_medicamento." ".$r->dosis." ".$r->nombre_frecuencia." ".$r->duracion." ".$r->comentario." con fecha ".$r->created_at."</p>";
-                            }
-                            // return view('app.adm_hospital.servicios.enfermera.escritorio_enfermera',[
-                            //     'servicio' => $servicio_interno,
-                            //     'institucion' => $institucion,
-                            //     'enfermera' => $enfermera,
-                            //     'tipos_receta' => $tipos_receta,
-                            //     'controles_ciclo' => $controles_ciclo,
-                            //     'contador_div_evaluaciones' => $contador_div_evaluaciones,
-                            //     'curacion_plana' => $curaciones_planas,
-                            //     'curaciones_lpp' => $curaciones_lpp,
-                            //     'controles_ciclo' => $controles_ciclo,
-                            //     'recetas' => $recetas,
-                            //     'resumen_recetas' => $resumen_recetas
-                            //     ])->render();
-                            $receta_control = RecetaControl::orderBy('Descripcion')->get();
-                            $examenMedico = ExamenMedico::where('cod_parent', 0)->where('habilitado', 1)->orderby('nombre_examen', 'ASC')->get();
-                            $examenControlador = new ExamenMedicoController();
-                            $examenes_solicitados = $examenControlador->dame_examenes_solicitados($servicio_interno->id_paciente);
-                            return view('app.adm_hospital.servicios.enfermera.home',[
-                                'enfermera' => $enfermera,
-                                'institucion' => $institucion,
-                                'servicio' => $servicio_interno,
-                                'tipos_receta' => $tipos_receta,
-                                'receta_control' => $receta_control,
-                                'examenMedico' => $examenMedico,
-                                'examenes_solicitados' => $examenes_solicitados
-                            ])->render();
-                        }
-                        if($profesional_servicio->id == $profesional->id){
-                            return view('app.adm_hospital.servicios.profesionales.escritorio',['servicio' => $servicio_interno])->render();
-                        }
-                    }
-                }
-
-                return $servicios_internos;
+            return $servicios_internos;
             } catch (\Exception $e) {
                 //throw $th;
                 return $e->getMessage();
@@ -8918,7 +8551,6 @@ public function eliminarPiezaCoronaProtesis(Request $req){
             $paciente['edad'] = 99;
             $paciente['nombre_responsable'] = '';
             $paciente['id_responsable'] = '';
-            $paciente['mascotas'] = [];
             $paciente['regiones'] = $regiones;
 
             return json_encode($paciente);
@@ -8963,9 +8595,6 @@ public function eliminarPiezaCoronaProtesis(Request $req){
             $paciente['nombre_responsable'] = $nombres_representante;
             $paciente['id_responsable'] = $id_representante;
             $paciente['acompanante'] = $registro_temp;
-            $paciente['mascotas'] = Mascota::with(['especieMascota', 'tamanoMascota'])
-                ->where('id_responsable', $paciente->id)
-                ->get();
 
 
         }
@@ -9248,7 +8877,6 @@ public function eliminarPiezaCoronaProtesis(Request $req){
         $hora_medica = new HoraMedica();
         $hora_medica->id_presupuesto = $request->id_presupuesto ?? null;
         $hora_medica->id_paciente = $request->reserva_hora_id;
-        $hora_medica->id_mascota = $request->id_mascota ?? null;
         $hora_medica->id_profesional = $profesional->id;
         $hora_medica->id_ficha_otros_prof = $profesional->id;
         $hora_medica->id_estado = '1';
@@ -10556,44 +10184,71 @@ public function eliminarPiezaCoronaProtesis(Request $req){
     public function mi_horario_lugar_atencion_agregar(Request $request)
     {
         $profesional = Profesional::where('id_usuario', Auth::user()->id)->first();
-        $hora_inicio = \Carbon\Carbon::parse($request->hora_inicio . ':01')->format('H:i:s');
+
+        // Normalizar días: siempre array de strings
+        $diasSeleccionados = $request->input('dia', []);
+        if (!is_array($diasSeleccionados)) {
+            $diasSeleccionados = [$diasSeleccionados];
+        }
+
+        // Opcional: limpiar / dejar únicos / ordenar
+        $diasSeleccionados = array_unique($diasSeleccionados);
+        sort($diasSeleccionados);
+
+        $hora_inicio  = \Carbon\Carbon::parse($request->hora_inicio . ':01')->format('H:i:s');
         $hora_termino = \Carbon\Carbon::parse($request->hora_termino . ':00')->format('H:i:s');
 
+        // 🔎 Validar si ya existe un horario que se cruce en alguno de esos días
         $validate = ProfesionalHorario::where('id_profesional', $profesional->id)
-            ->where('dia', 'like', "%$request->dia%")
-            ->whereRaw("('$hora_inicio' BETWEEN hora_inicio AND hora_termino OR '$hora_termino' BETWEEN hora_inicio AND hora_termino)", [0])
+            ->where(function ($q) use ($diasSeleccionados) {
+                foreach ($diasSeleccionados as $dia) {
+                    $q->orWhere('dia', 'like', "%{$dia}%");
+                }
+            })
+            ->whereRaw(
+                "(
+                    ? BETWEEN hora_inicio AND hora_termino
+                    OR ? BETWEEN hora_inicio AND hora_termino
+                )",
+                [$hora_inicio, $hora_termino]
+            )
             ->get();
 
-        if (count($validate) > 0) {
+        if ($validate->count() > 0) {
             return 'Failed';
         }
 
+        // Buscar si ya existe un horario con misma hora/duración para ese profesional
         $horario = ProfesionalHorario::where('hora_inicio', $hora_inicio)
             ->where('hora_termino', $hora_termino)
             ->where('duracion_consulta', $request->duracion)
             ->where('id_profesional', $profesional->id)
             ->first();
 
-
-
         if (isset($horario->id)) {
-            $horario->dia = $horario->dia . ',' . $request->dia;
-        } else {
+            // Ya existe: mezclamos días antiguos + nuevos
+            $diasActuales = $horario->dia ? explode(',', $horario->dia) : [];
+            $diasTotales  = array_unique(array_merge($diasActuales, $diasSeleccionados));
+            sort($diasTotales);
 
+            $horario->dia = implode(',', $diasTotales); // ej: "1,2,4,5"
+        } else {
+            // No existe: creamos nuevo
             $horario = new ProfesionalHorario();
-            $horario->hora_inicio = $hora_inicio;
-            $horario->hora_termino = $hora_termino;
-            $horario->dia = $request->dia;
-            $horario->duracion_consulta = $request->duracion;
-            $horario->id_profesional = $profesional->id;
-            $horario->id_lugar_atencion = $request->id_lugar_atencion;
-            $horario->tipo_Agenda = (int) $request->tipo_agenda_medica;
+            $horario->hora_inicio        = $hora_inicio;
+            $horario->hora_termino       = $hora_termino;
+            $horario->dia                = implode(',', $diasSeleccionados); // "2,3"
+            $horario->duracion_consulta  = $request->duracion;
+            $horario->id_profesional     = $profesional->id;
+            $horario->id_lugar_atencion  = $request->id_lugar_atencion;
+            $horario->tipo_Agenda        = (int) $request->tipo_agenda_medica;
         }
+
         if (!$horario->save()) {
             return 'error';
         }
 
-        return json_encode($horario);
+        return response()->json($horario);
     }
 
     // modulo editar perfil paciente
