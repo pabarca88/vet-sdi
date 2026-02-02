@@ -45,7 +45,7 @@
                                     <div class="col-sm-6 mt-2">
                                         <div class="form-group">
                                             <label class="floating-label-activo-sm">Composición:</label>
-                                            <div id="nombre_composicion_farmaco" name="nombre_composicion_farmaco" class="p-t-5"></div>
+                                            <div id="nombre_composicion_farmaco" name="nombre_composicion_farmaco" class="p-t-5">(Sin Información)</div>
                                             <div id="mensaje_med_control" name="mensaje_med_control" class="alert-warning"></div>
 
                                         </div>
@@ -62,10 +62,8 @@
                                     <div class="col-sm-6 mt-2 medicamento_activo">
                                         <div class="form-group fill">
                                             <label class="floating-label">Posología</label>
-                                            <select class="form-control form-control-sm" id="frecuencia_medicamento_ficha_dental"
-                                                name="frecuencia_medicamento_ficha_dental">
-                                                <option>Seleccione una opción</option>
-                                            </select>
+                                            <textarea class="form-control form-control-sm" id="frecuencia_medicamento_ficha_dental"
+                                                name="frecuencia_medicamento_ficha_dental" rows="2"></textarea>
                                         </div>
                                     </div>
                                     {{--  SI NO SE ENCUENTRA EL MEDICAMENTO EN LA BUSQUEDA  --}}
@@ -644,6 +642,7 @@
                             $('#id_medicamento_ficha_dental').val('');
                             $('#id_medicamento_tipo_control').val('');
                             $('#mensaje_med_control').val('');
+                            $('#nombre_composicion_farmaco').text('(Sin Información)');
                         }
                         else
                         {
@@ -654,6 +653,7 @@
                             $('#id_medicamento_ficha_dental').val('');
                             $('#id_medicamento_tipo_control').val('');
                             $('#mensaje_med_control').val('');
+                            $('#nombre_composicion_farmaco').text('(Sin Información)');
                         }
                         response(data);
                     }
@@ -663,7 +663,7 @@
                 // Set selection
                 $('#nombre_medicamento_ficha_dental').val(ui.item.label); // display the selected text
                 $('#id_medicamento_ficha_dental').val(ui.item.value); // save selected id to input
-                $('#nombre_composicion_farmaco').html(ui.item.droga); // save selected id to input
+                $('#nombre_composicion_farmaco').text($.trim(ui.item.droga || '') !== '' ? ui.item.droga : '(Sin Información)'); // save selected id to input
                 $('#id_medicamento_tipo_control').val(ui.item.control); // save selected id to input
                 if(ui.item.control == 1 || ui.item.control == 1 || ui.item.control == 2 || ui.item.control == 3 || ui.item.control == 4 || ui.item.control == 5 )
                     $('#mensaje_med_control').html('Este Paciente ha tenido 3 Recetas retenidas este año<br>Consulte en "Ranking de recetas controladas del paciente"');
@@ -796,13 +796,15 @@
                     data = JSON.parse(data);
                     console.log(data)
                     let dosis = $('#frecuencia_medicamento_ficha_dental');
-
-                    dosis.find('option').remove();
-                    dosis.append('<option value="0">Seleccione</option>');
-                    $(data).each(function(i, v) { // indice, valor
-                        dosis.append('<option value="' + v.id + '">' + v.indic +
-                            '</option>');
-                    })
+                    if (Array.isArray(data) && data.length > 0) {
+                        if (data.length === 1) {
+                            dosis.val(data[0].indic);
+                        } else {
+                            dosis.val(data.map(function(v) { return v.indic; }).join("\n"));
+                        }
+                    } else {
+                        dosis.val('');
+                    }
 
                 } else {
 
@@ -919,7 +921,7 @@
         let dosis_medicamento_ficha_dental = $('#dosis_medicamento_ficha_dental option:selected').text();
 
         let id_frecuencia_medicamento_ficha_dental = $('#frecuencia_medicamento_ficha_dental').val();
-        let frecuencia_medicamento_ficha_dental = $('#frecuencia_medicamento_ficha_dental option:selected').text();
+        let frecuencia_medicamento_ficha_dental = $('#frecuencia_medicamento_ficha_dental').val();
 
         let dosis_medicamento_ficha_dental_2 = $('#dosis_medicamento_ficha_dental_2').val();
         let frecuencia_medicamento_ficha_dental_2 = $('#frecuencia_medicamento_ficha_dental_2').val();
@@ -976,7 +978,7 @@
                     valido = 1;
                     mensaje += 'Debe completar el campo Presentación.\n';
                 }
-                if($.trim(frecuencia_medicamento_ficha_dental) == '' || frecuencia_medicamento_ficha_dental == 0 || frecuencia_medicamento_ficha_dental == 'Seleccione una opción' || frecuencia_medicamento_ficha_dental == 'Seleccione' || frecuencia_medicamento_ficha_dental == 'Seleccione')
+                if($.trim(frecuencia_medicamento_ficha_dental) == '')
                 {
                     valido = 1;
                     mensaje += 'Debe completar el campo Posología.\n';
@@ -1105,13 +1107,13 @@
                 $('#nombre_medicamento_ficha_dental').val('');
                 $('id_medicamento_ficha_dental').val('');
 
-                $('#nombre_composicion_farmaco').html('');
+                $('#nombre_composicion_farmaco').text('(Sin Información)');
 
                 {{--  $('#dosis_medicamento_ficha_dental').html('<option value="0">Seleccione</option>');  --}}
                 $('#dosis_medicamento_ficha_dental').val(0);
 
                 {{--  $('#frecuencia_medicamento_ficha_dental').html('<option value="0">Seleccione</option>');  --}}
-                $('#frecuencia_medicamento_ficha_dental').val(0);
+                $('#frecuencia_medicamento_ficha_dental').val('');
 
                 $('#dosis_medicamento_ficha_dental_2').val('');
                 $('#frecuencia_medicamento_ficha_dental_2').val('');
@@ -2030,4 +2032,3 @@
     }
 
 </script>
-
