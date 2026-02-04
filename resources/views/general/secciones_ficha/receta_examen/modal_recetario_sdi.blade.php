@@ -1,11 +1,15 @@
 <!-- modal indicar_recetario sdi ddd -->
+<style>
+    .swal-overlay { z-index: 20000 !important; }
+    .swal-modal { z-index: 20001 !important; }
+</style>
 <div id="indicar_recetario" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="indicar_recetario"aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header bg-info">
                 <h5 class="modal-title text-white mt-1">Recetario SDI</h5>
                 <input type="hidden" id="id_profesional" value="{{ @Auth::user()->id }}">
-                <button type="button" class="close" aria-label="Close" onclick="cerrarModalMedicamentosFicha_sdi();">
+                <button type="button" class="close" aria-label="Close" data-dismiss="modal" onclick="cerrarModalMedicamentosFicha_sdi();">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
@@ -624,7 +628,7 @@
 
 <script>
     var creatinina = 0;
-    $(document).ready(function() {
+        $(document).ready(function() {
         {{--  MEDICAMENTOS  --}}
         $("#nombre_medicamento_ficha_dental").autocomplete({
             source: function(request, response) {
@@ -676,6 +680,14 @@
                     $('#mensaje_med_control').html('');
 
                 return false;
+            },
+            change: function(event, ui) {
+                if (!ui.item) {
+                    $('#id_medicamento_ficha_dental').val('');
+                    $('#id_medicamento_tipo_control').val('');
+                    $('#nombre_composicion_farmaco').text('(Sin Información)');
+                    $('#mensaje_med_control').text('');
+                }
             }
         });
 
@@ -710,26 +722,37 @@
     function i_medicamento()
     {
         ver_medicamento_ficha_medica_sdi();
-        // $('#indicar_recetario').modal({backdrop: 'static', keyboard: false});
-        $('#indicar_recetario').modal('show',{backdrop: 'static', keyboard: false});
+        $('#indicar_recetario').modal({backdrop: 'static', keyboard: false});
+        $('#indicar_recetario').modal('show');
     }
+
+    function setPcodedZ(value)
+    {
+        $('.pcoded-main-container').css('z-index', value);
+    }
+
+    function fixSwalZ()
+    {
+        setTimeout(function() {
+            var $swal = $('.swal-overlay');
+            if ($swal.length) {
+                $swal.appendTo('body');
+                $swal.css('z-index', 99999);
+                $('.swal-modal').css('z-index', 100000);
+                setPcodedZ(-1);
+            }
+        }, 0);
+    }
+
+    $(document).on('click', '.swal-button', function() {
+        setPcodedZ('');
+    });
 
     function cerrarModalMedicamentosFicha_sdi()
     {
-        swal({
-            title: "Ingreso de medicamento(s).",
-            text: 'Al "Aceptar" cierra la ventana sin aplicar cambios.\n Debe "Generar Receta" para guardar cambios.',
-            icon: "warning",
-            buttons: ["Aceptar", 'Cancelar'],
-        }).then((result) => {
-            if (result == true)
-            {
-                console.log('regresar');
-            } else {
-
-                $('#indicar_recetario').modal('hide');
-            }
-        })
+        $('#indicar_recetario').modal('hide');
+        $('.modal-backdrop').remove();
+        $('body').removeClass('modal-open');
     };
 
     function ver_examenes_ficha_medica_esp()
@@ -1095,7 +1118,12 @@
                 mensaje += 'Debe completar el campo Medicamento.\n';
             }
 
-            if($('#id_medicamento_ficha_dental').val() != '')
+            if($('#id_medicamento_ficha_dental').val() == '')
+            {
+                valido = 1;
+                mensaje += 'Debe seleccionar un medicamento de la lista (autocompletar). Si no existe, use Receta Manual.\n';
+            }
+            else
             {
                 if($.trim(dosis_medicamento_ficha_dental) == '' || dosis_medicamento_ficha_dental == 0 || dosis_medicamento_ficha_dental == 'Seleccione una opción' || dosis_medicamento_ficha_dental == 'Seleccione' || dosis_medicamento_ficha_dental == 'Seleccione')
                 {
@@ -1106,25 +1134,6 @@
                 {
                     valido = 1;
                     mensaje += 'Debe completar el campo Posología.\n';
-                }
-            }
-            else
-            {
-                if( dosis_medicamento_ficha_dental_2 == '')
-                {
-                    valido = 1;mensaje += 'Debe completar el campo Dosis\n';
-                }
-                else
-                {
-                    dosis_medicamento_ficha_dental = dosis_medicamento_ficha_dental_2;
-                }
-                if( frecuencia_medicamento_ficha_dental_2 == '')
-                {
-                    valido = 1;mensaje += 'Debe completar el campo Frecuencia\n';
-                }
-                else
-                {
-                    frecuencia_medicamento_ficha_dental = frecuencia_medicamento_ficha_dental_2;
                 }
             }
 
@@ -1274,6 +1283,7 @@
                     // buttons: "Aceptar",
                     //SuccessMode: true,
                 });
+                fixSwalZ();
             }
         }
         else
@@ -1285,6 +1295,7 @@
                 // buttons: "Aceptar",
                 //SuccessMode: true,
             });
+            fixSwalZ();
         }
     }
 

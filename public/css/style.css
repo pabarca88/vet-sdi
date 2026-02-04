@@ -35703,3 +35703,18 @@ transition: 0.2s!important;
 .border-xl {
     border-radius:20px;
 }
+.modal-backdrop {
+    z-index: 1040 !important;
+}
+
+.modal {
+    z-index: 1050 !important;
+}
+
+.swal-overlay {
+    z-index: 20000 !important;
+}
+
+.swal-modal {
+    z-index: 20001 !important;
+}

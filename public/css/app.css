@@ -2371,3 +2371,10 @@ select {
   }
 }
 
+.swal-overlay {
+    z-index: 30000 !important;
+}
+
+.swal-modal {
+    z-index: 30001 !important;
+}
