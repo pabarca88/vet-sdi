@@ -35,7 +35,7 @@ class ImportArticulosFromExcel extends Command
      */
     public function handle()
     {
-        $path = $this->option('file') ?: base_path('../prod-veterinarios.xlsx');
+        $path = $this->option('file') ?: base_path('../prod-veterinarios-nuevo.xlsx');
 
         if (!is_file($path)) {
             $this->error("No se encontro el archivo: {$path}");
@@ -162,6 +162,12 @@ class ImportArticulosFromExcel extends Command
                 }
                 if ($field === 'nombre' && $value === null) {
                     $value = $defaults['nombre'];
+                }
+                if ($field === 'tipo_cont' && $value === null) {
+                    $value = $defaults['tipo_cont'];
+                }
+                if ($field === 'cant_comp' && $value === null) {
+                    $value = $defaults['cant_comp'];
                 }
                 if ($field === 'droga' && $value === null) {
                     $value = $defaults['droga'];

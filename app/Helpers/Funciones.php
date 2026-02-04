@@ -169,7 +169,7 @@ class Funciones{
         }
     }
 
-	static public function generatePermApp($id_user_create,$id_user_recept,$evento,$nombre,$apellido_p,$apellido_m,$lugar,$profesional,$tipo = 'confirmacion'){
+	static public function generatePermApp($id_user_create,$id_user_recept,$evento,$nombre,$apellido_p,$apellido_m,$lugar,$profesional,$tipo = 'confirmacion', $tipo_id = 0){
         $datos = array();
         /** calculo de periodo de vigencia para aprobacion */
         $fecha = date('Y-m-d');
