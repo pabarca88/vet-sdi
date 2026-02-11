@@ -1,5 +1,5 @@
 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-    <div class="card-a" style=" border: 1px solid #6c9bd5;">
+    <div class="card-a" style=" border: 1px solid #8a4fa6;">
         <div class="card-header-a" id="cgc" >
         <button class="accor-closed btn pt-1 pb-0 pl-1 btn-block text-left collapsed" type="button"  data-toggle="collapse" data-target="#cgc-c" aria-expanded="false" aria-controls="cgc-c">
               Nuevo Antecedente / Crónicos / GES / Confidencial

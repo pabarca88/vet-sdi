@@ -25,7 +25,7 @@
                                     @if (Auth::user()->hasRole('Paciente') || Auth::user()->hasRole('Admin'))
                                         <li>
                                             <a href="{{ ROUTE('paciente.home') }}" class="dropdown-item">
-                                                <i class="feather icon-user"></i>
+                                                <i class="feather icon-user fa-2x"></i>
                                                 Escritorio paciente
                                             </a>
                                         </li>
@@ -34,7 +34,7 @@
                                     @if (Auth::user()->hasRole('Profesional') || Auth::user()->hasRole('Admin'))
                                         <li>
                                             <a href="{{ ROUTE('profesional.home') }}" class="dropdown-item"><i
-                                                    class="feather icon-user"></i>
+                                                    class="feather icon-user fa-2x"></i>
                                                 Escritorio profesional
                                             </a>
                                         </li>
@@ -44,7 +44,7 @@
 
                                     @if (Auth::user()->hasRole('Asistente') || Auth::user()->hasRole('Admin'))
                                         <li><a href="{{ ROUTE('asistente.home') }}" class="dropdown-item"><i
-                                                    class="feather icon-user"></i>Escritorio
+                                                    class="feather icon-user fa-2x"></i>Escritorio
                                                 Asistente</a></li>
                                     @endif
                                 </ul>

@@ -26,7 +26,15 @@
                                 <input type="text" class="form-control form-control-sm" name="pulso_sig_vit" id="pulso_sig_vit" value="{{ isset($fichaAtencion) ? $fichaAtencion->pulso : ''}}">
                             </div>
                             <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                                <label class="floating-label-activo-sm">Frec. Reposo</label>
+                                <label class="floating-label-activo-sm">Frec.Respiratoria</label>
+                                <input type="text" class="form-control form-control-sm" name="frec_reposo_sig_vit" id="frec_reposo_sig_vit" value="{{ isset($fichaAtencion) ? $fichaAtencion->frecuencia_reposo : '' }}">
+                            </div>
+                              <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                <label class="floating-label-activo-sm">color mucosas</label>
+                                <input type="text" class="form-control form-control-sm" name="frec_reposo_sig_vit" id="frec_reposo_sig_vit" value="{{ isset($fichaAtencion) ? $fichaAtencion->frecuencia_reposo : '' }}">
+                            </div>
+                              <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                <label class="floating-label-activo-sm">Tpo. llene capilar</label>
                                 <input type="text" class="form-control form-control-sm" name="frec_reposo_sig_vit" id="frec_reposo_sig_vit" value="{{ isset($fichaAtencion) ? $fichaAtencion->frecuencia_reposo : '' }}">
                             </div>
                             <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12 text-center">
@@ -82,21 +90,21 @@
                     <div class="card-body-sidebar">
                         <div class="form-row pt-3 px-2">
                             <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                                <label class="floating-label-activo-sm">BI</label>
+                                <label class="floating-label-activo-sm">Presión</label>
                                 <input type="text" class="form-control form-control-sm" name="presion_bi_sidebar" id="presion_bi_sidebar" value="">
                             </div>
                             <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                                <label class="floating-label-activo-sm">BD</label>
+                                <label class="floating-label-activo-sm">Lugar de medición</label>
                                 <input type="text" class="form-control form-control-sm" name="presion_bd_sidebar" id="presion_bd_sidebar" value="">
                             </div>
-                            <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                                <label class="floating-label-activo-sm">Pié</label>
+                            <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                <label class="floating-label-activo-sm">Comentarios</label>
                                 <input type="text" class="form-control form-control-sm" name="presion_pie_sidebar" id="presion_pie_sidebar" value="">
                             </div>
-                            <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            {{--  <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6">
                                 <label class="floating-label-activo-sm">Sentado</label>
                                 <input type="text" class="form-control form-control-sm" name="presion_sentado_sidebar" id="presion_sentado_sidebar" value="">
-                            </div>
+                            </div>  --}}
                             <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12 text-center">
                                 <button type="button" class="btn btn-xxs btn-success-light-c" onclick="guardar_presion_arterial_sidebar()"><i class="feather icon-save"></i> Guardar</button>
                             </div>
@@ -104,7 +112,7 @@
                     </div>
                 </div>
             </div>
-            <div class="card-sidebar">
+            {{--  <div class="card-sidebar">
                 <div class="card-header-sidebar" id="heading_hosp">
                     <h2 class="mb-0">
                     <button class="btn btn-light btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapse_hosp" aria-expanded="false" aria-controls="collapse_hosp"><i class="feather icon-chevron-down float-right pt-1 flecha-accordion"></i>
@@ -133,7 +141,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>  --}}
         </div>
     </div>
 </div>

@@ -16,7 +16,7 @@
                                         data-placement="top" title="Volver a mi escritorio"><i
                                             class="feather icon-home"></i></a></li>
                                 <li class="breadcrumb-item">
-                                    <a href="#">Mis Documentos</a>
+                                    <a href="#">Mis documentos</a>
                                 </li>
                             </ul>
                         </div>

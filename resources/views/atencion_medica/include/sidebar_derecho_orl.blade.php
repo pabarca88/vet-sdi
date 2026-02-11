@@ -1,13 +1,13 @@
-    <!--Sidebar 3 (otorrino)-->
+    <!--Sidebar 3 (veterinaria)-->
     <div class="position-fixed w-100 h-100"></div>
     <div id="formularios_orl" class="bs-canvas bs-canvas-anim bs-canvas-right position-fixed bg-light h-100 shadow-lg" data-width="370px" data-offset="true">
         <header class="bs-canvas-header p-3 bg-info overflow-auto">
             <button type="button" class="bs-canvas-close float-left close" aria-label="Close"><span aria-hidden="true" class="text-white">&times;</span></button>
-            <h5 class="d-inline-block text-light mb-0 float-right">Formularios Otorrinolaringología</h5>
+            <h5 class="d-inline-block text-light mb-0 float-right">Formularios Veterinaria</h5>
         </header>
         <div class="bs-canvas-content">
             <div class="accordion" id="accordion_side_bar">
-                <div class="card-sidebar">
+                {{--  <div class="card-sidebar">
                     <div class="card-header-sidebar" id="heading_solicitud_examenes">
                         <h2 class="mb-0">
                             <button class="btn btn-light btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse_solicitud_examenes" aria-expanded="true" aria-controls="collapse_solicitud_examenes"><i class="feather icon-chevron-down float-right pt-1 flecha-accordion"></i>
@@ -17,17 +17,17 @@
                     </div>
                     <div id="collapse_solicitud_examenes" class="collapse" aria-labelledby="heading_solicitud_examenes" data-parent="#accordion_side_bar">
                         <div class="card-body-sidebar">
-
-                            <button type="button" class="btn btn-sm btn-info btn-block text-left" onclick="i_examen_esporl()";>+ Exámenes Otorrinolaringológicos</button>
+                       
+                             <button type="button" class="btn btn-sm btn-info btn-block text-left" onclick="i_examen_esporl()";>+ Exámenes Otorrinolaringológicos</button>
                             <button type="button" class="btn btn-sm btn-info btn-block text-left" onclick="i_examen_rxorl()";>+ Orden radiología</button>
                             <button type="button" class="btn btn-sm btn-info btn-block text-left" onclick="i_biopsiaorl()";>+ Biopsias Otorrinolaringología</button>
-                        </div>
+                        </div>  
                     </div>
-                </div>
+                </div>  --}}
 
                <!-- SECCION CONSENTIMIENTOS -->
                 @include('general.sidebar.seccion_consentimientos')
-                <div class="card-sidebar">
+                {{--  <div class="card-sidebar">
                     <div class="card-header-sidebar" id="heading_utilidades">
                         <h2 class="mb-0">
                         <button class="btn btn-light btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapse_utilidades" aria-expanded="false" aria-controls="collapse_utilidades"><i class="feather icon-chevron-down float-right pt-1 flecha-accordion"></i>
@@ -43,7 +43,7 @@
                     </div>
                     @include("general.modal.m_ucodigofonasa")
                     @include("general.modal.m_uimc")
-                </div>
+                </div>  --}}
 
                 <div class="card-sidebar">
                     <div class="card-header-sidebar" id="heading_recom">
@@ -55,9 +55,9 @@
                     </div>
                     <div id="collapse_recom" class="collapse" aria-labelledby="heading_recom" data-parent="#accordion_side_bar">
                         <div class="card-body-sidebar">
-                            <button type="button" class="btn btn-sm btn-info btn-block text-left" onclick="ind_amig()";>+ Indicaciones Cuidados Post Amigdalectomía</button>
-                            <button type="button" class="btn btn-sm btn-info btn-block text-left" onclick="ind_timp()";>+ Indicaciones Cuidados Post Timpanoplastias</button>
-                            <button type="button" class="btn btn-sm btn-info btn-block text-left" onclick="ind_rino()";>+ Indicaciones Cuidados Post Rinoseptoplastias</button>
+                            <button type="button" class="btn btn-sm btn-info btn-block text-left" onclick="ind_amig()";>+ Indicaciones Esterilización Felinos</button>
+                            <button type="button" class="btn btn-sm btn-info btn-block text-left" onclick="ind_timp()";>+ Indicaciones Esterilización Caninos</button>
+                            {{--  <button type="button" class="btn btn-sm btn-info btn-block text-left" onclick="ind_rino()";>+ Indicaciones Cuidados Post Rinoseptoplastias</button>  --}}
                             <button type="button" class="btn btn-sm btn-info btn-block text-left" onclick="icirugia()";>+ Indicaciones post cirugía En General</button>
                         </div>
                     </div>
@@ -109,14 +109,11 @@
             </div>
         </div>
     </div>
-    <!--SIDEBAR 3 (Otorrino)-->
-
-    <!--MODALS SIDE BAR GENERALES-->
-    {{-- @include('atencion_medica.modales') --}}
+    <!--Sidebar 3 (veterinaria)-->
 
 
-    @include("atencion_medica.formularios.modal_atencion_especialidad.otorrino.modal_exbiopsia_orl")
 
-    @include("atencion_medica.formularios.modal_atencion_especialidad.otorrino.modal_exradiologico_orl")
+
+
 
 

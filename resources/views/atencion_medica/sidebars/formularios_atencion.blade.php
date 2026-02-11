@@ -21,17 +21,7 @@
                 <div id="collapse_form_generales" class="collapse" aria-labelledby="heading_form_generales"
                     data-parent="#accordion_formularios_atencion">
                     <div class="card-body-sidebar">
-                        @if(!empty(session('lic_token')) && session('lic_estado') == 1)
-                            <!--Boton Modal Formulario certificado de reposo-->
-                            @if (auth()->user()->can('profesional.premium.pacientes.reposo_medico'))
-                                <button type="button" class="btn btn-sm btn-info btn-block text-left accion_modal_certificado_reposo">
-                                    + Certificado de reposo
-                                </button>
-                            @else
-                                <button type="button" class="btn btn-sm btn-info btn-block text-left accion_modal_certificado_reposo">
-                                    + Certificado de reposo
-                                </button>
-                            @endif
+                       
 
                             @if (auth()->user()->can('profesional.premium.pacientes.interconsulta'))
                                 <!--Boton Modal Formulario de interconsulta-->
@@ -92,27 +82,10 @@
                                     + Uso Personal
                                 </button>
                             @endif
-                        @else
-                            <!--Boton Modal Formulario certificado de reposo-->
-                            <button type="button" class="btn btn-sm btn-info btn-block text-left accion_modal_certificado_reposo" >
-                                + Certificado de reposo
-                            </button>
-                            <!--Boton Modal Formulario de interconsulta-->
-                            <button type="button" class="btn btn-sm btn-info btn-block text-left accion_modal_interconsulta" >
-                                + Crear Interconsulta
-                            </button>
-                            <!--Boton Modal Formulario de interconsulta respuesta-->
-                            <button type="button" class="btn btn-sm btn-info btn-block text-left accion_modal_interconsulta_respuesta">
-                                    + Responder Interconsulta
-                            </button>
-                            <button type="button" class="btn btn-sm btn-info btn-block text-left accion_modal_inf_medico" >
-                                + Informe Médico
-                            </button>
-                            <!--Boton Modal formulario uso personal-->
-                            <button type="button" class="btn btn-sm btn-info btn-block text-left accion_modal_uso_personal" >
-                                + Uso Personal
-                            </button>
-                        @endif
+                    
+                  
+                         
+                   
                     </div>
                 </div>
             </div>
@@ -131,12 +104,12 @@
                     aria-labelledby="heading_form_notificaciones" data-parent="#accordion_formularios_atencion">
                     <div class="card-body-sidebar">
                         <!--Boton Modal Formulario Constancia Ges-->
-                        <button type="button"
-                            class="btn btn-sm btn-info btn-block text-left accion_modal_constancia_ges">+ Constancia GES</button>
+                        {{--  <button type="button"
+                            class="btn btn-sm btn-info btn-block text-left accion_modal_constancia_ges">+ Constancia GES</button>  --}}
 
                         <!--Boton Modal Formulario Enfermedades de Declaración Obligatoria -->
                         <button type="button"
-                            class="btn btn-sm btn-info btn-block text-left accion_modal_enfermedades_declaracion_obligatoria">+ Enf.Notificación.Obligatoria (ENO)</button>
+                            class="btn btn-sm btn-info btn-block text-left accion_modal_enfermedades_declaracion_obligatoria">+ Enf.Notificación.Obligatoria (EDO)</button>
 
 
                         <!--Boton Modal Formulario Reembolso Médico
@@ -152,7 +125,7 @@
                 </div>
             </div>
 			 <div class="card-sidebar">
-                <div class="card-header-sidebar" id="heading_form_consultasbd">
+                {{--  <div class="card-header-sidebar" id="heading_form_consultasbd">
                     <h2 class="mb-0">
                         <button class="btn btn-light btn-block text-left collapsed" type="button" data-toggle="collapse"
                             data-target="#collapse_cons_bd" aria-expanded="false"
@@ -161,14 +134,14 @@
                             CONSULTAR BASES DE DATOS <br>DEL MINSAL
                         </button>
                     </h2>
-                </div>
-                <div id="collapse_cons_bd" class="collapse"
+                </div>  --}}
+                {{--  <div id="collapse_cons_bd" class="collapse"
                     aria-labelledby="heading_form_consultasbd" data-parent="#accordion_formularios_atencion">
                     <div class="card-body-sidebar">
                         <!--Boton Modal consulta a b d-->
                         <button type="button"class="btn btn-sm btn-info btn-block text-left accion_modal_consulta_minsal">+ Consultar base de datos MINSAL</br>&nbsp;&nbsp;(en construccíon)</button>
                     </div>
-                </div>
+                </div>  --}}
             </div>
         </div>
     </div>

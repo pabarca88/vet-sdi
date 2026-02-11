@@ -10,7 +10,7 @@
                     <div class="row align-items-center pb-2">
                         <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">
                             <div class="page-header-title">
-                            <h5 class="text-white d-inline f-16 mt-1"><strong>ATENCIÓN OTORRINOLARINGOLOGÍA</strong></h5>
+                            <h5 class="text-white d-inline f-16 mt-1"><strong>ATENCIÓN VETERINARIA GENERAL</strong></h5>
                                 <p class="font-weight-bold mt-0 mb-0 text-white float-md-right">
                                     @php
                                         $meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
@@ -36,13 +36,13 @@
                                     <li class="nav-item">
                                         <a class="nav-link text-reset active" id="atender-tab" data-toggle="tab" href="#atender" role="tab" aria-controls="atender" aria-selected="true">Atender paciente</a>
                                     </li>
-                                    <li class="nav-item" id="nav-licencia">
+                                    <!--<li class="nav-item" id="nav-licencia">
                                         @if(!empty(session('lic_token')) && session('lic_estado') == 1)
                                             <a class="nav-link text-reset" id="licencia-tab" data-toggle="tab" href="#licencia" role="tab" aria-controls="licencia" aria-selected="false" onclick="cargar_licencias();">Licencia</a>
                                         @else
                                             <a class="nav-link text-reset" id="licencia-tab" data-toggle="tab" href="#" role="tab" aria-controls="licencia" aria-selected="false" onclick="abrir_autorizacion();">Licencia</a>
                                         @endif
-                                    </li>
+                                    </li>-->
                                     <li class="nav-item" id="nav-fmu">
                                         @if(!empty(session('fmu_token')) && session('fmu_estado') == 1)
                                             <a class="nav-link text-reset" id="fmu-tab" data-toggle="tab" href="#fmu" role="tab" aria-controls="fmu" aria-selected="false">FVU</a>

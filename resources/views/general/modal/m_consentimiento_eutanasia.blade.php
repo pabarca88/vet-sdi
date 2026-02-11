@@ -36,7 +36,7 @@
 
                 </div>
 
-                <input type="hidden" name="id_consentimiento_eut" id="id_consentimiento_eut" value="">
+                <input type="hidden" name="id_consentimiento" id="id_consentimiento" value="">
 
                 <div class="form-row">
 
@@ -72,7 +72,7 @@
                                                         <h5> CONSENTIMIENTO INFORMADO VETERINARIO PARA EUTANASIA DE MASCOTAS</h5>
                                                         <p>1. He consultado con el profesional veterinario <strong>Dr.{{ $profesional->nombre }} {{ $profesional->apellido_uno }} {{ $profesional->apellido_dos }} </strong> quien me ha explicado e informado, sobre el motivo, los objetivos , que este procedimiento conlleva.</p>
                                                          <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-
+                                                            
                                                             <div class="form-row">
                                                                 <div class="form-group col-sm-12">
                                                                     <strong>DECLARO:</strong>
@@ -88,7 +88,7 @@
                                                                         días desde la fecha presente.
                                                                     </p><br>
 
-
+                                                                   
 
 
                                                                     <p class="p_ley">
@@ -117,22 +117,22 @@
                                                     </div>
                                                   <br>
                                                    <div class="div_cont1">
-
+                                                       
                                                     </div>
                                                 </div>
+                                
 
-
-                                <div id="div_informacion_general_cons_eut" style="display: none;">
+                                <div id="div_informacion_general_cons" style="display: none;">
 
                                     <div class="form-row">
 
                                         <div class="col-12">
 
+                                            
 
-
-
-
-
+                                               
+                                                   
+                                             
 
                                                 <div class="form-row mt-3">
 
@@ -319,135 +319,135 @@
 
 
 
-        $("#consentimiento").autocomplete({
+        // $("#consentimiento").autocomplete({
 
-            source: function(request, response) {
+        //     source: function(request, response) {
 
-                // console.log(request);
+        //         // console.log(request);
 
-                var longitud = request.term.length;
+        //         var longitud = request.term.length;
 
-                if(longitud>2)
+        //         if(longitud>2)
 
-                {
+        //         {
 
-                    // Fetch data
+        //             // Fetch data
 
-                    $.ajax({
+        //             $.ajax({
 
-                        url: "{{ route('consentimiento.ver_autocomplete') }}",
+        //                 url: "{{ route('consentimiento.ver_autocomplete') }}",
 
-                        type: 'get',
+        //                 type: 'get',
 
-                        dataType: "json",
+        //                 dataType: "json",
 
-                        data: {
+        //                 data: {
 
-                            search: request.term
+        //                     search: request.term
 
-                        },
+        //                 },
 
-                        success: function(data) {
+        //                 success: function(data) {
 
-                            // console.log(data);
+        //                     // console.log(data);
 
-                            response(data);
+        //                     response(data);
 
-                        }
+        //                 }
 
-                    });
+        //             });
 
-                }
+        //         }
 
-            },
+        //     },
 
-            select: function(event, ui) {
+        //     select: function(event, ui) {
 
 
 
-                // console.log(ui);
+        //         // console.log(ui);
 
-                $('#consentimiento').val(ui.item.label);
+        //         $('#consentimiento').val(ui.item.label);
 
-                $('#id_consentimiento_eut').val(ui.item.value);
+        //         $('#id_consentimiento').val(ui.item.value);
 
-                // Set selection
+        //         // Set selection
 
-                $.ajax({
+        //         $.ajax({
 
-                    url: "{{ route('consentimiento.cargar_consentimiento') }}",
+        //             url: "{{ route('consentimiento.cargar_consentimiento') }}",
 
-                    type: 'get',
+        //             type: 'get',
 
-                    dataType: "json",
+        //             dataType: "json",
 
-                    data: {
+        //             data: {
 
-                        id: ui.item.value
+        //                 id: ui.item.value
 
-                    },
+        //             },
 
-                    success: function(data) {
+        //             success: function(data) {
 
-                        // console.log(data);
+        //                 // console.log(data);
 
-                        if(data.estado == 1)
+        //                 if(data.estado == 1)
 
-                        {
+        //                 {
 
-                            // console.log(data.registro.texto);
+        //                     // console.log(data.registro.texto);
 
-                            var texto = data.registro.texto;
+        //                     var texto = data.registro.texto;
 
-                            texto = texto.replace('{diagnostico}', '<span style="font-size: 15px;font-weight: bold;">'+$('#diagnostico_cons').val()+'</span>');
+        //                     texto = texto.replace('{diagnostico}', '<span style="font-size: 15px;font-weight: bold;">'+$('#diagnostico_cons').val()+'</span>');
 
-                            texto = texto.replace('{cirugia}', '<span style="font-size: 15px;font-weight: bold;">'+$('#cirugia_cons').val()+'</span>');
+        //                     texto = texto.replace('{cirugia}', '<span style="font-size: 15px;font-weight: bold;">'+$('#cirugia_cons').val()+'</span>');
 
-                            texto = texto.replace('{nombre_dependiente}', '<span style="font-size: 15px;font-weight: bold;">'+$('#cirugia_cons').val()+'</span>');
+        //                     texto = texto.replace('{nombre_dependiente}', '<span style="font-size: 15px;font-weight: bold;">'+$('#cirugia_cons').val()+'</span>');
 
-                            $('#m_aconsenteutanasia_contenido').html('');
+        //                     $('#m_aconsenteutanasia_contenido').html('');
 
-                            $('#m_aconsenteutanasia_contenido').html(texto);
+        //                     $('#m_aconsenteutanasia_contenido').html(texto);
 
 
 
-                            $('#div_informacion_pasos_cons').hide();
+        //                     $('#div_informacion_pasos_cons').hide();
 
-                            $('#div_informacion_general_cons_eut').show();
+        //                     $('#div_informacion_general_cons').show();
 
-                        }
+        //                 }
 
-                        else
+        //                 else
 
-                        {
+        //                 {
 
-                            swal({
+        //                     swal({
 
-                                title: "Problema al Cargar Información de Consentimiento.",
+        //                         title: "Problema al Cargar Información de Consentimiento.",
 
-                                text: data.msj,
+        //                         text: data.msj,
 
-                                icon: "warning",
+        //                         icon: "warning",
 
-                            })
+        //                     })
 
-                            $('#div_informacion_pasos_cons').show();
+        //                     $('#div_informacion_pasos_cons').show();
 
-                            $('#div_informacion_general_cons_eut').hide();
+        //                     $('#div_informacion_general_cons').hide();
 
-                        }
+        //                 }
 
-                    }
+        //             }
 
-                });
+        //         });
 
 
 
-                return false;
+        //         return false;
 
-            }
+        //     }
 
-        });
+        // });
 
 
 
@@ -467,7 +467,7 @@
 
         $('#div_informacion_pasos_cons').show();
 
-        $('#div_informacion_general_cons_eut').hide();
+        $('#div_informacion_general_cons').hide();
 
     }
 
@@ -517,7 +517,7 @@
 
         var consentimiento = $('#consentimiento').val();
 
-        var id_consentimiento = $('#id_consentimiento_eut').val();
+        var id_consentimiento = $('#id_consentimiento').val();
 
         var num_consentimiento = 0;
 
@@ -591,13 +591,13 @@
 
 
 
-                    $('#id_consentimiento_eut').val(data.last_id);
+                    $('#id_consentimiento').val(data.last_id);
 
 
 
                     checkToken('esperando_aprobacion', 'div_btn_aprobacion_ok', 'div_btn_aprobacion_espera','div_btn_aprobacion_solicitud');
 
-                    enviar_consentimiento($('#id_consentimiento_eut').val(), $('#id_fc').val());
+                    enviar_consentimiento($('#id_consentimiento').val(), $('#id_fc').val());
 
                 }
 
@@ -669,7 +669,7 @@
 
                             e.preventDefault();
 
-                            ver_pdf_consentimiento($('#id_consentimiento_eut').val(), $('#id_fc').val());
+                            ver_pdf_consentimiento($('#id_consentimiento').val(), $('#id_fc').val());
 
                         });
 
@@ -677,7 +677,7 @@
 
                             e.preventDefault();
 
-                            enviar_consentimiento($('#id_consentimiento_eut').val(), $('#id_fc').val());
+                            enviar_consentimiento($('#id_consentimiento').val(), $('#id_fc').val());
 
                         });
 
@@ -713,7 +713,7 @@
 
                             e.preventDefault();
 
-                            //enviar_consentimiento($('#id_consentimiento_eut').val(), $('#id_fc').val());
+                            //enviar_consentimiento($('#id_consentimiento').val(), $('#id_fc').val());
 
                         });
 
@@ -855,7 +855,7 @@
 
     {
 
-        var id_consentimiento = $('#id_consentimiento_eut').val();
+        var id_consentimiento = $('#id_consentimiento').val();
 
         var token = $('#esperando_aprobacion').val();
 
@@ -1089,19 +1089,19 @@
 
         $('#div_informacion_pasos_cons').show();
 
-        $('#div_informacion_general_cons_eut').hide();
+        $('#div_informacion_general_cons').hide();
 
 
 
         $('#diagnostico_cons').val($('#descripcion_hipotesis').val());
 
-        $('#id_consentimiento_eut').val('');
+        $('#id_consentimiento').val('');
 
         $('#cirugia_cons').val('');
 
         $('#consentimiento').val('');
 
-        $('#id_consentimiento_eut').val('');
+        $('#id_consentimiento').val('');
 
         $('#m_aconsenteutanasia_contenido').html('');
 

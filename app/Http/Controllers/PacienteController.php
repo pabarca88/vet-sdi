@@ -1124,12 +1124,6 @@ class PacienteController extends Controller
     }
 	static public function generarEmailPacienteTemporal($nombre, $apellido_uno, $apellido_dos)
     {
-        // Usar un email temporal compartido para todos los pacientes sin email
-        // Esto permite agregar posteriormente un email real sin conflictos
-        return 'sintemporal@med-sdi.cl';
-
-        // Alternativa: Si se prefiere mantener emails únicos, descomentar el código siguiente
-        /*
         // Limpieza de caracteres especiales y espacios
         $nombre = strtolower(preg_replace('/[^a-zA-Z0-9]/', '', $nombre));
         $apellido_uno = strtolower(preg_replace('/[^a-zA-Z0-9]/', '', $apellido_uno));
@@ -1150,6 +1144,5 @@ class PacienteController extends Controller
 
         // Retornar el correo generado
         return $correo;
-        */
     }
 }

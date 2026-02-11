@@ -95,7 +95,7 @@
                                     <!--Card Información Básica-->
                                     <div class="card">
                                         <div
-                                            class="card-header d-flex align-items-center justify-content-between bg-primary">
+                                            class="card-header d-flex align-items-center justify-content-between bg-info">
                                             <h5 class="mb-0 text-white">Datos personales</h5>
                                             <button type="button" class="btn btn-light btn-icon m-0 float-right"
                                                 data-toggle="collapse" data-target=".info_basica" aria-expanded="false"
@@ -358,7 +358,7 @@
                                     <!--Card Contacto-->
                                     <div class="card">
                                         <div
-                                            class="card-header d-flex align-items-center justify-content-between bg-primary">
+                                            class="card-header d-flex align-items-center justify-content-between bg-info">
                                             <h5 class="mb-0 text-white">Contacto</h5>
                                             <button type="button" class="btn btn-light btn-icon m-0 float-right"
                                                 data-toggle="collapse" data-target=".info_contacto" aria-expanded="false"
@@ -419,7 +419,7 @@
                                     <!--Card Residencia-->
                                     <div class="card">
                                         <div
-                                            class="card-header d-flex align-items-center justify-content-between bg-primary">
+                                            class="card-header d-flex align-items-center justify-content-between bg-info">
                                             <h5 class="mb-0 text-white">Residencia</h5>
                                             <button type="button" class="btn btn-light btn-icon m-0 float-right"
                                                 data-toggle="collapse" data-target=".info_residencial"
@@ -532,7 +532,7 @@
                             {{-- formulario para agregar  --}}
                             <div class="row">
                                 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                                    <h5 class="f-20 d-inline mr-2 pt-1">Antecedentes acedémicos</h5>
+                                    <h5 class="f-20 text-c-blue d-inline mr-2 pt-1">Antecedentes acedémicos</h5>
                                     <button type="button" class="btn btn-info btn-sm d-inline float-right mb-2"
                                         onclick="info_academica_m();"><i class="fas fa-plus"></i> Añadir</button>
                                 </div>
@@ -545,7 +545,7 @@
                                             <!--Card profesion-->
                                             <div class="card">
                                                 <div
-                                                    class="card-header d-flex align-items-center justify-content-between bg-primary">
+                                                    class="card-header d-flex align-items-center justify-content-between bg-info">
                                                     <h5 class="mb-0 text-white">
                                                         {{ $value_academico->TipoAntecedenteAcademico->nombre }}</h5>
                                                     <div class="float-md-right d-inline">

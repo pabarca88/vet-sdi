@@ -13,7 +13,7 @@
                                 <li class="breadcrumb-item"><a href="{{ ROUTE('paciente.home') }}"
                                         data-toggle="tooltip" data-placement="top" title="Volver a mi escritorio"><i
                                             class="feather icon-home"></i></a></li>
-                                <li class="breadcrumb-item"><a href="{{ ROUTE('paciente.receta.licencia') }}">Registro de Alimentos</a></li>
+                                <li class="breadcrumb-item"><a href="{{ ROUTE('paciente.receta.licencia') }}">Alimentos</a></li>
                             </ul>
                         </div>
                     </div>
@@ -23,17 +23,36 @@
         </div>
 
 
-        <div class="row mx-1 mt-n5">
-            <div class="col-md-12  mt-n5">
+         <div class="row mx-1 mt-n5">
+             <div class="col-md-12  mt-n5">
                 <div class="card">
                     <div class="bg-info card-header">
-                        <h4 class="text-white f-20">Registro de alimentos</h4>
+                        <h4 class="text-white f-20">Registro de Alimentos</h4>
                     </div>
                     <div class="card-body">
-                      <h2>Mi Ubicación</h2>
-                        <button onclick="getLocation()">Obtener ubicación</button>
-
-                        <div id="map" style="height: 250px; border: 1px solid black;"></div>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                                <button type="button"  class="btn btn-outline-purple btn-xs mb-3" onclick="getLocation()"><i class="fas fa-map-marker-alt"></i> Obtener mi ubicación</button>
+                                <div id="map" style="height: 500px;"></div>
+                            </div>
+                            <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                                <div class="card-lineal mt-5">
+                                    <div class="card-header-lineal">
+                                        <h4 class="f-18 text-dark">Información del lugar de preferencia</h4>
+                                    </div>
+                                    <div class="card-body-lineal p-4">
+                                            <img class="wid-120 text-center mt-1 mb-3" src="{{ asset('images/otroslogos/logo-local.png') }}">
+                                            <h5 class="f-18 text-purple">Pet Shop Perro Loco</h5>
+                                            <p>Esmeralda 381, Los Andes, Región de Valparaíso.</p><br>
+                                            <h6 class="text-purple text-uppercase">Horario</h6>
+                                            <p><strong>Lunes a Viernes: </strong>10:00 am - 20:30 pm</p>
+                                            <p><strong>Sábado: </strong>10:00 am - 15:00 pm</p>
+                                            <p><strong>Domingo:</strong> Cerrado</p>
+                    
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

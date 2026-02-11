@@ -784,15 +784,10 @@ class EscritorioAsistente extends Controller
             $error = array();
             $valido = 1;
 
-            /**
-             * Validación: Permitir emails duplicados en pacientes (es dato de contacto, no necesariamente propio)
-             * Solo crear User si el email NO está siendo usado por otro User en el sistema
-             * El email en pacientes puede repetirse (ej: abuelito usa email de su hija)
-             * El email en users debe ser único para login
-             */
+            /** validacion de correo en paciente */
+            $temp_valid_email = Paciente::where(DB::raw('UPPER(email)'), mb_strtoupper($request->reserva_hora_email))->count();
 
-            // Siempre permitir crear el paciente, la validación real es en la tabla users
-            if(true)
+            if($temp_valid_email == 0)
             {
                 $user = Auth::user()->id;
                 $paciente = new Paciente();
@@ -957,7 +952,7 @@ class EscritorioAsistente extends Controller
                             }
                             else
                             {
-                                if( $paciente->email === 'sintemporal@med-sdi.cl' )
+                                if( strpos($paciente->email, $temp) !== false )
                                 {
                                     $temp_rut = $paciente->rut;
                                     $temp_rut = str_replace('.','' , $temp_rut);
@@ -973,57 +968,50 @@ class EscritorioAsistente extends Controller
                             $pass_temp = random_int(1111,9999);
                             $user->password = Hash::make($pass_temp);
 
-                            try {
-                                if($user->save())
+                            if($user->save())
+                            {
+                                $user->assignRole('Paciente');
+                                $paciente->id_usuario = $user->id;
+                                if($paciente->save())
                                 {
-                                    $user->assignRole('Paciente');
-                                    $paciente->id_usuario = $user->id;
-                                    if($paciente->save())
+                                    $datos['paciente']['user']['update_paciente'] = 'Paciente actualizado con Usuario.';
+                                    if( $request->reserva_result_codigo_validacion == 1 )
                                     {
-                                        $datos['paciente']['user']['update_paciente'] = 'Paciente actualizado con Usuario.';
-                                        if( $request->reserva_result_codigo_validacion == 1 )
+                                        /** envio de sms */
+                                    }
+                                    else
+                                    {
+                                        /** envio de correo de confirmacion  */
+                                        $blade = 'bienvenida_paciente_usuario';
+                                        $to = array(
+                                                array('email' => $paciente->email,'name' => $paciente->nombres . ' ' .$paciente->apellido_uno . ' ' .$paciente->apellido_dos),
+                                            );
+                                        $cc = array();
+                                        $bcc = array();
+                                        $asunto = 'MED-SDI - Bienvenido!';
+                                        $body = array(
+                                                    'nombre'=>$paciente->nombres . ' ' .$paciente->apellido_uno . ' ' .$paciente->apellido_dos,
+                                                    'user' => $paciente->email,
+                                                    'pass' => $pass_temp
+                                                    );
+                                        $archivo = '';/** pendiente */
+                                        $id_institucion = '';
+
+                                        $result_mail =  SendMailController::envioCorreo($blade, $to, $cc, $bcc, $asunto, $body, $archivo, $id_institucion);
+
+                                        if($result_mail['estado'])
                                         {
-                                            /** envio de sms */
+                                            $datos['paciente']['user']['mail']['estado'] = 1;
+                                            $datos['paciente']['user']['mail']['msj'] = 'Notificacion de bienvenida enviado';
                                         }
                                         else
                                         {
-                                            /** envio de correo de confirmacion  */
-                                            $blade = 'bienvenida_paciente_usuario';
-                                            $to = array(
-                                                    array('email' => $paciente->email,'name' => $paciente->nombres . ' ' .$paciente->apellido_uno . ' ' .$paciente->apellido_dos),
-                                                );
-                                            $cc = array();
-                                            $bcc = array();
-                                            $asunto = 'MED-SDI - Bienvenido!';
-                                            $body = array(
-                                                        'nombre'=>$paciente->nombres . ' ' .$paciente->apellido_uno . ' ' .$paciente->apellido_dos,
-                                                        'user' => $paciente->email,
-                                                        'pass' => $pass_temp
-                                                        );
-                                            $archivo = '';/** pendiente */
-                                            $id_institucion = '';
-
-                                            $result_mail =  SendMailController::envioCorreo($blade, $to, $cc, $bcc, $asunto, $body, $archivo, $id_institucion);
-
-                                            if($result_mail['estado'])
-                                            {
-                                                $datos['paciente']['user']['mail']['estado'] = 1;
-                                                $datos['paciente']['user']['mail']['msj'] = 'Notificacion de bienvenida enviado';
-                                            }
-                                            else
-                                            {
-                                                $datos['paciente']['user']['mail']['estado'] = 0;
-                                                $datos['paciente']['user']['mail']['msj'] = 'Falle en envio de Notificacion de bienvenida';
-                                            }
-                                            /** cerrar envio de correo de confirmacion  */
+                                            $datos['paciente']['user']['mail']['estado'] = 0;
+                                            $datos['paciente']['user']['mail']['msj'] = 'Falle en envio de Notificacion de bienvenida';
                                         }
+                                        /** cerrar envio de correo de confirmacion  */
                                     }
                                 }
-                            } catch (\Exception $e) {
-                                // El email ya está siendo usado por otro User - No crear cuenta de usuario
-                                // El paciente se guarda igual con el email de contacto, pero sin acceso al sistema
-                                $datos['paciente']['user']['estado'] = 0;
-                                $datos['paciente']['user']['msj'] = 'Paciente creado sin usuario. El email pertenece a otro paciente con cuenta.';
                             }
                         }
                         else
@@ -1162,7 +1150,7 @@ class EscritorioAsistente extends Controller
                                             }
                                             else
                                             {
-                                                if($paciente_representante->email === 'sintemporal@med-sdi.cl')
+                                                if(strpos($paciente_representante->email, $representante_temp) !== false)
                                                 {
                                                     /** envio de sms */
                                                 }
@@ -1382,6 +1370,11 @@ class EscritorioAsistente extends Controller
                     $datos['estado'] = 0;
                     $datos['msj'] = 'Problema al crear Paciente';
                 }
+            }
+            else
+            {
+                $datos['estado'] = 0;
+                $datos['msj'] = 'el correo ya esta siendo utilizado por otro paciente.';
             }
 
             return $datos;
@@ -2668,19 +2661,19 @@ class EscritorioAsistente extends Controller
             if ($asistente->foto_perfil) {
                 Storage::disk('public')->delete($asistente->foto_perfil);
             }
-
+            
             // Guardar la nueva foto
             $path = $request->file('foto_perfil')->store('fotos_perfil', 'public');
-
+            
             // Actualizar en la base de datos
             $asistente->update(['foto_perfil' => $path]);
-
+            
             return response()->json([
                 'success' => true,
                 'message' => 'Foto actualizada correctamente',
                 'foto_url' => asset('storage/' . $path)
             ]);
-
+            
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
@@ -2701,12 +2694,12 @@ class EscritorioAsistente extends Controller
                 // Actualizar en la base de datos
                 $asistente->update(['foto_perfil' => null]);
             }
-
+            
             return response()->json([
                 'success' => true,
                 'message' => 'Foto eliminada correctamente'
             ]);
-
+            
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,

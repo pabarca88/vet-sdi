@@ -6,7 +6,7 @@
 </div> --}}
 
 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-    <div class="row">
+    <div class="row d-none">
         @if (isset($fichaAtencion) && isset($fichaAtencion->hipotesis_diagnostico) )
             <div class="col-sm-12 col-md-6 text-center">
                 <div class="btn-group btn-group-sm w-100" data-toggle="buttons">

@@ -9,10 +9,10 @@
     <title>VET-SDI</title>
     <meta name="description" content="" />
     <meta name="keywords" content="">
-    <meta name="author" content="VET-SDI" />
+    <meta name="author" content="VET-SDI"/>
 
     <link rel="stylesheet" href="{{ asset('css/boton-flotante.css') }}">
-    <link rel="icon" href="{{ asset('images/favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ asset('images/favicon.png') }}" type="image/x-icon">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}?t={{ time() }}">
     <link rel="stylesheet" href="{{ asset('css/escritorios.css') }}">
 

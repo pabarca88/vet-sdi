@@ -12,7 +12,7 @@
 
 			<a href="#!" class="mob-toggler">
 
-				<i class="feather icon-more-vertical" style="font-size: 1.2rem;"></i>
+				<i class="feather icon-more-vertical"></i>
 
 			</a>
 
@@ -28,7 +28,7 @@
 
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
 
-                        <i class="feather icon-user" style="font-size: 1.2rem;"></i>
+                        <i class="feather icon-user fa-2x"></i>
 
                     </a>
 

@@ -644,4 +644,37 @@ class DocumentoController extends Controller
 
 
     }
+
+    public function verResultadoExamenPDF(Request $request)
+    {
+        return $request->id;
+        $datos = array();
+        $error = array();
+        $campos_requeridos = 0;
+
+        if(empty($request->id)||(int)$request->id==0)
+        {
+            $error['id'] = 'campo requerido';
+            $campos_requeridos = 1;
+        }
+
+        if($campos_requeridos==0)
+        {
+            // Lógica para obtener y generar el PDF del resultado del examen
+            // Basado en el ID proporcionado en la solicitud
+
+            // Ejemplo de respuesta exitosa
+            $datos['estado'] = 1;
+            $datos['msg'] = 'PDF generado correctamente';
+            // Aquí se debería incluir la lógica para devolver el PDF generado
+
+        }else{
+            $datos['estado'] = 0;
+            $datos['msg'] = 'Campos Requeridos';
+            $datos['request'] = $request->all();
+            $datos['error'] = $error;
+        }
+
+        return response($datos)->header('Content-Type', 'application/json');
+    }
 }

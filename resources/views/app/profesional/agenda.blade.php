@@ -13,7 +13,7 @@
         }
     </style>
 
-       <style>
+    <style>
         #loading {
             display: none;
             position: absolute;
@@ -78,7 +78,7 @@
             border-color: #40abaf;
         }
 
-
+       
 
         .fc-today-button{
             padding: 5px 5px;
@@ -93,6 +93,8 @@
             font-size: 22px !important;
             padding: 0px;
             border-radius: 50%!important;
+
+
         }
 
         @media (max-width: 767.98px) {
@@ -132,27 +134,27 @@
 
          }
 
-         @media (min-width: 768px) {
+         @media (min-width: 768px) { 
                .titulo-agenda {
                 font-size: 1.2rem;
             }
           }
 
-        @media (min-width: 992px) {
+        @media (min-width: 992px) { 
 
         .titulo-agenda {
                 font-size: 1.2rem;
             }
         }
 
-        @media (min-width: 1200px) {
+        @media (min-width: 1200px) { 
             .titulo-agenda {
                 font-size: 1.3rem;
             }
 
         }
 
-        @media (min-width: 1400px) {
+        @media (min-width: 1400px) { 
         .titulo-agenda {
                 font-size: 1.6rem;
             } }
@@ -304,7 +306,7 @@
 
                         <div id="reserva_datos_paciente" class="row mx-3">
 
-
+                            
                             <table class="table table-borderless table-xs">
                                 <tbody>
                                     <tr>
