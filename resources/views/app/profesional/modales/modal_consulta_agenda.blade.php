@@ -277,6 +277,11 @@
                         <button type="submit" id="hm_atender_hora" class="btn btn-info btn-sm"><i class="feather icon-check"></i> Atender</button>
                     </form>
                 </div>
+                <div>
+                    <button type="button" id="hm_registrar_mascota" class="btn btn-warning btn-sm" style="display:none;" onclick="abrirModalRegistroMascotaAgenda();">
+                        <i class="feather icon-plus"></i> Registrar mascota
+                    </button>
+                </div>
 
                 <div>
                     <form method="get" action="#">
@@ -313,7 +318,403 @@
     </div>
 </div>
 
+<div id="modal_registrar_mascota_agenda" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalRegistrarMascotaAgendaLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-info">
+                <h5 class="modal-title text-white mt-1" id="modalRegistrarMascotaAgendaLabel">Agregar Mascota no registrada</h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="agenda_mascota_id_paciente" value="">
+                <input type="hidden" id="agenda_mascota_id_hora_medica" value="">
+
+                <div class="form-row">
+                    <div class="col-sm-12 col-md-6">
+                        <div class="form-group">
+                            <label class="floating-label-activo-sm">¿Tiene chip?</label>
+                            <select class="form-control form-control-sm" id="agenda_mascota_tiene_chip">
+                                <option value="0">No</option>
+                                <option value="1">Sí</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6" id="agenda_contenedor_chip" style="display:none;">
+                        <div class="form-group">
+                            <label class="floating-label-activo-sm">Ingrese N° chip</label>
+                            <input type="text" class="form-control form-control-sm" id="agenda_mascota_chip">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="col-sm-12 col-md-6">
+                        <div class="form-group">
+                            <label class="floating-label-activo-sm">Nombre Mascota</label>
+                            <input type="text" class="form-control form-control-sm" id="agenda_mascota_nombre">
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <div class="form-group">
+                            <label class="floating-label-activo-sm">Especie</label>
+                            <select class="form-control form-control-sm" id="agenda_mascota_especie"></select>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <div class="form-group">
+                            <label class="floating-label-activo-sm">Raza</label>
+                            <select class="form-control form-control-sm" id="agenda_mascota_raza">
+                                <option value="">Seleccione</option>
+                                <option value="sin">Sin raza</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <div class="form-group">
+                            <label class="floating-label-activo-sm">Tipo de mascota (Tamaño)</label>
+                            <select class="form-control form-control-sm" id="agenda_mascota_tamano"></select>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <div class="form-group">
+                            <label class="floating-label-activo-sm">¿Esterilizado?</label>
+                            <select class="form-control form-control-sm" id="agenda_mascota_esterilizado">
+                                <option value="">Seleccione</option>
+                                <option value="1">Sí</option>
+                                <option value="0">No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6" id="agenda_contenedor_fecha_esterilizacion" style="display:none;">
+                        <div class="form-group">
+                            <label class="floating-label-activo-sm">Fecha de esterilización</label>
+                            <input type="date" class="form-control form-control-sm" id="agenda_mascota_fecha_esterilizacion" max="{{ date('Y-m-d') }}">
+                            <div class="form-check mt-1">
+                                <input class="form-check-input" type="checkbox" id="agenda_mascota_fecha_esterilizacion_desconocida">
+                                <label class="form-check-label" for="agenda_mascota_fecha_esterilizacion_desconocida">No se conoce</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <div class="form-group">
+                            <label class="floating-label-activo-sm">F. Nacimiento</label>
+                            <input type="date" class="form-control form-control-sm" id="agenda_mascota_fecha_nacimiento" max="{{ date('Y-m-d') }}">
+                            <div class="form-check mt-1">
+                                <input class="form-check-input" type="checkbox" id="agenda_mascota_fecha_nacimiento_desconocida">
+                                <label class="form-check-label" for="agenda_mascota_fecha_nacimiento_desconocida">No se conoce</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <div class="form-group">
+                            <label class="floating-label-activo-sm">Sexo</label>
+                            <select class="form-control form-control-sm" id="agenda_mascota_sexo">
+                                <option value="0">Selecione una opción</option>
+                                <option value="M">Macho</option>
+                                <option value="F">Hembra</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label class="floating-label-activo-sm">Enfermedad crónica o frecuente</label>
+                            <textarea class="form-control form-control-sm" id="agenda_mascota_enfermedad_cronica" rows="2"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal"><i class="feather icon-x"></i> Cerrar</button>
+                <button type="button" class="btn btn-info btn-sm" id="btn_guardar_mascota_agenda"><i class="feather icon-check"></i> Registrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
+    var agendaEspeciesMascotas = @json($especiesMascotas ?? []);
+    var agendaTamanosMascotas = @json($tamanosMascotas ?? []);
+    var agendaEspecieTamanosMascotas = @json($especieTamanosMascotas ?? []);
+    var agendaRazasMascotasCache = {};
+
+    function abrirModalRegistroMascotaAgenda() {
+        let idPaciente = $('#estado_id_paciente').val();
+        let idHoraMedica = $('#id_hora_medica').val();
+        if (!idPaciente) {
+            swal({
+                title: "Registro de mascota",
+                text: "No se encontró el responsable para registrar la mascota.",
+                icon: "error",
+                buttons: "Aceptar",
+            });
+            return;
+        }
+
+        limpiarFormularioMascotaAgenda();
+        $('#agenda_mascota_id_paciente').val(idPaciente);
+        $('#agenda_mascota_id_hora_medica').val(idHoraMedica || '');
+        $('#consulta').modal('hide');
+        $('#modal_registrar_mascota_agenda').modal('show');
+    }
+
+    function mostrarAlertaSinMascotaAgenda() {
+        swal({
+            title: "Mascota no registrada",
+            text: "Este responsable no tiene mascotas registradas. Debe registrar una mascota antes de atender la hora.",
+            icon: "warning",
+            buttons: {
+                cancel: "Cerrar",
+                confirm: {
+                    text: "Registrar mascota",
+                    value: true,
+                    visible: true,
+                    className: "",
+                    closeModal: true
+                }
+            }
+        }).then(function(confirmado) {
+            if (confirmado) {
+                abrirModalRegistroMascotaAgenda();
+            }
+        });
+    }
+
+    function actualizarEstadoMascotaAgenda() {
+        let idMascota = $.trim($('#id_mascota').val());
+        let atenderVisible = $('#hm_atender_hora').is(':visible');
+        let registrarVisible = $('#hm_registrar_mascota').is(':visible');
+
+        if ((atenderVisible || registrarVisible) && idMascota === '') {
+            $('#hm_atender_hora').hide();
+            $('#hm_registrar_mascota').show();
+            return true;
+        }
+
+        if (idMascota !== '' && registrarVisible) {
+            $('#hm_registrar_mascota').hide();
+            $('#hm_atender_hora').show();
+            return false;
+        }
+
+        $('#hm_registrar_mascota').hide();
+        return false;
+    }
+
+    $(document).on('click', '#hm_atender_hora', function(e) {
+        let idMascota = $.trim($('#id_mascota').val());
+        if (idMascota === '') {
+            e.preventDefault();
+            mostrarAlertaSinMascotaAgenda();
+        }
+    });
+
+    function limpiarFormularioMascotaAgenda() {
+        $('#agenda_mascota_tiene_chip').val('0');
+        $('#agenda_mascota_chip').val('');
+        $('#agenda_mascota_nombre').val('');
+        $('#agenda_mascota_raza').html('<option value="">Seleccione</option><option value="sin">Sin raza</option>');
+        $('#agenda_mascota_esterilizado').val('');
+        $('#agenda_mascota_fecha_esterilizacion').val('');
+        $('#agenda_mascota_fecha_esterilizacion_desconocida').prop('checked', false);
+        $('#agenda_mascota_fecha_nacimiento').val('');
+        $('#agenda_mascota_fecha_nacimiento_desconocida').prop('checked', false);
+        $('#agenda_mascota_sexo').val('0');
+        $('#agenda_mascota_enfermedad_cronica').val('');
+
+        renderSelectEspeciesAgenda();
+        actualizarTamanoSegunEspecieAgenda();
+        toggleChipAgenda();
+        toggleEsterilizacionAgenda();
+        toggleFechaNacimientoDesconocidaAgenda();
+    }
+
+    function renderSelectEspeciesAgenda() {
+        var html = '<option value="0">Seleccione</option>';
+        (agendaEspeciesMascotas || []).forEach(function(item) {
+            html += '<option value="' + item.id + '">' + item.nombre + '</option>';
+        });
+        $('#agenda_mascota_especie').html(html);
+    }
+
+    function actualizarTamanoSegunEspecieAgenda() {
+        var especieId = parseInt($('#agenda_mascota_especie').val(), 10);
+        var permitidos = (agendaEspecieTamanosMascotas || [])
+            .filter(function(item) { return parseInt(item.especie_id, 10) === especieId; })
+            .map(function(item) { return parseInt(item.tamano_id, 10); });
+        var html = '<option value="">Seleccione</option>';
+        (agendaTamanosMascotas || []).forEach(function(item) {
+            if (!permitidos.length || permitidos.indexOf(parseInt(item.id, 10)) >= 0) {
+                html += '<option value="' + item.id + '">' + item.nombre + '</option>';
+            }
+        });
+        $('#agenda_mascota_tamano').html(html);
+    }
+
+    function actualizarRazaSegunEspecieAgenda() {
+        var especieId = $('#agenda_mascota_especie').val();
+        var $select = $('#agenda_mascota_raza');
+        $select.html('<option value="">Seleccione</option><option value="sin">Sin raza</option>');
+
+        if (!especieId || especieId === '0') {
+            return;
+        }
+
+        if (agendaRazasMascotasCache[especieId]) {
+            agendaRazasMascotasCache[especieId].forEach(function(raza) {
+                $select.append('<option value="' + raza.id + '">' + raza.nombre + '</option>');
+            });
+            return;
+        }
+
+        $.get("{{ route('paciente.mascotas.razas', ['especie' => '__id__']) }}".replace('__id__', especieId))
+            .done(function(data) {
+                var razas = (data && data.razas) ? data.razas : [];
+                agendaRazasMascotasCache[especieId] = razas;
+                razas.forEach(function(raza) {
+                    $select.append('<option value="' + raza.id + '">' + raza.nombre + '</option>');
+                });
+            });
+    }
+
+    function toggleChipAgenda() {
+        var mostrar = $('#agenda_mascota_tiene_chip').val() === '1';
+        $('#agenda_contenedor_chip').toggle(mostrar);
+        if (!mostrar) {
+            $('#agenda_mascota_chip').val('');
+        }
+    }
+
+    function toggleEsterilizacionAgenda() {
+        var mostrar = $('#agenda_mascota_esterilizado').val() === '1';
+        $('#agenda_contenedor_fecha_esterilizacion').toggle(mostrar);
+        if (!mostrar) {
+            $('#agenda_mascota_fecha_esterilizacion').val('');
+            $('#agenda_mascota_fecha_esterilizacion_desconocida').prop('checked', false);
+        }
+        toggleFechaEsterilizacionDesconocidaAgenda();
+    }
+
+    function toggleFechaNacimientoDesconocidaAgenda() {
+        var desconocida = $('#agenda_mascota_fecha_nacimiento_desconocida').is(':checked');
+        $('#agenda_mascota_fecha_nacimiento').prop('disabled', desconocida);
+        if (desconocida) {
+            $('#agenda_mascota_fecha_nacimiento').val('');
+        }
+    }
+
+    function toggleFechaEsterilizacionDesconocidaAgenda() {
+        var mostrar = $('#agenda_mascota_esterilizado').val() === '1';
+        var desconocida = $('#agenda_mascota_fecha_esterilizacion_desconocida').is(':checked');
+        $('#agenda_mascota_fecha_esterilizacion').prop('disabled', mostrar && desconocida);
+        if (mostrar && desconocida) {
+            $('#agenda_mascota_fecha_esterilizacion').val('');
+        }
+    }
+
+    function guardarMascotaAgenda() {
+        var tieneChip = $('#agenda_mascota_tiene_chip').val();
+        var chip = $('#agenda_mascota_chip').val();
+        var nombre = $('#agenda_mascota_nombre').val();
+        var especie = $('#agenda_mascota_especie').val();
+        var razaSeleccionada = $('#agenda_mascota_raza').val();
+        var raza = (razaSeleccionada === 'sin') ? '' : razaSeleccionada;
+        var tamano = $('#agenda_mascota_tamano').val();
+        var esterilizado = $('#agenda_mascota_esterilizado').val();
+        var fechaEsterilizacion = $('#agenda_mascota_fecha_esterilizacion').val();
+        var fechaEsterilizacionDesconocida = $('#agenda_mascota_fecha_esterilizacion_desconocida').is(':checked');
+        var fechaNacimiento = $('#agenda_mascota_fecha_nacimiento').val();
+        var fechaNacimientoDesconocida = $('#agenda_mascota_fecha_nacimiento_desconocida').is(':checked');
+        var sexo = $('#agenda_mascota_sexo').val();
+        var enfermedadCronica = $('#agenda_mascota_enfermedad_cronica').val();
+
+        var mensaje = '';
+        if (!nombre) mensaje += 'Nombre Mascota: requerido\n';
+        if (!especie || especie === '0') mensaje += 'Especie: requerido\n';
+        if (!tamano) mensaje += 'Tipo de mascota (Tamaño): requerido\n';
+        if (!esterilizado && esterilizado !== '0') mensaje += 'Esterilizado: requerido\n';
+        if (esterilizado === '1' && !fechaEsterilizacion && !fechaEsterilizacionDesconocida) mensaje += 'Fecha de esterilización: requerido\n';
+        if (!fechaNacimiento && !fechaNacimientoDesconocida) mensaje += 'Fecha de nacimiento: requerido\n';
+        if (!sexo || sexo === '0') mensaje += 'Sexo: requerido\n';
+        if (tieneChip === '1' && !chip) mensaje += 'N° chip: requerido\n';
+
+        if (mensaje) {
+            swal({
+                title: "Registro de Mascota. Campos Requeridos",
+                text: mensaje,
+                icon: "error",
+            });
+            return;
+        }
+
+        $.ajax({
+            url: "{{ route('profesional.registrar_mascota_agenda') }}",
+            type: "POST",
+            data: {
+                _token: $('meta[name="csrf-token"]').attr('content'),
+                id_paciente: $('#agenda_mascota_id_paciente').val(),
+                id_hora_medica: $('#agenda_mascota_id_hora_medica').val(),
+                tiene_chip: tieneChip,
+                chip: (tieneChip === '1') ? chip : '',
+                nombre: nombre,
+                especie_id: especie,
+                raza_id: raza,
+                tamano_id: tamano,
+                esterilizado: esterilizado,
+                fecha_esterilizacion: (esterilizado === '1' && !fechaEsterilizacionDesconocida) ? fechaEsterilizacion : '',
+                fecha_esterilizacion_desconocida: fechaEsterilizacionDesconocida ? 1 : 0,
+                fecha_nacimiento: fechaNacimientoDesconocida ? '' : fechaNacimiento,
+                fecha_nacimiento_desconocida: fechaNacimientoDesconocida ? 1 : 0,
+                sexo: sexo,
+                enfermedad_cronica: enfermedadCronica
+            },
+        }).done(function(data) {
+            if (data.estado == 1 && data.registro) {
+                var mascota = data.registro;
+                var especieTexto = mascota.especieMascota && mascota.especieMascota.nombre ? mascota.especieMascota.nombre : '';
+                $('#id_mascota').val(mascota.id);
+                $('#datos_consulta_mascota_nombre').text(mascota.nombre || '');
+                $('#datos_consulta_mascota_raza').text(especieTexto || '');
+                $('#datos_consulta_mascota_esterilizado').text(mascota.esterilizado ? 'SI' : 'NO');
+                actualizarEstadoMascotaAgenda();
+
+                $('#modal_registrar_mascota_agenda').modal('hide');
+                $('#consulta').modal('show');
+
+                swal({
+                    title: "Registro de Mascota.",
+                    text: "Mascota registrada con éxito.",
+                    icon: "success",
+                });
+            } else {
+                var textoError = data.msj || 'Problemas al realizar el registro.';
+                if (data.error) textoError += '\n' + JSON.stringify(data.error);
+                swal({
+                    title: "Registro de Mascota.",
+                    text: textoError,
+                    icon: "error",
+                });
+            }
+        }).fail(function(jqXHR, ajaxOptions, thrownError) {
+            console.log(jqXHR, ajaxOptions, thrownError);
+        });
+    }
+
+    $(document).on('change', '#agenda_mascota_tiene_chip', toggleChipAgenda);
+    $(document).on('change', '#agenda_mascota_especie', function() {
+        actualizarTamanoSegunEspecieAgenda();
+        actualizarRazaSegunEspecieAgenda();
+    });
+    $(document).on('change', '#agenda_mascota_esterilizado', toggleEsterilizacionAgenda);
+    $(document).on('change', '#agenda_mascota_fecha_nacimiento_desconocida', toggleFechaNacimientoDesconocidaAgenda);
+    $(document).on('change', '#agenda_mascota_fecha_esterilizacion_desconocida', toggleFechaEsterilizacionDesconocidaAgenda);
+    $(document).on('click', '#btn_guardar_mascota_agenda', guardarMascotaAgenda);
+
+    $('#modal_registrar_mascota_agenda').on('hidden.bs.modal', function () {
+        if ($.trim($('#id_mascota').val()) === '') {
+            $('#consulta').modal('show');
+        }
+    });
+
     function opcion_revisar_ficha() {
         let id_hora_medica = $('#id_hora_medica').val();
         let id_lugar_atencion = $('#id_lugar_atencion').val();

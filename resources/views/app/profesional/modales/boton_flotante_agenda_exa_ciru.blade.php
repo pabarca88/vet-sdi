@@ -301,6 +301,7 @@
                                                         $('#datos_consulta_mascota_ultima_consulta').text(fechaUltimaMascota);
                                                         $('#datos_consulta_mascota_fecha_ultima').text(fechaUltimaMascota);
                                                         $('#id_mascota').val(data.hora_medica && data.hora_medica.id_mascota ? data.hora_medica.id_mascota : '');
+                                                        var responsableSinMascota = !$.trim($('#id_mascota').val());
 
                                                         if (data.paciente.sexo == 'M') {
                                                             $('#datos_consulta_sexo').text('Masculino');
@@ -474,6 +475,11 @@
 
                                                         $('#cabecera_hora_medica').text('Datos Del Paciente');
                                                         $('#consulta').modal('show');
+                                                    }
+
+                                                    var bloqueoPorSinMascota = actualizarEstadoMascotaAgenda();
+                                                    if (responsableSinMascota && bloqueoPorSinMascota) {
+                                                        mostrarAlertaSinMascotaAgenda();
                                                     }
 
                                                 }

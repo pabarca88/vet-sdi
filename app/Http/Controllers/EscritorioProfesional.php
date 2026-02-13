@@ -82,6 +82,7 @@ use App\Models\LogUsersDevices;
 use App\Models\MensajesProfesional;
 use App\Models\MensajesDifusion;
 use App\Models\Mensajes;
+use App\Models\Mascota;
 use App\Models\NotificacionConfirmacion;
 use App\Models\MaterialesImplantologia;
 use App\Models\OdontogramaPaciente;
@@ -115,6 +116,7 @@ use App\Models\ProfesionalServicioClinico;
 use App\Models\RecetaControl;
 use App\Models\Region;
 use App\Models\RegistroConfirmacionHoraAgenda;
+use App\Models\RazaMascota;
 use App\Models\ServiciosInternos;
 use App\Models\ServiciosInternosSalas;
 use App\Models\SolicitudPabellonQuirurgico;
@@ -152,6 +154,9 @@ use App\Models\ProfesionalHorariosBloqueo;
 use App\Models\SucursalHorario;
 use App\Models\TipoBono;
 use App\Models\TiposReceta;
+use App\Models\EspecieMascota;
+use App\Models\TamanoMascota;
+use App\Models\EspecieTamanoMascota;
 use DateTime;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -2392,6 +2397,141 @@ class EscritorioProfesional extends Controller
             'responsable' => $responsable,
             'procedimiento' => $procedimiento,
         );
+    }
+
+    public function registrar_mascota_agenda(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'id_paciente' => 'required|integer|exists:pacientes,id',
+            'id_hora_medica' => 'nullable|integer|exists:horas_medicas,id',
+            'tiene_chip' => 'required|boolean',
+            'chip' => 'nullable|string|max:255',
+            'nombre' => 'required|string|max:255',
+            'especie_id' => 'required|integer|exists:especies_mascotas,id',
+            'raza_id' => 'nullable|integer|exists:razas_mascotas,id',
+            'otra_especie' => 'nullable|string|max:500',
+            'tamano_id' => 'required|integer|exists:tamanos_mascotas,id',
+            'fecha_nacimiento' => 'nullable|date',
+            'fecha_nacimiento_desconocida' => 'nullable|boolean',
+            'sexo' => 'required|string|in:M,F',
+            'esterilizado' => 'required|boolean',
+            'fecha_esterilizacion' => 'nullable|date',
+            'fecha_esterilizacion_desconocida' => 'nullable|boolean',
+            'enfermedad_cronica' => 'nullable|string|max:500',
+        ]);
+
+        if ($validator->fails()) {
+            return [
+                'estado' => 0,
+                'msj' => 'campos requeridos',
+                'error' => $validator->errors(),
+            ];
+        }
+
+        $paciente = Paciente::find($request->input('id_paciente'));
+        if (!$paciente) {
+            return [
+                'estado' => 0,
+                'msj' => 'Paciente no encontrado',
+            ];
+        }
+
+        $tieneChip = filter_var($request->input('tiene_chip'), FILTER_VALIDATE_BOOLEAN);
+        $esterilizado = filter_var($request->input('esterilizado'), FILTER_VALIDATE_BOOLEAN);
+        $fechaNacimientoDesconocida = filter_var($request->input('fecha_nacimiento_desconocida'), FILTER_VALIDATE_BOOLEAN);
+        $fechaEsterilizacionDesconocida = filter_var($request->input('fecha_esterilizacion_desconocida'), FILTER_VALIDATE_BOOLEAN);
+
+        if ($tieneChip && !$request->filled('chip')) {
+            return [
+                'estado' => 0,
+                'msj' => 'campos requeridos',
+                'error' => ['chip' => ['required']],
+            ];
+        }
+
+        if (!$fechaNacimientoDesconocida && !$request->filled('fecha_nacimiento')) {
+            return [
+                'estado' => 0,
+                'msj' => 'campos requeridos',
+                'error' => ['fecha_nacimiento' => ['required']],
+            ];
+        }
+
+        if ($esterilizado && !$fechaEsterilizacionDesconocida && !$request->filled('fecha_esterilizacion')) {
+            return [
+                'estado' => 0,
+                'msj' => 'campos requeridos',
+                'error' => ['fecha_esterilizacion' => ['required']],
+            ];
+        }
+
+        $comboValido = EspecieTamanoMascota::where('especie_id', $request->input('especie_id'))
+            ->where('tamano_id', $request->input('tamano_id'))
+            ->exists();
+        if (!$comboValido) {
+            return [
+                'estado' => 0,
+                'msj' => 'La combinación de especie y tamaño no es válida',
+            ];
+        }
+
+        if ($request->filled('raza_id')) {
+            $razaValida = RazaMascota::where('id', $request->input('raza_id'))
+                ->where('especie_id', $request->input('especie_id'))
+                ->exists();
+            if (!$razaValida) {
+                return [
+                    'estado' => 0,
+                    'msj' => 'La raza no pertenece a la especie seleccionada',
+                ];
+            }
+        }
+
+        $tamano = TamanoMascota::find($request->input('tamano_id'));
+
+        $mascota = new Mascota();
+        $mascota->id_responsable = $paciente->id;
+        $mascota->tiene_chip = $tieneChip;
+        $mascota->chip = $tieneChip ? $request->input('chip') : null;
+        $mascota->nombre = $request->input('nombre');
+        $mascota->especie_id = $request->input('especie_id');
+        $mascota->especie = $request->input('especie_id');
+        $mascota->raza_id = $request->filled('raza_id') ? $request->input('raza_id') : null;
+        $mascota->otra_especie = $request->input('otra_especie');
+        $mascota->tamano_id = $request->input('tamano_id');
+        $mascota->tamano = $tamano ? $tamano->slug : null;
+        $mascota->fecha_nacimiento = $fechaNacimientoDesconocida ? null : $request->input('fecha_nacimiento');
+        $mascota->sexo = $request->input('sexo');
+        $mascota->esterilizado = $esterilizado;
+        $mascota->fecha_esterilizacion = ($esterilizado && !$fechaEsterilizacionDesconocida && $request->filled('fecha_esterilizacion'))
+            ? $request->input('fecha_esterilizacion')
+            : null;
+        $mascota->enfermedad_cronica = $request->input('enfermedad_cronica');
+        $mascota->id_user = $paciente->id_usuario ?? Auth::id();
+        $mascota->estado = 1;
+
+        if (!$mascota->save()) {
+            return [
+                'estado' => 0,
+                'msj' => 'Problemas al registrar la mascota',
+            ];
+        }
+
+        if ($request->filled('id_hora_medica')) {
+            $horaMedica = HoraMedica::where('id', $request->input('id_hora_medica'))
+                ->where('id_paciente', $paciente->id)
+                ->first();
+            if ($horaMedica) {
+                $horaMedica->id_mascota = $mascota->id;
+                $horaMedica->save();
+            }
+        }
+
+        return [
+            'estado' => 1,
+            'msj' => 'Mascota registrada con exito.',
+            'registro' => $mascota->load(['especieMascota', 'razaMascota', 'tamanoMascota']),
+        ];
     }
 
     //funciones mis lugares de atencion
@@ -8075,6 +8215,9 @@ public function eliminarPiezaCoronaProtesis(Request $req){
         $filtro_l_p_b[] = array('id_lugar_atencion', $request->lugares_atencion);
         $filtro_l_p_b[] = array('id_profesional', $profesional->id);
         $lug_prof_box = LugarAtencionBoxProfesional::with('box')->where($filtro_l_p_b)->first();
+        $especiesMascotas = EspecieMascota::orderBy('nombre')->get();
+        $tamanosMascotas = TamanoMascota::orderBy('nombre')->get();
+        $especieTamanosMascotas = EspecieTamanoMascota::with(['especie', 'tamano'])->get();
 
         return view('app.profesional.agenda')->with(
             [
@@ -8102,6 +8245,9 @@ public function eliminarPiezaCoronaProtesis(Request $req){
                 'lugares_atencion' => $lugarAtencion,
                 'lug_prof_box' => $lug_prof_box,
 				'institucion' => $institucion,
+                'especiesMascotas' => $especiesMascotas,
+                'tamanosMascotas' => $tamanosMascotas,
+                'especieTamanosMascotas' => $especieTamanosMascotas,
             ]
 
         );

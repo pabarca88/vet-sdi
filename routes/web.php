@@ -1399,6 +1399,7 @@ Route::group([
     Route::get('Agendar_hora', [App\Http\Controllers\EscritorioProfesional::class, 'agendar_horas'])->name('profesional.agendar_hora');
 
     Route::get('Agendar_hora_nuevo_paciente', [App\Http\Controllers\EscritorioProfesional::class, 'agendar_hora_nuevo_paciente'])->name('profesional.agendar_hora_nuevo_paciente');
+    Route::post('Agendar_hora/registrar_mascota', [App\Http\Controllers\EscritorioProfesional::class, 'registrar_mascota_agenda'])->name('profesional.registrar_mascota_agenda');
 
     Route::get('Confirmar_hora', [App\Http\Controllers\EscritorioProfesional::class, 'confirmar_hora'])->name('profesional.confirmar_hora');
 
