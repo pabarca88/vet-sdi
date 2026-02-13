@@ -1247,7 +1247,7 @@
                         </select>
 					</div>
 				</div>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close" onclick="$('#m_agregar_antecedente').modal('hide')">
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close" onclick="resetearSwitchAntecedente(); $('#m_agregar_antecedente').modal('hide')">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -2998,6 +2998,21 @@
             cambiar_antecedente();
         }
     }
+
+    function resetearSwitchAntecedente()
+    {
+        $('#check_antecedentes').prop('checked', false);
+    }
+
+    $('#m_agregar_antecedente').on('hide.bs.modal hidden.bs.modal', function () {
+        resetearSwitchAntecedente();
+    });
+
+    $('#m_agregar_antecedente').on('click', function (e) {
+        if (e.target === this) {
+            resetearSwitchAntecedente();
+        }
+    });
 
     function cambiar_antecedente()
     {
