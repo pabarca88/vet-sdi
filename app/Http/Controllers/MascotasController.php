@@ -11,6 +11,7 @@ use App\Models\RazaMascota;
 use App\Models\TamanoMascota;
 use App\Models\FichaAtencion;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -63,7 +64,17 @@ class MascotasController extends Controller
             'galeria' => 'nullable',
             'observaciones_fotos' => 'nullable|string',
             'esterilizado' => 'required|boolean',
-            'fecha_esterilizacion' => 'nullable|required_if:esterilizado,1|date',
+            'fecha_esterilizacion_desconocida' => 'nullable|boolean',
+            'fecha_esterilizacion' => [
+                'nullable',
+                'date',
+                Rule::requiredIf(function () use ($request) {
+                    $esterilizado = filter_var($request->input('esterilizado'), FILTER_VALIDATE_BOOLEAN);
+                    $fechaDesconocida = filter_var($request->input('fecha_esterilizacion_desconocida'), FILTER_VALIDATE_BOOLEAN);
+
+                    return $esterilizado && !$fechaDesconocida;
+                }),
+            ],
             'enfermedad_cronica' => 'nullable|string|max:500',
             'dieta' => 'nullable|string',
             'ultima_desparasitacion' => 'nullable|date',
@@ -123,6 +134,7 @@ class MascotasController extends Controller
 
         $tieneChip = filter_var($request->input('tiene_chip'), FILTER_VALIDATE_BOOLEAN);
         $esterilizado = filter_var($request->input('esterilizado'), FILTER_VALIDATE_BOOLEAN);
+        $fechaEsterilizacionDesconocida = filter_var($request->input('fecha_esterilizacion_desconocida'), FILTER_VALIDATE_BOOLEAN);
         $viveConAnimalesInput = $request->input('vive_con_animales');
         $viveConAnimales = null;
         if ($viveConAnimalesInput !== null && $viveConAnimalesInput !== '') {
@@ -147,7 +159,9 @@ class MascotasController extends Controller
         $mascota->galeria = $galeria;
         $mascota->observaciones_fotos = $request->input('observaciones_fotos');
         $mascota->esterilizado = $esterilizado;
-        $mascota->fecha_esterilizacion = $esterilizado ? $request->input('fecha_esterilizacion') : null;
+        $mascota->fecha_esterilizacion = ($esterilizado && !$fechaEsterilizacionDesconocida && $request->filled('fecha_esterilizacion'))
+            ? $request->input('fecha_esterilizacion')
+            : null;
         $mascota->enfermedad_cronica = $request->input('enfermedad_cronica');
         $mascota->dieta = $request->input('dieta');
         $mascota->ultima_desparasitacion = $request->input('ultima_desparasitacion');
@@ -197,7 +211,17 @@ class MascotasController extends Controller
             'galeria' => 'nullable',
             'observaciones_fotos' => 'nullable|string',
             'esterilizado' => 'required|boolean',
-            'fecha_esterilizacion' => 'nullable|required_if:esterilizado,1|date',
+            'fecha_esterilizacion_desconocida' => 'nullable|boolean',
+            'fecha_esterilizacion' => [
+                'nullable',
+                'date',
+                Rule::requiredIf(function () use ($request) {
+                    $esterilizado = filter_var($request->input('esterilizado'), FILTER_VALIDATE_BOOLEAN);
+                    $fechaDesconocida = filter_var($request->input('fecha_esterilizacion_desconocida'), FILTER_VALIDATE_BOOLEAN);
+
+                    return $esterilizado && !$fechaDesconocida;
+                }),
+            ],
             'enfermedad_cronica' => 'nullable|string|max:500',
             'dieta' => 'nullable|string',
             'ultima_desparasitacion' => 'nullable|date',
@@ -249,6 +273,7 @@ class MascotasController extends Controller
 
         $tieneChip = filter_var($request->input('tiene_chip'), FILTER_VALIDATE_BOOLEAN);
         $esterilizado = filter_var($request->input('esterilizado'), FILTER_VALIDATE_BOOLEAN);
+        $fechaEsterilizacionDesconocida = filter_var($request->input('fecha_esterilizacion_desconocida'), FILTER_VALIDATE_BOOLEAN);
         $tamano = TamanoMascota::find($request->input('tamano_id'));
         $viveConAnimalesInput = $request->input('vive_con_animales');
         $viveConAnimales = ($viveConAnimalesInput === null || $viveConAnimalesInput === '')
@@ -270,7 +295,9 @@ class MascotasController extends Controller
         $mascota->galeria = $galeria;
         $mascota->observaciones_fotos = $request->input('observaciones_fotos');
         $mascota->esterilizado = $esterilizado;
-        $mascota->fecha_esterilizacion = $esterilizado ? $request->input('fecha_esterilizacion') : null;
+        $mascota->fecha_esterilizacion = ($esterilizado && !$fechaEsterilizacionDesconocida && $request->filled('fecha_esterilizacion'))
+            ? $request->input('fecha_esterilizacion')
+            : null;
         $mascota->enfermedad_cronica = $request->input('enfermedad_cronica');
         $mascota->dieta = $request->input('dieta');
         $mascota->ultima_desparasitacion = $request->input('ultima_desparasitacion');

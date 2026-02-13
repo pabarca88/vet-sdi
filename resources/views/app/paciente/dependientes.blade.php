@@ -1511,13 +1511,14 @@
                     datos._method = 'PUT';
                 }
                 datos.tiene_chip = tiene_chip;
-            datos.chip = (tiene_chip === '1') ? chip : '';
-            datos.nombre = nombre;
-            datos.especie_id = especie;
-            datos.raza_id = raza;
-            datos.otra_especie = otra_especie;
-            datos.tamano_id = tamano;
+                datos.chip = (tiene_chip === '1') ? chip : '';
+                datos.nombre = nombre;
+                datos.especie_id = especie;
+                datos.raza_id = raza;
+                datos.otra_especie = otra_especie;
+                datos.tamano_id = tamano;
                 datos.esterilizado = esterilizado;
+                datos.fecha_esterilizacion_desconocida = fecha_esterilizacion_desconocida ? 1 : 0;
                 datos.fecha_esterilizacion = (esterilizado === '1' && !fecha_esterilizacion_desconocida) ? fecha_esterilizacion : '';
                 datos.enfermedad_cronica = enfermedad_cronica;
                 datos.fecha_nacimiento = fecha_nac_desconocida ? '' : fecha_nac;
