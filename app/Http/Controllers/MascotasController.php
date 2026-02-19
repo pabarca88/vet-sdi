@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Paciente;
+use App\Models\PacientesDependientes;
 use App\Models\Mascota;
 use App\Models\EspecieMascota;
 use App\Models\EspecieTamanoMascota;
@@ -394,7 +395,7 @@ class MascotasController extends Controller
     public function registro_vacunas(Request $request)
     {
         $paciente = Paciente::where('id_usuario', Auth::user()->id)->first();
-        $mascota = Mascota::find($request->id_dependiente_activo);
+        $mascota = $this->resolverMascota($request->id_dependiente_activo);
 
         if (!$mascota) {
             return back()->with('error', 'Mascota no encontrada');
@@ -410,7 +411,7 @@ class MascotasController extends Controller
     public function registro_desparasitacion(Request $request)
     {
         $paciente = Paciente::where('id_usuario', Auth::user()->id)->first();
-        $mascota = Mascota::find($request->id_dependiente_activo);
+        $mascota = $this->resolverMascota($request->id_dependiente_activo);
 
         if (!$mascota) {
             return back()->with('error', 'Mascota no encontrada');
@@ -423,8 +424,18 @@ class MascotasController extends Controller
         ]);
     }
 
-    public function obtenerRegistrosSanitarios(Mascota $mascota)
+    public function obtenerRegistrosSanitarios($mascotaId)
     {
+        $mascota = $this->resolverMascota($mascotaId);
+        if (!$mascota) {
+            return response()->json([
+                'estado' => 0,
+                'msj' => 'Mascota no encontrada',
+                'vacunas' => [],
+                'desparasitaciones' => [],
+            ], 404);
+        }
+
         return [
             'estado' => 1,
             'vacunas' => $this->normalizarRegistros($mascota->vacunas_registro),
@@ -432,8 +443,16 @@ class MascotasController extends Controller
         ];
     }
 
-    public function guardarVacunaDesdeModal(Request $request, Mascota $mascota)
+    public function guardarVacunaDesdeModal(Request $request, $mascotaId)
     {
+        $mascota = $this->resolverMascota($mascotaId);
+        if (!$mascota) {
+            return response()->json([
+                'estado' => 0,
+                'msj' => 'Mascota no encontrada',
+            ], 404);
+        }
+
         $validator = Validator::make(
             $request->all(),
             [
@@ -480,8 +499,16 @@ class MascotasController extends Controller
         ];
     }
 
-    public function guardarDesparasitacionDesdeModal(Request $request, Mascota $mascota)
+    public function guardarDesparasitacionDesdeModal(Request $request, $mascotaId)
     {
+        $mascota = $this->resolverMascota($mascotaId);
+        if (!$mascota) {
+            return response()->json([
+                'estado' => 0,
+                'msj' => 'Mascota no encontrada',
+            ], 404);
+        }
+
         $validator = Validator::make(
             $request->all(),
             [
@@ -550,5 +577,46 @@ class MascotasController extends Controller
         return array_values(array_filter($registros, function ($item) {
             return is_array($item);
         }));
+    }
+
+    private function resolverMascota($id)
+    {
+        if (empty($id)) {
+            return null;
+        }
+
+        $mascota = Mascota::find($id);
+        if ($mascota) {
+            return $mascota;
+        }
+
+        // Compatibilidad con IDs legacy (id_paciente dependiente).
+        $dependencia = PacientesDependientes::where('id_paciente', $id)->first();
+        if (!$dependencia) {
+            return null;
+        }
+
+        $pacienteDependiente = Paciente::find($id);
+        $nombreMascota = trim((string) ($pacienteDependiente->nombres ?? ''));
+        if ($nombreMascota === '') {
+            $nombreMascota = 'Mascota #' . $id;
+        }
+
+        $mascota = Mascota::where('id_responsable', $dependencia->id_responsable)
+            ->where('nombre', $nombreMascota)
+            ->first();
+
+        if ($mascota) {
+            return $mascota;
+        }
+
+        $nuevaMascota = new Mascota();
+        $nuevaMascota->id_responsable = $dependencia->id_responsable;
+        $nuevaMascota->nombre = $nombreMascota;
+        $nuevaMascota->id_user = Auth::id();
+        $nuevaMascota->estado = 1;
+        $nuevaMascota->save();
+
+        return $nuevaMascota;
     }
 }
