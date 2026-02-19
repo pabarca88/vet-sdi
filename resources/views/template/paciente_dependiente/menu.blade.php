@@ -1,11 +1,30 @@
 <nav class="pcoded-navbar menu-light">
 	<div class="navbar-wrapper">
 		<div class="navbar-content scroll-div">
+			@php
+				$perfilMascota = $mascota ?? $paciente ?? null;
+				$nombreMascota = trim(($perfilMascota->nombre ?? $perfilMascota->nombres ?? '') . ' ' . ($perfilMascota->apellido_uno ?? ''));
+				$nombreMascota = $nombreMascota !== '' ? $nombreMascota : (@Auth::user()->name ?? 'Mascota');
+
+				$nombreResponsable = @Auth::user()->name ?? 'Sin responsable';
+				if (!empty($responsable)) {
+					$nombreResponsable = trim(($responsable->nombres ?? '') . ' ' . ($responsable->apellido_uno ?? '') . ' ' . ($responsable->apellido_dos ?? ''));
+				}
+
+				$fotoMascota = asset('images/iconos/usuario.svg');
+				if (!empty($perfilMascota) && !empty($perfilMascota->foto_perfil)) {
+					$fotoMascota = \Illuminate\Support\Str::startsWith($perfilMascota->foto_perfil, ['http://', 'https://', '/'])
+						? $perfilMascota->foto_perfil
+						: asset('storage/' . $perfilMascota->foto_perfil);
+				} elseif (!empty($perfilMascota) && !empty($perfilMascota->sexo)) {
+					$fotoMascota = $perfilMascota->sexo === 'M' ? asset('images/iconos/paciente-m.svg') : asset('images/iconos/paciente-f.svg');
+				}
+			@endphp
 			<div class="">
                 <div class="main-menu-header">
-					<img class="img-radius" src="{{ asset('images/iconos/usuario.svg') }}" alt="Imagen">
+					<img class="img-radius" src="{{ $fotoMascota }}" alt="Mascota">
 					<div class="user-details">
-						<div id="more-details">{{ @Auth::user()->name }}<i class="fa fa-caret-down"></i></div>
+						<div id="more-details">{{ $nombreMascota }}<i class="fa fa-caret-down"></i></div>
 					</div>
 				</div>
 				<div id="nav-user-link">
@@ -27,7 +46,7 @@
 				</div>
 			</div>
 
-            <div class="text-center highcharts-strong">Dependiente: {{ $paciente->nombres . ' ' . $paciente->apellido_uno }} </div>
+            <div class="text-center highcharts-strong">Dueño: {{ $nombreResponsable }}</div>
 
 			<ul class="nav pcoded-inner-navbar ">
 				<li class="nav-item pcoded-menu-caption text-center">

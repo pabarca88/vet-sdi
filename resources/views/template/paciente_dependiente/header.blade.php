@@ -1,4 +1,10 @@
 <header class="navbar pcoded-header navbar-expand-lg navbar-light header-blue">
+    @php
+        $nombreResponsable = @Auth::user()->name ?? 'Sin responsable';
+        if (!empty($responsable)) {
+            $nombreResponsable = trim(($responsable->nombres ?? '') . ' ' . ($responsable->apellido_uno ?? '') . ' ' . ($responsable->apellido_dos ?? ''));
+        }
+    @endphp
 
 	<div class="m-header">
 
@@ -38,7 +44,7 @@
 
                             <span>{{  @Auth::user()->name  }}</span>
 
-                            <br/><span>Dependiente: {{ $paciente->nombres . ' ' . $paciente->apellido_uno }}</span>
+                            <br/><span>Dueño: {{ $nombreResponsable }}</span>
 
                         </div>
 
@@ -75,4 +81,3 @@
 	</div>
 
 </header>
-
