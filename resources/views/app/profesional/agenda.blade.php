@@ -616,6 +616,9 @@
                             </div>-->
 
                             <div class="modal-footer mb-0 pt-1 pb-0 paciente_view">
+                                <button type="button" class="btn btn-warning" id="btn_registrar_mascota_desde_tomar_hora" style="display:none;">
+                                    <i class="feather icon-plus"></i> Registrar mascota
+                                </button>
                                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i
                                         class="feather icon-x"></i> Cancelar</button>
                                 <button type="button" onclick="agendar_hora();" class="btn btn-info"><i
@@ -628,7 +631,7 @@
                             <div class="form-row">
                                 <div class="col-sm-12 col-md-12">
                                     <div class="alert alert-danger py-1" role="alert">
-                                        Paciente no registrado, complete los datos para registrar al paciente.
+                                        Responsable o primera mascota no registrados. Ingrese los datos para agendar una hora.
                                     </div>
                                 </div>
                             </div>
@@ -785,6 +788,90 @@
                                         <label class="floating-label-activo-sm">Descripción reserva</label>
                                         <input type="text" class="form-control form-control-sm"
                                             name="reserva_hora_descripcion" id="reserva_hora_descripcion">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-row mt-2">
+                                <div class="col-sm-12">
+                                    <h6 class="f-14 text-c-blue">Información de la mascota</h6>
+                                </div>
+                                <div class="col-sm-12 col-md-3">
+                                    <div class="form-group">
+                                        <label class="floating-label-activo-sm">¿Tiene chip?</label>
+                                        <select class="form-control form-control-sm" id="reserva_mascota_nueva_tiene_chip">
+                                            <option value="0">No</option>
+                                            <option value="1">Sí</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-3" id="reserva_mascota_nueva_contenedor_chip" style="display:none;">
+                                    <div class="form-group">
+                                        <label class="floating-label-activo-sm">N° chip</label>
+                                        <input type="text" class="form-control form-control-sm" id="reserva_mascota_nueva_chip">
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        <label class="floating-label-activo-sm">Nombre Mascota</label>
+                                        <input type="text" class="form-control form-control-sm" id="reserva_mascota_nueva_nombre">
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <label class="floating-label-activo-sm">Especie</label>
+                                        <select class="form-control form-control-sm" id="reserva_mascota_nueva_especie"></select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <label class="floating-label-activo-sm">Raza</label>
+                                        <select class="form-control form-control-sm" id="reserva_mascota_nueva_raza">
+                                            <option value="">Seleccione</option>
+                                            <option value="sin">Sin raza</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <label class="floating-label-activo-sm">Tipo de mascota (Tamaño)</label>
+                                        <select class="form-control form-control-sm" id="reserva_mascota_nueva_tamano"></select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <label class="floating-label-activo-sm">¿Esterilizado?</label>
+                                        <select class="form-control form-control-sm" id="reserva_mascota_nueva_esterilizado">
+                                            <option value="">Seleccione</option>
+                                            <option value="1">Sí</option>
+                                            <option value="0">No</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <label class="floating-label-activo-sm">F. Nacimiento</label>
+                                        <input type="date" class="form-control form-control-sm" id="reserva_mascota_nueva_fecha_nacimiento" max="{{ date('Y-m-d') }}">
+                                        <div class="form-check mt-1">
+                                            <input class="form-check-input" type="checkbox" id="reserva_mascota_nueva_fecha_nacimiento_desconocida">
+                                            <label class="form-check-label" for="reserva_mascota_nueva_fecha_nacimiento_desconocida">No se conoce</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <label class="floating-label-activo-sm">Sexo</label>
+                                        <select class="form-control form-control-sm" id="reserva_mascota_nueva_sexo">
+                                            <option value="0">Selecione una opción</option>
+                                            <option value="M">Macho</option>
+                                            <option value="F">Hembra</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label class="floating-label-activo-sm">Enfermedad crónica o frecuente</label>
+                                        <textarea class="form-control form-control-sm" id="reserva_mascota_nueva_enfermedad_cronica" rows="2"></textarea>
                                     </div>
                                 </div>
                             </div>

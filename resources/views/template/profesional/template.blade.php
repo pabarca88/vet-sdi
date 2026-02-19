@@ -2401,6 +2401,8 @@
             $('#reserva_hora_representante_agregar_relacion').val('');
             $('#contenedor_tratamientos_presupuesto').empty();
             $('#bono_valor_consulta').val(0);
+            $('#btn_registrar_mascota_desde_tomar_hora').hide();
+            limpiarFormularioMascotaNuevaReserva();
             evaluar_edad();
             $('.div_representante_nuevo').hide();
             $('.div_representante_existente').hide();
@@ -2534,6 +2536,7 @@
                                 $('#reserva_hora_edad').val(data.edad);
                                 console.log('[buscar_paciente] mascotas payload:', data.mascotas);
                                 renderMascotasReserva(data.mascotas || []);
+                                $('#btn_registrar_mascota_desde_tomar_hora').show();
 
                                 // $('#id_lugar_atencion').val($('#agenda_lugar_atencion_asistente').val());
                                 $('#contenedor_tratamientos_presupuesto').show();
@@ -2590,6 +2593,8 @@
                                 $('#reserva_datos_paciente').hide();
                                 $('#reserva_agregar_paciente_hora').show();
                                 renderMascotasReserva([]);
+                                renderSelectMascotaNuevaReserva();
+                                $('#btn_registrar_mascota_desde_tomar_hora').hide();
 
                                 $('#reserva_hora_nombres_paciente').val(data.nombres);
                                 $('#reserva_hora_apellido_uno').val(data.apellido_uno);
@@ -2625,6 +2630,8 @@
                             $('#reserva_datos_paciente').hide();
                             $('#reserva_agregar_paciente_hora').show();
                             renderMascotasReserva([]);
+                            renderSelectMascotaNuevaReserva();
+                            $('#btn_registrar_mascota_desde_tomar_hora').hide();
 
                         }
 
@@ -2651,6 +2658,98 @@
             $('#reserva_mascota_fecha_nacimiento').text(mascota ? (mascota.fecha_nacimiento || '') : '');
             $('#reserva_mascota_chip').text(mascota ? (mascota.chip || '') : '');
             $('#reserva_mascota_esterilizado').text(mascota ? (mascota.esterilizado ? 'Si' : 'No') : '');
+        }
+
+        function renderSelectMascotaNuevaReserva() {
+            var $especie = $('#reserva_mascota_nueva_especie');
+            var $tamano = $('#reserva_mascota_nueva_tamano');
+            if (!$especie.length || !$tamano.length) {
+                return;
+            }
+
+            var htmlEspecie = '<option value="0">Seleccione</option>';
+            (agendaEspeciesMascotas || []).forEach(function(item) {
+                htmlEspecie += '<option value="' + item.id + '">' + item.nombre + '</option>';
+            });
+            $especie.html(htmlEspecie);
+
+            var htmlTamano = '<option value="">Seleccione</option>';
+            (agendaTamanosMascotas || []).forEach(function(item) {
+                htmlTamano += '<option value="' + item.id + '">' + item.nombre + '</option>';
+            });
+            $tamano.html(htmlTamano);
+        }
+
+        function actualizarTamanoMascotaNuevaReserva() {
+            var especieId = parseInt($('#reserva_mascota_nueva_especie').val(), 10);
+            var permitidos = (agendaEspecieTamanosMascotas || [])
+                .filter(function(item) { return parseInt(item.especie_id, 10) === especieId; })
+                .map(function(item) { return parseInt(item.tamano_id, 10); });
+
+            var html = '<option value="">Seleccione</option>';
+            (agendaTamanosMascotas || []).forEach(function(item) {
+                if (!permitidos.length || permitidos.indexOf(parseInt(item.id, 10)) >= 0) {
+                    html += '<option value="' + item.id + '">' + item.nombre + '</option>';
+                }
+            });
+            $('#reserva_mascota_nueva_tamano').html(html);
+        }
+
+        function actualizarRazaMascotaNuevaReserva() {
+            var especieId = $('#reserva_mascota_nueva_especie').val();
+            var $select = $('#reserva_mascota_nueva_raza');
+            $select.html('<option value="">Seleccione</option><option value="sin">Sin raza</option>');
+
+            if (!especieId || especieId === '0') {
+                return;
+            }
+
+            if (agendaRazasMascotasCache[especieId]) {
+                agendaRazasMascotasCache[especieId].forEach(function(raza) {
+                    $select.append('<option value="' + raza.id + '">' + raza.nombre + '</option>');
+                });
+                return;
+            }
+
+            $.get("{{ route('paciente.mascotas.razas', ['especie' => '__id__']) }}".replace('__id__', especieId))
+                .done(function(data) {
+                    var razas = (data && data.razas) ? data.razas : [];
+                    agendaRazasMascotasCache[especieId] = razas;
+                    razas.forEach(function(raza) {
+                        $select.append('<option value="' + raza.id + '">' + raza.nombre + '</option>');
+                    });
+                });
+        }
+
+        function toggleChipMascotaNuevaReserva() {
+            var mostrar = $('#reserva_mascota_nueva_tiene_chip').val() === '1';
+            $('#reserva_mascota_nueva_contenedor_chip').toggle(mostrar);
+            if (!mostrar) {
+                $('#reserva_mascota_nueva_chip').val('');
+            }
+        }
+
+        function toggleFechaNacimientoMascotaNuevaReserva() {
+            var desconocida = $('#reserva_mascota_nueva_fecha_nacimiento_desconocida').is(':checked');
+            $('#reserva_mascota_nueva_fecha_nacimiento').prop('disabled', desconocida);
+            if (desconocida) {
+                $('#reserva_mascota_nueva_fecha_nacimiento').val('');
+            }
+        }
+
+        function limpiarFormularioMascotaNuevaReserva() {
+            $('#reserva_mascota_nueva_tiene_chip').val('0');
+            $('#reserva_mascota_nueva_chip').val('');
+            $('#reserva_mascota_nueva_nombre').val('');
+            $('#reserva_mascota_nueva_raza').html('<option value="">Seleccione</option><option value="sin">Sin raza</option>');
+            $('#reserva_mascota_nueva_esterilizado').val('');
+            $('#reserva_mascota_nueva_fecha_nacimiento').val('');
+            $('#reserva_mascota_nueva_fecha_nacimiento_desconocida').prop('checked', false);
+            $('#reserva_mascota_nueva_sexo').val('0');
+            $('#reserva_mascota_nueva_enfermedad_cronica').val('');
+            renderSelectMascotaNuevaReserva();
+            toggleChipMascotaNuevaReserva();
+            toggleFechaNacimientoMascotaNuevaReserva();
         }
 
         function renderMascotasReserva(mascotas) {
@@ -2683,7 +2782,20 @@
                 setMascotaDetalle(mascotaId ? mascotasReservaCache[mascotaId] : null);
             });
             setMascotaDetalle(null);
+            $('#btn_registrar_mascota_desde_tomar_hora').toggle($('#reserva_hora_id_paciente').val() !== '');
         }
+
+        $(document).on('change', '#reserva_mascota_nueva_especie', function() {
+            actualizarTamanoMascotaNuevaReserva();
+            actualizarRazaMascotaNuevaReserva();
+        });
+        $(document).on('change', '#reserva_mascota_nueva_tiene_chip', toggleChipMascotaNuevaReserva);
+        $(document).on('change', '#reserva_mascota_nueva_fecha_nacimiento_desconocida', toggleFechaNacimientoMascotaNuevaReserva);
+        $(document).on('click', '#btn_registrar_mascota_desde_tomar_hora', function() {
+            if (typeof abrirModalRegistroMascotaDesdeAgenda === 'function') {
+                abrirModalRegistroMascotaDesdeAgenda();
+            }
+        });
 
         function desasociar_asistente(id_asistente) {
 
@@ -3160,6 +3272,15 @@
             let id_lugar_atencion = $('#id_lugar_atencion').val();
             let tipo_agenda = $('#id_tipo_agenda').val();
             let id_mascota = $('#reserva_hora_mascota_id').val();
+            if (!id_mascota) {
+                swal({
+                    title: "Agendar hora",
+                    text: "Debe seleccionar una mascota o registrarla antes de agendar.",
+                    icon: "warning",
+                    buttons: "Aceptar",
+                });
+                return;
+            }
             var tipo_agenda_text = 'C';
             var procedimiento = '';
             var proc_bloque = '';
@@ -3532,6 +3653,88 @@
                 }
             }
 
+            var reserva_mascota_nueva_tiene_chip = $('#reserva_mascota_nueva_tiene_chip').val();
+            var reserva_mascota_nueva_chip = $('#reserva_mascota_nueva_chip').val();
+            var reserva_mascota_nueva_nombre = $('#reserva_mascota_nueva_nombre').val();
+            var reserva_mascota_nueva_especie_id = $('#reserva_mascota_nueva_especie').val();
+            var reserva_mascota_nueva_raza_id = $('#reserva_mascota_nueva_raza').val();
+            var reserva_mascota_nueva_tamano_id = $('#reserva_mascota_nueva_tamano').val();
+            var reserva_mascota_nueva_esterilizado = $('#reserva_mascota_nueva_esterilizado').val();
+            var reserva_mascota_nueva_fecha_nacimiento = $('#reserva_mascota_nueva_fecha_nacimiento').val();
+            var reserva_mascota_nueva_fecha_nacimiento_desconocida = $('#reserva_mascota_nueva_fecha_nacimiento_desconocida').is(':checked') ? 1 : 0;
+            var reserva_mascota_nueva_sexo = $('#reserva_mascota_nueva_sexo').val();
+            var reserva_mascota_nueva_enfermedad_cronica = $('#reserva_mascota_nueva_enfermedad_cronica').val();
+            if (reserva_mascota_nueva_nombre == '') {
+                swal({
+                    title: "Error!",
+                    text: "Debe ingresar el nombre de la mascota",
+                    icon: "error",
+                    type: "danger",
+                    DangerMode: true,
+                });
+                return;
+            }
+            if (reserva_mascota_nueva_especie_id == '' || reserva_mascota_nueva_especie_id == '0') {
+                swal({
+                    title: "Error!",
+                    text: "Debe seleccionar la especie de la mascota",
+                    icon: "error",
+                    type: "danger",
+                    DangerMode: true,
+                });
+                return;
+            }
+            if (reserva_mascota_nueva_tamano_id == '') {
+                swal({
+                    title: "Error!",
+                    text: "Debe seleccionar el tamaño de la mascota",
+                    icon: "error",
+                    type: "danger",
+                    DangerMode: true,
+                });
+                return;
+            }
+            if (reserva_mascota_nueva_esterilizado === '') {
+                swal({
+                    title: "Error!",
+                    text: "Debe indicar si la mascota está esterilizada",
+                    icon: "error",
+                    type: "danger",
+                    DangerMode: true,
+                });
+                return;
+            }
+            if (reserva_mascota_nueva_fecha_nacimiento == '' && reserva_mascota_nueva_fecha_nacimiento_desconocida == 0) {
+                swal({
+                    title: "Error!",
+                    text: "Debe ingresar la fecha de nacimiento de la mascota o marcar 'No se conoce'",
+                    icon: "error",
+                    type: "danger",
+                    DangerMode: true,
+                });
+                return;
+            }
+            if (reserva_mascota_nueva_sexo == '' || reserva_mascota_nueva_sexo == '0') {
+                swal({
+                    title: "Error!",
+                    text: "Debe seleccionar el sexo de la mascota",
+                    icon: "error",
+                    type: "danger",
+                    DangerMode: true,
+                });
+                return;
+            }
+            if (reserva_mascota_nueva_tiene_chip == '1' && reserva_mascota_nueva_chip == '') {
+                swal({
+                    title: "Error!",
+                    text: "Debe ingresar el chip de la mascota",
+                    icon: "error",
+                    type: "danger",
+                    DangerMode: true,
+                });
+                return;
+            }
+
             var reserva_representante_nuevo_exitente = $('#reserva_representante_nuevo_exitente').val();
             var reserva_representante_id = $('#reserva_representante_id').val();
             var reserva_representante_id_usuario = $('#reserva_representante_id_usuario').val();
@@ -3809,7 +4012,18 @@
                         reserva_hora_representante_correo: reserva_hora_representante_correo,
                         reserva_hora_representante_telefono_uno: reserva_hora_representante_telefono_uno,
                         reserva_hora_representante_result_codigo_validacion: reserva_hora_representante_result_codigo_validacion,
-                        reserva_hora_representante_agregar_relacion: reserva_hora_representante_agregar_relacion
+                        reserva_hora_representante_agregar_relacion: reserva_hora_representante_agregar_relacion,
+                        reserva_mascota_tiene_chip: reserva_mascota_nueva_tiene_chip,
+                        reserva_mascota_chip: reserva_mascota_nueva_chip,
+                        reserva_mascota_nombre: reserva_mascota_nueva_nombre,
+                        reserva_mascota_especie_id: reserva_mascota_nueva_especie_id,
+                        reserva_mascota_raza_id: (reserva_mascota_nueva_raza_id === 'sin' ? '' : reserva_mascota_nueva_raza_id),
+                        reserva_mascota_tamano_id: reserva_mascota_nueva_tamano_id,
+                        reserva_mascota_esterilizado: reserva_mascota_nueva_esterilizado,
+                        reserva_mascota_fecha_nacimiento: reserva_mascota_nueva_fecha_nacimiento,
+                        reserva_mascota_fecha_nacimiento_desconocida: reserva_mascota_nueva_fecha_nacimiento_desconocida,
+                        reserva_mascota_sexo: reserva_mascota_nueva_sexo,
+                        reserva_mascota_enfermedad_cronica: reserva_mascota_nueva_enfermedad_cronica
                     },
                 })
                 .done(function(data) {

@@ -436,6 +436,7 @@
     var agendaTamanosMascotas = @json($tamanosMascotas ?? []);
     var agendaEspecieTamanosMascotas = @json($especieTamanosMascotas ?? []);
     var agendaRazasMascotasCache = {};
+    var agendaRegistroMascotaContext = 'consulta';
 
     function abrirModalRegistroMascotaAgenda() {
         let idPaciente = $('#estado_id_paciente').val();
@@ -451,9 +452,30 @@
         }
 
         limpiarFormularioMascotaAgenda();
+        agendaRegistroMascotaContext = 'consulta';
         $('#agenda_mascota_id_paciente').val(idPaciente);
         $('#agenda_mascota_id_hora_medica').val(idHoraMedica || '');
         $('#consulta').modal('hide');
+        $('#modal_registrar_mascota_agenda').modal('show');
+    }
+
+    function abrirModalRegistroMascotaDesdeAgenda() {
+        let idPaciente = $('#reserva_hora_id_paciente').val();
+        if (!idPaciente) {
+            swal({
+                title: "Registro de mascota",
+                text: "Primero debe buscar y cargar un responsable.",
+                icon: "warning",
+                buttons: "Aceptar",
+            });
+            return;
+        }
+
+        limpiarFormularioMascotaAgenda();
+        agendaRegistroMascotaContext = 'agenda';
+        $('#agenda_mascota_id_paciente').val(idPaciente);
+        $('#agenda_mascota_id_hora_medica').val('');
+        $('#agenda_agregar_paciente').modal('hide');
         $('#modal_registrar_mascota_agenda').modal('show');
     }
 
@@ -671,14 +693,31 @@
             if (data.estado == 1 && data.registro) {
                 var mascota = data.registro;
                 var especieTexto = mascota.especieMascota && mascota.especieMascota.nombre ? mascota.especieMascota.nombre : '';
-                $('#id_mascota').val(mascota.id);
-                $('#datos_consulta_mascota_nombre').text(mascota.nombre || '');
-                $('#datos_consulta_mascota_raza').text(especieTexto || '');
-                $('#datos_consulta_mascota_esterilizado').text(mascota.esterilizado ? 'SI' : 'NO');
-                actualizarEstadoMascotaAgenda();
-
-                $('#modal_registrar_mascota_agenda').modal('hide');
-                $('#consulta').modal('show');
+                if (agendaRegistroMascotaContext === 'agenda') {
+                    var $selectMascota = $('#reserva_hora_mascota_id');
+                    if ($selectMascota.length) {
+                        if (!$selectMascota.find('option[value="' + mascota.id + '"]').length) {
+                            $selectMascota.append('<option value="' + mascota.id + '">' + (mascota.nombre || 'Mascota') + '</option>');
+                        }
+                        $selectMascota.val(mascota.id).trigger('change');
+                    }
+                    if (typeof mascotasReservaCache !== 'undefined') {
+                        mascotasReservaCache[mascota.id] = mascota;
+                    }
+                    if (typeof setMascotaDetalle === 'function') {
+                        setMascotaDetalle(mascota);
+                    }
+                    $('#modal_registrar_mascota_agenda').modal('hide');
+                    $('#agenda_agregar_paciente').modal('show');
+                } else {
+                    $('#id_mascota').val(mascota.id);
+                    $('#datos_consulta_mascota_nombre').text(mascota.nombre || '');
+                    $('#datos_consulta_mascota_raza').text(especieTexto || '');
+                    $('#datos_consulta_mascota_esterilizado').text(mascota.esterilizado ? 'SI' : 'NO');
+                    actualizarEstadoMascotaAgenda();
+                    $('#modal_registrar_mascota_agenda').modal('hide');
+                    $('#consulta').modal('show');
+                }
 
                 swal({
                     title: "Registro de Mascota.",
@@ -710,9 +749,12 @@
     $(document).on('click', '#btn_guardar_mascota_agenda', guardarMascotaAgenda);
 
     $('#modal_registrar_mascota_agenda').on('hidden.bs.modal', function () {
-        if ($.trim($('#id_mascota').val()) === '') {
+        if (agendaRegistroMascotaContext === 'agenda') {
+            $('#agenda_agregar_paciente').modal('show');
+        } else if ($.trim($('#id_mascota').val()) === '') {
             $('#consulta').modal('show');
         }
+        agendaRegistroMascotaContext = 'consulta';
     });
 
     function opcion_revisar_ficha() {

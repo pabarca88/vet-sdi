@@ -8832,6 +8832,18 @@ public function eliminarPiezaCoronaProtesis(Request $req){
         $paciente['procedimientos_lugar_atencion'] = $procedimientos_lugar_atencion;
         $paciente['id_lugar_atencion'] = $request->id_lugar_atencion;
         $paciente['id_profesional'] = $request->id_profesional;
+        if($paciente['tipo_paciente'] == 'SI' && !empty($paciente->id))
+        {
+            $paciente['mascotas'] = Mascota::with(['especieMascota', 'razaMascota', 'tamanoMascota'])
+                                ->where('id_responsable', $paciente->id)
+                                ->where('estado', 1)
+                                ->orderBy('nombre')
+                                ->get();
+        }
+        else
+        {
+            $paciente['mascotas'] = array();
+        }
 
 
         return json_encode($paciente);
@@ -9043,6 +9055,21 @@ public function eliminarPiezaCoronaProtesis(Request $req){
 
         $hora_medica->descripcion = $paciente->nombres . ' ' . $paciente->apellido_uno . ' ' . $paciente->apellido_dos;
         $hora_medica->id_lugar_atencion = $request->id_lugar_atencion;
+        if(!empty($request->id_mascota))
+        {
+            $mascota = Mascota::where('id', $request->id_mascota)
+                                ->where('id_responsable', $paciente->id)
+                                ->first();
+            if(!$mascota)
+            {
+                return json_encode(array(
+                    'estado' => 'error',
+                    'id_profesional' => $profesional->id,
+                    'msj' => 'La mascota seleccionada no pertenece al responsable indicado.'
+                ));
+            }
+            $hora_medica->id_mascota = $mascota->id;
+        }
 
         if (!$hora_medica->save()) {
             return 'error';
@@ -9580,6 +9607,41 @@ public function eliminarPiezaCoronaProtesis(Request $req){
                         break;
                 }
 
+                $mascota_agendada = null;
+                if(!empty($request->reserva_mascota_nombre) && !empty($request->reserva_mascota_especie_id) && !empty($request->reserva_mascota_tamano_id) && !empty($request->reserva_mascota_sexo))
+                {
+                    $mascota_agendada = new Mascota();
+                    $mascota_agendada->id_responsable = $paciente->id;
+                    $mascota_agendada->tiene_chip = !empty($request->reserva_mascota_tiene_chip) ? 1 : 0;
+                    $mascota_agendada->chip = !empty($request->reserva_mascota_tiene_chip) ? $request->reserva_mascota_chip : null;
+                    $mascota_agendada->nombre = $request->reserva_mascota_nombre;
+                    $mascota_agendada->especie_id = $request->reserva_mascota_especie_id;
+                    $mascota_agendada->especie = $request->reserva_mascota_especie_id;
+                    if(!empty($request->reserva_mascota_raza_id))
+                    {
+                        $raza_valida = RazaMascota::where('id', $request->reserva_mascota_raza_id)
+                                            ->where('especie_id', $request->reserva_mascota_especie_id)
+                                            ->first();
+                        $mascota_agendada->raza_id = $raza_valida ? $raza_valida->id : null;
+                    }
+                    $tamano_temp = TamanoMascota::find($request->reserva_mascota_tamano_id);
+                    $mascota_agendada->tamano_id = $request->reserva_mascota_tamano_id;
+                    $mascota_agendada->tamano = $tamano_temp ? $tamano_temp->slug : null;
+                    $mascota_agendada->fecha_nacimiento = (!empty($request->reserva_mascota_fecha_nacimiento_desconocida) ? null : $request->reserva_mascota_fecha_nacimiento);
+                    $mascota_agendada->sexo = $request->reserva_mascota_sexo;
+                    $mascota_agendada->esterilizado = (!empty($request->reserva_mascota_esterilizado) ? 1 : 0);
+                    $mascota_agendada->enfermedad_cronica = $request->reserva_mascota_enfermedad_cronica;
+                    $mascota_agendada->id_user = $paciente->id_usuario ?? Auth::id();
+                    $mascota_agendada->estado = 1;
+
+                    if(!$mascota_agendada->save())
+                    {
+                        $datos['estado'] = 0;
+                        $datos['msj'] = 'Problema al crear la mascota';
+                        return $datos;
+                    }
+                }
+
                 $hora_medica = new HoraMedica();
 
                 $hora_medica->id_paciente = $paciente->id;
@@ -9595,6 +9657,10 @@ public function eliminarPiezaCoronaProtesis(Request $req){
                 $hora_medica->alias_examen = $texto_alias_examen;
 
                 $hora_medica->descripcion = $hora_medica->descripcion = $paciente->nombres . ' ' . $paciente->apellido_uno . ' ' . $paciente->apellido_dos;
+                if($mascota_agendada)
+                {
+                    $hora_medica->id_mascota = $mascota_agendada->id;
+                }
 
                 if( (\Carbon\Carbon::parse($request->reserva_hora_fecha_nac)->age) < 18 || $request->dependiente == 1 )
                 {
