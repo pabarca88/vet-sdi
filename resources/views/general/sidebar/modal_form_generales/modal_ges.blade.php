@@ -3,7 +3,7 @@
         <div class="modal-content">
             <div class="modal-header bg-info">
                 <h5 class="modal-title text-white">Vacunas y desparasitación</h5>
-                <button type="button" class="close"  data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
 
             <div class="modal-body">
@@ -18,211 +18,6 @@
                             </li>
                         </ul>
                         <div class="tab-content" id="registros_vac_desp">
-<<<<<<< HEAD
-                            <!--REGISTRO DE VACUNAS-->
-                            <div class="tab-pane fade show active" id="vac" role="tabpanel" aria-labelledby="vac-tab">
-                                <div class="form-row">
-                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 mb-2">
-	                                    <h6 class="t-aten">Registro de vacunas</h6>
-                                	</div>
-                                </div>
-                                <div class="form-row">
-                                	<div class="col-12">
-	                                	<div class="card-lineal">
-	                                		<div class="card-body-lineal">
-	                                			<div class="form-row">
-				                                	<div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3">
-								                        <label class="floating-label-activo-sm">Edad</label>
-								                        <input type="text" class="form-control form-control-sm" name="pulso" id="pulso" value="">
-								                    </div>
-								                    <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3">
-								                        <label class="floating-label-activo-sm">Fecha dosis</label>
-								                        <input type="date" class="form-control form-control-sm" name="pulso" id="pulso" value="">
-								                    </div>
-								                    <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3">
-								                        <label class="floating-label-activo-sm" for="motivo">Vacuna</label>
-								                        <input type="text" class="form-control form-control-sm" name="pulso" id="pulso" value="">
-								                    </div>
-								                    <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3">
-								                        <label class="floating-label-activo-sm" for="motivo">Prox. Dosis</label>
-								                        <input type="date" class="form-control form-control-sm" name="pulso" id="pulso" value="">
-								                    </div>
-								                    <div class="col-12 text-right">
-								                    	<button type="button" class="btn btn-xs btn-info">+ Añadir</button>
-								                    </div>
-					                    		</div>
-				                    		</div>
-					                    </div>
-					                </div>
-                                </div>
-                                <div class="form-row">
-                                	<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                                        <div class="table-responsible">
-                                            <table id="tabla_vacunas_mascotas"
-                                                class="display table table-striped dt-responsive nowrap table-sm"
-                                                style="width:100%">
-                                                <thead>
-                                                    <tr>
-                                                        <th class="align-middle">Edad</th>
-                                                        <th class="align-middle">Fecha dosis</th>
-                                                        <th class="align-middle">Vacuna</th>
-                                                        <th class="align-middle">Próx.Dosis</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td class="align-middle">
-                                                           1 mes y 5 días
-                                                        </td>
-                                                        <td class="align-middle">
-                                                            <span class="badge badge-secondary">00-00-2025</span>
-                                                        </td>
-                                                        <td class="align-middle">
-                                                            Triplefelina
-                                                        </td>
-                                                        <td class="align-middle">
-                                                            <span class="badge badge-info">11-12-2025</span>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="align-middle">
-                                                           2 meses y 15 días
-                                                        </td> 
-                                                        <td class="align-middle">
-                                                            <span class="badge badge-secondary">00-00-2025</span>
-                                                        </td>
-                                                        <td class="align-middle">
-                                                            Triplefelina
-                                                        </td>
-                                                        <td class="align-middle">
-                                                            <span class="badge badge-info">11-12-2025</span>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="align-middle">
-                                                           4 meses y 19 días
-                                                        </td>
-                                                        <td class="align-middle">
-                                                            <span class="badge badge-secondary">00-00-2025</span>
-                                                        </td>
-                                                        <td class="align-middle">
-                                                            Rabia
-                                                        </td>
-                                                        <td class="align-middle">
-                                                            <span class="badge badge-info">11-12-2025</span>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                  	</div>
-                                </div>
-                            </div>
-
-                            <!--REGISTRO DESPARACITACIÓN-->
-                            <div class="tab-pane fade show" id="desparasita" role="tabpanel" aria-labelledby="desparasita-tab">
-                                <div class="form-row">
-                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 mb-2">
-                                        <h6 class="t-aten">Registro de Desparasitaciones</h6>
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                	<div class="col-12">
-	                                	<div class="card-lineal">
-	                                		<div class="card-body-lineal">
-				                                <div class="form-row">
-								                    <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3">
-								                        <label class="floating-label-activo-sm" for="motivo">Fecha dosis</label>
-								                        <input type="date" class="form-control form-control-sm" name="pulso" id="pulso" value="">
-								                    </div>
-								                    <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3">
-								                        <label class="floating-label-activo-sm" for="motivo">Antiparasitario</label>
-								                        <input type="text" class="form-control form-control-sm" name="pulso" id="pulso" value="">
-								                    </div>
-								                    <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3">
-								                        <label class="floating-label-activo-sm" for="motivo">Tipo</label>
-								                        <select class="form-control form-control-sm" name="esterilizado" id="esterilizado" value="">
-								                            <option value="">Seleccione</option>
-								                            <option value="">Externo</option>
-								                            <option value="">Interno</option>
-								                            <option value="">Interno y Externo</option>
-								                        </select>
-								                    </div>
-								                    <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3">
-								                        <label class="floating-label-activo-sm" for="motivo">Prox. Dosis</label>
-								                        <input type="date" class="form-control form-control-sm" name="pulso" id="pulso" value="">
-								                    </div>
-								                    <div class="col-12 text-right">
-								                    	<button type="button" class="btn btn-xs btn-info">+ Añadir</button>
-								                    </div>
-				                                </div>
-				                            </div>
-				                        </div>
-				                    </div>
-				                </div>
-
-
-
-                                <div class="form-row">
-                                	<div class="col-12">
-	                                     <table id="tabla_desparacitacion"
-	                                    class="display table table-striped dt-responsive nowrap table-sm"
-	                                    style="width:100%">
-	                                        <thead>
-	                                            <tr>
-	                                                <th class="align-middle">Fecha dosis</th>
-	                                                <th class="align-middle">Antiparasitario</th>
-	                                                <th class="align-middle">Tipo</th>
-	                                                <th class="align-middle">Próx.Dosis</th>
-	                                            </tr>
-	                                        </thead>
-	                                        <tbody>
-	                                            <tr>
-	                                                <td class="align-middle">
-	                                                    <span class="badge badge-secondary">00-00-2025</span>
-	                                                </td>
-	                                                <td class="align-middle">
-	                                                    Milpro
-	                                                </td>
-	                                                <td class="align-middle">
-	                                                    Interno
-	                                                </td>
-	                                                <td class="align-middle">
-	                                                    <span class="badge badge-info">11-12-2025</span>
-	                                                </td>
-	                                            </tr>
-	                                             <tr>
-	                                                <td class="align-middle">
-	                                                    <span class="badge badge-secondary">00-00-2025</span>
-	                                                </td>
-	                                                <td class="align-middle">
-	                                                    Nextgard Combo
-	                                                </td>
-	                                                <td class="align-middle">
-	                                                    Interno y Externo
-	                                                </td>
-	                                                <td class="align-middle">
-	                                                    <span class="badge badge-info">11-12-2025</span>
-	                                                </td>
-	                                            </tr>
-	                                             <tr>
-	                                                <td class="align-middle">
-	                                                    <span class="badge badge-secondary">00-00-2025</span>
-	                                                </td>
-	                                                <td class="align-middle">
-	                                                    Frontlin
-	                                                </td>
-	                                                <td class="align-middle">
-	                                                    Externo
-	                                                </td>
-	                                                <td class="align-middle">
-	                                                    <span class="badge badge-info">11-12-2025</span>
-	                                                </td>
-	                                            </tr>
-	                                        </tbody>
-	                                    </table>
-                                	</div>
-=======
                             <div class="tab-pane fade show active" id="vac" role="tabpanel" aria-labelledby="vac-tab">
                                 <div class="form-row">
                                     <div class="col-12 mb-2">
@@ -333,7 +128,6 @@
                                             </table>
                                         </div>
                                     </div>
->>>>>>> bf98f6b2 (update vacunacion desparacitacion)
                                 </div>
                             </div>
                         </div>
@@ -345,61 +139,8 @@
 </div>
 
 
-
 <script>
 
-
-<<<<<<< HEAD
-
-    /** MANEJO DE IMAGENES GES */
-
-    var lista_archivo_ges = {};
-
-    function cargar_lista_archivo_ges(obj_dropzone, alias_examen)
-
-    {
-
-        // console.log('--------------cargar_lista_archivo_ges----------------------');
-
-        lista_archivo_ges[alias_examen] = [];
-
-        let temp  = obj_dropzone.getAcceptedFiles();
-
-        $.each(temp, function( index, value )
-
-        {
-
-            if(value.status == "success")
-
-            {
-
-                if(value.xhr !== undefined)
-
-                {
-
-                    var archivo_temp = JSON.parse(value.xhr.response);
-
-                    lista_archivo_ges[alias_examen][index] = [
-
-                        url=archivo_temp.archivo.url,
-
-                        nombre_origian= archivo_temp.archivo.original_file_name,
-
-                        nombre_archivo = archivo_temp.archivo.nombre_archivo,
-
-                        file_extension = archivo_temp.archivo.file_extension,
-
-                    ];
-
-                    $('#input_lista_archivo_ges').val('');
-
-                    $('#input_lista_archivo_ges').val(JSON.stringify(lista_archivo_ges));
-
-                }
-
-            }
-
-=======
     function formatoFechaCorta(fecha) {
         if (!fecha) {
             return '-';
@@ -442,13 +183,9 @@
                 '<td class="align-middle"><span class="badge badge-info">' + formatoFechaCorta(item.proxima_dosis) + '</span></td>' +
                 '</tr>';
             $tbody.append(html);
->>>>>>> bf98f6b2 (update vacunacion desparacitacion)
         });
-
     }
 
-<<<<<<< HEAD
-=======
     function renderTablaDesparasitacionModal(desparasitaciones) {
         var $tbody = $('#tabla_desparasitacion_body');
         $tbody.html('');
@@ -634,8 +371,6 @@
         });
 
     }
-
->>>>>>> bf98f6b2 (update vacunacion desparacitacion)
     /** CIERRE MANEJO DE IMAGENES */
 
 
