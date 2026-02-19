@@ -153,6 +153,16 @@
     }
 
     function obtenerIdMascotaModalGes() {
+        var params = new URLSearchParams(window.location.search || '');
+        var idMascotaUrl = params.get('id_mascota') || params.get('id_dependiente_activo');
+        if (idMascotaUrl) {
+            return idMascotaUrl;
+        }
+
+        if ($('#id_mascota_fc').length && $('#id_mascota_fc').val()) {
+            return $('#id_mascota_fc').val();
+        }
+
         return $('#id_paciente_fc').val() || '';
     }
 
@@ -227,7 +237,7 @@
             return;
         }
 
-        var url = urlConId("{{ route('paciente.mascotas.registros_sanitarios', ['mascota' => '__ID__']) }}", idMascota);
+        var url = urlConId("{{ route('paciente.mascotas.registros_sanitarios', ['mascotaId' => '__ID__']) }}", idMascota);
         $.get(url)
             .done(function (resp) {
                 renderTablaVacunasModal(resp.vacunas || []);
@@ -254,7 +264,7 @@
             proxima_dosis: $('#vac_proxima_dosis_modal').val(),
         };
 
-        var url = urlConId("{{ route('paciente.mascotas.vacunas.guardar', ['mascota' => '__ID__']) }}", idMascota);
+        var url = urlConId("{{ route('paciente.mascotas.vacunas.guardar', ['mascotaId' => '__ID__']) }}", idMascota);
         $.post(url, data)
             .done(function (resp) {
                 renderTablaVacunasModal(resp.vacunas || []);
@@ -287,7 +297,7 @@
             proxima_dosis: $('#des_proxima_dosis_modal').val(),
         };
 
-        var url = urlConId("{{ route('paciente.mascotas.desparasitaciones.guardar', ['mascota' => '__ID__']) }}", idMascota);
+        var url = urlConId("{{ route('paciente.mascotas.desparasitaciones.guardar', ['mascotaId' => '__ID__']) }}", idMascota);
         $.post(url, data)
             .done(function (resp) {
                 renderTablaDesparasitacionModal(resp.desparasitaciones || []);
@@ -810,4 +820,3 @@
 
 
 </script>
-

@@ -606,17 +606,6 @@ class MascotasController extends Controller
             ->where('nombre', $nombreMascota)
             ->first();
 
-        if ($mascota) {
-            return $mascota;
-        }
-
-        $nuevaMascota = new Mascota();
-        $nuevaMascota->id_responsable = $dependencia->id_responsable;
-        $nuevaMascota->nombre = $nombreMascota;
-        $nuevaMascota->id_user = Auth::id();
-        $nuevaMascota->estado = 1;
-        $nuevaMascota->save();
-
-        return $nuevaMascota;
+        return $mascota;
     }
 }
