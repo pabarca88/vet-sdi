@@ -3001,7 +3001,17 @@
 
     function resetearSwitchAntecedente()
     {
-        $('#check_antecedentes').prop('checked', false);
+        $('input#check_antecedentes, input[name="check_antecedentes"]').prop('checked', false);
+    }
+
+    function resetearSwitchCronico()
+    {
+        $('input#enf_cronico, input[name="enf_cronico"]').prop('checked', false);
+    }
+
+    function resetearSwitchVacunasDesparasitacion()
+    {
+        $('input#modal_ges, input[name="modal_ges"]').prop('checked', false);
     }
 
     $('#m_agregar_antecedente').on('hide.bs.modal hidden.bs.modal', function () {
@@ -3012,6 +3022,34 @@
         if (e.target === this) {
             resetearSwitchAntecedente();
         }
+    });
+
+    $('#form_enfermedad_cronica').on('hide.bs.modal hidden.bs.modal', function () {
+        resetearSwitchCronico();
+    });
+
+    $('#form_enfermedad_cronica').on('click', function (e) {
+        if (e.target === this) {
+            resetearSwitchCronico();
+        }
+    });
+
+    $(document).on('click', '#form_enfermedad_cronica .close, #form_enfermedad_cronica [data-dismiss="modal"], #form_enfermedad_cronica [data-bs-dismiss="modal"]', function () {
+        resetearSwitchCronico();
+    });
+
+    $(document).on('hide.bs.modal hidden.bs.modal', '#form_ges', function () {
+        resetearSwitchVacunasDesparasitacion();
+    });
+
+    $(document).on('click', '#form_ges', function (e) {
+        if (e.target === this) {
+            resetearSwitchVacunasDesparasitacion();
+        }
+    });
+
+    $(document).on('click', '#form_ges .close, #form_ges [data-dismiss="modal"], #form_ges [data-bs-dismiss="modal"]', function () {
+        resetearSwitchVacunasDesparasitacion();
     });
 
     function cambiar_antecedente()

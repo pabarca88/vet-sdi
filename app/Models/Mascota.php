@@ -38,6 +38,8 @@ class Mascota extends Model
         'producto_desparasitacion',
         'cirugias',
         'vacunas',
+        'vacunas_registro',
+        'desparasitaciones_registro',
         'viajes',
         'vive_con_animales',
         'id_user',
@@ -51,6 +53,8 @@ class Mascota extends Model
         'esterilizado' => 'boolean',
         'fecha_esterilizacion' => 'date',
         'ultima_desparasitacion' => 'date',
+        'vacunas_registro' => 'array',
+        'desparasitaciones_registro' => 'array',
         'vive_con_animales' => 'boolean',
     ];
 

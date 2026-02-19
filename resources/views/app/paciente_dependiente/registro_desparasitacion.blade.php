@@ -43,48 +43,26 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td class="align-middle">
-                                                    <span class="badge badge-secondary">00-00-2025</span>
-                                                </td>
-                                                <td class="align-middle">
-                                                    Milpro
-                                                </td>
-                                                <td class="align-middle">
-                                                    Interno
-                                                </td>
-                                                <td class="align-middle text-center">
-                                                    <span class="badge badge-info">11-12-2025</span>
-                                                </td>
-                                            </tr>
-                                             <tr>
-                                                <td class="align-middle">
-                                                    <span class="badge badge-secondary">00-00-2025</span>
-                                                </td>
-                                                <td class="align-middle">
-                                                    Nextgard Combo
-                                                </td>
-                                                <td class="align-middle">
-                                                    Interno y Externo
-                                                </td>
-                                                <td class="align-middle text-center">
-                                                    <span class="badge badge-info">11-12-2025</span>
-                                                </td>
-                                            </tr>
-                                             <tr>
-                                                <td class="align-middle">
-                                                    <span class="badge badge-secondary">00-00-2025</span>
-                                                </td>
-                                                <td class="align-middle">
-                                                    Frontlin
-                                                </td>
-                                                <td class="align-middle">
-                                                    Externo
-                                                </td>
-                                                <td class="align-middle text-center">
-                                                    <span class="badge badge-info">11-12-2025</span>
-                                                </td>
-                                            </tr>
+                                            @forelse(($desparasitaciones ?? []) as $registro)
+                                                <tr>
+                                                    <td class="align-middle">
+                                                        <span class="badge badge-secondary">
+                                                            {{ !empty($registro['fecha_dosis']) ? \Carbon\Carbon::parse($registro['fecha_dosis'])->format('d-m-Y') : '-' }}
+                                                        </span>
+                                                    </td>
+                                                    <td class="align-middle">{{ $registro['antiparasitario'] ?? '-' }}</td>
+                                                    <td class="align-middle">{{ $registro['tipo'] ?? '-' }}</td>
+                                                    <td class="align-middle text-center">
+                                                        <span class="badge badge-info">
+                                                            {{ !empty($registro['proxima_dosis']) ? \Carbon\Carbon::parse($registro['proxima_dosis'])->format('d-m-Y') : '-' }}
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            @empty
+                                                <tr>
+                                                    <td class="align-middle text-center text-muted" colspan="4">Sin registros</td>
+                                                </tr>
+                                            @endforelse
                                         </tbody>
                                     </table>
                         </div>

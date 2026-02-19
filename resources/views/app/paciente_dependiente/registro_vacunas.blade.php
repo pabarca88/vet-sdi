@@ -43,48 +43,26 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td class="align-middle">
-                                                   1 mes y 5 días
-                                                </td>
-                                                <td class="align-middle">
-                                                    <span class="badge badge-secondary">00-00-2025</span>
-                                                </td>
-                                                <td class="align-middle">
-                                                    Triplefelina
-                                                </td>
-                                                <td class="align-middle text-center">
-                                                    <span class="badge badge-info">11-12-2025</span>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="align-middle">
-                                                   2 meses y 15 días
-                                                </td> 
-                                                <td class="align-middle">
-                                                    <span class="badge badge-secondary">00-00-2025</span>
-                                                </td>
-                                                <td class="align-middle">
-                                                    Triplefelina
-                                                </td>
-                                                <td class="align-middle text-center">
-                                                    <span class="badge badge-info">11-12-2025</span>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="align-middle">
-                                                   4 meses y 19 días
-                                                </td>
-                                                <td class="align-middle">
-                                                    <span class="badge badge-secondary">00-00-2025</span>
-                                                </td>
-                                                <td class="align-middle">
-                                                    Rabia
-                                                </td>
-                                                <td class="align-middle text-center">
-                                                    <span class="badge badge-info">11-12-2025</span>
-                                                </td>
-                                            </tr>
+                                            @forelse(($vacunas ?? []) as $vacuna)
+                                                <tr>
+                                                    <td class="align-middle">{{ $vacuna['edad'] ?? '-' }}</td>
+                                                    <td class="align-middle">
+                                                        <span class="badge badge-secondary">
+                                                            {{ !empty($vacuna['fecha_dosis']) ? \Carbon\Carbon::parse($vacuna['fecha_dosis'])->format('d-m-Y') : '-' }}
+                                                        </span>
+                                                    </td>
+                                                    <td class="align-middle">{{ $vacuna['vacuna'] ?? '-' }}</td>
+                                                    <td class="align-middle text-center">
+                                                        <span class="badge badge-info">
+                                                            {{ !empty($vacuna['proxima_dosis']) ? \Carbon\Carbon::parse($vacuna['proxima_dosis'])->format('d-m-Y') : '-' }}
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            @empty
+                                                <tr>
+                                                    <td class="align-middle text-center text-muted" colspan="4">Sin registros</td>
+                                                </tr>
+                                            @endforelse
                                         </tbody>
                                     </table>
                         </div>

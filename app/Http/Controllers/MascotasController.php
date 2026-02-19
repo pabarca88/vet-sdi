@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Paciente;
-use App\Models\PacientesDependientes;
 use App\Models\Mascota;
 use App\Models\EspecieMascota;
 use App\Models\EspecieTamanoMascota;
@@ -392,22 +391,140 @@ class MascotasController extends Controller
             'razas' => $razas,
         ];
     }
-     public function registro_vacunas(Request $request){
-     
-        $id_mascota = $request->id_dependiente_activo;
-        $mascota = PacientesDependientes::find($id_mascota);
-        $paciente = Paciente::where('id_usuario',Auth::user()->id)->first();
-        return view('app.paciente_dependiente.registro_vacunas',['mascota' => $mascota,'paciente' => $paciente]);
-    }
+    public function registro_vacunas(Request $request)
+    {
+        $paciente = Paciente::where('id_usuario', Auth::user()->id)->first();
+        $mascota = Mascota::find($request->id_dependiente_activo);
 
-    public function registro_desparasitacion(Request $request){
-         $id_mascota = $request->id_dependiente_activo;
-        $mascota = PacientesDependientes::find($id_mascota);
-        $paciente = Paciente::where('id_usuario',Auth::user()->id)->first();
-        return view('app.paciente_dependiente.registro_desparasitacion',[
+        if (!$mascota) {
+            return back()->with('error', 'Mascota no encontrada');
+        }
+
+        return view('app.paciente_dependiente.registro_vacunas', [
             'mascota' => $mascota,
-            'paciente' => $paciente
+            'paciente' => $paciente,
+            'vacunas' => $this->normalizarRegistros($mascota->vacunas_registro),
         ]);
     }
-    
+
+    public function registro_desparasitacion(Request $request)
+    {
+        $paciente = Paciente::where('id_usuario', Auth::user()->id)->first();
+        $mascota = Mascota::find($request->id_dependiente_activo);
+
+        if (!$mascota) {
+            return back()->with('error', 'Mascota no encontrada');
+        }
+
+        return view('app.paciente_dependiente.registro_desparasitacion',[
+            'mascota' => $mascota,
+            'paciente' => $paciente,
+            'desparasitaciones' => $this->normalizarRegistros($mascota->desparasitaciones_registro),
+        ]);
+    }
+
+    public function obtenerRegistrosSanitarios(Mascota $mascota)
+    {
+        return [
+            'estado' => 1,
+            'vacunas' => $this->normalizarRegistros($mascota->vacunas_registro),
+            'desparasitaciones' => $this->normalizarRegistros($mascota->desparasitaciones_registro),
+        ];
+    }
+
+    public function guardarVacunaDesdeModal(Request $request, Mascota $mascota)
+    {
+        $validator = Validator::make($request->all(), [
+            'edad' => 'nullable|string|max:120',
+            'fecha_dosis' => 'required|date',
+            'vacuna' => 'required|string|max:255',
+            'proxima_dosis' => 'nullable|date|after_or_equal:fecha_dosis',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'estado' => 0,
+                'msj' => 'Datos inválidos',
+                'error' => $validator->errors(),
+            ], 422);
+        }
+
+        $vacunas = $this->normalizarRegistros($mascota->vacunas_registro);
+        $vacunas[] = [
+            'id' => uniqid('vac_', true),
+            'edad' => trim((string) $request->input('edad', '')),
+            'fecha_dosis' => $request->input('fecha_dosis'),
+            'vacuna' => trim((string) $request->input('vacuna')),
+            'proxima_dosis' => $request->input('proxima_dosis'),
+            'created_at' => now()->toDateTimeString(),
+        ];
+
+        $mascota->vacunas_registro = $vacunas;
+        $mascota->save();
+
+        return [
+            'estado' => 1,
+            'msj' => 'Vacuna agregada correctamente',
+            'vacunas' => $this->normalizarRegistros($mascota->vacunas_registro),
+        ];
+    }
+
+    public function guardarDesparasitacionDesdeModal(Request $request, Mascota $mascota)
+    {
+        $validator = Validator::make($request->all(), [
+            'fecha_dosis' => 'required|date',
+            'antiparasitario' => 'required|string|max:255',
+            'tipo' => 'required|string|in:Externo,Interno,Interno y Externo',
+            'proxima_dosis' => 'nullable|date|after_or_equal:fecha_dosis',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'estado' => 0,
+                'msj' => 'Datos inválidos',
+                'error' => $validator->errors(),
+            ], 422);
+        }
+
+        $desparasitaciones = $this->normalizarRegistros($mascota->desparasitaciones_registro);
+        $desparasitaciones[] = [
+            'id' => uniqid('des_', true),
+            'fecha_dosis' => $request->input('fecha_dosis'),
+            'antiparasitario' => trim((string) $request->input('antiparasitario')),
+            'tipo' => $request->input('tipo'),
+            'proxima_dosis' => $request->input('proxima_dosis'),
+            'created_at' => now()->toDateTimeString(),
+        ];
+
+        $mascota->desparasitaciones_registro = $desparasitaciones;
+        $mascota->ultima_desparasitacion = $request->input('fecha_dosis');
+        $mascota->producto_desparasitacion = trim((string) $request->input('antiparasitario'));
+        $mascota->save();
+
+        return [
+            'estado' => 1,
+            'msj' => 'Desparasitación agregada correctamente',
+            'desparasitaciones' => $this->normalizarRegistros($mascota->desparasitaciones_registro),
+        ];
+    }
+
+    private function normalizarRegistros($registros)
+    {
+        if (empty($registros)) {
+            return [];
+        }
+
+        if (is_string($registros)) {
+            $decoded = json_decode($registros, true);
+            $registros = is_array($decoded) ? $decoded : [];
+        }
+
+        if (!is_array($registros)) {
+            return [];
+        }
+
+        return array_values(array_filter($registros, function ($item) {
+            return is_array($item);
+        }));
+    }
 }

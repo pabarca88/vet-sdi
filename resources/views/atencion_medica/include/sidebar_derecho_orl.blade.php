@@ -55,17 +55,26 @@
                     </div>
                     <div id="collapse_recom" class="collapse" aria-labelledby="heading_recom" data-parent="#accordion_side_bar">
                         <div class="card-body-sidebar">
-                            <button type="button" class="btn btn-sm btn-info btn-block text-left" onclick="ind_amig()";>+ Indicaciones Esterilización Felinos</button>
-                            <button type="button" class="btn btn-sm btn-info btn-block text-left" onclick="ind_timp()";>+ Indicaciones Esterilización Caninos</button>
+                            <button type="button" class="btn btn-sm btn-info btn-block text-left" onclick="ind_est_fel()";>+ Indicaciones Esterilización Felinos</button>
+                            <button type="button" class="btn btn-sm btn-info btn-block text-left" onclick="ind_est_can()";>+ Indicaciones Esterilización Caninos</button>
                             {{--  <button type="button" class="btn btn-sm btn-info btn-block text-left" onclick="ind_rino()";>+ Indicaciones Cuidados Post Rinoseptoplastias</button>  --}}
                             <button type="button" class="btn btn-sm btn-info btn-block text-left" onclick="icirugia()";>+ Indicaciones post cirugía En General</button>
+                            <button type="button" class="btn btn-sm btn-info btn-block text-left" onclick="ichip()";>+ Indicaciones post Implante de Chips</button>
+                            <button type="button" class="btn btn-sm btn-info btn-block text-left" onclick="vac_descan()";>+ Calendario Vacunas desparasitación caninos</button>
+                            <button type="button" class="btn btn-sm btn-info btn-block text-left" onclick="vac_desfel()";>+ Calendario Vacunas desparasitación felinos</button>
+                             <button type="button" class="btn btn-sm btn-info btn-block text-left" onclick="ind_est_dent()";>+ Indicaciones post extracción dental</button>
                         </div>
                     </div>
 
-                    @include("atencion_medica.formularios.modal_atencion_especialidad.otorrino.recom_amig")
-                    @include("atencion_medica.formularios.modal_atencion_especialidad.otorrino.recom_rino")
-                    @include("general.modal.m_cuidados_cirugia")
-                    @include("atencion_medica.formularios.modal_atencion_especialidad.otorrino.recom_timp")
+                    @include("atencion_medica.formularios.modal_atencion_especialidad.veterinaria.est_felina")
+                    @include("atencion_medica.formularios.modal_atencion_especialidad.veterinaria.est_canina")
+                    @include("atencion_medica.formularios.modal_atencion_especialidad.veterinaria.m_cuidados_cirugia")
+                    @include("atencion_medica.formularios.modal_atencion_especialidad.veterinaria.m_cuidados_chip")
+                    @include("atencion_medica.formularios.modal_atencion_especialidad.veterinaria.modal_vac_caninos")
+                    @include("atencion_medica.formularios.modal_atencion_especialidad.veterinaria.modal_vac_fel")
+                    @include("atencion_medica.formularios.modal_atencion_especialidad.veterinaria.recom_ext_dent")
+                    {{--  @include("atencion_medica.formularios.modal_atencion_especialidad.veterinaria.m_cuidados_cirugia")
+                    @include("atencion_medica.formularios.modal_atencion_especialidad.veterinaria.m_cuidados_chip")  --}}
 
                 </div>
                  <div class="card-sidebar">

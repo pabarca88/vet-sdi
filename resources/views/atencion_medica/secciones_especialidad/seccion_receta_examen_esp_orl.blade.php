@@ -41,10 +41,10 @@
     </div>
 
 </div>
-
+{{--  
 @section('Modals-med-exa-esp')
-    @include('atencion_medica.formularios.modal_atencion_especialidad.otorrino.indicar_audifono')
-    @include('atencion_medica.formularios.modal_atencion_especialidad.otorrino.indicar_examen_orl')
+    @include('atencion_medica.formularios.modal_atencion_especialidad.otorrino.indicar_audifono')  --}}
+    {{--  @include('atencion_medica.formularios.modal_atencion_especialidad.otorrino.indicar_examen_orl')  --}}
 @endsection
 
 @section('page-script-med-exa-esp')
