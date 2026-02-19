@@ -153,17 +153,12 @@
     }
 
     function obtenerIdMascotaModalGes() {
-        var params = new URLSearchParams(window.location.search || '');
-        var idMascotaUrl = params.get('id_mascota') || params.get('id_dependiente_activo');
-        if (idMascotaUrl) {
-            return idMascotaUrl;
-        }
-
         if ($('#id_mascota_fc').length && $('#id_mascota_fc').val()) {
             return $('#id_mascota_fc').val();
         }
 
-        return $('#id_paciente_fc').val() || '';
+        var params = new URLSearchParams(window.location.search || '');
+        return params.get('id_mascota') || params.get('id_dependiente_activo') || '';
     }
 
     function urlConId(baseUrl, idMascota) {

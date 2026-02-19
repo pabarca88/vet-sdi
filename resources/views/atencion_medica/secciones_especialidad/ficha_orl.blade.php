@@ -41,6 +41,7 @@
                         <input type="hidden" name="hora_medica" id="hora_medica" value="{{ $hora_medica->id }}">
                         <input type="hidden" name="id_fc" value="{{ $id_ficha_atencion }}" id="id_fc">
                         <input type="hidden" name="id_paciente_fc" value="{{ $paciente->id }}" id="id_paciente_fc">
+                        <input type="hidden" name="id_mascota_fc" value="{{ request('id_mascota') }}" id="id_mascota_fc">
                         <input type="hidden" name="prevision_paciente_fc" value="{{ $paciente->prevision->id }}" id="prevision_paciente_fc">
                         <input type="hidden" name="id_profesional_fc" value="{{ $profesional->id }}" id="id_profesional_fc">
                         <input type="hidden" name="id_lugar_atencion" id="id_lugar_atencion" value="{{ $id_lugar_atencion }}">
