@@ -434,12 +434,23 @@ class MascotasController extends Controller
 
     public function guardarVacunaDesdeModal(Request $request, Mascota $mascota)
     {
-        $validator = Validator::make($request->all(), [
-            'edad' => 'nullable|string|max:120',
-            'fecha_dosis' => 'required|date',
-            'vacuna' => 'required|string|max:255',
-            'proxima_dosis' => 'nullable|date|after_or_equal:fecha_dosis',
-        ]);
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'edad' => 'nullable|string|max:120',
+                'fecha_dosis' => 'required|date',
+                'vacuna' => 'required|string|max:255',
+                'proxima_dosis' => 'nullable|date|after_or_equal:fecha_dosis',
+            ],
+            [
+                'fecha_dosis.required' => 'Debe ingresar la fecha de dosis.',
+                'fecha_dosis.date' => 'La fecha de dosis no es válida.',
+                'vacuna.required' => 'Debe ingresar el nombre de la vacuna.',
+                'vacuna.max' => 'El nombre de la vacuna no puede superar 255 caracteres.',
+                'proxima_dosis.date' => 'La próxima dosis no es una fecha válida.',
+                'proxima_dosis.after_or_equal' => 'La próxima dosis debe ser igual o posterior a la fecha de dosis.',
+            ]
+        );
 
         if ($validator->fails()) {
             return response()->json([
@@ -471,12 +482,25 @@ class MascotasController extends Controller
 
     public function guardarDesparasitacionDesdeModal(Request $request, Mascota $mascota)
     {
-        $validator = Validator::make($request->all(), [
-            'fecha_dosis' => 'required|date',
-            'antiparasitario' => 'required|string|max:255',
-            'tipo' => 'required|string|in:Externo,Interno,Interno y Externo',
-            'proxima_dosis' => 'nullable|date|after_or_equal:fecha_dosis',
-        ]);
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'fecha_dosis' => 'required|date',
+                'antiparasitario' => 'required|string|max:255',
+                'tipo' => 'required|string|in:Externo,Interno,Interno y Externo',
+                'proxima_dosis' => 'nullable|date|after_or_equal:fecha_dosis',
+            ],
+            [
+                'fecha_dosis.required' => 'Debe ingresar la fecha de dosis.',
+                'fecha_dosis.date' => 'La fecha de dosis no es válida.',
+                'antiparasitario.required' => 'Debe ingresar el antiparasitario.',
+                'antiparasitario.max' => 'El antiparasitario no puede superar 255 caracteres.',
+                'tipo.required' => 'Debe seleccionar el tipo.',
+                'tipo.in' => 'El tipo seleccionado no es válido.',
+                'proxima_dosis.date' => 'La próxima dosis no es una fecha válida.',
+                'proxima_dosis.after_or_equal' => 'La próxima dosis debe ser igual o posterior a la fecha de dosis.',
+            ]
+        );
 
         if ($validator->fails()) {
             return response()->json([
