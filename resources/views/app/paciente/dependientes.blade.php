@@ -238,7 +238,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="table-responsive">
-                        <table class="table table-sm table-bordered mb-0">
+                        <table class="table table-sm table-bordered mb-0" id="tabla_ficha_mascota">
                             <thead>
                                 <tr>
                                     <th>Fecha</th>
@@ -298,6 +298,31 @@
         ];
 
         $('#input_lista_ven_imagenes').val(JSON.stringify(lista_ven_imagenes));
+      }
+    });
+  }
+
+  function inicializarTablaFichaMascota() {
+    if (!$.fn.DataTable) return;
+
+    if ($.fn.DataTable.isDataTable('#tabla_ficha_mascota')) {
+      return $('#tabla_ficha_mascota').DataTable();
+    }
+
+    return $('#tabla_ficha_mascota').DataTable({
+      paging: true,
+      pageLength: 10,
+      lengthMenu: [[10, 20, 50], [10, 20, 50]],
+      searching: false,
+      info: false,
+      ordering: false,
+      autoWidth: false,
+      language: {
+        emptyTable: "Sin registros",
+        paginate: {
+          previous: "&lsaquo;",
+          next: "&rsaquo;"
+        }
       }
     });
   }
@@ -875,6 +900,7 @@
         }
 
         $(document).ready(function () {
+            inicializarTablaFichaMascota();
             $('#btn-agregar-dep').click(function (e) {
                 e.preventDefault();
                 limpiarFormularioMascota();
@@ -921,6 +947,13 @@
                 $('.modal.show').modal('hide');
                 if ($modalFicha.length) {
                     $modalFicha.appendTo('body').modal('show');
+                }
+            });
+
+            $('#modal_ficha_mascota').on('shown.bs.modal', function() {
+                var tablaFichaMascota = inicializarTablaFichaMascota();
+                if (tablaFichaMascota && tablaFichaMascota.columns) {
+                    tablaFichaMascota.columns.adjust().draw(false);
                 }
             });
 
