@@ -123,16 +123,18 @@
 
 <script>
 $(document).ready(function() {
-    // Inicializar la tabla de biopsias
-    $('#table_ex_biopsias').DataTable({
-        "language": {
-            "url": "{{ asset('js/Spanish.json') }}"
-        },
-        "order": [[0, "desc"]], // Ordenar por fecha descendente
-        "columnDefs": [
-            { "orderable": false, "targets": 5 } // Deshabilitar ordenamiento en la columna de acciones
-        ]
-    });
+    // Evita re-inicializar DataTable si el script se carga más de una vez
+    if (!$.fn.DataTable.isDataTable('#table_ex_biopsias')) {
+        $('#table_ex_biopsias').DataTable({
+            "language": {
+                "url": "{{ asset('js/Spanish.json') }}"
+            },
+            "order": [[0, "desc"]], // Ordenar por fecha descendente
+            "columnDefs": [
+                { "orderable": false, "targets": 5 } // Deshabilitar ordenamiento en la columna de acciones
+            ]
+        });
+    }
 
     // Cargar los exámenes de biopsia al abrir el modal
     dame_examenes_biopsia();

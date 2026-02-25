@@ -187,7 +187,7 @@
             _token: CSRF_TOKEN
         }
 
-        var url = "{{ ROUTE('examen.indicar_examen') }}";
+        var url = "{{ route('examen.indicar_examen_cirugia') }}";
 
         $.ajax({
             type:'post',
