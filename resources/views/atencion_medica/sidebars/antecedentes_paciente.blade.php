@@ -2222,6 +2222,7 @@ window.addEventListener('load', function () {
         }
 
         let data = {
+            id_responsable: "{{ $mascota->id_responsable ?? '' }}",
             tiene_chip: $('#mascota_tiene_chip_edit').val(),
             chip: $('#mascota_chip_edit').val(),
             nombre: $('#mascota_nombre_edit').val(),
@@ -2244,15 +2245,7 @@ window.addEventListener('load', function () {
             _method: 'PUT'
         };
 
-        let url = "{{ isset($mascota) ? route('paciente.mascotas.update', $mascota->id) : '' }}";
-        if (!url) {
-            swal({
-                title: "Mascota",
-                text: "No se pudo determinar la ruta de actualización.",
-                icon: "error",
-            });
-            return;
-        }
+        let url = "{{ route('paciente.mascotas.update', ['mascota' => '__MASCOTA_ID__']) }}".replace('__MASCOTA_ID__', idMascota);
 
         $.ajax({
             url: url,

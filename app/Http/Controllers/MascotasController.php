@@ -10,6 +10,8 @@ use App\Models\EspecieTamanoMascota;
 use App\Models\RazaMascota;
 use App\Models\TamanoMascota;
 use App\Models\FichaAtencion;
+use App\Models\HoraMedica;
+use App\Models\Profesional;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -189,8 +191,33 @@ class MascotasController extends Controller
 
     public function update(Request $request, Mascota $mascota)
     {
+        $user = Auth::user();
         $paciente = Paciente::where('id_usuario', Auth::id())->first();
-        if (!$paciente || $mascota->id_responsable !== $paciente->id) {
+        $autorizado = $paciente && ((int)$mascota->id_responsable === (int)$paciente->id);
+
+        // Permitir actualización desde ficha profesional cuando exista relación real
+        // entre profesional, paciente responsable y mascota.
+        if (!$autorizado && $user && ($user->hasRole('Profesional') || $user->hasRole('Admin') || $user->hasRole('admin'))) {
+            $idResponsable = (int)$request->input('id_responsable');
+            if ($idResponsable > 0 && (int)$mascota->id_responsable === $idResponsable) {
+                $profesional = Profesional::where('id_usuario', $user->id)->first();
+                if ($profesional) {
+                    $tieneHora = HoraMedica::where('id_profesional', $profesional->id)
+                        ->where('id_paciente', $idResponsable)
+                        ->where('id_mascota', $mascota->id)
+                        ->exists();
+
+                    $tieneFicha = FichaAtencion::where('id_profesional', $profesional->id)
+                        ->where('id_paciente', $idResponsable)
+                        ->where('id_mascota', $mascota->id)
+                        ->exists();
+
+                    $autorizado = ($tieneHora || $tieneFicha);
+                }
+            }
+        }
+
+        if (!$autorizado) {
             return [
                 'estado' => 0,
                 'msj' => 'Mascota no encontrada',

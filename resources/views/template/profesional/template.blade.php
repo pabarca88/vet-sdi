@@ -2650,9 +2650,29 @@
 
         var mascotasReservaCache = {};
 
+        function obtenerNombreEspecieMascota(mascota) {
+            if (!mascota) return '';
+            if (mascota.especieMascota && mascota.especieMascota.nombre) return mascota.especieMascota.nombre;
+            if (mascota.especie_mascota && mascota.especie_mascota.nombre) return mascota.especie_mascota.nombre;
+
+            var especieId = mascota.especie_id || mascota.especie;
+            var especieIdNum = parseInt(especieId, 10);
+            if (!isNaN(especieIdNum)) {
+                var encontrada = (agendaEspeciesMascotas || []).find(function(item) {
+                    return parseInt(item.id, 10) === especieIdNum;
+                });
+                if (encontrada && encontrada.nombre) return encontrada.nombre;
+
+                var textoSelect = $('#reserva_mascota_nueva_especie option[value="' + especieIdNum + '"]').text();
+                if (textoSelect && textoSelect !== 'Seleccione') return textoSelect;
+            }
+
+            return (typeof especieId === 'string') ? especieId : '';
+        }
+
         function setMascotaDetalle(mascota) {
             $('#reserva_mascota_nombre').text(mascota ? (mascota.nombre || '') : '');
-            $('#reserva_mascota_especie').text(mascota ? ((mascota.especieMascota && mascota.especieMascota.nombre) || mascota.especie || '') : '');
+            $('#reserva_mascota_especie').text(obtenerNombreEspecieMascota(mascota));
             $('#reserva_mascota_tamano').text(mascota ? ((mascota.tamanoMascota && mascota.tamanoMascota.nombre) || mascota.tamano || '') : '');
             $('#reserva_mascota_sexo').text(mascota ? (mascota.sexo || '') : '');
             $('#reserva_mascota_fecha_nacimiento').text(mascota ? (mascota.fecha_nacimiento || '') : '');
