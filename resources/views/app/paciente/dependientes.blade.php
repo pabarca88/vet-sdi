@@ -420,7 +420,7 @@
     destroyDZ("#mi-imagen-ven-post");
 
     myDropzone_ven_pre = new Dropzone("#mi-imagen-ven-pre", {
-      url: "{{ route('profesional.imagen.carga') }}",
+      url: "{{ route('paciente.imagen.carga') }}",
       method: "post",
       headers: { "X-CSRF-TOKEN": CSRF_TOKEN },
 
@@ -453,7 +453,7 @@
     });
 
     myDropzone_ven_post = new Dropzone("#mi-imagen-ven-post", {
-      url: "{{ route('profesional.imagen.carga') }}",
+      url: "{{ route('paciente.imagen.carga') }}",
       method: "post",
       headers: { "X-CSRF-TOKEN": CSRF_TOKEN },
 

@@ -377,8 +377,8 @@
                         <label class="floating-label-activo-sm"><span class="requerido" style="color: red;" id="requerido_sm">*</span>Sexo</label>
                         <select id="modal_agregar_dep_nuevo_sexo" name="modal_agregar_dep_nuevo_sexo" class="form-control form-control-sm">
                             <option value="0">Selecione una opci&oacute;n</option>
-                            <option value="F">Macho</option>
-                            <option value="M">Hembra</option>
+                            <option value="M">Macho</option>
+                            <option value="F">Hembra</option>
                         </select>
                     </div>
                 </div>
@@ -394,12 +394,12 @@
                             <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 mt-2">
                                 <p class="f-12 mb-0 font-weight-bold text-center">Cargar foto del perfil</p>
                                 <input type="hidden" name="imagenes_ven_pre" id="imagenes_ven_pre" value="">
-                                <div class="dropzone" id="mi-imagen-ven-pre" action="{{ route('profesional.imagen.carga') }}"></div>
+                                <div class="dropzone" id="mi-imagen-ven-pre" action="{{ route('paciente.imagen.carga') }}"></div>
                             </div>
                             <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 mt-2">
                                 <p class="f-12 mb-0 font-weight-bold text-center">Otras fotos</p>
                                 <input type="hidden" name="imagenes_ven_post" id="imagenes_ven_post" value="">
-                                <div class="dropzone" id="mi-imagen-ven-post" action="{{ route('profesional.imagen.carga') }}"></div>
+                                <div class="dropzone" id="mi-imagen-ven-post" action="{{ route('paciente.imagen.carga') }}"></div>
                             </div>
                             <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12 mt-3">
                                 <label class="floating-label-activo-sm" for="obs_fotos_ven">Comentarios de marcas o distintivos especiales</label>

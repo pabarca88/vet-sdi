@@ -829,6 +829,7 @@ Route::post('Convenios/editar', [App\Http\Controllers\EscritorioPaciente::class,
     /** MASCOTAS */
     Route::get('mascotas', [App\Http\Controllers\MascotasController::class, 'index'])->name('paciente.mascotas.index');
     Route::post('mascotas', [App\Http\Controllers\MascotasController::class, 'store'])->name('paciente.mascotas.store');
+    Route::post('imagen/carga', [App\Http\Controllers\CargaImagenController::class, 'cargaImagenTemp'])->name('paciente.imagen.carga');
     Route::get('mascotas/lista', [App\Http\Controllers\MascotasController::class, 'listar'])->name('paciente.mascotas.lista');
     Route::get('mascotas/razas/{especie}', [App\Http\Controllers\MascotasController::class, 'razasPorEspecie'])
         ->whereNumber('especie')
