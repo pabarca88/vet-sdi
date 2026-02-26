@@ -2670,12 +2670,61 @@
             return (typeof especieId === 'string') ? especieId : '';
         }
 
+        function formatearFechaNacimientoMascotaConEdad(fechaNacimiento) {
+            if (!fechaNacimiento) return '';
+
+            var fechaTexto = String(fechaNacimiento).trim();
+            var fechaSinZona = fechaTexto.replace('T', ' ').replace('Z', '');
+            var fechaBase = fechaSinZona.split(' ')[0];
+            var partes = fechaBase.split('-');
+            if (partes.length !== 3) return fechaNacimiento;
+
+            var anio = parseInt(partes[0], 10);
+            var mes = parseInt(partes[1], 10);
+            var dia = parseInt(partes[2], 10);
+            if (isNaN(anio) || isNaN(mes) || isNaN(dia)) return fechaNacimiento;
+
+            var fecha = new Date(anio, mes - 1, dia);
+            if (isNaN(fecha.getTime())) return fechaNacimiento;
+
+            var hoy = new Date();
+            var anios = hoy.getFullYear() - fecha.getFullYear();
+            var meses = hoy.getMonth() - fecha.getMonth();
+            if (hoy.getDate() < fecha.getDate()) {
+                meses -= 1;
+            }
+            if (meses < 0) {
+                anios -= 1;
+                meses += 12;
+            }
+            if (anios < 0) {
+                anios = 0;
+                meses = 0;
+            }
+
+            var partesEdad = [];
+            if (anios > 0) {
+                partesEdad.push(anios + ' ' + (anios === 1 ? 'año' : 'años'));
+            }
+            if (meses > 0 || anios === 0) {
+                partesEdad.push(meses + ' ' + (meses === 1 ? 'mes' : 'meses'));
+            }
+
+            var fechaVisible = String(dia).padStart(2, '0') + '/' + String(mes).padStart(2, '0') + '/' + anio;
+            var horaMatch = fechaSinZona.match(/\s(\d{2}:\d{2})(:\d{2})?$/);
+            if (horaMatch && horaMatch[1] && horaMatch[1] !== '00:00') {
+                fechaVisible += ' ' + horaMatch[1];
+            }
+
+            return fechaVisible + ' - (' + partesEdad.join(' y ') + ')';
+        }
+
         function setMascotaDetalle(mascota) {
             $('#reserva_mascota_nombre').text(mascota ? (mascota.nombre || '') : '');
             $('#reserva_mascota_especie').text(obtenerNombreEspecieMascota(mascota));
             $('#reserva_mascota_tamano').text(mascota ? ((mascota.tamanoMascota && mascota.tamanoMascota.nombre) || mascota.tamano || '') : '');
             $('#reserva_mascota_sexo').text(mascota ? (mascota.sexo || '') : '');
-            $('#reserva_mascota_fecha_nacimiento').text(mascota ? (mascota.fecha_nacimiento || '') : '');
+            $('#reserva_mascota_fecha_nacimiento').text(mascota ? formatearFechaNacimientoMascotaConEdad(mascota.fecha_nacimiento) : '');
             $('#reserva_mascota_chip').text(mascota ? (mascota.chip || '') : '');
             $('#reserva_mascota_esterilizado').text(mascota ? (mascota.esterilizado ? 'Si' : 'No') : '');
         }

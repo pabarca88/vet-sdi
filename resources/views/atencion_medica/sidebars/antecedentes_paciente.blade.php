@@ -24,6 +24,42 @@
                 <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
                         <div class="card-body-sidebar">
                             @if (isset($mascota) && $mascota)
+                            @php
+                                $formatearFnMascota = function ($fechaNacimiento) {
+                                    if (empty($fechaNacimiento)) {
+                                        return 'Sin registro';
+                                    }
+
+                                    try {
+                                        $fechaOriginal = (string) $fechaNacimiento;
+                                        $fecha = \Carbon\Carbon::parse($fechaOriginal);
+                                        $hoy = \Carbon\Carbon::now();
+
+                                        $anios = $fecha->diffInYears($hoy);
+                                        $meses = $fecha->copy()->addYears($anios)->diffInMonths($hoy);
+
+                                        $partesEdad = [];
+                                        if ($anios > 0) {
+                                            $partesEdad[] = $anios . ' ' . ($anios === 1 ? 'año' : 'años');
+                                        }
+                                        if ($meses > 0 || $anios === 0) {
+                                            $partesEdad[] = $meses . ' ' . ($meses === 1 ? 'mes' : 'meses');
+                                        }
+
+                                        $mostrarHora = !preg_match('/\b00:00:00\b/', $fechaOriginal) && $fecha->format('H:i:s') !== '00:00:00';
+                                        $textoFecha = $fecha->format('d/m/Y');
+                                        if ($mostrarHora) {
+                                            $textoFecha .= ' ' . $fecha->format('H:i');
+                                        }
+
+                                        return $textoFecha . ' - (' . implode(' y ', $partesEdad) . ')';
+                                    } catch (\Throwable $e) {
+                                        return (string) $fechaNacimiento;
+                                    }
+                                };
+
+                                $mascotaFnTexto = $formatearFnMascota($mascota->fecha_nacimiento ?? null);
+                            @endphp
                             <div id="info_mascota">
                             <!--NOMBRE MASCOTA-->
                             <div class="form-row pt-3">
@@ -59,10 +95,7 @@
                             <div class="form-row pt-0">
                                 <label class="col-4 text-dark font-weight-bolder">FN</label>
                                 <div class="col-7 ml-2 text-secondary" id="mascota_fn_text">
-                                    {{ $mascota->fecha_nacimiento ?? 'Sin registro' }}
-                                    @if (isset($mascota_edad))
-                                        - (<span>{{ $mascota_edad }}</span> años)
-                                    @endif
+                                    {{ $mascotaFnTexto }}
                                 </div>
                             </div>
                             <hr class="mt-2">
@@ -394,10 +427,7 @@
                             <div class="form-row mt-1">
                                 <label class="col-3 text-dark font-weight-bolder">FN</label>
                                 <div class="col-8 ml-2 text-secondary" id="mascota_fn_text">
-                                    {{ $mascota->fecha_nacimiento ?? 'Sin registro' }}
-                                    @if (isset($mascota_edad))
-                                        - (<span>{{ $mascota_edad }}</span> años)
-                                    @endif
+                                    {{ $mascotaFnTexto }}
                                 </div>
                             </div>
                             <hr class="mt-2">
@@ -828,10 +858,7 @@
                             <div class="form-row mt-1">
                                 <label class="col-3 text-dark font-weight-bolder">FN</label>
                                 <div class="col-8 ml-2 text-secondary" id="mascota_fn_text">
-                                    {{ $mascota->fecha_nacimiento ?? 'Sin registro' }}
-                                    @if (isset($mascota_edad))
-                                        - (<span>{{ $mascota_edad }}</span> años)
-                                    @endif
+                                    {{ $mascotaFnTexto }}
                                 </div>
                             </div>
                             <hr class="mt-2">
@@ -2211,6 +2238,55 @@ window.addEventListener('load', function () {
         $('#info_mascota-edit').css('display', 'none');
     };
 
+    function formatearFnConEdadMascota(fechaNacimiento) {
+        if (!fechaNacimiento) return 'Sin registro';
+
+        var fechaTexto = String(fechaNacimiento).trim();
+        var fechaSinZona = fechaTexto.replace('T', ' ').replace('Z', '');
+        var fechaBase = fechaSinZona.split(' ')[0];
+        var partes = fechaBase.split('-');
+        if (partes.length !== 3) return fechaNacimiento;
+
+        var anio = parseInt(partes[0], 10);
+        var mes = parseInt(partes[1], 10);
+        var dia = parseInt(partes[2], 10);
+        if (isNaN(anio) || isNaN(mes) || isNaN(dia)) return fechaNacimiento;
+
+        var fecha = new Date(anio, mes - 1, dia);
+        if (isNaN(fecha.getTime())) return fechaNacimiento;
+
+        var hoy = new Date();
+        var anios = hoy.getFullYear() - fecha.getFullYear();
+        var meses = hoy.getMonth() - fecha.getMonth();
+        if (hoy.getDate() < fecha.getDate()) {
+            meses -= 1;
+        }
+        if (meses < 0) {
+            anios -= 1;
+            meses += 12;
+        }
+        if (anios < 0) {
+            anios = 0;
+            meses = 0;
+        }
+
+        var partesEdad = [];
+        if (anios > 0) {
+            partesEdad.push(anios + ' ' + (anios === 1 ? 'año' : 'años'));
+        }
+        if (meses > 0 || anios === 0) {
+            partesEdad.push(meses + ' ' + (meses === 1 ? 'mes' : 'meses'));
+        }
+
+        var fechaVisible = String(dia).padStart(2, '0') + '/' + String(mes).padStart(2, '0') + '/' + anio;
+        var horaMatch = fechaSinZona.match(/\s(\d{2}:\d{2})(:\d{2})?$/);
+        if (horaMatch && horaMatch[1] && horaMatch[1] !== '00:00') {
+            fechaVisible += ' ' + horaMatch[1];
+        }
+
+        return fechaVisible + ' - (' + partesEdad.join(' y ') + ')';
+    }
+
     window.guardarInformacionMascota = function (idMascota) {
         if (!idMascota) {
             swal({
@@ -2267,7 +2343,7 @@ window.addEventListener('load', function () {
                     $('#mascota_sexo_text').text(registro.sexo === 'M' ? 'Macho' : (registro.sexo === 'F' ? 'Hembra' : registro.sexo));
                 }
                 if (registro.fecha_nacimiento !== undefined) {
-                    $('#mascota_fn_text').text(registro.fecha_nacimiento || 'Sin registro');
+                    $('#mascota_fn_text').text(formatearFnConEdadMascota(registro.fecha_nacimiento));
                 }
                 if (registro.tamanoMascota && registro.tamanoMascota.nombre) {
                     $('#mascota_tamano_text').text(registro.tamanoMascota.nombre);
