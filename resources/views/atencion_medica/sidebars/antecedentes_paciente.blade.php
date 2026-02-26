@@ -223,7 +223,7 @@
                                     <label class="col-4 text-dark font-weight-bolder">FN</label>
                                     <div class="col-7 ml-2 text-secondary">
                                         <input type="date" id="mascota_fn_edit" class="form-control"
-                                            value="{{ $mascota->fecha_nacimiento ?? '' }}">
+                                            value="{{ !empty($mascota->fecha_nacimiento) ? \Carbon\Carbon::parse($mascota->fecha_nacimiento)->format('Y-m-d') : '' }}">
                                     </div>
                                 </div>
                                 <hr class="mt-2">
@@ -273,7 +273,7 @@
                                     <label class="col-4 text-dark font-weight-bolder">F. esterilización</label>
                                     <div class="col-7 ml-2 text-secondary">
                                         <input type="date" id="mascota_fecha_esterilizacion_edit" class="form-control"
-                                            value="{{ $mascota->fecha_esterilizacion ?? '' }}">
+                                            value="{{ !empty($mascota->fecha_esterilizacion) ? \Carbon\Carbon::parse($mascota->fecha_esterilizacion)->format('Y-m-d') : '' }}">
                                     </div>
                                 </div>
                                 <hr class="mt-2">
@@ -296,7 +296,7 @@
                                     <label class="col-4 text-dark font-weight-bolder">Última desparasitación</label>
                                     <div class="col-7 ml-2 text-secondary">
                                         <input type="date" id="mascota_ultima_desparasitacion_edit" class="form-control"
-                                            value="{{ $mascota->ultima_desparasitacion ?? '' }}">
+                                            value="{{ !empty($mascota->ultima_desparasitacion) ? \Carbon\Carbon::parse($mascota->ultima_desparasitacion)->format('Y-m-d') : '' }}">
                                     </div>
                                 </div>
                                 <hr class="mt-2">
@@ -490,7 +490,7 @@
                                 <label class="col-3 text-dark font-weight-bolder">FN</label>
                                 <div class="col-8 ml-2 text-secondary">
                                     <input type="date" id="mascota_fn_edit" class="form-control"
-                                        value="{{ $mascota->fecha_nacimiento ?? '' }}">
+                                        value="{{ !empty($mascota->fecha_nacimiento) ? \Carbon\Carbon::parse($mascota->fecha_nacimiento)->format('Y-m-d') : '' }}">
                                 </div>
                             </div>
                             <hr class="mt-2">
@@ -540,7 +540,7 @@
                                 <label class="col-3 text-dark font-weight-bolder">F. esterilización</label>
                                 <div class="col-8 ml-2 text-secondary">
                                     <input type="date" id="mascota_fecha_esterilizacion_edit" class="form-control"
-                                        value="{{ $mascota->fecha_esterilizacion ?? '' }}">
+                                        value="{{ !empty($mascota->fecha_esterilizacion) ? \Carbon\Carbon::parse($mascota->fecha_esterilizacion)->format('Y-m-d') : '' }}">
                                 </div>
                             </div>
                             <hr class="mt-2">
@@ -923,7 +923,7 @@
                                 <label class="col-3 text-dark font-weight-bolder">FN</label>
                                 <div class="col-8 ml-2 text-secondary">
                                     <input type="date" id="mascota_fn_edit" class="form-control"
-                                        value="{{ $mascota->fecha_nacimiento ?? '' }}">
+                                        value="{{ !empty($mascota->fecha_nacimiento) ? \Carbon\Carbon::parse($mascota->fecha_nacimiento)->format('Y-m-d') : '' }}">
                                 </div>
                             </div>
                             <hr class="mt-2">
@@ -973,7 +973,7 @@
                                 <label class="col-3 text-dark font-weight-bolder">F. esterilización</label>
                                 <div class="col-8 ml-2 text-secondary">
                                     <input type="date" id="mascota_fecha_esterilizacion_edit" class="form-control"
-                                        value="{{ $mascota->fecha_esterilizacion ?? '' }}">
+                                        value="{{ !empty($mascota->fecha_esterilizacion) ? \Carbon\Carbon::parse($mascota->fecha_esterilizacion)->format('Y-m-d') : '' }}">
                                 </div>
                             </div>
                             <hr class="mt-2">
