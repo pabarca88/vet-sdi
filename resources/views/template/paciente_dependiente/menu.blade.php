@@ -74,13 +74,12 @@
 						<li><a href="{{ ROUTE('paciente.dependiente.home', [$paciente->id]) }}">Mi Escritorio Paciente</a></li>
 						<li><a href="{{ ROUTE('paciente.dependiente.agendar_hora', [$paciente->id,'0','0','0']) }}">Reservar Hora Médica</a></li>
 						<li><a href="{{ ROUTE('paciente.dependiente.mis_profesionales', [$paciente->id]) }}">Mis Veterinarios</a></li>
-						<!--<li><a href="{{ ROUTE('paciente.dependiente.mi_ficha', [$paciente->id]) }}">Mi Ficha Médica Única</a></li>-->
-						<li><a href="{{ ROUTE('check_sdi') }}?urla=Inicio&urln=Mi_Ficha_Medica">Ficha Veterinaria Única</a></li>
+						<li><a href="{{ ROUTE('paciente.dependiente.mi_ficha', [$paciente->id]) }}">Ficha Veterinaria Única</a></li>
 						<li><a href="{{ ROUTE('paciente.dependiente.receta', [$paciente->id]) }}">Documentos</a></li>
 						<li><a href="{{ ROUTE('paciente.dependiente.receta.examen', [$paciente->id]) }}">Exámenes</a></li>
 						<li><a href="{{ ROUTE('paciente.dependiente.receta.examen', [$paciente->id]) }}">Controles</a></li>
-						<li><a href="#">Registro Vacunas</a></li>
-						<li><a href="#">Registro Desparasitación</a></li>
+						<li><a href="{{ ROUTE('registro_vacunas', ['id_dependiente_activo'=> $paciente->id]) }}">Registro Vacunas</a></li>
+						<li><a href="{{ ROUTE('registro_desparasitacion', ['id_dependiente_activo'=> $paciente->id]) }}">Registro Desparasitación</a></li>
 					</ul>
 				</li>
 				<li class="nav-item pcoded-hasmenu">

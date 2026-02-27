@@ -8,6 +8,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Ciudad;
 
+use App\Models\ConConsentimientosPcte;
+
 use App\Models\Especialidad;
 
 use App\Models\FichaAtencion;
@@ -360,6 +362,56 @@ class EscritorioPacienteDependiente extends Controller
 
 
 
+    public function miFichaMedica($id_dependiente_activo_)
+
+    {
+
+        $paciente_responsable = Paciente::where('id_usuario', Auth::user()->id)->first();
+
+        if (!$paciente_responsable) {
+
+            return back()->with('error', 'Responsable no encontrado');
+
+        }
+
+
+
+        $mascota = Mascota::with(['especieMascota', 'razaMascota', 'tamanoMascota'])
+
+            ->where('id', $id_dependiente_activo_)
+
+            ->where('id_responsable', $paciente_responsable->id)
+
+            ->first();
+
+
+
+        if (!$mascota) {
+
+            return back()->with('error', 'Mascota no encontrada');
+
+        }
+
+
+
+        $datosFvu = $this->buildVeterinaryRecordData($mascota, $paciente_responsable);
+
+
+
+        return view('app.paciente_dependiente.ficha_veterinaria_unica', array_merge($datosFvu, [
+
+            'paciente' => $mascota,
+
+            'responsable' => $paciente_responsable,
+
+            'mascota' => $mascota
+
+        ]));
+
+    }
+
+
+
     public function recetaOnline(Request $request)
 
     {
@@ -427,6 +479,238 @@ class EscritorioPacienteDependiente extends Controller
 
 
         return view('app.paciente_dependiente.receta.mis_licencias', ['fichas' => $fichas, 'id_dependiente_activo' => $request->id_dependiente_activo, 'paciente' => $paciente]);
+
+    }
+
+
+
+    private function buildVeterinaryRecordData(Mascota $mascota, Paciente $responsable): array
+
+    {
+
+        $fichas = FichaAtencion::with(['Profesional', 'LugarAtencion', 'PresupuestosMascota'])
+
+            ->where('id_mascota', $mascota->id)
+
+            ->where('id_paciente', $responsable->id)
+
+            ->orderByDesc('created_at')
+
+            ->orderByDesc('id')
+
+            ->get();
+
+
+
+        $fichaIds = $fichas->pluck('id')->filter()->values();
+
+
+
+        $documentosConsentimiento = $fichaIds->isEmpty()
+
+            ? collect()
+
+            : ConConsentimientosPcte::with('Consentimiento')
+
+                ->whereIn('id_fc', $fichaIds)
+
+                ->orderByDesc('id')
+
+                ->get()
+
+                ->map(function ($documento) {
+
+                    return [
+
+                        'tipo' => 'Consentimiento informado',
+
+                        'nombre' => optional($documento->Consentimiento)->nombre ?: 'Consentimiento informado',
+
+                        'fecha' => $documento->fecha_cons ?: optional($documento->created_at)->format('Y-m-d'),
+
+                        'estado' => $documento->confirmacion,
+
+                    ];
+
+                });
+
+
+
+        $documentosPresupuesto = $fichas->flatMap(function ($ficha) {
+
+            return $ficha->PresupuestosMascota->map(function ($presupuesto) {
+
+                return [
+
+                    'tipo' => 'Presupuesto',
+
+                    'nombre' => 'Presupuesto veterinario',
+
+                    'fecha' => optional($presupuesto->fecha)->format('Y-m-d')
+
+                        ?: optional($presupuesto->created_at)->format('Y-m-d'),
+
+                    'estado' => $presupuesto->estado ?? null,
+
+                ];
+
+            });
+
+        });
+
+
+
+        $documentos = $documentosConsentimiento
+
+            ->merge($documentosPresupuesto)
+
+            ->sortByDesc(function ($documento) {
+
+                return $documento['fecha'] ?: '1900-01-01';
+
+            })
+
+            ->values();
+
+
+
+        return [
+
+            'responsable_mascota' => $responsable,
+
+            'galeria_mascota' => $this->extractGalleryUrls($mascota->galeria),
+
+            'vacunas_fvu' => collect($this->normalizePetRecords($mascota->vacunas_registro))
+
+                ->sortByDesc('fecha_dosis')
+
+                ->values(),
+
+            'desparasitaciones_fvu' => collect($this->normalizePetRecords($mascota->desparasitaciones_registro))
+
+                ->sortByDesc('fecha_dosis')
+
+                ->values(),
+
+            'fichas_veterinarias' => $fichas,
+
+            'documentos_mascota' => $documentos,
+
+        ];
+
+    }
+
+
+
+    private function normalizePetRecords($records): array
+
+    {
+
+        if (empty($records)) {
+
+            return [];
+
+        }
+
+
+
+        if (is_string($records)) {
+
+            $decoded = json_decode($records, true);
+
+            $records = is_array($decoded) ? $decoded : [];
+
+        }
+
+
+
+        if (!is_array($records)) {
+
+            return [];
+
+        }
+
+
+
+        return array_values(array_filter($records, function ($item) {
+
+            return is_array($item);
+
+        }));
+
+    }
+
+
+
+    private function extractGalleryUrls($gallery): array
+
+    {
+
+        if (empty($gallery)) {
+
+            return [];
+
+        }
+
+
+
+        if (is_string($gallery)) {
+
+            $decoded = json_decode($gallery, true);
+
+            $gallery = is_array($decoded) ? $decoded : [$gallery];
+
+        }
+
+
+
+        if (!is_array($gallery)) {
+
+            return [];
+
+        }
+
+
+
+        $urls = [];
+
+
+
+        foreach ($gallery as $item) {
+
+            if (is_string($item) && trim($item) !== '') {
+
+                $urls[] = trim($item);
+
+                continue;
+
+            }
+
+
+
+            if (!is_array($item)) {
+
+                continue;
+
+            }
+
+
+
+            foreach (['url', 'src', 'original'] as $key) {
+
+                if (!empty($item[$key])) {
+
+                    $urls[] = $item[$key];
+
+                }
+
+            }
+
+        }
+
+
+
+        return array_values(array_unique(array_filter($urls)));
 
     }
 

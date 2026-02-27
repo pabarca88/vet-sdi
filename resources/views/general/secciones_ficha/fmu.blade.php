@@ -1,4 +1,6 @@
-
+@if(isset($mascota) && $mascota)
+    @include('general.secciones_ficha.fmu_mascota')
+@else
 <br>
     <div class="user-profile user-card mt-0 mt-n4" style="background-color: #ecf0f5!important;">
         <div class="col-md-12 py-0 px-1 shadow-none">
@@ -1176,3 +1178,4 @@
     @include("general.secciones_ficha.modales_fmu.hist_medico_exa_fmu")
     @include("general.secciones_ficha.modales_fmu.hist_cons_fmu")
     @include("general.secciones_ficha.modales_fmu.hist_cons_archivo_fmu")
+@endif

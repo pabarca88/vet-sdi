@@ -117,7 +117,7 @@
 
                     <div class="card subir">
 
-                        <a href="{{ ROUTE('profesional.mi_ficha') }}">
+                        <a href="{{ ROUTE('paciente.dependiente.mi_ficha', ['id_dependiente_activo'=> $mascota->id]) }}">
 
                             <div class="card-body text-center" style="cursor:pointer">
 

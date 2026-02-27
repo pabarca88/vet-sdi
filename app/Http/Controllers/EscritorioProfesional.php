@@ -1207,6 +1207,14 @@ class EscritorioProfesional extends Controller
     {
         $profesional = Profesional::where('id_usuario', Auth::user()->id)->first();
         $ficha_atencion = FichaAtencion::where('id_profesional', $profesional->id)->distinct()->get(['id_paciente']);
+        $mascotasIds = FichaAtencion::where('id_profesional', $profesional->id)
+            ->whereNotNull('id_mascota')
+            ->distinct()
+            ->pluck('id_mascota');
+        $mascotas = Mascota::with(['Responsable.Prevision', 'especieMascota', 'razaMascota', 'tamanoMascota'])
+            ->whereIn('id', $mascotasIds)
+            ->orderBy('nombre')
+            ->get();
         $prevision = Prevision::all();
         $region = Region::all();
         $paciente = [];
@@ -1235,6 +1243,7 @@ class EscritorioProfesional extends Controller
                 'ficha_atencion' => $ficha_atencion,
                 'prevision' => $prevision,
                 'paciente' => $paciente,
+                'mascotas' => $mascotas,
                 'profesional' => $profesional,
                 'region' => $region
             ]
