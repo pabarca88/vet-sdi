@@ -461,6 +461,25 @@
                                                                                     <div
                                                                                         class="form-group">
                                                                                         <label
+                                                                                            class="floating-label-activo-sm">Diagnostico</label>
+                                                                                        <select
+                                                                                            class="form-control form-control-sm"
+                                                                                            name="diag_presupuesto_diagnostico_urg"
+                                                                                            id="diag_presupuesto_diagnostico_urg">
+                                                                                            <option value="">SELECCIONE DIAGNOSTICO</option>
+                                                                                            @foreach ($diagnosticos as $d)
+                                                                                                <option value="{{ $d->id }}">
+                                                                                                    {{ $d->descripcion }}
+                                                                                                </option>
+                                                                                            @endforeach
+                                                                                        </select>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div
+                                                                                    class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                                                                    <div
+                                                                                        class="form-group">
+                                                                                        <label
                                                                                             class="floating-label-activo-sm">Tratamiento</label>
                                                                                         <input
                                                                                             type="text"
@@ -2703,6 +2722,7 @@
             // Obtener los valores seleccionados en el select
             var piezasSeleccionadas = $('#paciente_piezas_dentales_urg').val() || [];
             var ttoPiezas = $('#diag_presupuesto_pieza_g_urg').val();
+            var diagnostico = $('#diag_presupuesto_diagnostico_urg').val();
 
             let valido = 1;
             let mensaje = '';
@@ -2714,6 +2734,10 @@
             if (ttoPiezas == '') {
                 valido = 0;
                 mensaje += '<li>Tratamiento </li>';
+            }
+            if (diagnostico == '' || diagnostico == 0) {
+                valido = 0;
+                mensaje += '<li>Diagnóstico </li>';
             }
 
             if (valido == 0) {
@@ -2736,6 +2760,7 @@
             let data = {
                 piezas: piezasSeleccionadas,
                 tto: ttoPiezas,
+                diagnostico: diagnostico,
                 id_ficha_atencion: $('#id_fc').val(),
                 id_lugar_atencion: $('#id_lugar_atencion').val(),
                 id_paciente: $('#id_paciente_fc').val(),
