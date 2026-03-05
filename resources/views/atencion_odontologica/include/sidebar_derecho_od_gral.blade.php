@@ -1,8 +1,8 @@
     <!--Sidebar 3 (dental_implanto)-->
     <div class="position-fixed w-100 h-100"></div>
     <div id="formularios_odontologia" class="bs-canvas bs-canvas-anim bs-canvas-right position-fixed bg-light h-100 shadow-lg" data-width="370px" data-offset="true">
-        <header class="bs-canvas-header p-3 d-flex justify-content-between bg-info overflow-auto">
-            <button type="button" class="bs-canvas-close close" aria-label="Close"><span aria-hidden="true" class="text-white">&times;</span></button>
+        <header class="bs-canvas-header p-3 bg-info overflow-auto d-flex justify-content-between">
+            <button type="button" class="bs-canvas-close close" onclick="$('#formularios_odontologia').modal('hide')" aria-label="Close" data-dismiss="modal"> <span aria-hidden="true" class="text-white">&times;</span></button>
             <h5 class="d-inline-block text-light mb-0 float-right">Formularios Odontología</h5>
         </header>
         <div class="bs-canvas-content">
@@ -21,43 +21,248 @@
                     <div id="collapse_nom_odonto" class="collapse" aria-labelledby="heading_nom_od"
                         data-parent="#accordion_side_bar">
                         <div class="card-body-sidebar">
-                            <img src="{{ asset('img_dental/sano.png') }}">
-                             Diente Sano
-                            <hr class="mt-1 mb-1">
-                            <img src="{{ asset('img_dental/ausente.png') }}">
-                             Diente Ausente
-                            <hr class="mt-1 mb-1">
-                            <img src="{{ asset('img_dental/carie.png') }}">
-                             Caries
-                            <hr class="mt-1 mb-1">
-                            <img src="{{ asset('img_dental/composite.png') }}">
-                             Composite
-                            <hr class="mt-1 mb-1">
-                            <img src="{{ asset('img_dental/sellante.png') }}">
-                            Sellante
-                            <hr class="mt-1 mb-1">
-                            <img src="{{ asset('img_dental/mantenedor_espacio.png') }}">
-                            Mantenedor de Espacio
-                            <hr class="mt-1 mb-1">
-                            <img src="{{ asset('img_dental/pulpotomia.png') }}">
-                            Pulpotomía
-                            <hr class="mt-1 mb-1">
-                            <img src="{{ asset('img_dental/pulpectomia.png') }}">
-                            Pulpectomía
-                            <hr class="mt-1 mb-1">
-                            <img src="{{ asset('img_dental/corona.png') }}">
-                             Corona
-                            <hr class="mt-1 mb-1">
-                            <img src="{{ asset('img_dental/surco.png') }}">
-                            Surco
-                            <hr class="mt-1 mb-1">
-                            <img src="{{ asset('img_dental/obturacion.png') }}">
-                            Obturación
-                            <hr class="mt-1 mb-1">
-                            <img src="{{ asset('img_dental/fractura.png') }}">
-                            Fractura
-                            <hr class="mt-1 mb-1">
-
+                            <div class="row">
+                                    <div class="col-6 mb-5">
+                                        <div class="media align-items-center">
+                                          <img src="{{ asset('images/dental/dientes/diente-sano/diente-sano15.png') }}" class="align-self-center wid-35 mr-1" alt="...">
+                                          <div class="media-body">
+                                            <h6>Diente sano</h6>
+                                          </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 mb-5">
+                                        <div class="media align-items-center">
+                                          <img src="{{ asset('images/dental/dientes/diente-ausente/dau15.png') }}" class="align-self-center wid-35 mr-1" alt="...">
+                                          <div class="media-body">
+                                            <h6>Diente ausente</h6>
+                                          </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 mb-5">
+                                    <div class="media align-items-center">
+                                      <img src="{{ asset('images/dental/dientes/extraccion/porhacer/extraccion_15.png') }}" class="align-self-center wid-35 mr-1" alt="...">
+                                      <div class="media-body">
+                                        <h6>Extracción</h6>
+                                      </div>
+                                    </div>
+                                </div>
+                                 <div class="col-6 mb-5">
+                                    <div class="media align-items-center">
+                                      <img src="{{ asset('images/dental/dientes/fractura/fractura_15.png') }}" class="align-self-center wid-35 mr-1" alt="...">
+                                      <div class="media-body">
+                                        <h6>Fractura</h6>
+                                      </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 mb-5">
+                                        <div class="media align-items-center">
+                                          <img src="{{ asset('images/dental/dientes/impactado/impactado_15.png') }}" class="align-self-center wid-35 mr-1" alt="...">
+                                          <div class="media-body">
+                                            <h6>Diente Impactado</h6>
+                                          </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 mb-5">
+                                        <div class="media align-items-center">
+                                          <img src="{{ asset('images/dental/dientes/carie/carie15.png') }}" class="align-self-center wid-35 mr-1" alt="...">
+                                          <div class="media-body">
+                                            <h6>Caries</h6>
+                                          </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 mb-5">
+                                        <div class="media align-items-center">
+                                          <img src="{{ asset('images/dental/dientes/endodoncia/endo15.png') }}" class="align-self-center wid-35 mr-1" alt="...">
+                                          <div class="media-body">
+                                            <h6>Endodoncia</h6>
+                                          </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 mb-5">
+                                        <div class="media align-items-center">
+                                          <img src="{{ asset('images/dental/dientes/pulpotomia/pulpotomia15.png') }}" class="align-self-center wid-35 mr-1" alt="...">
+                                          <div class="media-body">
+                                            <h6>Pulpotomía</h6>
+                                          </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 mb-5">
+                                        <div class="media align-items-center">
+                                          <img src="{{ asset('images/dental/dientes/pulpectomia/pulpectomia_15.png') }}" class="align-self-center wid-35 mr-1" alt="...">
+                                          <div class="media-body">
+                                            <h6>Pulpectomía</h6>
+                                          </div>
+                                    </div>
+                                </div>
+                                 <div class="col-6 mb-5">
+                                        <div class="media align-items-center">
+                                          <img src="{{ asset('images/dental/dientes/implante/impl15.png') }}" class="align-self-center wid-35 mr-1" alt="...">
+                                          <div class="media-body">
+                                            <h6>Implante</h6>
+                                          </div>
+                                    </div>
+                                </div>   
+                                <div class="col-6 mb-5">
+                                        <div class="media align-items-center">
+                                          <img src="{{ asset('images/dental/dientes/movilidad/movilidad_15.png') }}" class="align-self-center wid-35 mr-1" alt="...">
+                                          <div class="media-body">
+                                            <h6>Movilidad</h6>
+                                          </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 mb-5">
+                                        <div class="media align-items-center">
+                                          <img src="{{ asset('images/dental/dientes/perno-munon/hecho/perno_munon_15.png') }}" class="align-self-center wid-35 mr-1" alt="...">
+                                          <div class="media-body">
+                                            <h6>Perno muñón</h6>
+                                          </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 mb-5">
+                                        <div class="media align-items-center">
+                                          <img src="{{ asset('images/dental/dientes/corona/hecho/corona_15.png') }}" class="align-self-center wid-35 mr-1" alt="...">
+                                          <div class="media-body">
+                                            <h6>Corona</h6>
+                                          </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 mb-5">
+                                        <div class="media align-items-center">
+                                          <img src="{{ asset('images/dental/dientes/corona-provisoria/hecho/cp_hecho_15.png') }}" class="align-self-center wid-35 mr-1" alt="...">
+                                          <div class="media-body">
+                                            <h6>Corona provisoria</h6>
+                                          </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 mb-5">
+                                        <div class="media align-items-center">
+                                          <img src="{{ asset('images/dental/dientes/corona_mal_estado/c_malestado15.png') }}" class="align-self-center wid-35 mr-1" alt="...">
+                                          <div class="media-body">
+                                            <h6>Corona en mal estado</h6>
+                                          </div>
+                                    </div>
+                                </div> 
+                                <div class="col-6 mb-5">
+                                        <div class="media align-items-center">
+                                          <img src="{{ asset('images/dental/dientes/protesis-removible/p_removible15.png') }}" class="align-self-center wid-35 mr-1" alt="...">
+                                          <div class="media-body">
+                                            <h6>Prótesis removible</h6>
+                                          </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 mb-5">
+                                        <div class="media align-items-center">
+                                          <img src="{{ asset('images/dental/dientes/residuo-radicular/hecho/rr_15.png') }}" class="align-self-center wid-35 mr-1" alt="...">
+                                          <div class="media-body">
+                                            <h6>Resto radicular</h6>
+                                          </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 mb-5">
+                                        <div class="media align-items-center">
+                                          <img src="{{ asset('images/dental/dientes/ribbond/hecho/ribbond_15.png') }}" class="align-self-center wid-35 mr-1" alt="...">
+                                          <div class="media-body">
+                                            <h6>Ribbond</h6>
+                                          </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 mb-5">
+                                        <div class="media align-items-center">
+                                          <img src="{{ asset('images/dental/dientes/sellante/sellante_15.png') }}" class="align-self-center wid-35 mr-1" alt="...">
+                                          <div class="media-body">
+                                            <h6>Sellante</h6>
+                                          </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 mb-5">
+                                        <div class="media align-items-center">
+                                          <img src="{{ asset('images/dental/dientes/surco/surco_15.png') }}" class="align-self-center wid-35 mr-1" alt="...">
+                                          <div class="media-body">
+                                            <h6>Surco</h6>
+                                          </div>
+                                    </div>
+                                </div>
+                                 <div class="col-6 mb-5">
+                                        <div class="media align-items-center">
+                                          <img src="{{ asset('images/dental/dientes/atricion/atricion15.png') }}" class="align-self-center wid-35 mr-1" alt="...">
+                                          <div class="media-body">
+                                            <h6>Atrición</h6>
+                                          </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 mb-5">
+                                        <div class="media align-items-center">
+                                          <img src="{{ asset('images/dental/dientes/abrasion/abrasion15.png') }}" class="align-self-center wid-35 mr-1" alt="...">
+                                          <div class="media-body">
+                                            <h6>Abrasión</h6>
+                                          </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 mb-5">
+                                        <div class="media align-items-center">
+                                          <img src="{{ asset('images/dental/dientes/abfraccion/abfraccion15.png') }}" class="align-self-center wid-35 mr-1" alt="...">
+                                          <div class="media-body">
+                                            <h6>Abfracción</h6>
+                                          </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 mb-5">
+                                        <div class="media align-items-center">
+                                          <img src="{{ asset('images/dental/dientes/erosion/erosion15.png') }}" class="align-self-center wid-35 mr-1" alt="...">
+                                          <div class="media-body">
+                                            <h6>Erosión</h6>
+                                          </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 mb-5">
+                                        <div class="media align-items-center">
+                                          <img src="{{ asset('images/dental/dientes/obturacion/obturacion15.png') }}" class="align-self-center wid-35 mr-1" alt="...">
+                                          <div class="media-body">
+                                            <h6>Obturación</h6>
+                                          </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 mb-5">
+                                        <div class="media align-items-center">
+                                          <img src="{{ asset('images/dental/dientes/ortodoncia/ortodoncia15.png') }}" class="align-self-center wid-35 mr-1" alt="...">
+                                          <div class="media-body">
+                                            <h6>Ortodoncia</h6>
+                                          </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 mb-5">
+                                        <div class="media align-items-center">
+                                           <img src="{{ asset('images/dental/odontopediatria/sin-erupcionar/sin-erupcionar53.png') }}" class="align-self-center wid-35 mr-1" alt="...">
+                                          <div class="media-body">
+                                            <h6>Diente sin erupción</h6>
+                                          </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 mb-5">
+                                        <div class="media align-items-center">
+                                        <img src="{{ asset('images/dental/odontopediatria/diente-erupcion/en-erupcion53.png') }}" class="align-self-center wid-35 mr-1" alt="...">
+                                          <div class="media-body">
+                                            <h6>Diente en erupción</h6>
+                                          </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 mb-5">
+                                        <div class="media align-items-center">
+                                          <img src="{{ asset('images/dental/dientes/fluor/fluor15.png') }}" class="align-self-center wid-35 mr-1" alt="...">
+                                          <div class="media-body">
+                                            <h6>Fluor</h6>
+                                          </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 mb-5">
+                                        <div class="media align-items-center">
+                                          <img src="{{ asset('images/dental/dientes/otro-tto/otro-tto15.png') }}" class="align-self-center wid-35 mr-1" alt="...">
+                                          <div class="media-body">
+                                            <h6>Otro Tratamiento</h6>
+                                          </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -101,8 +306,8 @@
                         aria-labelledby="heading_consentimientos_informados2"
                         data-parent="#accordion_side_bar">
                         <div class="card-body-sidebar">
-                            <button type="button" class="btn btn-sm btn-info btn-block text-left" onclick="lab_dent_menor()";>+ ORDEN DE TRABAJO  MENOR</button>
-                            <button type="button" class="btn btn-sm btn-info btn-block text-left" onclick="lab_dent_mayor()";>+ ORDEN DE TRABAJO MAYOR</button>
+                            <button type="button" class="btn btn-sm btn-info btn-block text-left" onclick="lab_dent_menor(); dame_correlativo('Orden Trabajo Menor')";>+ ORDEN DE TRABAJO  MENOR</button>
+                            <button type="button" class="btn btn-sm btn-info btn-block text-left" onclick="lab_dent_mayor(); dame_correlativo('Orden Trabajo Mayor')";>+ ORDEN DE TRABAJO MAYOR</button>
                         </div>
                     </div>
                 </div>
@@ -186,7 +391,7 @@
                     </div>
                 </div>
                <!-- SECCION CONSENTIMIENTOS -->
-                {{-- @include('general.sidebar.seccion_consentimientos') --}}
+                @include('general.sidebar.seccion_consentimientos')
                 <div class="card-sidebar">
                     <div class="card-header-sidebar" id="heading_utilidades">
                         <h2 class="mb-0">
@@ -256,5 +461,29 @@
     @include("atencion_medica.formularios.modal_atencion_especialidad.otorrino.modal_exbiopsia_orl")
 
     @include("atencion_medica.formularios.modal_atencion_especialidad.otorrino.modal_exradiologico_orl")--}}
+    <script>
+      function dame_correlativo(tipo){
+        console.log(tipo);
+        $.ajax({
+            type: "POST",
+            url: "{{ route('profesional.dame_correlativo') }}",
+            data: {
+                _token: "{{ csrf_token() }}",
+                tip_doc: tipo
+            },
+            success: function(response) {
+                console.log(response);
+                if(tipo == 'Orden Trabajo Menor'){
+                    $('#nro_orden_trabajo_menor').val(response.fila);
+                } else if(tipo == 'Orden Trabajo Mayor'){
+                    $('#nro_orden_trabajo_mayor').val(response.fila);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("Error en la solicitud AJAX:", error);
+            }
+        });
+      }
+    </script>
 
 

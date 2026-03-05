@@ -67,7 +67,7 @@
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link-aten text-reset" id="od__presup_gral-tab" data-toggle="tab"
-                                        href="#od__presup_gral" role="tab" aria-controls="od__presup_gral"
+                                        href="#od__presup_gral" role="tab" aria-controls="od__presup_gral" onclick="actualizar_presupuesto()"
                                         aria-selected="true">Presupuesto General</a>
                                 </li>
                                 <li class="nav-item">
@@ -665,11 +665,11 @@
                                                 <a class="nav-link-aten text-reset" id="od_laboratorio_trab-tab"
                                                     data-toggle="tab" href="#od_laboratorio_trab" role="tab"
                                                     aria-controls="od_laboratorio_trab"
-                                                    aria-selected="false">Estados Trabajos</a>
+                                                    aria-selected="false" onclick="dame_estados_trabajo()">Estados Trabajos</a>
                                                 <a class="nav-link-aten text-reset" id="costo_presupuesto_trab-tab"
                                                     data-toggle="tab" href="#costo_presupuesto_trab"
                                                     role="tab" aria-controls="costo_presupuesto_trab"
-                                                    aria-selected="false">Costo/Presupuesto Lab</a>
+                                                    aria-selected="false" onclick="dame_estados_trabajo()">Costo/Presupuesto Lab</a>
                                                 <a class="nav-link-aten text-reset" id="od_lab_estadopago-tab"
                                                     data-toggle="tab" href="#od_lab_estadopago" role="tab"
                                                     aria-controls="od_lab_estadopago" aria-selected="false">Estados
@@ -687,8 +687,9 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-row">
-                                                        <div class="col-sm-12 col-md-12" >
+                                                        <div class="col-sm-12 col-md-12">
                                                             <div id="contenedor_ordenes_trabajos_menores_dental">
+                                                               
                                                                 @if (isset($ordenes_tm))
                                                                     @foreach ($ordenes_tm as $o)
                                                                         <div class="row">
@@ -776,11 +777,11 @@
                                                                     @endforeach
                                                                 @endif
                                                             </div>
-
                                                         </div>
 
                                                         <div class="col-sm-12 col-md-12">
                                                             <div id="contenedor_ordenes_trabajos_mayores_dental">
+                                                                
                                                                 @if (isset($ordenes_tmy))
                                                                     @foreach ($ordenes_tmy as $o)
                                                                         <div class="row">
@@ -868,7 +869,6 @@
                                                                     @endforeach
                                                                 @endif
                                                             </div>
-
                                                         </div>
                                                     </div>
                                                 </div>
@@ -882,117 +882,11 @@
                                                     </div>
                                                     <div class="form-row">
                                                         <div class="col-md-12" id="contenedor_ordenes_trabajos_menores_dental_presup">
-
-                                                                @foreach ($ordenes_tm as $o)
-                                                                    <div class="card-informacion">
-                                                                        <div class="card-body">
-                                                                            <div class="form-row">
-                                                                                <div class="form-group col-md-3">
-                                                                                    <label class="floating-label-activo-sm">N°
-                                                                                        Identificación</label>
-                                                                                    <input type="text"
-                                                                                        class="form-control form-control-sm"
-                                                                                        name="lab_id_trab" id="lab_id_trab" value="{{ $o->nro_orden }}">
-                                                                                </div>
-                                                                                <div class="form-group col-md-2">
-                                                                                    <label class="floating-label-activo-sm">
-                                                                                        Valor Total</label>
-                                                                                    <input type="text"
-                                                                                        class="form-control form-control-sm"
-                                                                                        name="lab_cost_tot"
-                                                                                        id="lab_cost_tot" value="{{ number_format($o->valor_prestacion, 0, ',', '.') }}">
-                                                                                </div>
-                                                                                <div class="form-group col-md-2">
-                                                                                    <label class="floating-label-activo-sm">
-                                                                                        Abonos</label>
-                                                                                    <input type="text"
-                                                                                        class="form-control form-control-sm"
-                                                                                        name="lab_abon" id="lab_abon" value="0">
-                                                                                </div>
-                                                                                <div class="form-group col-md-2">
-                                                                                    <label class="floating-label-activo-sm">
-                                                                                        Valor Pendiente</label>
-                                                                                    <input type="text"
-                                                                                        class="form-control form-control-sm"
-                                                                                        name="lab_val_pend"
-                                                                                        id="lab_val_pend" value="{{ number_format($o->valor_prestacion, 0, ',', '.') }}">
-                                                                                </div>
-                                                                                <div class="form-group col-md-3 d-flex">
-                                                                                    @if($o->presupuesto == 1)
-                                                                                        <button type="button"
-                                                                                            class="btn btn-icon btn-danger" onclick="sacar_de_presupuesto_lab({{ $o->id }},'menor')" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar de presupuesto"><i
-                                                                                                class="fas fa-minus"></i></button>
-                                                                                    @else
-                                                                                        <button type="button"
-                                                                                            class="btn btn-icon btn-primary" onclick="cargar_a_presupuesto_lab({{ $o->id }},'menor');" data-bs-toggle="tooltip" data-bs-placement="top" title="Cargar a presupuesto" ><i
-                                                                                                class="feather icon-shopping-cart"></i>
-                                                                                            </button>
-                                                                                    @endif
-                                                                                    <button type="button"
-                                                                                        class="btn btn-info btn-icon"onclick="info_lab({{ $o->id_laboratorio }});"><i
-                                                                                            class="fas fa-info-circle"></i></button>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                @endforeach
-
+                                                            
                                                         </div>
                                                         <div class="col-md-12" id="contenedor_ordenes_trabajos_mayores_dental_presup">
-                                                            @foreach ($ordenes_tmy as $o)
-                                                                <div class="card-informacion">
-                                                                    <div class="card-body">
-                                                                        <div class="form-row">
-                                                                            <div class="form-group col-md-3">
-                                                                                <label class="floating-label-activo-sm">N°
-                                                                                    Identificación</label>
-                                                                                <input type="text"
-                                                                                    class="form-control form-control-sm"
-                                                                                    name="lab_id_trab" id="lab_id_trab" value="{{ $o->nro_orden }}">
-                                                                            </div>
-                                                                            <div class="form-group col-md-2">
-                                                                                <label class="floating-label-activo-sm">
-                                                                                    Valor Total</label>
-                                                                                <input type="text"
-                                                                                    class="form-control form-control-sm"
-                                                                                    name="lab_cost_tot"
-                                                                                    id="lab_cost_tot" value="{{ number_format($o->valor_prestacion, 0, ',', '.') }}">
-                                                                            </div>
-                                                                            <div class="form-group col-md-2">
-                                                                                <label class="floating-label-activo-sm">
-                                                                                    Abonos</label>
-                                                                                <input type="text"
-                                                                                    class="form-control form-control-sm"
-                                                                                    name="lab_abon" id="lab_abon" value="0">
-                                                                            </div>
-                                                                            <div class="form-group col-md-2">
-                                                                                <label class="floating-label-activo-sm">
-                                                                                    Valor Pendiente</label>
-                                                                                <input type="text"
-                                                                                    class="form-control form-control-sm"
-                                                                                    name="lab_val_pend"
-                                                                                    id="lab_val_pend" value="{{ number_format($o->valor_prestacion, 0, ',', '.') }}">
-                                                                            </div>
-                                                                            <div class="form-group col-md-3 d-flex">
-                                                                                @if($o->presupuesto == 1)
-                                                                                    <button type="button"
-                                                                                        class="btn btn-icon btn-danger" onclick="sacar_de_presupuesto_lab({{ $o->id }},'mayor')" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar de presupuesto"><i
-                                                                                            class="fas fa-minus"></i></button>
-                                                                                @else
-                                                                                    <button type="button"
-                                                                                        class="btn btn-icon btn-primary" onclick="cargar_a_presupuesto_lab({{ $o->id }},'mayor');" data-bs-toggle="tooltip" data-bs-placement="top" title="Cargar a presupuesto" ><i
-                                                                                            class="feather icon-shopping-cart"></i>
-                                                                                        </button>
-                                                                                @endif
-                                                                                <button type="button"
-                                                                                    class="btn btn-info btn-icon"onclick="info_lab({{ $o->id_laboratorio }});"><i
-                                                                                        class="fas fa-info-circle"></i></button>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            @endforeach
-                                                        </div>
+                                                         
+                                                        </div> 
                                                     </div>
                                                     <div class="form-row" id="resumen_costos_lab">
                                                         <div class="col-12">
@@ -1297,8 +1191,6 @@
                                                         onclick="generar_pdf()"><i
                                                             class="fas fa-print"></i></button>
                                                     <span id="mensaje" class="badge badge-success"></span>
-                                                    <input type="hidden" name="tiene_dcto" id="tiene_dcto"
-                                                        value="0">
                                                 </p>
                                             @endif
                                         @endforeach
@@ -1340,6 +1232,10 @@
                                                                                 } elseif ($o->estado == 1) {
                                                                                     $estado = 'TERMINADO';
                                                                                     # code...
+                                                                                }elseif($o->estado == 2){
+                                                                                    $estado = 'CANCELADO';
+                                                                                }elseif($o->estado == 3){
+                                                                                    $estado = 'CITADO A CONTROL';
                                                                                 }
 
                                                                                 switch ($o->estado_pago) {
@@ -1624,7 +1520,7 @@
                         </div>
                     </div>
                     <div class="form-row  mx-auto mt-3">
-                        @php $total_pago = $valores + $valores_piezas + $valores_insumos; @endphp
+                        @php $total_pago = $valores + $valores_piezas + $valores_insumos + $valores_laboratorio; @endphp
                         <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 text-center">
                             <button type="button" class="btn btn-purple text-center"
                                 onclick="reasignar_presupuesto({{ $total_pago }}, {{ $valor_abonado }},{{ $valores_insumos }})"><i
@@ -1640,8 +1536,9 @@
 </div>
 
 
-<input type="hidden" id="total_presupuesto_dental" value="{{ $valores + $valores_piezas + $valores_insumos }}">
-
+<input type="hidden" id="total_presupuesto_dental" value="{{ $valores + $valores_piezas + $valores_insumos + $valores_laboratorio }}">
+<input type="hidden" name="tiene_dcto" id="tiene_dcto" value="0">
+<input type="hidden" name="tiene_reasignacion" id="tiene_reasignacion" value="0">
 <!-- MODAL INSUMOS -->
 <!-- Modal -->
 <div class="modal fade" id="insumosModal" tabindex="-1" aria-labelledby="insumosModalLabel"
@@ -1650,7 +1547,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="insumosModalLabel">Insumos para el tratamiento</h5>
-                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">X</button>
             </div>
             <div class="modal-body">
 
@@ -1741,7 +1638,7 @@
 <!-- MODAL PAGOS -->
 <div class="modal fade" id="modalPagoPresupuesto" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Pago</h5>
@@ -1750,123 +1647,202 @@
 		        </button>
             </div>
             <div class="modal-body">
-           		<div class="form-row">
-        			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                    	<div class="card-informacion borde-presupuesto">
-                    		<div class="card-body px-2 pt-2 pb-0">
-                    			<div class="form-row">
-                    				<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                    					<h6 class="text-uppercase text-c-blue mb-1">Saldo pendiente</h6>
-					                     <h6 class="f-14 badge badge-warning mb-3" id="diferencia_pago"></h6>
-					                    <form id="pagoForm" class="mt-2">
-					                    	 </div>
-				                        <!-- Total a pagar (deshabilitado) -->
-				                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-				                            <div class="form-group">
-				                                <label for="total" class="floating-label-activo-sm">Total a pagar</label>
-				                                <input type="text" class="form-control form-control-sm" id="total_pago"
-				                                    value="" readonly>
-				                            </div>
-				                        </div>
-                    				</div>
-                    			</div>
-                    		</div>
-                    	</div>
-                	</div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-row">
+                            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                <div class="card-informacion borde-presupuesto">
+                                    <div class="card-body px-2 pt-2 pb-0">
+                                        <div class="form-row">
+                                            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                                <div class="form-group">
+                                                    <label for="total" class="floating-label-activo-sm">Total a pagar</label>
+                                                        <input type="text" class="form-control form-control-sm" id="total_pago"
+                                                            value="" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="info_pagos_presupuesto">
+                            <!-- Resumen de Pagos del Presupuesto -->
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <div class="card border-success">
+                                        <div class="card-body text-center p-3">
+                                            <div class="d-flex align-items-center justify-content-center mb-2">
+                                                <i class="feather icon-check-circle text-success mr-2" style="font-size: 1.5rem;"></i>
+                                                <h6 class="card-title mb-0 text-success">Abonos</h6>
+                                            </div>
+                                            <h4 class="text-success mb-0" id="monto_abonado_presupuesto">$0</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card border-info">
+                                        <div class="card-body text-center p-3">
+                                            <div class="d-flex align-items-center justify-content-center mb-2">
+                                                <i class="feather icon-check-circle text-info mr-2" style="font-size: 1.5rem;"></i>
+                                                <h6 class="card-title mb-0 text-info">Total Deuda</h6>
+                                            </div>
+                                            <h4 class="text-info mb-0" id="total_deuda_presupuesto">$0</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card border-warning">
+                                        <div class="card-body text-center p-3">
+                                            <div class="d-flex align-items-center justify-content-center mb-2">
+                                                <i class="feather icon-clock text-warning mr-2" style="font-size: 1.5rem;"></i>
+                                                <h6 class="card-title mb-0 text-warning">Pendiente</h6>
+                                            </div>
+                                            <h4 class="text-warning mb-0" id="monto_pendiente_presupuesto">$0</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Barra de Progreso del Presupuesto -->
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <small class="text-muted">Progreso de Pago del Presupuesto</small>
+                                    <small class="text-muted" id="porcentaje_pago_presupuesto">0%</small>
+                                </div>
+                                <div class="progress" style="height: 8px;">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: 0%" 
+                                        id="barra_progreso_presupuesto" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Tabla de Pagos del Presupuesto -->
+                            <div class="mt-4" id="seccion_pagos_presupuesto" style="display: none;">
+                                <h6 class="text-muted mb-3">
+                                    <i class="feather icon-list mr-2"></i>
+                                    Historial de Pagos del Presupuesto
+                                </h6>
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-hover" id="tabla_pagos_presupuesto_resumen">
+                                        <thead class="thead-light">
+                                            <tr class="text-center">
+                                                <th>Fecha</th>
+                                                <th>Monto</th>
+                                                <th>Método</th>
+                                                <th>Convenio</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tbody_pagos_presupuesto">
+                                            <!-- Los pagos se cargarán aquí dinámicamente -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
 
+                        <hr class="my-3">
 
-            		<div class="form-row">
-            			<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                        	<div class="card-informacion">
-                        		<div class="card-body px-2">
-                        			<div class="form-row">
-				                		<!-- Monto del pago -->
-				                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 form-group">
-				                            <label for="montoPago" class="floating-label-activo-sm">Monto del Pago</label>
-				                            <input type="text" class="form-control form-control-sm" id="montoPago" name="montoPago"
-				                                required>
-				                        </div>
-				                        <!-- Monto abonado -->
-				                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 form-group">
-				                            <label for="montoAbonado" class="floating-label-activo-sm">Monto Abonado</label>
-				                            <input type="text" class="form-control form-control-sm" id="montoAbonado"
-				                                value="${{ number_format($valor_abonado, 0, ',', '.') }}" disabled required>
-				                        </div>
-				                        <!-- Método de pago -->
-				                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 form-group">
-				                            <label for="metodoPago" class="floating-label-activo-sm">Método de Pago</label>
-				                            <select class="form-control form-control-sm" id="metodoPago" required>
-				                                <option value="" selected disabled>Seleccione un método</option>
-				                                <option value="efectivo">Efectivo</option>
-				                                <option value="tarjeta">Tarjeta</option>
-				                                <option value="transferencia">Transferencia Bancaria</option>
-				                            </select>
-				                        </div>
-				                        <!--Convenio-->
-				                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 form-group">
-				                            <label class="floating-label-activo-sm">Convenio</label>
-				                            <select id="bono_prevision" name="bono_prevision"
-				                                class="form-control form-control-sm">
-				                                <option value="0">Selecione una opción</option>
-				                                @foreach ($prevision as $prev)
-				                                    <option value="{{ $prev->id }}">{{ $prev->nombre }}</option>
-				                                @endforeach
-				                            </select>
-				                            {{-- <div class="input-group-append">
-				                            <button class="btn btn-outline-primary btn-sm" type="button" onclick="$('#bono_prevision_txt').hide();$('#bono_prevision').show();"><i class="feather icon-edit"></i></button>
-				                        		</div> --}}
-				                        </div>
-				                        <!-- Botón de envío  / BTN CONFIRMACION PAGO-->
-				                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 text-center mt-2">
-				                            <button type="button" class="btn btn-info btn-sm" onclick="confirmar_pago()"><i class="feather icon-check"></i> Confirmar Pago</button>
-				                        </div>
-				                    </div>
-				                </div>
-				            </div>
-				        </div>
-            		</div>
-                </form>
-                    <div class="form-row">
-                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                        	<div class="card-informacion">
-                        		<div class="card-body px-2">
-                        			<div class="form-row">
-                        				<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-				                            <div class="table-responsive">
-				                                <table class="table table-responsive table-xs" id="table_pagos_presupuesto">
-				                                    <thead>
-				                                        <tr>
-				                                            <th>Fecha</th>
-				                                            <th>Metodo de pago</th>
-				                                            <th>Pago</th>
-				                                            <th>Acciones</th>
-				                                        </tr>
+                        
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-row">
+                            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                <div class="card-informacion">
+                                    <div class="card-body px-2">
+                                        <div class="form-row">
+                                            <!-- Monto del pago -->
+                                            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 form-group">
+                                                <label for="montoPago" class="floating-label-activo-sm">Monto del Pago</label>
+                                                <input type="text" class="form-control form-control-sm" id="montoPago" name="montoPago"
+                                                    >
+                                            </div>
+                                            <!-- Monto abonado -->
+                                            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 form-group">
+                                                <label for="montoAbonado" class="floating-label-activo-sm">Monto Abonado</label>
+                                                <input type="text" class="form-control form-control-sm" id="montoAbonado" name="montoAbonado"
+                                                    value="${{ number_format($valor_abonado, 0, ',', '.') }}" >
+                                            </div>
+                                            <!-- Método de pago -->
+                                            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 form-group">
+                                                <label for="metodoPago" class="floating-label-activo-sm">Método de Pago</label>
+                                                <select class="form-control form-control-sm" id="metodoPago" name="metodoPago" >
+                                                    <option value="" selected >Seleccione un método</option>
+                                                    <option value="efectivo">Efectivo</option>
+                                                    <option value="tarjeta">Tarjeta</option>
+                                                    <option value="transferencia">Transferencia Bancaria</option>
+                                                </select>
+                                            </div>
+                                            <!--Convenio-->
+                                            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 form-group">
+                                                <label class="floating-label-activo-sm">Convenio</label>
+                                                <select id="bono_prevision" name="bono_prevision"
+                                                    class="form-control form-control-sm">
+                                                    <option value="0">Selecione una opción</option>
+                                                    @foreach ($prevision as $prev)
+                                                        <option value="{{ $prev->id }}">{{ $prev->nombre }}</option>
+                                                    @endforeach
+                                                </select>
+                                                {{-- <div class="input-group-append">
+                                                <button class="btn btn-outline-primary btn-sm" type="button" onclick="$('#bono_prevision_txt').hide();$('#bono_prevision').show();"><i class="feather icon-edit"></i></button>
+                                                    </div> --}}
+                                            </div>
+                                            <!-- Botón de envío  / BTN CONFIRMACION PAGO-->
+                                            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 text-center mt-2">
+                                                <button type="button" class="btn btn-info btn-sm" onclick="confirmar_pago()"><i class="feather icon-check"></i> Confirmar Pago</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+            
+                        <div class="form-row d-none">
+                            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                <div class="card-informacion">
+                                    <div class="card-body px-2">
+                                        <div class="form-row">
+                                            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                                <div class="table-responsive">
+                                                    <table class="table table-responsive table-xs" id="table_pagos_presupuesto">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Fecha</th>
+                                                                <th>Metodo de pago</th>
+                                                                <th>Pago</th>
+                                                                <th>Acciones</th>
+                                                            </tr>
 
-				                                    </thead>
-				                                    <tbody>
-				                                        @foreach ($pagos_tratamientos_dentales as $pago)
-				                                            <tr>
-				                                                <td>{{ $pago->fecha_pago }}</td>
-				                                                <td>{{ $pago->metodo_pago }}</td>
-				                                                <td>{{ number_format($pago->total, 0, ',', '.') }}</td>
-				                                                <td>
-				                                                    <button type="button" class="btn btn-primary btn-icon"><i
-				                                                            class="fas fa-search"></i></button>
-				                                                    <button type="button" class="btn btn-danger btn-icon"
-				                                                        onclick="eliminar_pago_dental({{ $pago->id }})"><i
-				                                                            class="feather icon-x"></i></button>
-				                                                </td>
-				                                            </tr>
-				                                        @endforeach
-				                                    </tbody>
-				                                </table>
-				                            </div>
-				                        </div>
-				                    </div>
-		                        </div>
-                        	</div>
-                    	</div>
-             		</div>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach ($pagos_tratamientos_dentales as $pago)
+                                                                <tr>
+                                                                    <td>{{ $pago->fecha_pago }}</td>
+                                                                    <td>{{ $pago->metodo_pago }}</td>
+                                                                    <td>{{ number_format($pago->total, 0, ',', '.') }}</td>
+                                                                    <td>
+                                                                        <button type="button" class="btn btn-primary btn-icon"><i
+                                                                                class="fas fa-search"></i></button>
+                                                                        <button type="button" class="btn btn-danger btn-icon"
+                                                                            onclick="eliminar_pago_dental({{ $pago->id }})"><i
+                                                                                class="feather icon-x"></i></button>
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+           		
+           
             </div>
             <!--<div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -1948,7 +1924,7 @@
 						                        </thead>
 						                        <tbody>
 						                            @foreach ($odontograma as $o)
-						                                @if ($o->presupuesto == 1)
+						                                @if ($o->presupuesto == 1 && $o->urgencia == 0)
 						                                    <tr>
 						                                        <td><input type="checkbox" class="valor-checkbox"
 						                                                data-valor="{{ $o->valor }}" data-id="{{ $o->id }}"
@@ -2041,7 +2017,7 @@
 						                        </thead>
 						                        <tbody>
 						                            @foreach ($insumos_tratamientos as $i)
-						                                @if ($i->presupuesto == 1)
+						                                @if ($i->presupuesto == 1 && $i->urgencia == 0)
 						                                    @php $total = $i->cantidad * $i->valor; @endphp
 						                                    <tr>
 						                                        <td><input type="checkbox" class="valor-checkbox"
@@ -2509,9 +2485,11 @@
                 let valor_presupuesto = $('#total_presupuesto_dental').val();
                 let valor_abonado = resp.valor_atencion;
                 let deuda = valor_presupuesto - valor_abonado;
-                $('#diferencia_pago').html(formatoMoneda(deuda));
                 $('#bono_prevision').val(resp.convenio);
                 //$('#montoAbonado').val(formatoMoneda(resp.valor_atencion));
+                
+                // Cargar información del presupuesto en el resumen
+                cargarInformacionPresupuesto();
             },
             error: function(error) {
                 console.log(error.responseText);
@@ -2595,7 +2573,7 @@
                     // Recorrer el odontograma y agregar nuevas filas
                     odontograma.forEach(function(odonto) {
 
-                        if (odonto.presupuesto == 1) {
+                        if (odonto.presupuesto == 1 && odonto.urgencia == 0) {
                             if (odonto.estado_pago == 'ok') {
                                 var clase = 'bg-success';
                             } else if (odonto.estado_pago == 'incompleto') {
@@ -2745,6 +2723,13 @@
 
                     });
                      actualizar_presupuesto();
+                     
+                     // Limpiar formulario después del pago exitoso
+                     $('#montoPago').val('');
+                     $('#metodoPago').val('');
+                     
+                     // Actualizar información del presupuesto
+                     setTimeout(cargarInformacionPresupuesto, 500);
                 } else {
                     swal({
                         title: 'error',
@@ -2783,6 +2768,7 @@
             id_paciente: $('#id_paciente').val(),
             monto_abonado: $('#abonos_presup').val(),
             total_presupuesto: $('#total_presupuesto_dental').val(),
+            id_presupuesto: $('#id_presupuesto').val(),
             id_dcto: id_dcto,
             _token: CSRF_TOKEN
         }
@@ -2829,7 +2815,7 @@
                     // Recorrer el odontograma y agregar nuevas filas
                     odontograma.forEach(function(odonto) {
 
-                        if (odonto.presupuesto == 1) {
+                        if (odonto.presupuesto == 1 && odonto.urgencia == 0) {
                             if (odonto.estado_pago == 'ok') {
                                 var clase = 'bg-success';
                             } else if (odonto.estado_pago == 'incompleto') {
@@ -2866,7 +2852,7 @@
                     console.log(insumos);
                     insumos.forEach(insumo => {
                         let total = insumo.cantidad * insumo.valor;
-                        if (insumo.presupuesto == 1) {
+                        if (insumo.presupuesto == 1 && insumo.urgencia == 0) {
                             if (insumo.estado_pago == 'ok') {
                                 var clase = 'bg-success';
                             } else if (insumo.estado_pago == 'intermedio') {
@@ -3008,7 +2994,7 @@
                     // Recorrer el odontograma y agregar nuevas filas
                     todos.forEach(function(odonto) {
 
-                        if (odonto.presupuesto == 1) {
+                        if (odonto.presupuesto == 1 && odonto.urgencia == 0) {
                             if (odonto.estado_pago == 'ok') {
                                 var clase = 'bg-success';
                             } else if (odonto.estado_pago == 'incompleto') {
@@ -3037,7 +3023,12 @@
                         }
 
                     });
-                    actualizar_presupuesto();
+                    //actualizar_presupuesto();
+                   
+                    console.log('Tabla de pagos actualizada');
+                    
+                    // Actualizar información del presupuesto después de eliminar pago
+                    setTimeout(cargarInformacionPresupuesto, 500);
                 }
             },
             error: function(error) {
@@ -3082,6 +3073,7 @@
             valorAdeudado: $('#total_adeudado_presupuesto').val(),
             id_ficha_atencion: $('#id_fc').val(),
             id_paciente: $('#id_paciente').val(),
+            id_presupuesto: $('#id_presupuesto').val(),
             id_lugar_atencion: $('#id_lugar_atencion').val(),
         };
 
@@ -3112,7 +3104,7 @@
 
                     // Recorrer el odontograma y agregar nuevas filas
                     odontograma.forEach(function(odonto) {
-                        if (odonto.presupuesto == 1) {
+                        if (odonto.presupuesto == 1 && odonto.urgencia == 0) {
                             if (odonto.estado_pago == 'ok') {
                                 var clase = 'bg-success';
                             } else if (odonto.estado_pago == 'incompleto') {
@@ -3149,7 +3141,7 @@
                     console.log(insumos);
                     insumos.forEach(insumo => {
                         let total = insumo.cantidad * insumo.valor;
-                        if (insumo.presupuesto == 1) {
+                        if (insumo.presupuesto == 1 && insumo.urgencia == 0) {
                             if (insumo.estado_pago == 'ok') {
                                 var clase = 'bg-success';
                             } else if (insumo.estado_pago == 'intermedio') {
@@ -3220,6 +3212,83 @@
                 }
             },
         });
+    }
+
+    // Función para cargar la información del presupuesto al abrir el modal
+    function cargarInformacionPresupuesto() {
+        console.log('Cargando información del presupuesto...');
+        let total_presupuesto = parseInt($('#total_presupuesto_dental').val()) || 0;
+        let monto_abonado = parseInt($('#montoAbonado').val().replace(/[^0-9]/g, '')) || 0;
+        let monto_pendiente = total_presupuesto - monto_abonado;
+        
+        // Actualizar valores en las cards
+        $('#monto_abonado_presupuesto').text(formatoMoneda(monto_abonado));
+        $('#total_deuda_presupuesto').text(formatoMoneda(total_presupuesto));
+        $('#monto_pendiente_presupuesto').text(formatoMoneda(monto_pendiente));
+        
+        // Actualizar barra de progreso
+        let porcentaje = total_presupuesto > 0 ? (monto_abonado / total_presupuesto) * 100 : 0;
+        $('#barra_progreso_presupuesto').css('width', porcentaje + '%');
+        $('#porcentaje_pago_presupuesto').text(Math.round(porcentaje) + '%');
+        
+        // Cargar tabla de pagos desde el DataTable existente
+        cargarTablaPagosPresupuesto();
+    }
+
+    // Función para cargar la tabla de pagos del presupuesto
+    function cargarTablaPagosPresupuesto() {
+        const tbody = $('#tbody_pagos_presupuesto');
+        tbody.empty();
+        
+        // Obtener datos de la tabla DataTable existente
+        const table = $('#table_pagos_presupuesto').DataTable();
+        const data = table.rows().data();
+        
+        if (data.length > 0) {
+            $('#seccion_pagos_presupuesto').show();
+            
+            data.each(function(row, index) {
+                const fecha = row[0] || 'N/A';
+                const metodo = row[1] || 'N/A';
+                const monto = row[2] || '$0';
+                const acciones = row[3] || '';
+                
+                // Extraer el ID del botón de eliminar para reutilizarlo
+                const eliminarBtn = $(acciones).find('button[onclick*="eliminar_pago_dental"]');
+                const idPago = eliminarBtn.length > 0 ? 
+                    eliminarBtn.attr('onclick').match(/\d+/)?.[0] : '';
+                
+                const convenio = 'N/A'; // Podrías obtener esto de otra fuente si está disponible
+                
+                const fila = `
+                    <tr class="text-center">
+                        <td class="align-middle">${fecha}</td>
+                        <td class="align-middle">
+                            <span class="badge badge-success">${monto}</span>
+                        </td>
+                        <td class="align-middle">
+                            <span class="badge badge-${metodo.toLowerCase() === 'efectivo' ? 'primary' : metodo.toLowerCase() === 'tarjeta' ? 'info' : 'secondary'}">
+                                ${metodo.charAt(0).toUpperCase() + metodo.slice(1)}
+                            </span>
+                        </td>
+                        <td class="align-middle">${convenio}</td>
+                        <td class="align-middle">
+                            ${idPago ? `
+                                <button type="button" 
+                                        class="btn btn-danger btn-sm" 
+                                        onclick="eliminar_pago_dental(${idPago})"
+                                        title="Eliminar pago">
+                                    <i class="feather icon-trash-2"></i>
+                                </button>
+                            ` : ''}
+                        </td>
+                    </tr>
+                `;
+                tbody.append(fila);
+            });
+        } else {
+            $('#seccion_pagos_presupuesto').hide();
+        }
     }
 </script>
 
@@ -3352,7 +3421,7 @@
                 console.log(insumos);
                 insumos.forEach(insumo => {
                     let total = insumo.cantidad * insumo.valor;
-                    if (insumo.presupuesto == 1) {
+                    if (insumo.presupuesto == 1 && insumo.urgencia == 0) {
                         if (insumo.estado_pago == 'ok') {
                             var clase = 'bg-success';
                         } else if (insumo.estado_pago == 'incompleto') {
@@ -3494,7 +3563,7 @@
                 // Recorrer el odontograma y agregar nuevas filas
                 todos.forEach(function(odonto) {
 
-                    if (odonto.presupuesto == 1) {
+                    if (odonto.presupuesto == 1 && odonto.urgencia == 0) {
                         if (odonto.estado_pago == 'ok') {
                             var clase = 'bg-success';
                         } else if (odonto.estado_pago == 'incompleto') {
@@ -3610,7 +3679,7 @@
                 // Recorrer el odontograma y agregar nuevas filas
                 odontograma.forEach(function(odonto) {
 
-                    if (odonto.presupuesto == 1) {
+                    if (odonto.presupuesto == 1 && odonto.urgencia == 0) {
                         if (odonto.estado_pago == 'ok') {
                             var clase = 'bg-success';
                         } else if (odonto.estado_pago == 'incompleto') {
@@ -3687,7 +3756,7 @@
                 console.log(insumos);
                 insumos.forEach(insumo => {
                     let total = insumo.cantidad * insumo.valor;
-                    if (insumo.presupuesto == 1) {
+                    if (insumo.presupuesto == 1 && insumo.urgencia == 0) {
                         if (insumo.estado_pago == 'ok') {
                             var clase = 'bg-success';
                         } else if (insumo.estado_pago == 'intermedio') {
@@ -3885,6 +3954,7 @@
 
     function info_lab(id_lab) {
         let url = "{{ ROUTE('dental.info_laboratorio') }}";
+        console.log(id_lab);
         let data = {
             id_lab: id_lab,
             _token: CSRF_TOKEN
@@ -3903,6 +3973,362 @@
             },
             error: function(error) {
                 console.log(error.responseText);
+            }
+        });
+    }
+
+    function dame_estados_trabajo(){
+        let id_presupuesto = $('#id_presupuesto').val();
+        let id_paciente = $('#id_paciente').val();
+        let id_profesional = $('#id_profesional').val();
+        let id_ficha_atencion = $('#id_fc').val();
+        let id_lugar_atencion = $('#id_lugar_atencion').val();
+        let url = "{{ route('dental.dame_estados_trabajo') }}";
+        let data = {
+            id_presupuesto: id_presupuesto,
+            id_paciente: id_paciente,
+            id_profesional: id_profesional,
+            id_ficha_atencion: id_ficha_atencion,
+            id_lugar_atencion: id_lugar_atencion,
+            _token: CSRF_TOKEN
+        }
+        $.ajax({
+            type: 'post',
+            url: url,
+            data: data,
+            beforeSend: function(){
+                swal({
+                    title: 'Cargando...',
+                    text: 'Por favor, espere mientras se procesan los datos.',
+                    icon: 'info',
+                    buttons: false,
+                    closeOnClickOutside: false
+                });
+            },
+            success: function(response) {
+                swal.close();
+                console.log(response);
+                if(response.estado == 'ok'){
+                    
+                    $('#contenedor_ordenes_trabajos_menores_dental_presup').html(response.html);
+                    $('#contenedor_ordenes_trabajos_mayores_dental_presup').empty();
+                    
+                    // Generar HTML adicional para trabajos menores si existen en la respuesta
+                    if(response.ordenes_trabajo_menor && response.ordenes_trabajo_menor.length > 0) {
+                        // Llenar la tabla de trabajos menores
+                        llenarTablaTrabajosMenores(response.ordenes_trabajo_menor);
+                        
+                        let htmlTrabajosMenores = '';
+                        response.ordenes_trabajo_menor.forEach(function(o) {
+                            let estadoTexto = o.estado == 1 ? 'Pendiente' : 'Otro';
+                            htmlTrabajosMenores += `
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card-informacion">
+                                            <div class="card-body">
+                                                <div class="form-row">
+                                                    <div class="form-group col-sm-12 col-md-4 col-lg-4 col-xl-4 col-xxl-2">
+                                                        <label class="floating-label-activo-sm">Nombre Laboratorio</label>
+                                                        <input type="text" class="form-control form-control-sm" name="lab_nom" id="lab_nom" value="${o.nombre_lab || ''}">
+                                                    </div>
+                                                    <div class="form-group col-sm-12 col-md-4 col-lg-4 col-xl-4 col-xxl-2">
+                                                        <label class="floating-label-activo-sm">Trabajo Requerido</label>
+                                                        <input type="text" class="form-control form-control-sm" name="lab_ord_trab" id="lab_ord_trab" value="${o.trabajo_realizar || ''}">
+                                                    </div>
+                                                    <div class="form-group col-sm-12 col-md-4 col-lg-4 col-xl-4 col-xxl-2">
+                                                        <label class="floating-label-activo-sm">F.envío</label>
+                                                        <input type="text" class="form-control form-control-sm" name="lab_fenv" id="lab_fenv" value="${o.fecha_envio || ''}">
+                                                    </div>
+                                                    <div class="form-group col-sm-12 col-md-4 col-lg-4 col-xl-4 col-xxl-2">
+                                                        <label class="floating-label-activo-sm">F.entrega</label>
+                                                        <input type="text" class="form-control form-control-sm" name="lab_fent" id="lab_fent" value="${o.fecha_entrega || ''}">
+                                                    </div>
+                                                    <div class="form-group col-sm-12 col-md-4 col-lg-4 col-xl-4 col-xxl-2">
+                                                        <label class="floating-label-activo-sm">Estado</label>
+                                                        <input type="text" class="form-control form-control-sm" name="lab_est" id="lab_est" value="${estadoTexto}">
+                                                    </div>
+                                                    <div class="form-group col-sm-12 col-md-4 col-lg-4 col-xl-4 col-xxl-2">
+                                                        <label class="floating-label-activo-sm">N° Identificación</label>
+                                                        <input type="text" class="form-control form-control-sm" name="lab_id_trab" id="lab_id_trab" value="${o.nro_orden || ''}">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                                        <label class="floating-label-activo-sm">Observaciones</label>
+                                                        <textarea class="form-control caja-texto form-control-sm" rows="1" onfocus="this.rows=4" onblur="this.rows=1;" name="obs_est_trab_lab" id="obs_est_trab_lab">${o.observaciones || ''}</textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                        });
+                        // Usar contenedor diferente para no interferir con la línea original
+                        $('#contenedor_ordenes_trabajos_menores_dental').html(htmlTrabajosMenores);
+                    }
+
+                    // Generar HTML adicional para trabajos mayores si existen en la respuesta
+                    if(response.ordenes_trabajo_mayor && response.ordenes_trabajo_mayor.length > 0) {
+                        // Llenar la tabla de trabajos mayores
+                        llenarTablaTrabajosMayores(response.ordenes_trabajo_mayor);
+                        
+                        let htmlTrabajosMayores = '';
+                        response.ordenes_trabajo_mayor.forEach(function(o) {
+                            let estadoTexto = o.estado == 1 ? 'Pendiente' : 'Otro';
+                            htmlTrabajosMayores += `
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card-informacion">
+                                            <div class="card-body">
+                                                <div class="form-row">
+                                                    <div class="form-group col-sm-12 col-md-4 col-lg-4 col-xl-4 col-xxl-2">
+                                                        <label class="floating-label-activo-sm">Nombre Laboratorio</label>
+                                                        <input type="text" class="form-control form-control-sm" name="lab_nom" id="lab_nom" value="${o.nombre_lab || ''}">
+                                                    </div>
+                                                    <div class="form-group col-sm-12 col-md-4 col-lg-4 col-xl-4 col-xxl-2">
+                                                        <label class="floating-label-activo-sm">Trabajo Requerido</label>
+                                                        <input type="text" class="form-control form-control-sm" name="lab_ord_trab" id="lab_ord_trab" value="${o.trabajo_realizar || ''}">
+                                                    </div>
+                                                    <div class="form-group col-sm-12 col-md-4 col-lg-4 col-xl-4 col-xxl-2">
+                                                        <label class="floating-label-activo-sm">F.envío</label>
+                                                        <input type="text" class="form-control form-control-sm" name="lab_fenv" id="lab_fenv" value="${o.fecha_envio || ''}">
+                                                    </div>
+                                                    <div class="form-group col-sm-12 col-md-4 col-lg-4 col-xl-4 col-xxl-2">
+                                                        <label class="floating-label-activo-sm">F.entrega</label>
+                                                        <input type="text" class="form-control form-control-sm" name="lab_fent" id="lab_fent" value="${o.fecha_entrega || ''}">
+                                                    </div>
+                                                    <div class="form-group col-sm-12 col-md-4 col-lg-4 col-xl-4 col-xxl-2">
+                                                        <label class="floating-label-activo-sm">Estado</label>
+                                                        <input type="text" class="form-control form-control-sm" name="lab_est" id="lab_est" value="${estadoTexto}">
+                                                    </div>
+                                                    <div class="form-group col-sm-12 col-md-4 col-lg-4 col-xl-4 col-xxl-2">
+                                                        <label class="floating-label-activo-sm">N° Identificación</label>
+                                                        <input type="text" class="form-control form-control-sm" name="lab_id_trab" id="lab_id_trab" value="${o.nro_orden || ''}">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                                        <label class="floating-label-activo-sm">Observaciones</label>
+                                                        <textarea class="form-control caja-texto form-control-sm" rows="1" onfocus="this.rows=4" onblur="this.rows=1;" name="obs_est_trab_lab" id="obs_est_trab_lab">${o.observaciones || ''}</textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                        });
+                        // Usar contenedor diferente para no interferir con la línea original
+                        $('#contenedor_ordenes_trabajos_mayores_dental').html(htmlTrabajosMayores);
+                    }
+                    
+                    
+                    // Reemplazar resumen
+                    $('#resumen_costos_lab').replaceWith(response.resumen);
+                    let valores_boca_general = response.valores[0];
+                    let valores_odontograma = response.valores[1];
+                    let valores_insumos = response.valores[2];
+                    let valores_lab = response.valores[3];
+                    let total_general = valores_boca_general + valores_odontograma + valores_insumos + valores_lab;
+                    $('#valores_examenes_presupuesto').html(formatoMoneda(valores_boca_general));
+                    $('#valores_examenes_presupuesto_conf').html(formatoMoneda(valores_boca_general));
+                    $('#valores_piezas_presupuesto').html(formatoMoneda(valores_odontograma));
+                    $('#valores_piezas_presupuesto_conf').html(formatoMoneda(valores_odontograma));
+                    $('#valores_total_final_presupuesto').html(formatoMoneda(total_general));
+                    $('#valores_total_final_presupuesto_conf').html(formatoMoneda(total_general));
+                    $('#subtotal_clinico').val(formatoMoneda(total_general));
+                    $('#total_clinico').val(formatoMoneda(total_general));
+                }else{
+                    swal({
+                        title:'Error',
+                        text:response.mensaje,
+                        icon:'error'
+                    });
+                }
+            },
+            error: function(error) {
+                swal.close();
+                console.log(error.responseText);
+            }
+        });
+    }
+
+    function llenarTablaTrabajosMenores(ordenes) {
+        // Limpiar el tbody de la tabla
+        $('#table_trabajos_menores_dental tbody').empty();
+        
+        // Si hay órdenes, llenar la tabla
+        if(ordenes && ordenes.length > 0) {
+            ordenes.forEach(function(orden) {
+                let fila = `
+                    <tr role="row">
+                        <td class="sorting_1">${orden.nro_orden || ''}</td>
+                        <td>${orden.clinica_doctor || ''}</td>
+                        <td>${orden.guia || ''}</td>
+                        <td>${orden.color || ''}</td>
+                        <td>${orden.urgencia || ''}</td>
+                        <td>${orden.material || ''}</td>
+                        <td>${orden.trabajo_realizar || ''}</td>
+                        <td>
+                            <button type="button" class="btn btn-icon btn-primary" onclick="generar_pdf_trabajo_menor_dental(${orden.id})">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button type="button" class="btn btn-icon btn-danger" onclick="eliminar_trabajo_menor_dental(${orden.id})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                $('#table_trabajos_menores_dental tbody').append(fila);
+            });
+        } else {
+            // Si no hay órdenes, mostrar fila vacía
+            $('#table_trabajos_menores_dental tbody').append(`
+                <tr role="row" class="odd">
+                    <td class="sorting_1" colspan="8" style="text-align: center;">No hay órdenes de trabajo registradas</td>
+                </tr>
+            `);
+        }
+    }
+
+    function verDetalleOrden(id) {
+        // Implementar lógica para ver detalle de la orden
+        console.log('Ver detalle de orden:', id);
+    }
+
+    function editarOrden(id) {
+        // Implementar lógica para editar la orden
+        console.log('Editar orden:', id);
+    }
+
+    function eliminarOrden(id) {
+        // Implementar lógica para eliminar la orden
+        swal({
+            title: "¿Está seguro?",
+            text: "¿Desea eliminar esta orden de trabajo?",
+            icon: "warning",
+            buttons: ["Cancelar", "Eliminar"],
+            dangerMode: true,
+        }).then((willDelete) => {
+            if (willDelete) {
+                // Aquí iría la lógica AJAX para eliminar
+                console.log('Eliminando orden:', id);
+            }
+        });
+    }
+
+    function llenarTablaTrabajosMayores(ordenes) {
+        // Limpiar el tbody de la tabla
+        $('#table_trabajos_mayores_dental tbody').empty();
+        
+        // Si hay órdenes, llenar la tabla
+        if(ordenes && ordenes.length > 0) {
+            ordenes.forEach(function(orden) {
+                let fila = `
+                    <tr role="row">
+                        <td>${orden.nro_orden || ''}</td>
+                        <td>${orden.clinica_doctor || ''}</td>
+                        <td>${orden.guia || ''}</td>
+                        <td>${orden.color || ''}</td>
+                        <td>${orden.urgencia || ''}</td>
+                        <td>${orden.material || ''}</td>
+                        <td>${orden.trabajo_realizar || ''}</td>
+                        <td>
+                            <button type="button" class="btn btn-icon btn-primary" onclick="generar_pdf_trabajo_mayor_dental(${orden.id})">
+                                <i class="fas fa-eye"></i> 
+                            </button>
+                            <button type="button" class="btn btn-icon btn-danger" onclick="eliminar_trabajo_mayor_dental(${orden.id})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                $('#table_trabajos_mayores_dental tbody').append(fila);
+            });
+        } else {
+            // Si no hay órdenes, mostrar fila vacía
+            $('#table_trabajos_mayores_dental tbody').append(`
+                <tr role="row" class="odd">
+                    <td colspan="8" style="text-align: center;">No hay órdenes de trabajo mayor registradas</td>
+                </tr>
+            `);
+        }
+    }
+
+    function verDetalleOrdenMayor(id) {
+        // Implementar lógica para ver detalle de la orden mayor
+        console.log('Ver detalle de orden mayor:', id);
+    }
+
+    function generarPdfTrabajoMayor(id) {
+        // Generar PDF para trabajo mayor
+        let url = "{{ route('dental.generar_pdf_trabajo_mayor') }}";
+        let data = {
+            id_trabajo: id,
+            _token: CSRF_TOKEN
+        }
+
+        $.ajax({
+            type: 'post',
+            url: url,
+            data: data,
+            beforeSend: function(){
+                swal({
+                    title: 'Generando PDF...',
+                    text: 'Por favor, espere mientras se genera el documento.',
+                    icon: 'info',
+                    buttons: false,
+                    closeOnClickOutside: false
+                });
+            },
+            success: function(response) {
+                swal.close();
+                if(response.estado == 'ok') {
+                    swal({
+                        title: 'PDF Generado',
+                        text: 'El documento se ha generado correctamente.',
+                        icon: 'success'
+                    });
+                    // Abrir el PDF en nueva ventana
+                    window.open(response.ruta, '_blank');
+                } else {
+                    swal({
+                        title: 'Error',
+                        text: response.mensaje || 'Error al generar el PDF',
+                        icon: 'error'
+                    });
+                }
+            },
+            error: function(error) {
+                swal.close();
+                console.log(error.responseText);
+                swal({
+                    title: 'Error',
+                    text: 'Error al generar el PDF',
+                    icon: 'error'
+                });
+            }
+        });
+    }
+
+    function editarOrdenMayor(id) {
+        // Implementar lógica para editar la orden mayor
+        console.log('Editar orden mayor:', id);
+    }
+
+    function eliminarOrdenMayor(id) {
+        // Implementar lógica para eliminar la orden mayor
+        swal({
+            title: "¿Está seguro?",
+            text: "¿Desea eliminar esta orden de trabajo mayor?",
+            icon: "warning",
+            buttons: ["Cancelar", "Eliminar"],
+            dangerMode: true,
+        }).then((willDelete) => {
+            if (willDelete) {
+                // Aquí iría la lógica AJAX para eliminar
+                console.log('Eliminando orden mayor:', id);
             }
         });
     }

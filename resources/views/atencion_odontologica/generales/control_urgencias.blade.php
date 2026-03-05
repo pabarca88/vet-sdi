@@ -317,134 +317,142 @@
                                                                                             name="paciente_piezas_dentales_urg"
                                                                                             id="paciente_piezas_dentales_urg"
                                                                                             multiple="multiple">
-                                                                                            <option
-                                                                                                value="1.1">
-                                                                                                1.1
-                                                                                            </option>
-                                                                                            <option
-                                                                                                value="1.2">
-                                                                                                1.2
-                                                                                            </option>
-                                                                                            <option
-                                                                                                value="1.3">
-                                                                                                1.3
-                                                                                            </option>
-                                                                                            <option
-                                                                                                value="1.4">
-                                                                                                1.4
-                                                                                            </option>
-                                                                                            <option
-                                                                                                value="1.5">
-                                                                                                1.5
-                                                                                            </option>
-                                                                                            <option
-                                                                                                value="1.6">
-                                                                                                1.6
-                                                                                            </option>
-                                                                                            <option
-                                                                                                value="1.7">
-                                                                                                1.7
-                                                                                            </option>
-                                                                                            <option
-                                                                                                value="1.8">
-                                                                                                1.8
-                                                                                            </option>
-                                                                                            <option
-                                                                                                value="2.1">
-                                                                                                2.1
-                                                                                            </option>
-                                                                                            <option
-                                                                                                value="2.2">
-                                                                                                2.2
-                                                                                            </option>
-                                                                                            <option
-                                                                                                value="2.3">
-                                                                                                2.3
-                                                                                            </option>
-                                                                                            <option
-                                                                                                value="2.4">
-                                                                                                2.4
-                                                                                            </option>
-                                                                                            <option
-                                                                                                value="2.5">
-                                                                                                2.5
-                                                                                            </option>
-                                                                                            <option
-                                                                                                value="2.6">
-                                                                                                2.6
-                                                                                            </option>
-                                                                                            <option
-                                                                                                value="2.7">
-                                                                                                2.7
-                                                                                            </option>
-                                                                                            <option
-                                                                                                value="2.8">
-                                                                                                2.8
-                                                                                            </option>
-                                                                                            <option
-                                                                                                value="3.1">
-                                                                                                3.1
-                                                                                            </option>
-                                                                                            <option
-                                                                                                value="3.2">
-                                                                                                3.2
-                                                                                            </option>
-                                                                                            <option
-                                                                                                value="3.3">
-                                                                                                3.3
-                                                                                            </option>
-                                                                                            <option
-                                                                                                value="3.4">
-                                                                                                3.4
-                                                                                            </option>
-                                                                                            <option
-                                                                                                value="3.5">
-                                                                                                3.5
-                                                                                            </option>
-                                                                                            <option
-                                                                                                value="3.6">
-                                                                                                3.6
-                                                                                            </option>
-                                                                                            <option
-                                                                                                value="3.7">
-                                                                                                3.7
-                                                                                            </option>
-                                                                                            <option
-                                                                                                value="3.8">
-                                                                                                3.8
-                                                                                            </option>
-                                                                                            <option
-                                                                                                value="4.1">
-                                                                                                4.1
-                                                                                            </option>
-                                                                                            <option
-                                                                                                value="4.2">
-                                                                                                4.2
-                                                                                            </option>
-                                                                                            <option
-                                                                                                value="4.3">
-                                                                                                4.3
-                                                                                            </option>
-                                                                                            <option
-                                                                                                value="4.4">
-                                                                                                4.4
-                                                                                            </option>
-                                                                                            <option
-                                                                                                value="4.5">
-                                                                                                4.5
-                                                                                            </option>
-                                                                                            <option
-                                                                                                value="4.6">
-                                                                                                4.6
-                                                                                            </option>
-                                                                                            <option
-                                                                                                value="4.7">
-                                                                                                4.7
-                                                                                            </option>
-                                                                                            <option
-                                                                                                value="4.8">
-                                                                                                4.8
-                                                                                            </option>
+                                                                                            @if (request()->filled('id_mascota'))
+                                                                                                @foreach (array_merge(range(109, 101), range(201, 209), range(409, 401), range(301, 309)) as $piezaUrgencia)
+                                                                                                    <option value="{{ $piezaUrgencia }}">
+                                                                                                        {{ $piezaUrgencia }}
+                                                                                                    </option>
+                                                                                                @endforeach
+                                                                                            @else
+                                                                                                <option
+                                                                                                    value="1.1">
+                                                                                                    1.1
+                                                                                                </option>
+                                                                                                <option
+                                                                                                    value="1.2">
+                                                                                                    1.2
+                                                                                                </option>
+                                                                                                <option
+                                                                                                    value="1.3">
+                                                                                                    1.3
+                                                                                                </option>
+                                                                                                <option
+                                                                                                    value="1.4">
+                                                                                                    1.4
+                                                                                                </option>
+                                                                                                <option
+                                                                                                    value="1.5">
+                                                                                                    1.5
+                                                                                                </option>
+                                                                                                <option
+                                                                                                    value="1.6">
+                                                                                                    1.6
+                                                                                                </option>
+                                                                                                <option
+                                                                                                    value="1.7">
+                                                                                                    1.7
+                                                                                                </option>
+                                                                                                <option
+                                                                                                    value="1.8">
+                                                                                                    1.8
+                                                                                                </option>
+                                                                                                <option
+                                                                                                    value="2.1">
+                                                                                                    2.1
+                                                                                                </option>
+                                                                                                <option
+                                                                                                    value="2.2">
+                                                                                                    2.2
+                                                                                                </option>
+                                                                                                <option
+                                                                                                    value="2.3">
+                                                                                                    2.3
+                                                                                                </option>
+                                                                                                <option
+                                                                                                    value="2.4">
+                                                                                                    2.4
+                                                                                                </option>
+                                                                                                <option
+                                                                                                    value="2.5">
+                                                                                                    2.5
+                                                                                                </option>
+                                                                                                <option
+                                                                                                    value="2.6">
+                                                                                                    2.6
+                                                                                                </option>
+                                                                                                <option
+                                                                                                    value="2.7">
+                                                                                                    2.7
+                                                                                                </option>
+                                                                                                <option
+                                                                                                    value="2.8">
+                                                                                                    2.8
+                                                                                                </option>
+                                                                                                <option
+                                                                                                    value="3.1">
+                                                                                                    3.1
+                                                                                                </option>
+                                                                                                <option
+                                                                                                    value="3.2">
+                                                                                                    3.2
+                                                                                                </option>
+                                                                                                <option
+                                                                                                    value="3.3">
+                                                                                                    3.3
+                                                                                                </option>
+                                                                                                <option
+                                                                                                    value="3.4">
+                                                                                                    3.4
+                                                                                                </option>
+                                                                                                <option
+                                                                                                    value="3.5">
+                                                                                                    3.5
+                                                                                                </option>
+                                                                                                <option
+                                                                                                    value="3.6">
+                                                                                                    3.6
+                                                                                                </option>
+                                                                                                <option
+                                                                                                    value="3.7">
+                                                                                                    3.7
+                                                                                                </option>
+                                                                                                <option
+                                                                                                    value="3.8">
+                                                                                                    3.8
+                                                                                                </option>
+                                                                                                <option
+                                                                                                    value="4.1">
+                                                                                                    4.1
+                                                                                                </option>
+                                                                                                <option
+                                                                                                    value="4.2">
+                                                                                                    4.2
+                                                                                                </option>
+                                                                                                <option
+                                                                                                    value="4.3">
+                                                                                                    4.3
+                                                                                                </option>
+                                                                                                <option
+                                                                                                    value="4.4">
+                                                                                                    4.4
+                                                                                                </option>
+                                                                                                <option
+                                                                                                    value="4.5">
+                                                                                                    4.5
+                                                                                                </option>
+                                                                                                <option
+                                                                                                    value="4.6">
+                                                                                                    4.6
+                                                                                                </option>
+                                                                                                <option
+                                                                                                    value="4.7">
+                                                                                                    4.7
+                                                                                                </option>
+                                                                                                <option
+                                                                                                    value="4.8">
+                                                                                                    4.8
+                                                                                                </option>
+                                                                                            @endif
                                                                                         </select>
                                                                                     </div>
                                                                                 </div>
@@ -2152,6 +2160,52 @@
             $('#id_tratamiento').val(id);
         }
 
+        function construirBotonesPiezaUrgencia(idPieza) {
+            return '<button type="button" class="btn btn-danger btn-icon" onclick="eliminar_odontograma_urg(' +
+                idPieza + ')"><i class="feather icon-x"> </i> </button>' +
+                '<button type="button" class="btn btn-warning btn-icon" onclick="cambiar_estado_pieza_urg(' +
+                idPieza + ')"><i class="feather icon-repeat"> </i> </button>';
+        }
+
+        function obtenerDiagnosticoPiezaUrgencia(pieza) {
+            const diagnostico = pieza?.diagnostico_descripcion ??
+                pieza?.descripcion_diagnostico ??
+                pieza?.nombre_diagnostico ??
+                pieza?.diagnostico;
+
+            if (diagnostico === null || diagnostico === undefined || diagnostico === '') {
+                return '-';
+            }
+
+            return diagnostico;
+        }
+
+        function construirFilaPiezaUrgencia(pieza, estado, tableSelector) {
+            const tieneDiagnostico = $(`${tableSelector} thead th`).length >= 6;
+            const tratamiento = pieza.descripcion ?? pieza.tratamiento ?? '-';
+            const valor = formatoMoneda(formatoMoneda(pieza.valor));
+            const botones = construirBotonesPiezaUrgencia(pieza.id);
+
+            if (tieneDiagnostico) {
+                return [
+                    pieza.pieza,
+                    obtenerDiagnosticoPiezaUrgencia(pieza),
+                    tratamiento,
+                    valor,
+                    botones,
+                    estado
+                ];
+            }
+
+            return [
+                pieza.pieza,
+                tratamiento,
+                valor,
+                botones,
+                estado
+            ];
+        }
+
         function cargar_a_presupuesto_urg() {
             // preguntar si desea eliminar
             swal({
@@ -2186,7 +2240,7 @@
         function cargar_a_presupuesto_odped_g_urg_confirmar(){
             console.log('cargando');
             // Obtener los valores seleccionados en el select
-            var piezasSeleccionadas = $('#paciente_piezas_dentales_ex_odped_urg').val();
+            var piezasSeleccionadas = $('#paciente_piezas_dentales_ex_odped_urg').val() || [];
             var ttoPiezas = $('#diag_presupuesto_pieza_g_odped_urg').val();
             var diagnostico = $('#diag_presupuesto_diagnostico_odped_urg').val();
 
@@ -2232,6 +2286,7 @@
                 id_paciente: $('#id_paciente_fc').val(),
                 id_presupuesto: $('#id_presupuesto').val(),
                 urgencia: 1,
+                modo_carga: 'urgencia',
                 _token: "{{ csrf_token() }}"
             }
             console.log(data);
@@ -2382,17 +2437,9 @@
                                 }
                                 if (pieza.presupuesto == 1 && pieza.urgencia == 1) {
                                     // Agregar una nueva fila a la tabla
-                                    let rowNode = table_urg.row.add([
-                                        pieza.pieza,
-                                        pieza.descripcion,
-                                        formatoMoneda(formatoMoneda(pieza.valor)),
-                                        '<button type="button" class="btn btn-danger btn-icon" onclick="eliminar_odontograma_urg(' +
-                                        pieza.id + ')"><i class="feather icon-x"> </i> </button>' +
-                                        '<button type="button" class="btn btn-warning btn-icon" onclick="cambiar_estado_pieza_urg(' +
-                                        pieza.id + ')"><i class="feather icon-repeat"> </i> </button>',
-                                        estado
-
-                                    ]).draw(false).node(); // Obtener el nodo de la fila
+                                    let rowNode = table_urg.row.add(
+                                        construirFilaPiezaUrgencia(pieza, estado, '#table_piezas_odonto_urg_ped')
+                                    ).draw(false).node(); // Obtener el nodo de la fila
                                 }
                         });
 
@@ -2411,17 +2458,9 @@
                                 }
                                 if (pieza.presupuesto == 1 && pieza.urgencia == 1) {
                                     // Agregar una nueva fila a la tabla
-                                    let rowNode = table_urg_gral.row.add([
-                                        pieza.pieza,
-                                        pieza.descripcion,
-                                        formatoMoneda(formatoMoneda(pieza.valor)),
-                                        '<button type="button" class="btn btn-danger btn-icon" onclick="eliminar_odontograma_urg(' +
-                                        pieza.id + ')"><i class="feather icon-x"> </i> </button>' +
-                                        '<button type="button" class="btn btn-warning btn-icon" onclick="cambiar_estado_pieza_urg(' +
-                                        pieza.id + ')"><i class="feather icon-repeat"> </i> </button>',
-                                        estado
-
-                                    ]).draw(false).node(); // Obtener el nodo de la fila
+                                    let rowNode = table_urg_gral.row.add(
+                                        construirFilaPiezaUrgencia(pieza, estado, '#table_piezas_odonto_urg')
+                                    ).draw(false).node(); // Obtener el nodo de la fila
                                 }
                         });
 
@@ -2627,17 +2666,9 @@
                             }
                             if (pieza.presupuesto == 1 && pieza.urgencia == 1) {
                                 // Agregar una nueva fila a la tabla
-                                let rowNode = table_urg.row.add([
-                                    pieza.pieza,
-                                    pieza.descripcion,
-                                    formatoMoneda(formatoMoneda(pieza.valor)),
-                                    '<button type="button" class="btn btn-danger btn-icon" onclick="eliminar_odontograma_urg(' +
-                                    pieza.id + ')"><i class="feather icon-x"> </i> </button>' +
-                                    '<button type="button" class="btn btn-warning btn-icon" onclick="cambiar_estado_pieza_urg(' +
-                                    pieza.id + ')"><i class="feather icon-repeat"> </i> </button>',
-                                    estado
-
-                                ]).draw(false).node(); // Obtener el nodo de la fila
+                                let rowNode = table_urg.row.add(
+                                    construirFilaPiezaUrgencia(pieza, estado, '#table_piezas_odonto_urg')
+                                ).draw(false).node(); // Obtener el nodo de la fila
                             }
                     });
 
@@ -2657,17 +2688,9 @@
                                 var estado = 'CITADO A CONTROL';
                             }
                             // Agregar una nueva fila a la tabla
-                            let rowNode = table_odped.row.add([
-                                pieza.pieza,
-                                pieza.descripcion,
-                                formatoMoneda(formatoMoneda(pieza.valor)),
-                                '<button type="button" class="btn btn-danger btn-icon" onclick="eliminar_odontograma_urg(' +
-                                pieza.id + ')"><i class="feather icon-x"> </i> </button>' +
-                                '<button type="button" class="btn btn-warning btn-icon" onclick="cambiar_estado_pieza_urg(' +
-                                pieza.id + ')"><i class="feather icon-repeat"> </i> </button>',
-                                estado
-
-                            ]).draw(false).node(); // Obtener el nodo de la fila
+                            let rowNode = table_odped.row.add(
+                                construirFilaPiezaUrgencia(pieza, estado, '#table_piezas_odonto_urg_ped')
+                            ).draw(false).node(); // Obtener el nodo de la fila
                         }
                     });
 
@@ -2678,7 +2701,7 @@
 
         function cargar_a_presupuesto_urg_confirmar() {
             // Obtener los valores seleccionados en el select
-            var piezasSeleccionadas = $('#paciente_piezas_dentales_urg').val();
+            var piezasSeleccionadas = $('#paciente_piezas_dentales_urg').val() || [];
             var ttoPiezas = $('#diag_presupuesto_pieza_g_urg').val();
 
             let valido = 1;
@@ -2718,6 +2741,7 @@
                 id_paciente: $('#id_paciente_fc').val(),
                 id_presupuesto: $('#id_presupuesto').val(),
                 urgencia: 1,
+                modo_carga: 'urgencia',
                 _token: "{{ csrf_token() }}"
             }
             console.log(data);
@@ -2868,17 +2892,9 @@
                                 }
                                 if (pieza.presupuesto == 1 && pieza.urgencia == 1) {
                                     // Agregar una nueva fila a la tabla
-                                    let rowNode = table_urg.row.add([
-                                        pieza.pieza,
-                                        pieza.descripcion,
-                                        formatoMoneda(formatoMoneda(pieza.valor)),
-                                        '<button type="button" class="btn btn-danger btn-icon" onclick="eliminar_odontograma_urg(' +
-                                        pieza.id + ')"><i class="feather icon-x"> </i> </button>' +
-                                        '<button type="button" class="btn btn-warning btn-icon" onclick="cambiar_estado_pieza_urg(' +
-                                        pieza.id + ')"><i class="feather icon-repeat"> </i> </button>',
-                                        estado
-
-                                    ]).draw(false).node(); // Obtener el nodo de la fila
+                                    let rowNode = table_urg.row.add(
+                                        construirFilaPiezaUrgencia(pieza, estado, '#table_piezas_odonto_urg')
+                                    ).draw(false).node(); // Obtener el nodo de la fila
                                 }
                         });
 
@@ -2993,6 +3009,13 @@
             });
         }
 
+        function obtenerArcadaUrg(codigo) {
+            const codigoTexto = (codigo || '').toString();
+            if (!codigoTexto) return null;
+
+            return codigoTexto.includes('.') ? codigoTexto.split('.')[0] : codigoTexto.charAt(0);
+        }
+
         function seleccionar_maxilar_superior_urg() {
             const superiorActivo = document.getElementById("max_sup_urg").checked;
             document.getElementById('piezas_presup_urg').checked = false;
@@ -3001,8 +3024,9 @@
 
             piezas.forEach(pieza => {
                 const codigo = pieza.getAttribute('data-pieza_urg');
+                const arcada = obtenerArcadaUrg(codigo);
 
-                if (codigo.startsWith('1.') || codigo.startsWith('2.')) {
+                if (arcada === '1' || arcada === '2') {
                     if (superiorActivo) {
                         pieza.classList.add('seleccionada');
 
@@ -3033,8 +3057,9 @@
 
             piezas.forEach(pieza => {
                 const codigo = pieza.getAttribute('data-pieza_urg');
+                const arcada = obtenerArcadaUrg(codigo);
 
-                if (codigo.startsWith('3.') || codigo.startsWith('4.')) {
+                if (arcada === '3' || arcada === '4') {
                     if (inferiorActivo) {
                         pieza.classList.add('seleccionada');
 
@@ -3131,7 +3156,7 @@
                 piezasSelect.val(null).trigger('change');
 
                 // 2. Quitar clase seleccionada a todas las piezas
-                $('.pieza_implantologia_rehab').removeClass('seleccionada');
+                $('.pieza_urg').removeClass('seleccionada');
 
                 return; // Salimos de la función
             }
@@ -3154,21 +3179,6 @@
             piezasUnicas.forEach(pieza => {
                 $(`.pieza_urg[data-pieza_urg="${pieza}"]`).addClass('seleccionada');
             });
-            // Escuchar cambios en el Select2 para actualizar el odontograma visual
-            piezasSelect.on('change', function() {
-                const piezasSeleccionadas = $(this).val() || [];
-
-                // Recorre todas las piezas visuales
-                $('.pieza_urg').each(function() {
-                    const piezaNumero = $(this).data('pieza_urg').toString();
-
-                    if (piezasSeleccionadas.includes(piezaNumero)) {
-                        $(this).addClass('seleccionada');
-                    } else {
-                        $(this).removeClass('seleccionada');
-                    }
-                });
-            });
         }
 
         function seleccionar_piezas_odped_urg () {
@@ -3187,8 +3197,8 @@
                 return; // Salimos de la función
             }
             // Desmarcar los switches de maxilares
-            document.getElementById('max_inf_odped').checked = false;
-            document.getElementById('max_sup_odped').checked = false;
+            document.getElementById('max_inf_odped_urg').checked = false;
+            document.getElementById('max_sup_odped_urg').checked = false;
 
 
 
@@ -3207,22 +3217,73 @@
             piezasUnicas.forEach(pieza => {
                 $(`.pieza_odped_urg[data-pieza_odpediat_urg="${pieza}"]`).addClass('seleccionada');
             });
-            // Escuchar cambios en el Select2 para actualizar el odontograma visual
-            piezasSelect.on('change', function() {
-                const piezasSeleccionadas = $(this).val() || [];
+        }
 
-                // Recorre todas las piezas visuales
-                $('.pieza_urg').each(function() {
-                    const piezaNumero = $(this).data('pieza_urg').toString();
+        function sincronizarPiezasDesdeSelect(selectSelector, piezaSelector, dataAttr) {
+            const piezasSeleccionadas = $(selectSelector).val() || [];
 
-                    if (piezasSeleccionadas.includes(piezaNumero)) {
-                        $(this).addClass('seleccionada');
-                    } else {
-                        $(this).removeClass('seleccionada');
-                    }
-                });
+            $(piezaSelector).each(function() {
+                const piezaNumero = ($(this).data(dataAttr) || '').toString();
+                $(this).toggleClass('seleccionada', piezasSeleccionadas.includes(piezaNumero));
             });
         }
+
+        function togglePiezaYSelect($pieza, $select, dataAttr) {
+            const piezaNumero = ($pieza.data(dataAttr) || '').toString();
+            if (!piezaNumero) {
+                return;
+            }
+
+            let seleccionadas = $select.val() || [];
+            if (!Array.isArray(seleccionadas)) {
+                seleccionadas = [seleccionadas];
+            }
+            seleccionadas = seleccionadas.map(String);
+
+            if ($pieza.hasClass('seleccionada')) {
+                $pieza.removeClass('seleccionada');
+                seleccionadas = seleccionadas.filter(item => item !== piezaNumero);
+            } else {
+                $pieza.addClass('seleccionada');
+                if (!seleccionadas.includes(piezaNumero)) {
+                    seleccionadas.push(piezaNumero);
+                }
+            }
+
+            $select.val(seleccionadas).trigger('change');
+        }
+
+        $(function() {
+            const selectAdultoUrg = $('#paciente_piezas_dentales_urg');
+            const selectPediUrg = $('#paciente_piezas_dentales_ex_odped_urg');
+
+            $(document)
+                .off('click.urgAdultoPieza', '.pieza_urg')
+                .on('click.urgAdultoPieza', '.pieza_urg', function() {
+                    togglePiezaYSelect($(this), selectAdultoUrg, 'pieza_urg');
+                });
+
+            $(document)
+                .off('click.urgPediPieza', '.pieza_odped_urg')
+                .on('click.urgPediPieza', '.pieza_odped_urg', function() {
+                    togglePiezaYSelect($(this), selectPediUrg, 'pieza_odpediat_urg');
+                });
+
+            selectAdultoUrg
+                .off('change.urgAdultoSync')
+                .on('change.urgAdultoSync', function() {
+                    sincronizarPiezasDesdeSelect('#paciente_piezas_dentales_urg', '.pieza_urg', 'pieza_urg');
+                });
+
+            selectPediUrg
+                .off('change.urgPediSync')
+                .on('change.urgPediSync', function() {
+                    sincronizarPiezasDesdeSelect('#paciente_piezas_dentales_ex_odped_urg', '.pieza_odped_urg', 'pieza_odpediat_urg');
+                });
+
+            sincronizarPiezasDesdeSelect('#paciente_piezas_dentales_urg', '.pieza_urg', 'pieza_urg');
+            sincronizarPiezasDesdeSelect('#paciente_piezas_dentales_ex_odped_urg', '.pieza_odped_urg', 'pieza_odpediat_urg');
+        });
 
         function abrir_modal_insumos_urg() {
             $('#modal_insumos_urgencias').modal('show');

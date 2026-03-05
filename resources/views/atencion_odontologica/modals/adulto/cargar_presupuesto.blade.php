@@ -430,7 +430,7 @@
         function atender_procedimiento(id, nombre_tratamiento, pieza){
             console.log(pieza);
             let url ="{{ route('dental.dame_pieza') }}";
-            let id_paciente = dame_id_paciente();
+            let id_paciente = $('#id_paciente_fc').val();
             if(id_paciente == '' || id_paciente == null){
                 id_paciente = $('#id_paciente').val();
             }
@@ -495,20 +495,14 @@
             let valido = 1;
             let mensaje = '';
 
-            if(id_odontograma == ''){
-                valido = 0;
-                mensaje += '<li>Debe seleccionar pieza</li>';
-
-            }
-
             if(fecha_proc == ''){
                 valido = 0;
                 mensaje += '<li>Debe ingresar la fecha del procedimiento</li>';
             }
-            // if(comentarios_tratamiento == ''){
-            //     valido = 0;
-            //     mensaje += '<li>Debe ingresar los comentarios del tratamiento</li>';
-            // }
+            if(comentarios_tratamiento == ''){
+                valido = 0;
+                mensaje += '<li>Debe ingresar los comentarios del tratamiento</li>';
+            }
 
             if(agenda_control){
                 if(fecha_control == ''){

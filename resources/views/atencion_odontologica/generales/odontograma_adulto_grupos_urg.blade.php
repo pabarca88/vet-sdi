@@ -2,40 +2,44 @@
 @php
     use Illuminate\Support\Str;
 
+    $esMascota = request()->filled('id_mascota');
+
     // Crear un array para almacenar el estado final de cada pieza
     $piezasEstado = [];
-    if(isset($odontograma_historial)){
+    $fuenteHistorialUrg = collect($odontograma_historial ?? $odontograma ?? []);
+    if ($fuenteHistorialUrg->isNotEmpty()) {
         // Agrupar por pieza
         $historialPorPieza = [];
-        foreach ($odontograma_historial as $pieza) {
-            $codigoPieza = $pieza['pieza'];
+        foreach ($fuenteHistorialUrg as $pieza) {
+            $codigoPieza = (string) data_get($pieza, 'pieza', '');
+            if ($codigoPieza === '') {
+                continue;
+            }
             $historialPorPieza[$codigoPieza][] = $pieza;
         }
 
         foreach ($historialPorPieza as $codigoPieza => $historial) {
             $estadoFinal = 'normal';
             foreach ($historial as $pieza) {
-                $tratamiento = $pieza['tratamiento'] ?? '';
-                $diagnostico = $pieza['diagnostico'] ?? '';
-                $estado = $pieza['estado'] ?? '';
+                $tratamiento = Str::lower((string) data_get($pieza, 'tratamiento', data_get($pieza, 'descripcion', '')));
+                $diagnostico = Str::lower((string) data_get($pieza, 'diagnostico', ''));
+                $estado = (string) data_get($pieza, 'estado', '');
 
-                if (Str::contains($diagnostico, 'Carie')) {
+                if (Str::contains($diagnostico, 'carie') || Str::contains($tratamiento, 'carie')) {
                     $estadoFinal = 'carie';
                 }
                 // Prioridad: si hay algún implante con estado 0, es ausente
-                if (Str::contains(Str::lower($tratamiento), 'implante')) {
-                    if ($estado == '0') {
+                if (Str::contains($tratamiento, 'implante') || Str::contains($diagnostico, 'implante')) {
+                    if ($estado === '0') {
                         $estadoFinal = 'ausente';
                         break; // No importa lo demás, es ausente
-                    } else {
-                        $estadoFinal = 'implante';
                     }
+                    $estadoFinal = 'implante';
                 }
 
-                // endodoncia
-                if (Str::contains(Str::lower($tratamiento), 'endodoncia') ||
-                    Str::contains(Str::lower($tratamiento), 'pulpotomia') ||
-                    Str::contains(Str::lower($tratamiento), 'pulpectomia')) {
+                if (Str::contains($tratamiento, 'endodoncia') ||
+                    Str::contains($tratamiento, 'pulpotomia') ||
+                    Str::contains($tratamiento, 'pulpectomia')) {
                     $estadoFinal = 'endodoncia';
                 }
             }
@@ -90,8 +94,77 @@
         color: #fff;
         border-color: #601886;
     }
+
+    .pieza-urg-marca {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+    }
+
+    .pieza-urg-caries {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #ff1f1f;
+        box-shadow: 0 0 0 2px rgba(255, 31, 31, 0.2);
+    }
+
+    .pieza-urg-implante {
+        width: 3px;
+        height: 50px;
+        background: #111;
+        transform: translate(-50%, -50%) rotate(16deg);
+        border-radius: 2px;
+    }
 </style>
-    <div class="odontograma">
+@php
+    if ($esMascota) {
+        $filaSuperior = array_merge(range(109, 101), range(201, 209));
+        $filaInferior = array_merge(range(409, 401), range(301, 309));
+        $imagenTemporalFelino = 'images/dental/dientes/d11.png';
+    }
+@endphp
+<div class="odontograma">
+    @if ($esMascota)
+        <div class="fila mb-3">
+            @foreach ($filaSuperior as $pieza)
+                @php
+                    $codigoPieza = (string) $pieza;
+                    $estadoPieza = $piezasEstado[$codigoPieza] ?? 'normal';
+                @endphp
+                <div class="pieza_urg" data-pieza_urg="{{ $codigoPieza }}">
+                    <img src="{{ asset($imagenTemporalFelino) }}" alt="{{ $codigoPieza }}">
+                    @if ($estadoPieza === 'carie')
+                        <span class="pieza-urg-marca pieza-urg-caries"></span>
+                    @endif
+                    @if ($estadoPieza === 'implante')
+                        <span class="pieza-urg-marca pieza-urg-implante"></span>
+                    @endif
+                    <span>{{ $codigoPieza }}</span>
+                </div>
+            @endforeach
+        </div>
+        <div class="fila">
+            @foreach ($filaInferior as $pieza)
+                @php
+                    $codigoPieza = (string) $pieza;
+                    $estadoPieza = $piezasEstado[$codigoPieza] ?? 'normal';
+                @endphp
+                <div class="pieza_urg" data-pieza_urg="{{ $codigoPieza }}">
+                    <img src="{{ asset($imagenTemporalFelino) }}" alt="{{ $codigoPieza }}">
+                    @if ($estadoPieza === 'carie')
+                        <span class="pieza-urg-marca pieza-urg-caries"></span>
+                    @endif
+                    @if ($estadoPieza === 'implante')
+                        <span class="pieza-urg-marca pieza-urg-implante"></span>
+                    @endif
+                    <span>{{ $codigoPieza }}</span>
+                </div>
+            @endforeach
+        </div>
+    @else
         <!-- Fila superior (1.8 al 1.1 y 2.1 al 2.8) -->
         <div class="fila mb-3">
             @for($i = 18; $i >= 11; $i--)
@@ -221,6 +294,5 @@
                 </div>
             @endfor
         </div>
-    </div>
-
-
+    @endif
+</div>

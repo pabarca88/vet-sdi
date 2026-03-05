@@ -715,10 +715,10 @@
 
     function eliminar_diagnostico(id, tipo_examen){
         swal({
-                    title: "¿Esta seguro que desea ELIMINAR el diagnostico?",
+                    title: "¿Esta seguro que desea ELIMINAR el diagnóstico?",
                     text: "Favor confirme o cancele la solicitud",
                     icon: "warning",
-                    buttons: ["Cancelar", "Confirmar"],
+                    buttons: ["Cancelar", "Solicitar"],
                     dangerMode: true,
                 })
                 .then((willDelete) => {

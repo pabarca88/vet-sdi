@@ -3,7 +3,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="insumosModalLabel">Insumos</h5>
-            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">X</button>
           </div>
           <div class="modal-body">
 
@@ -149,12 +149,13 @@
                     <div class="col-12 d-flex align-items-center">
                         <div class="form-group flex-grow-1">
                             <label for="" class="floating-label-activo-sm">Observaciones</label>
-                            <textarea class="form-control caja-texto form-control-sm mb-9" name="insumos_obs_tto_urgencias" id="insumos_obs_tto_urgencias" cols="30" rows="1" onfocus="this.rows = 4" onblur="this.rows=1"></textarea>
+                            <textarea class="form-control caja-texto form-control-sm mb-9" name="insumos_obs_tto_urg" id="insumos_obs_tto_urg" cols="30" rows="1" onfocus="this.rows = 4" onblur="this.rows=1"></textarea>
                         </div>
                         <button type="button" class="btn btn-icon btn-primary ml-2" onclick="guardar_insumo_urgencias()">
                             <i class="feather icon-shopping-cart"></i>
                         </button>
                     </div>
+
                 </div>
           </div>
           <div class="modal-footer">

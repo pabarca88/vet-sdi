@@ -144,7 +144,7 @@
                 total: total,
                 id_paciente: $('#id_paciente_fc').val(),
                 id_ficha_atencion: $('#id_fc').val(),
-                observaciones: $('#insumos_obs_tto').val(),
+                observaciones: $('#insumos_obs_tto_lab_modal').val(),
                 impl_rehab: 1,
                 _token: CSRF_TOKEN
             }
@@ -173,6 +173,8 @@
 
                         //Limpiar la tabla sin perder la configuración de DataTables
                         table.clear();
+
+
 
                         //Recorrer el array de insumos y agregarlos a la tabla
                         insumos.forEach(insumo => {
@@ -212,7 +214,7 @@
                                     botones
                                 ]);
                             }
-
+                            
                         });
 
                         //Dibujar la tabla nuevamente con los nuevos datos

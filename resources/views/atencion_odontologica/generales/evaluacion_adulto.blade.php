@@ -136,7 +136,7 @@
                                                                             <td class="px-1 py-1">
                                                                                 <select class="form-control form-control-sm" id="diagnostico_{{ $loop->index + 1 }}_1"
                                                                                     name="diagnostico_{{ $loop->index + 1 }}_1">
-                                                                                    <option value="0">Diagnóstico</option>
+                                                                                    <option value="0">Seleccione</option>
                                                                                     @foreach($diagnosticos as $diagnostico)
                                                                                         <option value="{{$diagnostico->id}}">{{$diagnostico->descripcion}} </option>
                                                                                     @endforeach
@@ -251,7 +251,7 @@
                                                                             <td class="px-1 py-1">
                                                                                 <select class="form-control form-control-sm" id="diagnostico_endo_{{ $loop->index + 1 }}_1"
                                                                                     name="diagnostico_endo_{{ $loop->index + 1 }}_1">
-                                                                                    <option value="0">Diagnóstico</option>
+                                                                                    <option value="0">Seleccione</option>
                                                                                     @foreach($diagnosticos as $diagnostico)
                                                                                         <option value="{{$diagnostico->id}}">{{$diagnostico->descripcion}} </option>
                                                                                     @endforeach
@@ -304,7 +304,7 @@
                                                             <div class="table-responsive">
 
                                                                     <input type="hidden" name="ficha_id_atencion_dental_odon2"
-                                                                        id="ficha_id_atencion_dental_odon2">
+                                                                        id="ficha_id_atencion_dental_odon2"
                                                                     {{--   value=" @if ($ficha != null) {{ $ficha->id }} @endif">--}}
                                                                     <input type="hidden" name="paciente_atencion_dental_odon2"
                                                                         id="paciente_atencion_dental_odon2" value="{{ $paciente->id }}">
@@ -1688,7 +1688,8 @@
                     let data = [];
 
                     odontograma.forEach(function(odonto) {
-                        let switchPresupuesto = `
+                        if(odonto.urgencia == 0){
+let switchPresupuesto = `
                             <div class="custom-control custom-switch">
                                 <input type="checkbox" class="custom-control-input" id="presupuestoCheck${odonto.id}"
                                     value="${odonto.id}" ${odonto.presupuesto == 1 ? 'checked' : ''}
@@ -1716,6 +1717,8 @@
                             switchPresupuesto,
                             switchSeleccion
                         ]);
+                        }
+                        
                     });
 
                     // Agrega las nuevas filas
@@ -1836,7 +1839,8 @@
                     let data = [];
 
                     odontograma.forEach(function(odonto) {
-                        let switchPresupuesto = `
+                        if(odonto.urgencia == 0){
+let switchPresupuesto = `
                             <div class="custom-control custom-switch">
                                 <input type="checkbox" class="custom-control-input" id="presupuestoCheck${odonto.id}"
                                     value="${odonto.id}" ${odonto.presupuesto == 1 ? 'checked' : ''}
@@ -1864,15 +1868,17 @@
                             switchPresupuesto,
                             switchSeleccion
                         ]);
+                        }
+                        
                     });
 
                     // Agrega las nuevas filas
                     table.rows.add(data).draw();
 
-
+                    
                     $('#table_trabajos_presupuesto tbody').empty();
                     odontograma.forEach(function(odonto){
-
+                        
                         $('#table_trabajos_presupuesto tbody').append(`
                             <tr>
                                 <td>${odonto.fecha}</td>
@@ -1976,6 +1982,7 @@
                     let data = [];
 
                     odontograma.forEach(function(odonto) {
+                        if(odonto.urgencia == 0){
                         let switchPresupuesto = `
                             <div class="custom-control custom-switch">
                                 <input type="checkbox" class="custom-control-input" id="presupuestoCheck${odonto.id}"
@@ -2004,16 +2011,17 @@
                             switchPresupuesto,
                             switchSeleccion
                         ]);
+                        }
                     });
 
                     // Agrega las nuevas filas
                     table.rows.add(data).draw();
 
-
+                    
                     $('#table_trabajos_presupuesto tbody').empty();
                     odontograma.forEach(function(odonto){
                         if(odonto.presupuesto == 1){
-
+                            
                             $('#table_trabajos_presupuesto tbody').append(`
                                 <tr>
                                     <td>${odonto.fecha}</td>
@@ -2118,6 +2126,7 @@
                     let data = [];
 
                     odontograma.forEach(function(odonto) {
+                        if(odonto.urgencia == 0){
                         let switchPresupuesto = `
                             <div class="custom-control custom-switch">
                                 <input type="checkbox" class="custom-control-input" id="presupuestoCheck${odonto.id}"
@@ -2146,16 +2155,17 @@
                             switchPresupuesto,
                             switchSeleccion
                         ]);
+                        }
                     });
 
                     // Agrega las nuevas filas
                     table.rows.add(data).draw();
 
-
+                    
                     $('#table_trabajos_presupuesto tbody').empty();
                     odontograma.forEach(function(odonto){
                         if(odonto.presupuesto == 1){
-
+                            
                             $('#table_trabajos_presupuesto tbody').append(`
                                 <tr>
                                     <td>${odonto.fecha}</td>
@@ -2261,6 +2271,7 @@
                     let data = [];
 
                     odontograma.forEach(function(odonto) {
+                        if(odonto.urgencia == 0){
                         let switchPresupuesto = `
                             <div class="custom-control custom-switch">
                                 <input type="checkbox" class="custom-control-input" id="presupuestoCheck${odonto.id}"
@@ -2289,16 +2300,17 @@
                             switchPresupuesto,
                             switchSeleccion
                         ]);
+                        }
                     });
 
                     // Agrega las nuevas filas
                     table.rows.add(data).draw();
 
-
+                    
                     $('#table_trabajos_presupuesto tbody').empty();
                     odontograma.forEach(function(odonto){
                         if(odonto.presupuesto == 1){
-
+                            
                             $('#table_trabajos_presupuesto tbody').append(`
                                 <tr>
                                     <td>${odonto.fecha}</td>
@@ -2404,6 +2416,7 @@
                     let data = [];
 
                     odontograma.forEach(function(odonto) {
+                        if(odonto.urgencia == 0){
                         let switchPresupuesto = `
                             <div class="custom-control custom-switch">
                                 <input type="checkbox" class="custom-control-input" id="presupuestoCheck${odonto.id}"
@@ -2432,16 +2445,17 @@
                             switchPresupuesto,
                             switchSeleccion
                         ]);
+                        }
                     });
 
                     // Agrega las nuevas filas
                     table.rows.add(data).draw();
 
-
+                    
                     $('#table_trabajos_presupuesto tbody').empty();
                     odontograma.forEach(function(odonto){
                         if(odonto.presupuesto == 1){
-
+                            
                         $('#table_trabajos_presupuesto tbody').append(`
                             <tr>
                                 <td>${odonto.fecha}</td>
@@ -2491,147 +2505,154 @@
     }
 
     function eliminar_seleccionados() {
-        // Obtener todos los checkboxes seleccionados
-        const seleccionados = [];
-        document.querySelectorAll('.checkbox-seleccion:checked').forEach((checkbox) => {
-            seleccionados.push(checkbox.value);
-        });
+    // Obtener todos los checkboxes seleccionados
+    const seleccionados = [];
+    document.querySelectorAll('.checkbox-seleccion:checked').forEach((checkbox) => {
+        seleccionados.push(checkbox.value);
+    });
 
-        // Validar que haya elementos seleccionados
-        if (seleccionados.length === 0) {
-            alert("Por favor, seleccione al menos un odontograma para eliminar.");
-            return;
-        }
-
-        // Confirmación antes de proceder
-        if (!confirm("¿Está seguro de que desea eliminar los elementos seleccionados?")) {
-            return;
-        }
-
-        // Enviar los IDs por AJAX
-        $.ajax({
-            type: 'POST',
-            url: "{{ route('dental.eliminar_odontograma') }}",  // Ruta del backend para eliminar
-            data: {
-                ids: seleccionados,  // Array de IDs seleccionados
-                id_paciente: dame_id_paciente(),
-                id_ficha_atencion: $('#id_fc').val(),
-                id_lugar_atencion: $('#id_lugar_atencion').val(),
-                _token: "{{ csrf_token() }}"  // CSRF token para seguridad
-            },
-            success: function (response) {
-                console.log(response);
-                        if(response.status == 1){
-                            swal({
-                                title: 'Odontograma',
-                                text: response.mensaje,
-                                icon: 'success'
-                            });
-
-                            let odontograma = response.odontograma_paciente;
-                            let html = '';
-                            odontograma.forEach(function(odonto){
-                                html += '<tr>';
-                                html += '<td>'+odonto.fecha+'</td>';
-                                html += '<td>'+odonto.tratamiento+'</td>';
-                                html += '<td>'+odonto.caras+'</td>';
-                                html += '<td>'+odonto.pieza+'</td>';
-                                html += '<td>'+odonto.diagnostico+'</td>';
-                                html += '<td>'+formatoMoneda(odonto.valor)+'</td>';
-                                // html += '<td>';
-                                // html += '<button type="button" class="btn btn-danger btn-sm" onclick="eliminar_odontograma('+odonto.id+')"><i class="feather icon-x"></i>Eliminar</button>';
-                                // if(odonto.presupuesto == 0){
-                                //     html += '<button type="button" class="btn btn-primary btn-sm" onclick="cargar_a_presupuesto('+odonto.id+')"><i class="fas fa-save"></i>Cargar a presupuesto</button>';
-                                // }else{
-                                //     html += '<button type="button" class="btn btn-danger btn-sm" onclick="sacar_de_presupuesto('+odonto.id+')"><i class="fas fa-trash"></i>Sacar de presupuesto</button>';
-                                // }
-                                // html += '</td>';
-                                // Checkbox para seleccionar el odontograma
-                                html += '<td>';
-                                html += '<div class="form-check">';
-                                html += '<input class="form-check-input" type="checkbox" value="' + odonto.id + '" '
-                                html += odonto.presupuesto == 1 ? 'checked ' : '';
-                                html += 'onchange="togglePresupuesto(' + odonto.id + ',this.checked)">';
-                                html += '<label class="form-check-label"></label>';
-                                html += '</div>';
-                                html += '</td>';
-                                html += '<td>';
-                                html += '<div class="form-check">';
-                                html += '<input class="form-check-input checkbox-seleccion" type="checkbox" value="' + odonto.id + '" ';
-                                html += 'id="seleccionCheck' + odonto.id + '" ';
-                                html += 'onchange="toggleSeleccion(' + odonto.id + ', this.checked)">';
-                                html += '<label class="form-check-label" for="seleccionCheck' + odonto.id + '"></label>';
-                                html += '</div>';
-                                html += '</td>';
-                                html += '</tr>';
-                            });
-
-                            $('#table_odontograma tbody').html(html);
-
-                            $('#table_trabajos_presupuesto tbody').empty();
-                            odontograma.forEach(function(odonto){
-                                if(odonto.presupuesto == 1){
-
-                                    $('#table_trabajos_presupuesto tbody').append(`
-                                        <tr>
-                                            <td>${odonto.fecha}</td>
-                                            <td>${odonto.diagnostico} </td>
-                                            <td>${odonto.caras} </td>
-                                            <td>${odonto.pieza} </td>
-                                            <td>${odonto.tratamiento} </td>
-                                            <td>${formatoMoneda(formatoMoneda(odonto.valor))} </td>
-                                            <td> </td>
-                                            <td>
-                                                <button type="button" class="btn btn-secondary btn-sm" onclick="atender_procedimiento(${odonto.id},'${odonto.tratamiento}',${odonto.pieza})"><i class="fas fa-check"></i>Atender</button>
-                                            </td>
-                                        </tr>
-                                    `);
-                                }
-                            });
-                            let valores_boca_general = response.valores[0];
-                            let valores_odontograma = response.valores[1];
-                            let total_general = valores_boca_general + valores_odontograma;
-                            $('#valores_examenes_presupuesto').html(formatoMoneda(valores_boca_general));
-                            $('#valores_examenes_presupuesto_conf').html(formatoMoneda(valores_boca_general));
-                            $('#valores_piezas_presupuesto').html(formatoMoneda(valores_odontograma));
-                            $('#valores_piezas_presupuesto_conf').html(formatoMoneda(valores_odontograma));
-                            $('#valores_total_final_presupuesto').html(formatoMoneda(total_general));
-                            $('#valores_total_final_presupuesto_conf').html(formatoMoneda(total_general));
-                            $('#subtotal_presup').val(formatoMoneda(total_general));
-                            $('#odon_adults').empty();
-                            $('#odon_adults').append(response.odontograma_paciente_vista);
-                            let table = $('#presup_estado_pago').DataTable();
-
-                            // Limpiar la tabla antes de agregar nuevas filas
-                            table.clear().draw();
-
-                            // Recorrer el odontograma y agregar nuevas filas
-                            odontograma.forEach(function(odonto) {
-                                if (odonto.presupuesto == 1) {
-                                    // Agregar una nueva fila a la tabla
-                                    let rowNode = table.row.add([
-                                        odonto.descripcion,
-                                        odonto.pieza,
-                                        formatoMoneda(formatoMoneda(odonto.valor)),
-                                        0,
-                                        formatoMoneda(formatoMoneda(odonto.valor)),
-                                        '',
-                                        '', // Columna vacía
-                                        `<button type="button" class="btn btn-success btn-sm" onclick="atender_procedimiento(${odonto.id},'${odonto.tratamiento}',${odonto.pieza})"><i class="fas fa-plus"></i> Pagar</button>`
-                                    ]).draw(false).node(); // Obtener el nodo de la fila
-
-                                    // Agregar clases a la fila
-                                    $(rowNode).addClass('text-center align-middle');
-                                }
-                            });
-                        }
-            },
-            error: function (error) {
-                alert("Hubo un error al eliminar los elementos.");
-                console.error(error);
-            }
-        });
+    // Validar que haya elementos seleccionados
+    if (seleccionados.length === 0) {
+        alert("Por favor, seleccione al menos un odontograma para eliminar.");
+        return;
     }
+
+    // Confirmación antes de proceder
+    if (!confirm("¿Está seguro de que desea eliminar los elementos seleccionados?")) {
+        return;
+    }
+
+    // Enviar los IDs por AJAX
+    $.ajax({
+        type: 'POST',
+        url: "{{ route('dental.eliminar_odontograma') }}",  // Ruta del backend para eliminar
+        data: {
+            ids: seleccionados,  // Array de IDs seleccionados
+            id_paciente: $('#id_paciente').val(),
+            id_ficha_atencion: $('#id_fc').val(),
+            id_lugar_atencion: $('#id_lugar_atencion').val(),
+            _token: "{{ csrf_token() }}"  // CSRF token para seguridad
+        },
+        success: function (response) {
+            console.log(response);
+                    if(response.status == 1){
+                        swal({
+                            title: 'Odontograma',
+                            text: response.mensaje,
+                            icon: 'success'
+                        });
+
+                        let odontograma = response.odontograma_paciente;
+                        let html = '';
+                        let table_odontograma = $('#table_odontograma').DataTable();
+
+                            // Vacía la tabla
+                            table_odontograma.clear();
+
+                            // Genera los datos (array de arrays o de objetos si usas columns)
+                            let data = [];
+
+                            odontograma.forEach(function(odonto) {
+                                if(odonto.urgencia == 0){
+                                    let switchPresupuesto = `
+                                        <div class="custom-control custom-switch">
+                                            <input type="checkbox" class="custom-control-input" id="presupuestoCheck${odonto.id}"
+                                                value="${odonto.id}" ${odonto.presupuesto == 1 ? 'checked' : ''}
+                                                onchange="togglePresupuesto(${odonto.id}, this.checked)">
+                                            <label class="custom-control-label" for="presupuestoCheck${odonto.id}"></label>
+                                        </div>
+                                    `;
+
+                                    let switchSeleccion = `
+                                        <div class="custom-control custom-switch">
+                                            <input type="checkbox" class="custom-control-input checkbox-seleccion"
+                                                id="seleccionCheck${odonto.id}" value="${odonto.id}"
+                                                onchange="toggleSeleccion(${odonto.id}, this.checked)">
+                                            <label class="custom-control-label" for="seleccionCheck${odonto.id}"></label>
+                                        </div>
+                                    `;
+
+                                    data.push([
+                                        odonto.fecha,
+                                        odonto.tratamiento,
+                                        odonto.caras,
+                                        odonto.pieza,
+                                        odonto.diagnostico,
+                                        formatoMoneda(formatoMoneda(odonto.valor)),
+                                        switchPresupuesto,
+                                        switchSeleccion
+                                    ]);
+                                }
+                                
+                            });
+
+                            // Agrega las nuevas filas
+                            table_odontograma.rows.add(data).draw();
+                        
+                        $('#table_trabajos_presupuesto tbody').empty();
+                        odontograma.forEach(function(odonto){
+                            if(odonto.presupuesto == 1){
+                                
+                                $('#table_trabajos_presupuesto tbody').append(`
+                                    <tr>
+                                        <td>${odonto.fecha}</td>
+                                        <td>${odonto.diagnostico} </td>
+                                        <td>${odonto.caras} </td>
+                                        <td>${odonto.pieza} </td>
+                                        <td>${odonto.tratamiento} </td>
+                                        <td>${formatoMoneda(formatoMoneda(odonto.valor))} </td>
+                                        <td> </td>
+                                        <td>
+                                            <button type="button" class="btn btn-secondary btn-sm" onclick="atender_procedimiento(${odonto.id},'${odonto.tratamiento}',${odonto.pieza})"><i class="fas fa-check"></i>Atender</button>
+                                        </td>
+                                    </tr>
+                                `);
+                            }
+                        });
+                        let valores_boca_general = response.valores[0];
+                        let valores_odontograma = response.valores[1];
+                        let total_general = valores_boca_general + valores_odontograma;
+                        $('#valores_examenes_presupuesto').html(formatoMoneda(valores_boca_general));
+                        $('#valores_examenes_presupuesto_conf').html(formatoMoneda(valores_boca_general));
+                        $('#valores_piezas_presupuesto').html(formatoMoneda(valores_odontograma));
+                        $('#valores_piezas_presupuesto_conf').html(formatoMoneda(valores_odontograma));
+                        $('#valores_total_final_presupuesto').html(formatoMoneda(total_general));
+                        $('#valores_total_final_presupuesto_conf').html(formatoMoneda(total_general));
+                        $('#subtotal_presup').val(formatoMoneda(total_general));
+                        $('#odon_adults').empty();
+                        $('#odon_adults').append(response.odontograma_paciente_vista);
+                        let table = $('#presup_estado_pago').DataTable();
+
+                        // Limpiar la tabla antes de agregar nuevas filas
+                        table.clear().draw();
+
+                        // Recorrer el odontograma y agregar nuevas filas
+                        odontograma.forEach(function(odonto) {
+                            if (odonto.presupuesto == 1) {
+                                // Agregar una nueva fila a la tabla
+                                let rowNode = table.row.add([
+                                    odonto.descripcion,
+                                    odonto.pieza,
+                                    formatoMoneda(formatoMoneda(odonto.valor)),
+                                    0,
+                                    formatoMoneda(formatoMoneda(odonto.valor)),
+                                    '',
+                                    '', // Columna vacía
+                                    `<button type="button" class="btn btn-success btn-sm" onclick="atender_procedimiento(${odonto.id},'${odonto.tratamiento}',${odonto.pieza})"><i class="fas fa-plus"></i> Pagar</button>`
+                                ]).draw(false).node(); // Obtener el nodo de la fila
+
+                                // Agregar clases a la fila
+                                $(rowNode).addClass('text-center align-middle');
+                            }
+                        });
+                    }
+        },
+        error: function (error) {
+            alert("Hubo un error al eliminar los elementos.");
+            console.error(error);
+        }
+    });
+}
 
 
 </script>

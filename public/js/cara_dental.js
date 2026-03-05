@@ -1,5 +1,5 @@
     function cambiar_color(index,id){
-
+            console.log(index,id);
             if($('#caraV'+index+id).css('background-color') == 'rgb(100, 16, 112)'){
                 $('#caraV'+index+id).css('background-color','#8AC007')
                 $('#caraV_check_'+index+'_'+id).val(0);

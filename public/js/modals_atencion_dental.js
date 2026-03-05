@@ -250,3 +250,211 @@ $('#formularios_atencion').on('click', ".accion_modal_informe", function () {
 	}
 
 
+
+
+        $('#table_tto_boca_gral').DataTable();
+
+        $('#tratamiento_presupuesto').DataTable();
+
+		$('#table_piezas_presupuesto_period').DataTable
+
+        $('#table_trabajos_presupuesto').DataTable({
+            responsive:'true'
+        });
+        $('#presup_estado_pago').DataTable();
+
+        $('#presup_estado_pago_gral').DataTable();
+
+        $('#presup_insumos_pago').DataTable({
+            responsive: 'true'
+        });
+
+        $('#table_pedido_insumos_materiales').DataTable({
+            responsive: 'true'
+        });
+
+        $('#table_profesionales_tons').DataTable({
+            responsive: 'true'
+        });
+
+		$('#table_piezas_presupuesto_period').DataTable();
+
+		 $('#table_trabajos_menores_dental').DataTable();
+            $('#table_trabajos_mayores_dental').DataTable();
+            $('#table_piezas_presupuesto_odonto').DataTable();
+			$('#table_insumos_odon_gral').DataTable();
+
+				$('#table_odontograma').DataTable();
+			$('#table_insumos_period').DataTable();
+			$('#table_antecedentes_unificadas').DataTable();
+
+		const piezasSelect = $('#paciente_piezas_dentales_ex');
+
+        // // Inicializar Select2
+        // piezasSelect.select2();
+
+        // Control de selección de piezas en el odontograma
+        $('.pieza').on('click', function () {
+            const piezaNumero = $(this).data('pieza').toString(); // Convertir a string por seguridad
+
+            if ($(this).hasClass('seleccionada')) {
+                // Si ya está seleccionada, deseleccionarla
+                $(this).removeClass('seleccionada');
+                const options = piezasSelect.val().filter(item => item !== piezaNumero); // Filtra el elemento a eliminar
+                piezasSelect.val(options).trigger('change');
+            } else {
+                // Si no está seleccionada, agregarla
+                $(this).addClass('seleccionada');
+
+                let opcionesSeleccionadas = piezasSelect.val() || [];
+                if (!opcionesSeleccionadas.includes(piezaNumero)) {
+                    opcionesSeleccionadas.push(piezaNumero);
+                }
+
+                piezasSelect.val(opcionesSeleccionadas).trigger('change');
+            }
+        });
+		
+		const piezasSelect_ = $('#paciente_piezas_dentales_urg');
+		// Control de selección de piezas en el odontograma
+		$('.pieza_urg').on('click', function() {
+			const piezaNumero = $(this).data('pieza_urg')
+		.toString(); // Convertir a string por seguridad
+
+			if ($(this).hasClass('seleccionada')) {
+				// Si ya está seleccionada, deseleccionarla
+				$(this).removeClass('seleccionada');
+				const options = piezasSelect_.val().filter(item => item !==
+				piezaNumero); // Filtra el elemento a eliminar
+				piezasSelect_.val(options).trigger('change');
+			} else {
+				// Si no está seleccionada, agregarla
+				$(this).addClass('seleccionada');
+
+				let opcionesSeleccionadas = piezasSelect_.val() || [];
+				if (!opcionesSeleccionadas.includes(piezaNumero)) {
+					opcionesSeleccionadas.push(piezaNumero);
+				}
+
+				piezasSelect_.val(opcionesSeleccionadas).trigger('change');
+			}
+		});
+
+        const piezasSelect_odontop = $('#paciente_piezas_dentales_ex_odped_urg');
+            // Control de selección de piezas en el odontograma
+            $('.pieza_odped_urg').on('click', function() {
+                const piezaNumero = $(this).data('pieza_odpediat_urg')
+            .toString(); // Convertir a string por seguridad
+
+                if ($(this).hasClass('seleccionada')) {
+                    // Si ya está seleccionada, deseleccionarla
+                    $(this).removeClass('seleccionada');
+                    const options = piezasSelect_odontop.val().filter(item => item !==
+                    piezaNumero); // Filtra el elemento a eliminar
+                    piezasSelect_odontop.val(options).trigger('change');
+                } else {
+                    // Si no está seleccionada, agregarla
+                    $(this).addClass('seleccionada');
+
+                    let opcionesSeleccionadas = piezasSelect_odontop.val() || [];
+                    if (!opcionesSeleccionadas.includes(piezaNumero)) {
+                        opcionesSeleccionadas.push(piezaNumero);
+                    }
+
+                    piezasSelect_odontop.val(opcionesSeleccionadas).trigger('change');
+                }
+            });
+    
+		const piezasSelect_period = $('#paciente_piezas_dentales_ex_period');
+
+
+        // Control de selección de piezas en el odontograma
+        $('.pieza_periodoncia').on('click', function () {
+            const piezaNumero = $(this).data('pieza_period').toString(); // Convertir a string por seguridad
+
+            if ($(this).hasClass('seleccionada')) {
+                // Si ya está seleccionada, deseleccionarla
+                $(this).removeClass('seleccionada');
+                const options = piezasSelect_period.val().filter(item => item !== piezaNumero); // Filtra el elemento a eliminar
+                piezasSelect_period.val(options).trigger('change');
+            } else {
+                // Si no está seleccionada, agregarla
+                $(this).addClass('seleccionada');
+
+                let opcionesSeleccionadas = piezasSelect_period.val() || [];
+                if (!opcionesSeleccionadas.includes(piezaNumero)) {
+                    opcionesSeleccionadas.push(piezaNumero);
+                }
+
+                piezasSelect_period.val(opcionesSeleccionadas).trigger('change');
+            }
+        });
+
+		   function seleccionar_maxilar_superior_period() {
+				const superiorActivo = document.getElementById("max_sup_period").checked;
+				document.getElementById('piezas_presup_period').checked = false;
+				const piezas = document.querySelectorAll('.pieza_periodoncia');
+				const select = $('#paciente_piezas_dentales_ex_period');
+
+				piezas.forEach(pieza => {
+					const codigo = pieza.getAttribute('data-pieza_period');
+
+					if (codigo.startsWith('1.') || codigo.startsWith('2.')) {
+						if (superiorActivo) {
+							pieza.classList.add('seleccionada');
+
+							// Selecciona en el Select2 si existe la opción
+							if (select.find("option[value='" + codigo + "']").length > 0) {
+								select.find("option[value='" + codigo + "']").prop("selected", true);
+							}
+						} else {
+							pieza.classList.remove('seleccionada');
+
+							// Deselecciona en el Select2
+							if (select.find("option[value='" + codigo + "']").length > 0) {
+								select.find("option[value='" + codigo + "']").prop("selected", false);
+							}
+						}
+					}
+				});
+
+				// Refresca el select2 para que se vea reflejado el cambio
+				select.trigger('change');
+			}
+    function seleccionar_maxilar_inferior_period(){
+        const inferiorActivo = document.getElementById("max_inf_period").checked;
+        document.getElementById('piezas_presup_period').checked = false;
+        const piezas = document.querySelectorAll('.pieza_periodoncia');
+        const select = $('#paciente_piezas_dentales_ex_period');
+
+        piezas.forEach(pieza => {
+            const codigo = pieza.getAttribute('data-pieza_period');
+
+            if (codigo.startsWith('3.') || codigo.startsWith('4.')) {
+                if (inferiorActivo) {
+                    pieza.classList.add('seleccionada');
+
+                    // Selecciona en el Select2 si existe la opción
+                    if (select.find("option[value='" + codigo + "']").length > 0) {
+                        select.find("option[value='" + codigo + "']").prop("selected", true);
+                    }
+                } else {
+                    pieza.classList.remove('seleccionada');
+
+                    // Deselecciona en el Select2
+                    if (select.find("option[value='" + codigo + "']").length > 0) {
+                        select.find("option[value='" + codigo + "']").prop("selected", false);
+                    }
+                }
+            }
+        });
+
+        // Refresca el select2 para que se vea reflejado el cambio
+        select.trigger('change');
+    }
+
+		
+
+		
+
+

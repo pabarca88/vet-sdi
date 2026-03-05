@@ -3,7 +3,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="insumosModalLabel">Insumos para el tratamiento</h5>
-            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">X</button>
           </div>
           <div class="modal-body">
 
@@ -170,20 +170,84 @@
                             <input type="text" name="total" id="total" class="form-control form-control-sm">
                         </div>
                     </div>
-                      <div class="col-12">
-                          <div class="form-group">
-                              <label for="" class="floating-label-activo-sm">Observaciones</label>
-                              <textarea class="form-control caja-texto form-control-sm mb-9" name="insumos_obs_tto" id="insumos_obs_tto" cols="30" rows="1" onfocus="this.rows = 4" onblur="this.rows=1"></textarea>
-                          </div>
+                    <div class="col-12 d-flex align-items-center">
+                        <div class="form-group flex-grow-1">
+                            <label for="" class="floating-label-activo-sm">Observaciones</label>
+                            <textarea class="form-control caja-texto form-control-sm mb-9" name="insumos_obs_tto" id="insumos_obs_tto" cols="30" rows="1" onfocus="this.rows = 4" onblur="this.rows=1"></textarea>
+                        </div>
+                        <button type="button" class="btn btn-icon btn-primary ml-2" onclick="guardar_insumo()">
+                            <i class="feather icon-shopping-cart"></i>
+                        </button>
+                    </div>
 
                       </div>
-
-                      <button type="button" class="btn btn-outline-success btn-sm w-100 my-2" onclick="guardar_insumo()"><i class="fas fa-check"></i> + Agregar</button>
-                  </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+             
+            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cerrar</button>
           </div>
         </div>
     </div>
 </div>
+<script>
+    function dame_marcas_implantes(value, tipo = 'nuevo'){
+        let id_tipo_insumo = value.value;
+        console.log(id_tipo_insumo);
+        let tipo_insumo_text = value.options[value.selectedIndex].text;
+
+        $('#titulo_tipo_insumo').html(tipo_insumo_text);
+        if(id_tipo_insumo == 1){
+            // quitar la clase d-none al select de marcas
+            $('#marcas_implantes_select').removeClass('d-none');
+            $('#insumos_select').addClass('d-none');
+            if(tipo == 'editar'){
+                $('#marcas_implantes_select_editar').removeClass('d-none');
+                $('#insumos_select_editar').addClass('d-none');
+            }
+        }else{
+            // quitar la clase d-none al select de marcas
+            $('#marcas_implantes_select').addClass('d-none');
+            $('#insumos_select').removeClass('d-none');
+            if(tipo == 'editar'){
+                $('#marcas_implantes_select_editar').addClass('d-none');
+                $('#insumos_select_editar').removeClass('d-none');
+            }
+        }
+        let url = '{{ ROUTE("dental.dame_implantes_dental") }}';
+        let data = {
+            id_tipo_insumo: id_tipo_insumo,
+            _token: CSRF_TOKEN
+        }
+
+        $.ajax({
+            type:'post',
+            url: url,
+            data: data,
+            success: function(resp){
+                console.log(resp);
+                if(tipo == 'editar'){
+                    $('#nombreInsumo_editar').empty();
+                    let insumos = resp;
+                    insumos.forEach(e => {
+                        $('#nombreInsumo_editar').append(`
+                        <option value="${e.id}"> ${e.descripcion} </option>
+                        `);
+                    });
+                    return;
+                }else{
+                    $('#nombreInsumo').empty();
+                    let insumos = resp;
+                    insumos.forEach(e => {
+                        $('#nombreInsumo').append(`
+                        <option value="${e.id}"> ${e.descripcion} </option>
+                        `);
+                    });
+                }
+
+            },
+            error: function(error){
+                console.log(error.responseText);
+            }
+        })
+    }
+</script>

@@ -83,6 +83,7 @@ use App\Models\RecetaPresentacion;
 use App\Models\Region;
 use App\Models\SolicitudPabellonQuirurgico;
 use App\Models\TratamientosImplantologia;
+use App\Models\TratamientosDental;
 use App\Models\TratamientosRehabImplantologia;
 use App\Models\User;
 
@@ -1975,8 +1976,50 @@ class DentalController extends Controller
     public function cargar_tratamiento_presupuesto_period(Request $request){
 
         $profesional = Profesional::where('id_usuario', Auth::user()->id)->first();
+        $esUrgencia = ((int) $request->input('urgencia', 0) === 1) || ($request->input('modo_carga') === 'urgencia');
 
-        $tratamiento = DiagnosticosDental::where('descripcion', $request->tto)->first();
+        $textoTratamiento = trim((string) $request->tto);
+        $tratamiento = DiagnosticosDental::whereRaw('TRIM(descripcion) = ?', [$textoTratamiento])->first();
+        if (!$tratamiento) {
+            $tratamiento = DiagnosticosDental::whereRaw('UPPER(TRIM(descripcion)) = UPPER(?)', [$textoTratamiento])->first();
+        }
+
+        $diagnosticoId = null;
+        if ($request->filled('diagnostico')) {
+            $diagnosticoId = TratamientosDental::where('id', $request->diagnostico)->value('id');
+        }
+
+        if (!$diagnosticoId) {
+            $diagnosticoId = TratamientosDental::whereRaw('UPPER(TRIM(descripcion)) = UPPER(?)', [$textoTratamiento])->value('id');
+        }
+
+        if (!$diagnosticoId) {
+            $textoNormalizado = mb_strtolower($textoTratamiento, 'UTF-8');
+            $diagnosticosCatalogo = TratamientosDental::select('id', 'descripcion')->where('estado', 1)->get();
+            $matchId = null;
+            $matchLen = 0;
+
+            foreach ($diagnosticosCatalogo as $diagnosticoCatalogo) {
+                $descripcionNormalizada = mb_strtolower(trim((string) $diagnosticoCatalogo->descripcion), 'UTF-8');
+                if ($descripcionNormalizada !== '' && str_contains($textoNormalizado, $descripcionNormalizada)) {
+                    $len = mb_strlen($descripcionNormalizada, 'UTF-8');
+                    if ($len > $matchLen) {
+                        $matchLen = $len;
+                        $matchId = $diagnosticoCatalogo->id;
+                    }
+                }
+            }
+            $diagnosticoId = $matchId;
+        }
+
+        $descripcionTratamiento = $tratamiento ? $tratamiento->descripcion : $textoTratamiento;
+
+        if (empty($diagnosticoId)) {
+            return [
+                'status' => 0,
+                'mensaje' => 'No se pudo asociar el diagnóstico al tratamiento ingresado.'
+            ];
+        }
 
         if(!$request->piezas){
             $odontograma =  new OdontogramaPaciente();
@@ -2004,8 +2047,8 @@ class DentalController extends Controller
 
             $request->fecha = Carbon::now();
 
-            $odontograma->diagnostico = 3; // Fractura
-            $odontograma->tratamiento = $request->tto;
+            $odontograma->diagnostico = $diagnosticoId; // fallback por tratamiento si no llega desde frontend
+            $odontograma->tratamiento = $descripcionTratamiento;
             $odontograma->caras = $caras;
             $odontograma->pieza = $request->pieza;
             $odontograma->id_paciente = $request->id_paciente;
@@ -2017,7 +2060,7 @@ class DentalController extends Controller
             $odontograma->presupuesto = 1;
             $odontograma->estado = 0;
             $odontograma->impl_rehab = $request->rehab ? 1 : 0;
-            $odontograma->urgencia = $request->urgencia == 1 ? 1 : 0;
+            $odontograma->urgencia = $esUrgencia ? 1 : 0;
             if ($odontograma->save()) {
                 // crear el presupuesto si es que aun no se ha registrado
                 $presupuesto = PresupuestosDental::where('id_paciente', $odontograma->id_paciente)->where('id_lugar_atencion', $odontograma->id_lugar_atencion)->where('id_ficha_atencion', $odontograma->id_ficha_atencion)->first();
@@ -2129,8 +2172,8 @@ class DentalController extends Controller
 
                 $request->fecha = Carbon::now();
 
-                $odontograma->diagnostico = $request->diagnostico; // Fractura
-                $odontograma->tratamiento = $request->tto;
+                $odontograma->diagnostico = $diagnosticoId;
+                $odontograma->tratamiento = $descripcionTratamiento;
                 $odontograma->caras = $caras;
                 $odontograma->pieza = $pieza;
                 $odontograma->fecha = $request->fecha;
@@ -2143,8 +2186,8 @@ class DentalController extends Controller
                 $odontograma->id_presupuesto = $request->id_presupuesto;
                 $odontograma->estado = 0;
                 $odontograma->impl_rehab = $request->rehab ? 1 : 0;
-                $odontograma->urgencia = $request->urgencia ? 1 : 0;
-                $odontograma->diagnostico = $request->diagnostico;
+                $odontograma->urgencia = $esUrgencia ? 1 : 0;
+                $odontograma->diagnostico = $diagnosticoId;
 
                 $odontograma->save();
 

@@ -993,7 +993,11 @@
                                 </div>
                                 <div id="odonto_c" class="collapse" aria-labelledby="odonto" data-parent="#odonto">
                                     <div class="card-body-aten-a">
-                                        @include('atencion_odontologica.generales.odontograma_adulto')
+                                        @if(request()->filled('id_mascota'))
+                                            @include('general.secciones_ficha.partials.odontograma_felino')
+                                        @else
+                                            @include('atencion_odontologica.generales.odontograma_adulto')
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -1014,6 +1018,135 @@
     .auth-wrapper
     {
         background-color: #f3f3f3!important;
+    }
+
+    .odontograma-felino-wrap {
+        margin-top: 6px;
+    }
+
+    .odontograma-felino-titulo,
+    .odontograma-felino-subtitulo {
+        color: #343a40;
+        font-weight: 600;
+    }
+
+    .odontograma-felino-lienzo {
+        background: #d8e2ee;
+        border-radius: 8px;
+        padding: 18px 14px;
+        position: relative;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px 24px;
+    }
+
+    .odontograma-felino-cuadrante {
+        display: grid;
+        grid-template-columns: repeat(9, minmax(42px, 1fr));
+        gap: 8px;
+        position: relative;
+        z-index: 2;
+    }
+
+    .odontograma-pieza {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        cursor: pointer;
+        margin: 0;
+    }
+
+    .odontograma-pieza input {
+        display: none;
+    }
+
+    .odontograma-caja {
+        width: 30px;
+        height: 30px;
+        border: 3px solid #1b9ed8;
+        border-radius: 4px;
+        background: #f3f7fb;
+        box-shadow: inset 0 0 0 1px #9db6c8;
+    }
+
+    .odontograma-pieza input:checked + .odontograma-caja {
+        background: #1b9ed8;
+        box-shadow: inset 0 0 0 2px #f3f7fb;
+    }
+
+    .odontograma-numero {
+        font-size: 12px;
+        font-weight: 700;
+        color: #3d4348;
+        margin-top: 4px;
+    }
+
+    .odontograma-eje {
+        position: absolute;
+        border-color: #525a63;
+        border-style: dashed;
+        z-index: 1;
+    }
+
+    .odontograma-eje-horizontal {
+        left: 14px;
+        right: 14px;
+        top: 50%;
+        border-width: 0 0 2px 0;
+    }
+
+    .odontograma-eje-vertical {
+        top: 14px;
+        bottom: 14px;
+        left: 50%;
+        border-width: 0 0 0 2px;
+    }
+
+    .odontograma-felino-resumen {
+        margin-top: 16px;
+    }
+
+    .odontograma-felino-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        border-top: 2px solid #d24b3e;
+        border-left: 2px solid #d24b3e;
+    }
+
+    .odontograma-felino-grid > div {
+        border-right: 2px solid #d24b3e;
+        border-bottom: 2px solid #d24b3e;
+        padding: 14px;
+        font-size: 22px;
+        line-height: 1.3;
+    }
+
+    @media (max-width: 992px) {
+        .odontograma-felino-lienzo {
+            grid-template-columns: 1fr;
+        }
+
+        .odontograma-eje-vertical {
+            display: none;
+        }
+
+        .odontograma-eje-horizontal {
+            top: 50%;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .odontograma-felino-cuadrante {
+            grid-template-columns: repeat(5, minmax(42px, 1fr));
+        }
+
+        .odontograma-felino-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .odontograma-felino-grid > div {
+            font-size: 18px;
+        }
     }
 </style>
 {{-- @endsection --}}
