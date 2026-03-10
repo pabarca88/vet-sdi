@@ -491,6 +491,14 @@
                             </div>
 
                         </div>
+                        @php
+                            $nombreEspecieOdonto = strtolower(trim(optional(optional($mascota ?? null)->especieMascota)->nombre ?? ''));
+                            $esFelinaOdonto = stripos($nombreEspecieOdonto, 'felin') !== false;
+                            $esCaninaOdonto = stripos($nombreEspecieOdonto, 'canin') !== false;
+                            $etiquetaOdontogramaMascota = $esFelinaOdonto
+                                ? 'Odontograma Felino'
+                                : ($esCaninaOdonto ? 'Odontograma Canino' : 'Odontograma Mascota');
+                        @endphp
                         <!-- ODONTOGRAMA-->
                         <div class="tab-pane fade show " id="odontograma_gral" role="tabpanel"
                             aria-labelledby="odontograma_gral-tab">
@@ -499,13 +507,9 @@
                                     <li class="nav-item-secciones">
                                         <a class="nav-secciones active text-uppercase" id="odonto_adulto_tab"
                                             data-toggle="tab" href="#odonto_adulto" role="tab"
-                                            aria-controls="odonto_adulto" aria-selected="true">Odontograma Adulto</a>
-                                    </li>
-                                    <li class="nav-item-secciones">
-                                        <a class="nav-secciones text-uppercase" id="odonto_infan_tab"
-                                            data-toggle="tab" href="#odonto_infan" role="tab"
-                                            aria-controls="odonto_infan" aria-selected="false">Odontograma
-                                            Pediátrico</a>
+                                            aria-controls="odonto_adulto" aria-selected="true">
+                                            {{ $etiquetaOdontogramaMascota }}
+                                        </a>
                                     </li>
                                 </ul>
                             </div>
@@ -515,23 +519,7 @@
                                         aria-labelledby="odonto_adulto_tab">
                                         <div class="row">
                                             <div class="col-md-12">
-
-                                                @if(request()->filled('id_mascota'))
-                                                    @include('general.secciones_ficha.partials.odontograma_felino')
-                                                @else
-                                                    @include('atencion_odontologica.generales.odontograma_adulto')
-                                                @endif
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="tab-pane fade show" id="odonto_infan" role="tabpanel"
-                                        aria-labelledby="odonto_infan_tab">
-                                        <div class="row">
-                                            <div class="col-md-12">
-
-                                                @include('atencion_odontologica.generales.odontograma_infantil')
-
+                                                @include('general.secciones_ficha.partials.odontograma_felino')
                                             </div>
                                         </div>
                                     </div>

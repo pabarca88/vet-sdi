@@ -12,6 +12,10 @@
     // Estados visuales por pieza: carie (punto rojo), implante (línea negra)
     $piezasEstadoFelino = [];
     $fuenteHistorialFelino = collect($odontograma_historial ?? $odontograma ?? []);
+    $nombreEspecieMascota = strtolower(trim(optional(optional($mascota ?? null)->especieMascota)->nombre ?? ''));
+    $tituloOdontogramaMascota = stripos($nombreEspecieMascota, 'canin') !== false
+        ? 'Odontograma Canino'
+        : (stripos($nombreEspecieMascota, 'felin') !== false ? 'Odontograma Felino' : 'Odontograma Mascota');
 
     foreach ($fuenteHistorialFelino as $registro) {
         $piezaCodigo = (string) data_get($registro, 'pieza', '');
@@ -42,7 +46,7 @@
 
 <div class="row">
     <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 mb-2">
-        <h1 class="text-c-blue mt-1 mb-1 f-22 d-inline">Odontograma Adulto</h1>
+        <h1 class="text-c-blue mt-1 mb-1 f-22 d-inline">{{ $tituloOdontogramaMascota }}</h1>
         <button type="button" data-toggle="modal" data-target="#exampleModalFelino" class="btn btn-purple d-inline float-md-right mr-2">Ver simbología</button>
     </div>
 </div>

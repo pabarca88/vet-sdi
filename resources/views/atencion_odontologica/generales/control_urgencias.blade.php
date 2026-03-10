@@ -1,3 +1,13 @@
+@php
+    $esMascotaUrg = true;
+    $nombreEspecieUrg = strtolower(trim(optional(optional($mascota ?? null)->especieMascota)->nombre ?? ''));
+    $esFelinaUrg = $esMascotaUrg && stripos($nombreEspecieUrg, 'felin') !== false;
+    $esCaninaUrg = $esMascotaUrg && stripos($nombreEspecieUrg, 'canin') !== false;
+    $etiquetaEvalUrgMascota = $esFelinaUrg
+        ? 'Eval. Diagnóstico Felina'
+        : ($esCaninaUrg ? 'Eval. Diagnóstico Canina' : 'Eval. Diagnóstico Mascota');
+@endphp
+
 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
     <div class="card-a">
         <div class="card-header-a" id="exam_odurg_ped">
@@ -32,22 +42,13 @@
                                                     aria-controls="mot_urgencia"
                                                     aria-selected="false" onclick="$('#motivo_urg_odped').select2();">Motivo
                                                     consulta</a>
-                                                @if($profesional->id_tipo_especialidad != 19)
-                                                <a class="nav-link-aten text-reset "
+                                                <a class="nav-link-aten text-reset"
                                                     id="eval_urg_ad_tab" data-toggle="tab"
                                                     href="#eval_urg_ad" role="tab"
                                                     aria-controls="eval_urg_ad"
-                                                    aria-selected="true"
-                                                    onclick="$('#paciente_piezas_dentales_urg').select2(); $('#table_piezas_odonto_urg').DataTable(); $('#table_insumos_urg').DataTable();">Eval.
-                                                    Diagnóstica Adulto</a>
-                                                    @endif
-                                                <a class="nav-link-aten text-reset"
-                                                    id="eval_urg_ped_tab"
-                                                    data-toggle="tab" href="#eval_urg_ped"
-                                                    role="tab"
-                                                    aria-controls="eval_urg_ped"
-                                                    aria-selected="false" onclick="$('#paciente_piezas_dentales_ex_odped_urg').select2(); $('#table_piezas_odonto_urg_ped').DataTable();">Eval. Diagnóstico
-                                                    pediátrica</a>
+                                                    aria-selected="false"
+                                                    onclick="$('#paciente_piezas_dentales_urg').select2(); $('#table_piezas_odonto_urg').DataTable(); $('#table_insumos_urg').DataTable();">
+                                                    {{ $etiquetaEvalUrgMascota }}</a>
                                                 <a class="nav-link-aten text-reset"
                                                     id="ind_urgencia_tab"
                                                     data-toggle="tab" onclick="proxima_atencion_paciente()" href="#ind_urgencia"
@@ -317,142 +318,11 @@
                                                                                             name="paciente_piezas_dentales_urg"
                                                                                             id="paciente_piezas_dentales_urg"
                                                                                             multiple="multiple">
-                                                                                            @if (request()->filled('id_mascota'))
-                                                                                                @foreach (array_merge(range(109, 101), range(201, 209), range(409, 401), range(301, 309)) as $piezaUrgencia)
-                                                                                                    <option value="{{ $piezaUrgencia }}">
-                                                                                                        {{ $piezaUrgencia }}
-                                                                                                    </option>
-                                                                                                @endforeach
-                                                                                            @else
-                                                                                                <option
-                                                                                                    value="1.1">
-                                                                                                    1.1
+                                                                                            @foreach (array_merge(range(109, 101), range(201, 209), range(409, 401), range(301, 309)) as $piezaUrgencia)
+                                                                                                <option value="{{ $piezaUrgencia }}">
+                                                                                                    {{ $piezaUrgencia }}
                                                                                                 </option>
-                                                                                                <option
-                                                                                                    value="1.2">
-                                                                                                    1.2
-                                                                                                </option>
-                                                                                                <option
-                                                                                                    value="1.3">
-                                                                                                    1.3
-                                                                                                </option>
-                                                                                                <option
-                                                                                                    value="1.4">
-                                                                                                    1.4
-                                                                                                </option>
-                                                                                                <option
-                                                                                                    value="1.5">
-                                                                                                    1.5
-                                                                                                </option>
-                                                                                                <option
-                                                                                                    value="1.6">
-                                                                                                    1.6
-                                                                                                </option>
-                                                                                                <option
-                                                                                                    value="1.7">
-                                                                                                    1.7
-                                                                                                </option>
-                                                                                                <option
-                                                                                                    value="1.8">
-                                                                                                    1.8
-                                                                                                </option>
-                                                                                                <option
-                                                                                                    value="2.1">
-                                                                                                    2.1
-                                                                                                </option>
-                                                                                                <option
-                                                                                                    value="2.2">
-                                                                                                    2.2
-                                                                                                </option>
-                                                                                                <option
-                                                                                                    value="2.3">
-                                                                                                    2.3
-                                                                                                </option>
-                                                                                                <option
-                                                                                                    value="2.4">
-                                                                                                    2.4
-                                                                                                </option>
-                                                                                                <option
-                                                                                                    value="2.5">
-                                                                                                    2.5
-                                                                                                </option>
-                                                                                                <option
-                                                                                                    value="2.6">
-                                                                                                    2.6
-                                                                                                </option>
-                                                                                                <option
-                                                                                                    value="2.7">
-                                                                                                    2.7
-                                                                                                </option>
-                                                                                                <option
-                                                                                                    value="2.8">
-                                                                                                    2.8
-                                                                                                </option>
-                                                                                                <option
-                                                                                                    value="3.1">
-                                                                                                    3.1
-                                                                                                </option>
-                                                                                                <option
-                                                                                                    value="3.2">
-                                                                                                    3.2
-                                                                                                </option>
-                                                                                                <option
-                                                                                                    value="3.3">
-                                                                                                    3.3
-                                                                                                </option>
-                                                                                                <option
-                                                                                                    value="3.4">
-                                                                                                    3.4
-                                                                                                </option>
-                                                                                                <option
-                                                                                                    value="3.5">
-                                                                                                    3.5
-                                                                                                </option>
-                                                                                                <option
-                                                                                                    value="3.6">
-                                                                                                    3.6
-                                                                                                </option>
-                                                                                                <option
-                                                                                                    value="3.7">
-                                                                                                    3.7
-                                                                                                </option>
-                                                                                                <option
-                                                                                                    value="3.8">
-                                                                                                    3.8
-                                                                                                </option>
-                                                                                                <option
-                                                                                                    value="4.1">
-                                                                                                    4.1
-                                                                                                </option>
-                                                                                                <option
-                                                                                                    value="4.2">
-                                                                                                    4.2
-                                                                                                </option>
-                                                                                                <option
-                                                                                                    value="4.3">
-                                                                                                    4.3
-                                                                                                </option>
-                                                                                                <option
-                                                                                                    value="4.4">
-                                                                                                    4.4
-                                                                                                </option>
-                                                                                                <option
-                                                                                                    value="4.5">
-                                                                                                    4.5
-                                                                                                </option>
-                                                                                                <option
-                                                                                                    value="4.6">
-                                                                                                    4.6
-                                                                                                </option>
-                                                                                                <option
-                                                                                                    value="4.7">
-                                                                                                    4.7
-                                                                                                </option>
-                                                                                                <option
-                                                                                                    value="4.8">
-                                                                                                    4.8
-                                                                                                </option>
-                                                                                            @endif
+                                                                                            @endforeach
                                                                                         </select>
                                                                                     </div>
                                                                                 </div>
@@ -620,6 +490,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                @if (!$esMascotaUrg)
                                                 <div class="tab-pane fade show " id="eval_urg_ped" role="tabpanel" aria-labelledby="eval_urg_ped_tab">
 
                                                     <div class="form-row">
@@ -1010,6 +881,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                @endif
                                                 <div class="tab-pane fade show "
                                                     id="ind_urgencia" role="tabpanel"
                                                     aria-labelledby="ind_urgencia_tab">
