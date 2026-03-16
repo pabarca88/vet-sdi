@@ -99,96 +99,80 @@
                                 <thead>
                                     <tr>
                                         <th>Acción</th>
-                                        <th>
-                                            Mascota
-                                        </th>
+                                        <th>Mascota</th>
                                         <th>Profesional</th>
                                         <th>Información de Atención</th>
                                         <th>Estado</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td class="align-middle">
-                                            <button href="#!" class="btn btn-info btn-icon"
-                                                data-toggle="tooltip" data-placement="top" title="Confirmar hora">
-                                                <i class="feather icon-check"></i>
-                                            </button>
-                                            <button href="#!" class="btn btn-danger btn-icon"
-                                                data-toggle="tooltip" data-placement="top" title="Anular hora">
-                                                <i class="feather icon-x"></i>
-                                            </button>
-                                        </td>
-                                        <td class="align-middle">
-                                           Plumita
-                                        </td>
-                                        <td>
-                                            Nombre y Apellidos<br>
-                                            Veterinaria General<br>
-                                        </td>
-                                        <td>
-                                            Centro médico IST<br>
-                                            Arlegui 212, Viña del Mar<br>
-                                            21/05/2021 17:00 hrs
-                                        </td>
-                                        <td class="align-middle">
-                                            <span class="badge badge-danger">Hora cancelada</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="align-middle">
-                                            <button href="#!" class="btn btn-info btn-icon"
-                                                data-toggle="tooltip" data-placement="top" title="Confirmar Hora">
-                                                <i class="feather icon-check"></i>
-                                            </button>
-                                            <button href="#!" class="btn btn-danger btn-icon"
-                                                data-toggle="tooltip" data-placement="top" title="Anular Hora">
-                                                <i class="feather icon-x"></i>
-                                            </button>
-                                        </td>
-                                        <td class="align-middle">
-                                           Perlita
-                                        </td>
-                                        <td>
-                                            Nombre y Apellidos<br>
-                                            Exámenes<br>
-                                        </td>
-                                        <td>
-                                            Centro médico IST<br>
-                                            Arlegui 212, Viña del Mar<br>
-                                            21/05/2021 17:00 hrs
-                                        </td>
-                                        <td class="align-middle">
-                                            <span class="badge badge-warning">Hora pendiente<br>por confirmar</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="align-middle">
-                                            <button href="#!" class="btn btn-info btn-icon"
-                                                data-toggle="tooltip" data-placement="top" title="Confirmar Hora">
-                                                <i class="feather icon-check"></i>
-                                            </button>
-                                            <button href="#!" class="btn btn-danger btn-sm btn-icon"
-                                                data-toggle="tooltip" data-placement="top" title="Anular Hora">
-                                                <i class="feather icon-x"></i>
-                                            </button>
-                                        </td>
-                                        <td class="align-middle">
-                                           Manchitas
-                                        </td>
-                                        <td>
-                                            Nombre y Apellidos<br>
-                                            Neurologo<br>
-                                        </td>
-                                        <td>
-                                            Centro médico IST<br>
-                                            Arlegui 212, Viña del Mar<br>
-                                            21/05/2021 17:00 hrs
-                                        </td>
-                                        <td class="align-middle">
-                                            <span class="badge badge-success">Hora confirmada</span>
-                                        </td>
-                                    </tr>
+                                    @forelse ($hora_medica as $hora)
+                                        <tr>
+                                            <td class="align-middle">
+                                                @if (in_array($hora->id_estado, [1, 8]))
+                                                    <button class="btn btn-info btn-icon btn-confirmar-hora"
+                                                        data-toggle="tooltip" data-placement="top" title="Confirmar hora"
+                                                        onclick="confirmar({{ $hora->id }});">
+                                                        <i class="feather icon-check"></i>
+                                                    </button>
+                                                    <button class="btn btn-danger btn-icon btn-anular-hora"
+                                                        data-toggle="tooltip" data-placement="top" title="Anular hora"
+                                                        onclick="anular({{ $hora->id }});">
+                                                        <i class="feather icon-x"></i>
+                                                    </button>
+                                                @elseif ($hora->id_estado == 2)
+                                                    <button class="btn btn-info btn-icon btn-confirmar-hora"
+                                                        data-toggle="tooltip" data-placement="top" title="Hora confirmada"
+                                                        disabled="disabled">
+                                                        <i class="feather icon-check"></i>
+                                                    </button>
+                                                    <button class="btn btn-danger btn-icon btn-anular-hora"
+                                                        data-toggle="tooltip" data-placement="top" title="Anular hora"
+                                                        onclick="anular({{ $hora->id }});">
+                                                        <i class="feather icon-x"></i>
+                                                    </button>
+                                                @else
+                                                    <button class="btn btn-info btn-icon btn-confirmar-hora"
+                                                        data-toggle="tooltip" data-placement="top" title="Confirmar hora"
+                                                        disabled="disabled">
+                                                        <i class="feather icon-check"></i>
+                                                    </button>
+                                                    <button class="btn btn-danger btn-icon btn-anular-hora"
+                                                        data-toggle="tooltip" data-placement="top" title="Anular hora"
+                                                        disabled="disabled">
+                                                        <i class="feather icon-x"></i>
+                                                    </button>
+                                                @endif
+                                            </td>
+                                            <td class="align-middle">
+                                                <strong>{{ $hora->nombre_mascota ?: 'Sin mascota' }}</strong>
+                                                @if (!empty($hora->nombre_especie_mascota))
+                                                    <br>{{ $hora->nombre_especie_mascota }}
+                                                @endif
+                                            </td>
+                                            <td>
+                                                {{ $hora->nombre_profesional_completo }}<br>
+                                                {{ $hora->nombre_especialidad_resumen }}
+                                            </td>
+                                            <td>
+                                                {{ $hora->nombre_lugar_atencion }}<br>
+                                                {{ $hora->direccion_lugar_atencion }}<br>
+                                                <span style="font-weight:bold;">
+                                                    {{ \Carbon\Carbon::parse($hora->fecha_consulta . ' ' . $hora->hora_inicio)->format('d-m-Y H:i') }}
+                                                    hrs
+                                                </span>
+                                            </td>
+                                            <td class="align-middle">
+                                                <span style="background-color: {{ $hora->color_estado }}; padding: 5px; border-radius: 12%; color: #fff;">
+                                                    {{ $hora->texto_estado }}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="5" class="text-center">No existen registros</td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>
@@ -322,8 +306,14 @@
         function cargar_horas_medicas()
         {
             let url = "{{ route('paciente.hora.medica.ver') }}";
+            let tabla = null;
 
-            $('#horas_medicas_paciente tbody').html('');
+            if ($.fn.DataTable.isDataTable('#simpletable')) {
+                tabla = $('#simpletable').DataTable();
+                tabla.clear().draw();
+            } else {
+                $('#simpletable tbody').html('');
+            }
 
             $.ajax({
                 url: url,
@@ -338,78 +328,89 @@
                             {
                                 $.each(data.registros, function (key, value) {
                                     var html = '';
-                                    html += '<tr>';
-                                    html += '    <td class="align-middle">';
+                                    var acciones = '';
                                     switch(value.id_estado)
                                     {
                                         case 1:
-                                            html += '                <button class="btn btn-info btn-icon btn-confirmar-hora" data-toggle="tooltip" data-placement="top" title="Confirmar hora" onclick="confirmar('+value.id+');">';
-                                            html += '                    <i class="feather icon-check"></i>';
-                                            html += '                </button>';
-                                            html += '                <button class="btn btn-danger btn-icon btn-anular-hora" data-toggle="tooltip" data-placement="top" title="Anular hora" onclick="anular('+value.id+');">';
-                                            html += '                    <i class="feather icon-x"></i>';
-                                            html += '                </button>';
+                                            acciones += '                <button class="btn btn-info btn-icon btn-confirmar-hora" data-toggle="tooltip" data-placement="top" title="Confirmar hora" onclick="confirmar('+value.id+');">';
+                                            acciones += '                    <i class="feather icon-check"></i>';
+                                            acciones += '                </button>';
+                                            acciones += '                <button class="btn btn-danger btn-icon btn-anular-hora" data-toggle="tooltip" data-placement="top" title="Anular hora" onclick="anular('+value.id+');">';
+                                            acciones += '                    <i class="feather icon-x"></i>';
+                                            acciones += '                </button>';
                                             break
 
                                         case 2:
-                                            html += '                <button class="btn btn-info btn-icon btn-confirmar-hora" data-toggle="tooltip" data-placement="top" title="Confirmar hora" disabled="disabled">';
-                                            html += '                    <i class="feather icon-check"></i>';
-                                            html += '                </button>';
-                                            html += '                <button class="btn btn-danger btn-icon btn-anular-hora" data-toggle="tooltip" data-placement="top" title="Anular hora"  onclick="anular('+value.id+');">';
-                                            html += '                    <i class="feather icon-x"></i>';
-                                            html += '                </button>';
+                                            acciones += '                <button class="btn btn-info btn-icon btn-confirmar-hora" data-toggle="tooltip" data-placement="top" title="Confirmar hora" disabled="disabled">';
+                                            acciones += '                    <i class="feather icon-check"></i>';
+                                            acciones += '                </button>';
+                                            acciones += '                <button class="btn btn-danger btn-icon btn-anular-hora" data-toggle="tooltip" data-placement="top" title="Anular hora"  onclick="anular('+value.id+');">';
+                                            acciones += '                    <i class="feather icon-x"></i>';
+                                            acciones += '                </button>';
                                             break
 
                                         case 8:
-                                            html += '                <button class="btn btn-info btn-icon btn-confirmar-hora" data-toggle="tooltip" data-placement="top" title="Confirmar hora" onclick="confirmar('+value.id+');">';
-                                            html += '                    <i class="feather icon-check"></i>';
-                                            html += '                </button>';
-                                            html += '                <button class="btn btn-danger btn-icon btn-anular-hora" data-toggle="tooltip" data-placement="top" title="Anular hora" onclick="anular('+value.id+');">';
-                                            html += '                    <i class="feather icon-x"></i>';
-                                            html += '                </button>';
+                                            acciones += '                <button class="btn btn-info btn-icon btn-confirmar-hora" data-toggle="tooltip" data-placement="top" title="Confirmar hora" onclick="confirmar('+value.id+');">';
+                                            acciones += '                    <i class="feather icon-check"></i>';
+                                            acciones += '                </button>';
+                                            acciones += '                <button class="btn btn-danger btn-icon btn-anular-hora" data-toggle="tooltip" data-placement="top" title="Anular hora" onclick="anular('+value.id+');">';
+                                            acciones += '                    <i class="feather icon-x"></i>';
+                                            acciones += '                </button>';
                                             break
 
                                         default:
-                                            html += '                <button class="btn btn-info btn-icon btn-confirmar-hora" data-toggle="tooltip" data-placement="top" title="Confirmar hora" disabled="disabled">';
-                                            html += '                    <i class="feather icon-check"></i>';
-                                            html += '                </button>';
-                                            html += '                <button class="btn btn-danger btn-icon btn-anular-hora" data-toggle="tooltip" data-placement="top" title="Anular hora" disabled="disabled">';
-                                            html += '                    <i class="feather icon-x"></i>';
-                                            html += '                </button>';
+                                            acciones += '                <button class="btn btn-info btn-icon btn-confirmar-hora" data-toggle="tooltip" data-placement="top" title="Confirmar hora" disabled="disabled">';
+                                            acciones += '                    <i class="feather icon-check"></i>';
+                                            acciones += '                </button>';
+                                            acciones += '                <button class="btn btn-danger btn-icon btn-anular-hora" data-toggle="tooltip" data-placement="top" title="Anular hora" disabled="disabled">';
+                                            acciones += '                    <i class="feather icon-x"></i>';
+                                            acciones += '                </button>';
                                     }
-                                    html += '    </td>';
-                                    html += '    <td>';
-                                    html += '        '+value.nombre_profesional+' '+value.apellido_uno_profesional+'<br>';
-                                    // html += '        {{-- '+value.nombre_especialidad+' --}}';
-                                    if (value.nombre_sub_tipo_especialidad != null)
-                                        html += '            '+value.nombre_sub_tipo_especialidad+'';
-                                    else
-                                        html += '            '+value.nombre_tipo_especialidad+'';
 
-                                    html += '    </td>';
-                                    html += '    <td>';
-                                    html += '        '+value.nombre_lugar_atencion+'<br>';
-                                    html += '        '+value.direccion_lugar_atencion+', '+value.numero_dir_lugar_atencion+'<br>';
+                                    var mascotaHtml = '<strong>' + (value.nombre_mascota || 'Sin mascota') + '</strong>';
+                                    if (value.nombre_especie_mascota) {
+                                        mascotaHtml += '<br>' + value.nombre_especie_mascota;
+                                    }
 
-                                    // var dia_formato = moment(value.fecha_consulta).format('DD-MM-YYYY');
-                                    // var hora_formato = moment(value.fecha_consulta+' '+value.hora_inicio).format('HH:mm');
-                                    // html += '        <span style="font-weight:bold;">'+dia_formato+' '+hora_formato+'hrs</span>';
+                                    var profesionalHtml = (value.nombre_profesional_completo || '') + '<br>' + (value.nombre_especialidad_resumen || '');
+                                    var diaHoraFormato = moment(value.fecha_consulta+' '+value.hora_inicio).format('DD-MM-YYYY HH:mm');
+                                    var atencionHtml = (value.nombre_lugar_atencion || '') + '<br>' + (value.direccion_lugar_atencion || '') + '<br><span style="font-weight:bold;">'+diaHoraFormato+' hrs</span>';
+                                    var estadoHtml = '<span style="background-color: '+(value.color_estado || '#6c757d')+'; padding: 5px; border-radius: 12%; color: #fff;">'+(value.texto_estado || '')+'</span>';
 
-                                    var dia_hora_formato = moment(value.fecha_consulta+' '+value.hora_inicio).format('DD-MM-YYYY HH:mm');
-
-                                    html += '        <span style="font-weight:bold;">'+dia_hora_formato+' hrs</span>';
-                                    html += '    </td>';
-                                    html += '    <td class="align-middle">';
-                                    html += '        <span style="background-color: '+value.color_estado+'; padding: 5px; border-radius: 12%;">'+value.texto_estado+'</span>';
-                                    html += '    </td>';
-                                    html += '</tr>';
-                                    $('#horas_medicas_paciente tbody').append(html);
+                                    if (tabla) {
+                                        tabla.row.add([
+                                            acciones,
+                                            mascotaHtml,
+                                            profesionalHtml,
+                                            atencionHtml,
+                                            estadoHtml
+                                        ]);
+                                    } else {
+                                        html += '<tr>';
+                                        html += '    <td class="align-middle">'+acciones+'</td>';
+                                        html += '    <td class="align-middle">'+mascotaHtml+'</td>';
+                                        html += '    <td>'+profesionalHtml+'</td>';
+                                        html += '    <td>'+atencionHtml+'</td>';
+                                        html += '    <td class="align-middle">'+estadoHtml+'</td>';
+                                        html += '</tr>';
+                                        $('#simpletable tbody').append(html);
+                                    }
                                 });
+
+                                if (tabla) {
+                                    tabla.draw();
+                                }
+                            } else if (!tabla) {
+                                $('#simpletable tbody').append('<tr><td colspan="5" class="text-center">No existen registros</td></tr>');
                             }
                         }
                     }
                 }
             });
         }
+
+        $(document).ready(function() {
+            cargar_horas_medicas();
+        });
     </script>
 @endsection
