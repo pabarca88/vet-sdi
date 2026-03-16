@@ -110,10 +110,7 @@
                                                 <tr>
                                                     <td class="text-center align-left">{{ $hd->hora_inicio }}</td>
                                                     <td class="text-center align-left bg-estado-light-amarillo">
-                                                        <strong>
-															<span>{{ $hd->paciente->nombres . ' ' . $hd->paciente->apellido_uno . ' ' . $hd->paciente->apellido_dos }}</span>
-														<strong>
-														<!--<br style="line-height: 1%;"><span>{{ $hd->paciente->rut }}</span>-->
+                                                        {!! $hd->paciente_escritorio_html !!}
                                                     </td>
                                                     <td class="text-center align-left">{{ $hd->lugar_atencion->nombre }}</td>
                                                     <!--

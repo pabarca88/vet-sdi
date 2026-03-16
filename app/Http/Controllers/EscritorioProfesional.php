@@ -167,6 +167,96 @@ use Yajra\DataTables\DataTables;
 
 class EscritorioProfesional extends Controller
 {
+    private function nombreCompletoPaciente(?Paciente $paciente): string
+    {
+        if (!$paciente) {
+            return '';
+        }
+
+        return trim(collect([
+            $paciente->nombres,
+            $paciente->apellido_uno,
+            $paciente->apellido_dos,
+        ])->filter()->implode(' '));
+    }
+
+    private function formatearPacienteEscritorio(HoraMedica $horaMedica): array
+    {
+        $paciente = $horaMedica->Paciente;
+        $mascota = $horaMedica->Mascota;
+
+        if ($mascota) {
+            $responsable = $mascota->Responsable ?: $paciente;
+            $nombreResponsable = $this->nombreCompletoPaciente($responsable);
+            $especie = optional($mascota->especieMascota)->nombre ?: $mascota->especie;
+
+            $lineaMascota = e($mascota->nombre);
+            if (!empty($especie)) {
+                $lineaMascota .= ' (' . e($especie) . ')';
+            }
+
+            $html = '<strong><span>' . $lineaMascota . '</span></strong>';
+            if (!empty($nombreResponsable)) {
+                $html .= '<br><span>(P) ' . e($nombreResponsable) . '</span>';
+            }
+
+            $texto = trim($mascota->nombre . (!empty($especie) ? ' (' . $especie . ')' : ''));
+            if (!empty($nombreResponsable)) {
+                $texto .= ' - (P) ' . $nombreResponsable;
+            }
+
+            return [$html, $texto];
+        }
+
+        $nombrePaciente = $this->nombreCompletoPaciente($paciente);
+
+        return [
+            '<strong><span>' . e($nombrePaciente) . '</span></strong>',
+            $nombrePaciente,
+        ];
+    }
+
+    private function prepararHoraEscritorio(HoraMedica $horaMedica): HoraMedica
+    {
+        $horaMedica->paciente = $horaMedica->Paciente;
+        $horaMedica->lugar_atencion = $horaMedica->LugarAtencion;
+        $horaMedica->mascota = $horaMedica->Mascota;
+
+        [$htmlPaciente, $textoPaciente] = $this->formatearPacienteEscritorio($horaMedica);
+        $horaMedica->paciente_escritorio_html = $htmlPaciente;
+        $horaMedica->paciente_escritorio_texto = $textoPaciente;
+
+        return $horaMedica;
+    }
+
+    private function obtenerHorasEscritorioProfesional(int $idProfesional, ?string $fechaConsulta = null, $idLugarAtencion = null)
+    {
+        $query = HoraMedica::with([
+                'Paciente',
+                'LugarAtencion',
+                'Mascota.especieMascota',
+                'Mascota.Responsable',
+            ])
+            ->where('id_profesional', $idProfesional)
+            ->where('tipo_hora_medica', '!=', 'B')
+            ->whereNotIn('id_estado', [3, 4]);
+
+        if (!empty($fechaConsulta)) {
+            $query->whereDate('fecha_consulta', $fechaConsulta);
+        }
+
+        if (!empty($idLugarAtencion) && $idLugarAtencion != '0') {
+            $query->where('id_lugar_atencion', $idLugarAtencion);
+        }
+
+        return $query
+            ->orderBy('fecha_consulta')
+            ->orderBy('hora_inicio')
+            ->get()
+            ->map(function ($horaMedica) {
+                return $this->prepararHoraEscritorio($horaMedica);
+            });
+    }
 
     public function eliminar_horario_agenda(Request $request)
     {
@@ -816,11 +906,7 @@ class EscritorioProfesional extends Controller
 
         if (isset($profesional)) {
             $tipo_agendas = ProfesionalHorario::select('tipo_agenda')->where('id_profesional', $profesional->id)->groupBy('tipo_agenda')->pluck('tipo_agenda')->toArray();
-            $horas_dia = HoraMedica::where('id_profesional', $profesional->id)->where('tipo_hora_medica','!=','B')->whereDate('fecha_consulta', \Carbon\Carbon::now()->format('Y-m-d'))->get();
-            foreach ($horas_dia as $h) {
-                $h->paciente = Paciente::where('id', $h->id_paciente)->first();
-                $h->lugar_atencion = LugarAtencion::where('id', $h->id_lugar_atencion)->first();
-            }
+            $horas_dia = $this->obtenerHorasEscritorioProfesional($profesional->id, \Carbon\Carbon::now()->format('Y-m-d'));
 
             $lugar_atencion_prof = ProfesionalesLugaresAtencion::where('id_profesional', $profesional->id)->count();
 
@@ -9109,21 +9195,11 @@ public function eliminarPiezaCoronaProtesis(Request $req){
     public function buscar_horas_medicas(Request $request)
     {
         $profesional = Profesional::where('id_usuario', Auth::user()->id)->first();
-        // $horas_medicas = HoraMedica::where('id_profesional', $profesional->id)->where('fecha_consulta', $request->buscar_horas)->get();
-        $filtro = array();
-        $filtro[] = array('id_profesional', $profesional->id);
-
-        if(!empty($request->buscar_horas))
-            $filtro[] = array('fecha_consulta', $request->buscar_horas);
-
-        if(!empty($request->id_lugares_atencion))
-            $filtro[] = array('id_lugar_atencion', $request->id_lugares_atencion);
-        $horas_medicas = HoraMedica::where($filtro)->where('tipo_hora_medica','!=','B')->get();
-
-        foreach ($horas_medicas as $h) {
-            $h->id_paciente = Paciente::where('id', $h->id_paciente)->first();
-            $h->lugar_atencion = LugarAtencion::where('id', $h->id_lugar_atencion)->first();
-        }
+        $horas_medicas = $this->obtenerHorasEscritorioProfesional(
+            $profesional->id,
+            $request->buscar_horas,
+            $request->id_lugares_atencion
+        );
 
         return json_encode($horas_medicas);
     }

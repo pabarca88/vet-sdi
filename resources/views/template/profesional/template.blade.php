@@ -1288,6 +1288,12 @@
                             swal("Oops", "No tiene lugares de atención asignados, favor registrar uno", "error")
                             //  alert('No tiene lugares de atención asignados, favor registrar uno');
                         } else {
+                            if (contador === 1) {
+                                lugares_atencion_agenda.val(lugares_atencion_agenda.find('option').last().val());
+                            } else {
+                                lugares_atencion_agenda.val('0');
+                            }
+                            buscar_hora_medica();
                             {{--  $('#modal_seleccionar_lugar_atencion').modal('show');  --}}
                         }
                     }
@@ -1301,6 +1307,69 @@
                 .fail(function(jqXHR, ajaxOptions, thrownError) {
                     console.log(jqXHR, ajaxOptions, thrownError)
                 });
+        }
+
+        function escapeHtml(value) {
+            return $('<div>').text(value || '').html();
+        }
+
+        function obtenerHtmlPacienteEscritorio(hora) {
+            if (hora.paciente_escritorio_html) {
+                return hora.paciente_escritorio_html;
+            }
+
+            if (hora.mascota) {
+                let especie = '';
+                if (hora.mascota.especie_mascota && hora.mascota.especie_mascota.nombre) {
+                    especie = hora.mascota.especie_mascota.nombre;
+                } else if (hora.mascota.especieMascota && hora.mascota.especieMascota.nombre) {
+                    especie = hora.mascota.especieMascota.nombre;
+                } else if (hora.mascota.especie) {
+                    especie = hora.mascota.especie;
+                }
+
+                let responsable = '';
+                if (hora.mascota.responsable) {
+                    responsable = [
+                        hora.mascota.responsable.nombres,
+                        hora.mascota.responsable.apellido_uno,
+                        hora.mascota.responsable.apellido_dos
+                    ].filter(Boolean).join(' ');
+                } else if (hora.mascota.Responsable) {
+                    responsable = [
+                        hora.mascota.Responsable.nombres,
+                        hora.mascota.Responsable.apellido_uno,
+                        hora.mascota.Responsable.apellido_dos
+                    ].filter(Boolean).join(' ');
+                } else if (hora.paciente) {
+                    responsable = [
+                        hora.paciente.nombres,
+                        hora.paciente.apellido_uno,
+                        hora.paciente.apellido_dos
+                    ].filter(Boolean).join(' ');
+                }
+
+                let html = '<strong><span>' + escapeHtml(hora.mascota.nombre);
+                if (especie) {
+                    html += ' (' + escapeHtml(especie) + ')';
+                }
+                html += '</span></strong>';
+
+                if (responsable) {
+                    html += '<br><span>(P) ' + escapeHtml(responsable) + '</span>';
+                }
+
+                return html;
+            }
+
+            let paciente = hora.paciente || hora.id_paciente || {};
+            let nombrePaciente = [
+                paciente.nombres,
+                paciente.apellido_uno,
+                paciente.apellido_dos
+            ].filter(Boolean).join(' ');
+
+            return '<strong><span>' + escapeHtml(nombrePaciente) + '</span></strong>';
         }
 
         // function ingresar_mi_agenda() {
@@ -3265,7 +3334,14 @@
 
             let id_lugares_atencion = $('#lugares_atencion_agenda').val();
             let url = "{{ route('profesional.buscar_horas_medicas') }}";
-            $('#simpletable tbody').empty();
+            let tabla = null;
+
+            if ($.fn.DataTable.isDataTable('#simpletable')) {
+                tabla = $('#simpletable').DataTable();
+                tabla.clear().draw();
+            } else {
+                $('#simpletable tbody').empty();
+            }
 
             $.ajax({
                     url: url,
@@ -3280,50 +3356,35 @@
 
                         console.log(data);
                         data = JSON.parse(data);
+                        let filas = [];
                         for (i = 0; i < data.length; i++) {
+                            let pacienteHtml = obtenerHtmlPacienteEscritorio(data[i]);
+                            let lugarAtencion = data[i].lugar_atencion ? data[i].lugar_atencion.nombre : '';
 
-                            var hora_inicio = data[i].hora_inicio;
-                            // var salida = formato(fecha);
-                            var fecha_consulta = data[i].fecha_consulta;
-                            var paciente = data[i].id_paciente.nombres + ' ' + data[i].id_paciente.apellido_uno + ' ' +
-                                data[i].id_paciente.apellido_dos;
-
-                            var j = 1; //contador para asignar id al boton que borrara la fila
-                            var fila = '';
-                            fila += '<tr>';
-                            fila += '<td class="text-center align-left">' + hora_inicio + '</td>';
-                            fila += '<td class="text-center align-left bg-estado-light-amarillo">';
-                            fila += '	<strong>';
-                            fila += "		<span>" + paciente + "</span>";
-                            fila += '	<strong>';
-                            //fila += '		<br style="line-height: 1%;"><span>'+data[i].id_paciente.rut+'</span>';
-                            fila += '</td>';
-                            fila += '<td class="text-center align-left">' + data[i].lugar_atencion.nombre + '</td>';
-                            fila += '</tr>';
-                            //var fila = '<tr class="tr_horas" id="row' + j + '"><td>' +
-                            //    hora_inicio + '</td><td>' +
-                            //    paciente +
-                            // '</td><td class="text-center align-middle"><button href="' +
-                            //'" class="btn btn-info btn-sm btn-icon" data-toggle="tooltip"' +
-                            // ' data-placement="top" title="Atender Paciente">' +
-                            // '<i class="feather icon-check"></i> </button>' +
-                            //  '<button href="#!" class="btn btn-danger btn-sm btn-icon"' +
-                            // 'data-toggle="tooltip" data-placement="top" title="Anular Hora">' +
-                            //'<i class="feather icon-x"></i> </button>' +
-                            // '</td></tr>'; //esto seria lo que contendria la fila
-
-                            j++;
-
-                            $('#simpletable tbody').append(fila);
-
+                            if (tabla) {
+                                filas.push([
+                                    '<span class="text-center align-left d-block">' + escapeHtml(data[i].hora_inicio) + '</span>',
+                                    '<div class="text-center align-left bg-estado-light-amarillo">' + pacienteHtml + '</div>',
+                                    '<span class="text-center align-left d-block">' + escapeHtml(lugarAtencion) + '</span>',
+                                ]);
+                            } else {
+                                let fila = '';
+                                fila += '<tr>';
+                                fila += '<td class="text-center align-left">' + escapeHtml(data[i].hora_inicio) + '</td>';
+                                fila += '<td class="text-center align-left bg-estado-light-amarillo">' + pacienteHtml + '</td>';
+                                fila += '<td class="text-center align-left">' + escapeHtml(lugarAtencion) + '</td>';
+                                fila += '</tr>';
+                                $('#simpletable tbody').append(fila);
+                            }
                         }
 
-
+                        if (tabla && filas.length > 0) {
+                            tabla.rows.add(filas).draw();
+                        }
                     } else {
                         //var fila = '<span><h5>no existen registros</h5></span>'
                         //$('#tabla_receta tbody').append(fila);
                     }
-                    $('#m_cons_receta').modal('show');
                 })
                 .fail(function(jqXHR, ajaxOptions, thrownError) {
                     console.log(jqXHR, ajaxOptions, thrownError)
@@ -6006,6 +6067,18 @@
             @include('template.templateCambioContrasena')
 
             seleccionar_lugar_atencion_agenda();
+
+            $(window).on('focus', function() {
+                if ($('#lugares_atencion_agenda').length) {
+                    buscar_hora_medica();
+                }
+            });
+
+            setInterval(function() {
+                if ($('#lugares_atencion_agenda').length) {
+                    buscar_hora_medica();
+                }
+            }, 60000);
 
             $('#registro_paciente_profesional').validate({
                 rules: {

@@ -39,7 +39,7 @@
 						<div class="card-body text-center p-5">
                             <h4 class="mb-4 f-20">Descarga nuestra aplicación para telefonos Android</h4>
                             <div class="text-center">
-                                <a href="{{ asset('app/download/vetsdipass.apk') }}">
+                                <a href="{{ asset('app/download/vetsdipass-debug.apk') }}">
                                     <img src="{{ asset('images/app_descarga/logo-vetsdi-pass.jpg') }}" alt="logo_apk" class="img-fluid rounded" style="max-width: 160px;">
                                 </a>
                             </div>
