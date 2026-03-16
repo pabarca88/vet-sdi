@@ -136,7 +136,19 @@ class EscritorioPaciente extends Controller
                     optional($direccion)->direccion,
                     optional($direccion)->numero_dir,
                 ])->filter()->implode(' '));
-                $horaMedica->texto_estado = optional($estado)->valor;
+                switch ((int) $horaMedica->id_estado) {
+                    case 2:
+                        $textoEstado = 'Hora confirmada';
+                        break;
+                    case 3:
+                        $textoEstado = 'Hora cancelada';
+                        break;
+                    default:
+                        $textoEstado = 'Hora pendiente por confirmar';
+                        break;
+                }
+
+                $horaMedica->texto_estado = $textoEstado;
                 $horaMedica->color_estado = optional($estado)->color;
 
                 return $horaMedica;
