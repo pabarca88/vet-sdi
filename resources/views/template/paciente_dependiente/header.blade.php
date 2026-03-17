@@ -1,5 +1,8 @@
 <header class="navbar pcoded-header navbar-expand-lg navbar-light header-blue">
     @php
+        $perfilMascota = $mascota ?? $paciente ?? null;
+        $nombreMascota = trim(($perfilMascota->nombre ?? $perfilMascota->nombres ?? '') . ' ' . ($perfilMascota->apellido_uno ?? ''));
+        $nombreMascota = $nombreMascota !== '' ? $nombreMascota : (@Auth::user()->name ?? 'Mascota');
         $nombreResponsable = @Auth::user()->name ?? 'Sin responsable';
         if (!empty($responsable)) {
             $nombreResponsable = trim(($responsable->nombres ?? '') . ' ' . ($responsable->apellido_uno ?? '') . ' ' . ($responsable->apellido_dos ?? ''));
@@ -42,7 +45,7 @@
 
                         <div class="pro-head">
 
-                            <span>{{  @Auth::user()->name  }}</span>
+                            <span style="font-weight: 700;">{{ $nombreMascota }}</span>
 
                             <br/><span>Dueño: {{ $nombreResponsable }}</span>
 
