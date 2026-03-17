@@ -37,15 +37,11 @@
 						<span class="pcoded-mtext text-center">Mi Escritorio vet</span>
 					</a>
 					<ul class="pcoded-submenu">
-						
-						<li><a href="{{ ROUTE('paciente.agendar_hora') }}">Reservar Hora Vet</a></li>
-						<li><a href="{{ ROUTE('paciente.mis_profesionales') }}">Mis Veterinarios</a></li>
-						<li><a href="{{ ROUTE('check_sdi') }}?urla=Inicio&urln=Mi_Ficha_Medica">Ficha Vet Única</a></li>
-						<li><a href="{{ ROUTE('paciente.receta') }}">Receta Online</a></li>
-						<li><a href="{{ ROUTE('paciente.receta.examen') }}">Exámenes</a></li>
-						<li><a href="{{ ROUTE('paciente.receta.examen') }}">Vacunas</a></li>
-                        <li><a href="{{ ROUTE('paciente.dependientes.infante.definitiva', ['tipo_dependencia' => '1,2' ]) }}">Mis Mascotas</a></li>
-						<li><a href="{{ ROUTE('paciente.mis_controles') }}">Controles de Parámetros</a></li>
+						<li><a href="{{ ROUTE('paciente.agendar_hora') }}">Reservar Hora</a></li>
+                        <li><a href="{{ ROUTE('paciente.dependientes.infante.definitiva', ['tipo_dependencia' => '1' ]) }}">Mis Mascotas</a></li>
+                        <li><a href="{{ ROUTE('paciente.mascotas.inscripcion_alimentos') }}">Registro de alimentos</a></li>
+                        <li><a href="{{ ROUTE('paciente.mascotas.inscripcion_medicamentos') }}">Registro de medicamentos</a></li>
+                        <li><a href="{{ ROUTE('paciente.convenios') }}">Mis convenios</a></li>
 					</ul>
 				</li>
 				<li class="nav-item pcoded-hasmenu">
