@@ -219,14 +219,14 @@
 </div>
 @endsection
 
-@section('page-style')
+@section('page-styles')
     <style>
         .estado-hora-chip {
             display: inline-block;
-            padding: 6px 16px;
+            padding: 6px 10px;
             border-radius: 999px;
             color: #fff;
-            font-size: 0.76rem;
+            font-size: 0.7rem;
             font-weight: 600;
             line-height: 1.1;
             text-align: center;

@@ -14,6 +14,8 @@ use App\Models\Especialidad;
 
 use App\Models\FichaAtencion;
 
+use App\Models\HoraMedica;
+
 use App\Models\Mascota;
 
 use App\Models\Paciente;
@@ -41,6 +43,94 @@ use Illuminate\Support\Facades\Auth;
 class EscritorioPacienteDependiente extends Controller
 
 {
+
+    private function nombreCompletoProfesional(?Profesional $profesional): string
+
+    {
+
+        if (!$profesional) {
+            return '';
+        }
+
+
+
+        return trim(collect([
+            $profesional->nombre,
+            $profesional->apellido_uno,
+            $profesional->apellido_dos,
+        ])->filter()->implode(' '));
+
+    }
+
+
+
+    private function obtenerHorasAgendadasMascota(int $idResponsable, int $idMascota)
+
+    {
+
+        return HoraMedica::with([
+                'Mascota.especieMascota',
+                'Profesional.Especialidad',
+                'Profesional.TipoEspecialidad',
+                'Profesional.SubTipoEspecialidad',
+                'LugarAtencion.Direccion.Ciudad',
+                'Estado',
+            ])
+            ->where('id_paciente', $idResponsable)
+            ->where('id_mascota', $idMascota)
+            ->whereDate('fecha_consulta', '>=', date('Y-m-d'))
+            ->orderBy('fecha_consulta', 'ASC')
+            ->orderBy('hora_inicio', 'ASC')
+            ->get()
+            ->map(function ($horaMedica) {
+                $profesional = $horaMedica->Profesional;
+                $lugarAtencion = $horaMedica->LugarAtencion;
+                $direccion = optional($lugarAtencion)->Direccion;
+                $mascota = $horaMedica->Mascota;
+
+                $especialidad = '';
+                if (!empty(optional($profesional)->SubTipoEspecialidad->nombre)) {
+                    $especialidad = $profesional->SubTipoEspecialidad->nombre;
+                } elseif (!empty(optional($profesional)->TipoEspecialidad->nombre)) {
+                    $especialidad = $profesional->TipoEspecialidad->nombre;
+                } elseif (!empty(optional($profesional)->Especialidad->nombre)) {
+                    $especialidad = $profesional->Especialidad->nombre;
+                }
+
+                $especieMascota = '';
+                if (!empty(optional($mascota)->especieMascota->nombre)) {
+                    $especieMascota = $mascota->especieMascota->nombre;
+                } elseif (!empty(optional($mascota)->especie)) {
+                    $especieMascota = $mascota->especie;
+                }
+
+                switch ((int) $horaMedica->id_estado) {
+                    case 2:
+                        $textoEstado = 'Hora confirmada';
+                        break;
+                    case 3:
+                        $textoEstado = 'Hora cancelada';
+                        break;
+                    default:
+                        $textoEstado = 'Hora pendiente por confirmar';
+                        break;
+                }
+
+                $horaMedica->nombre_profesional_completo = $this->nombreCompletoProfesional($profesional);
+                $horaMedica->nombre_especialidad_resumen = $especialidad;
+                $horaMedica->nombre_mascota = optional($mascota)->nombre;
+                $horaMedica->nombre_especie_mascota = $especieMascota;
+                $horaMedica->nombre_lugar_atencion = optional($lugarAtencion)->nombre;
+                $horaMedica->direccion_lugar_atencion = trim(collect([
+                    optional($direccion)->direccion,
+                    optional($direccion)->numero_dir,
+                ])->filter()->implode(' '));
+                $horaMedica->texto_estado = $textoEstado;
+
+                return $horaMedica;
+            });
+
+    }
 
     public function buscar_especialidad(Request $request)
 
@@ -98,7 +188,8 @@ class EscritorioPacienteDependiente extends Controller
             return view('app.paciente_dependiente.escritorio_paciente_dependiente')->with([
                 'paciente' => $mascota_dependiente,
                 'responsable' => $paciente_responsable,
-                'mascota' => $mascota_dependiente
+                'mascota' => $mascota_dependiente,
+                'hora_medica' => $this->obtenerHorasAgendadasMascota($paciente_responsable->id, $mascota_dependiente->id),
             ]);
         }
 

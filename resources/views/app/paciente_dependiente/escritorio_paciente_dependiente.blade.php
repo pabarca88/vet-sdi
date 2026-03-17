@@ -167,7 +167,7 @@
 
                     <div class="card-header text-center bg-c-info">
 
-                        <h5 class="text-white d-inline text-center" style="font-size: 1.2rem;">Mis horas médicas del día</h5>
+                        <h5 class="text-white d-inline text-center" style="font-size: 1.2rem;">Mis horas agendadas</h5>
 
                     </div>
 
@@ -183,6 +183,8 @@
 
                                         <th class="text-center align-middle">Acción</th>
 
+                                        <th class="text-center align-middle">Mascota</th>
+
                                         <th class="text-center align-middle">Profesional</th>
 
                                         <th class="text-center align-middle">Información de Atención</th>
@@ -195,149 +197,77 @@
 
                                 <tbody>
 
-                                    <tr>
-
-                                        <td class="text-center align-middle">
-
-                                            <button href="#!" class="btn btn-info btn-sm rounded-circle"
-
-                                                data-toggle="tooltip" data-placement="top" title="Confirmar Hora">
-
-                                                <i class="feather icon-check"></i>
-
-                                            </button>
-
-                                            <button href="#!" class="btn btn-danger btn-sm rounded-circle"
-
-                                                data-toggle="tooltip" data-placement="top" title="Anular Hora">
-
-                                                <i class="feather icon-x"></i>
-
-                                            </button>
-
-                                        </td>
-
-                                        <td class="text-center align-middle">
-
-                                            Nombre y Apellidos<br>
-
-                                            Medicina General<br>
-
-                                        </td>
-
-                                        <td class="text-center align-middle">
-
-                                            Centro médico IST<br>
-
-                                            Arlegui 212, Viña del Mar<br>
-
-                                            21/05/2021 17:00 hrs
-
-                                        </td>
-
-                                        <td class="text-center align-middle">
-
-                                            <span class="badge badge-danger">Hora Rechazada</span>
-
-                                        </td>
-
-                                    </tr>
-
-                                    <tr>
-
-                                        <td class="text-center align-middle">
-
-                                            <button href="#!" class="btn btn-info btn-sm rounded-circle"
-
-                                                data-toggle="tooltip" data-placement="top" title="Confirmar Hora">
-
-                                                <i class="feather icon-check"></i>
-
-                                            </button>
-
-                                            <button href="#!" class="btn btn-danger btn-sm rounded-circle"
-
-                                                data-toggle="tooltip" data-placement="top" title="Anular Hora">
-
-                                                <i class="feather icon-x"></i>
-
-                                            </button>
-
-                                        </td>
-
-                                        <td class="text-center align-middle">
-
-                                            Nombre y Apellidos<br>
-
-                                            Medicina General<br>
-
-                                        </td>
-
-                                        <td class="text-center align-middle">
-
-                                            Centro médico IST<br>
-
-                                            Arlegui 212, Viña del Mar<br>
-
-                                            21/05/2021 17:00 hrs
-
-                                        </td>
-
-                                        <td class="text-center align-middle">
-
-                                            <span class="badge badge-warning">Hora Pendiente</span>
-
-                                        </td>
-
-                                    </tr>
-
-                                    <tr>
-
-                                        <td class="text-center align-middle">
-
-                                            <button href="#!" class="btn btn-info btn-sm rounded-circle"
-
-                                                data-toggle="tooltip" data-placement="top" title="Confirmar Hora">
-
-                                                <i class="feather icon-check"></i>
-
-                                            </button>
-
-                                            <button href="#!" class="btn btn-danger btn-sm rounded-circle"
-
-                                                data-toggle="tooltip" data-placement="top" title="Anular Hora">
-
-                                                <i class="feather icon-x"></i>
-
-                                            </button>
-
-                                        </td>
-
-                                        <td class="text-center align-middle">
-
-                                            Nombre y Apellidos<br>
-
-                                            Medicina General<br>
-
-                                        </td>
-
-                                        <td class="text-center align-middle">
-
-                                            Centro médico IST<br>
-
-                                            Arlegui 212, Viña del Mar<br>
-
-                                            21/05/2021 17:00 hrs
-
-                                        </td>
-
-                                        <td class="text-center align-middle">
-
-                                            <span class="badge badge-success">Hora Aprobada</span>
-
-                                        </td>
-
-                                    </tr>
+                                    @forelse ($hora_medica as $hora)
+                                        <tr>
+                                            <td class="text-center align-middle">
+                                                @if (in_array($hora->id_estado, [1, 8]))
+                                                    <button class="btn btn-info btn-sm rounded-circle btn-confirmar-hora"
+                                                        data-toggle="tooltip" data-placement="top" title="Confirmar Hora"
+                                                        onclick="confirmar({{ $hora->id }});">
+                                                        <i class="feather icon-check"></i>
+                                                    </button>
+                                                    <button class="btn btn-danger btn-sm rounded-circle btn-anular-hora"
+                                                        data-toggle="tooltip" data-placement="top" title="Anular Hora"
+                                                        onclick="anular({{ $hora->id }});">
+                                                        <i class="feather icon-x"></i>
+                                                    </button>
+                                                @elseif ($hora->id_estado == 2)
+                                                    <button class="btn btn-info btn-sm rounded-circle btn-confirmar-hora"
+                                                        data-toggle="tooltip" data-placement="top" title="Hora confirmada"
+                                                        disabled="disabled">
+                                                        <i class="feather icon-check"></i>
+                                                    </button>
+                                                    <button class="btn btn-danger btn-sm rounded-circle btn-anular-hora"
+                                                        data-toggle="tooltip" data-placement="top" title="Anular Hora"
+                                                        onclick="anular({{ $hora->id }});">
+                                                        <i class="feather icon-x"></i>
+                                                    </button>
+                                                @else
+                                                    <button class="btn btn-info btn-sm rounded-circle btn-confirmar-hora"
+                                                        data-toggle="tooltip" data-placement="top" title="Confirmar Hora"
+                                                        disabled="disabled">
+                                                        <i class="feather icon-check"></i>
+                                                    </button>
+                                                    <button class="btn btn-danger btn-sm rounded-circle btn-anular-hora"
+                                                        data-toggle="tooltip" data-placement="top" title="Anular Hora"
+                                                        disabled="disabled">
+                                                        <i class="feather icon-x"></i>
+                                                    </button>
+                                                @endif
+                                            </td>
+
+                                            <td class="text-center align-middle">
+                                                <strong>{{ $hora->nombre_mascota ?: ($mascota->nombre ?? 'Sin mascota') }}</strong>
+                                                @if (!empty($hora->nombre_especie_mascota))
+                                                    <br>{{ $hora->nombre_especie_mascota }}
+                                                @endif
+                                            </td>
+
+                                            <td class="text-center align-middle">
+                                                {{ $hora->nombre_profesional_completo }}<br>
+                                                {{ $hora->nombre_especialidad_resumen }}
+                                            </td>
+
+                                            <td class="text-center align-middle">
+                                                {{ $hora->nombre_lugar_atencion }}<br>
+                                                {{ $hora->direccion_lugar_atencion }}<br>
+                                                <span style="font-weight:bold;">
+                                                    {{ \Carbon\Carbon::parse($hora->fecha_consulta . ' ' . $hora->hora_inicio)->format('d-m-Y H:i') }}
+                                                    hrs
+                                                </span>
+                                            </td>
+
+                                            <td class="text-center align-middle">
+                                                <span class="estado-hora-chip {{ $hora->id_estado == 2 ? 'confirmada' : ($hora->id_estado == 3 ? 'cancelada' : 'pendiente') }}">
+                                                    {{ $hora->texto_estado }}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="5" class="text-center align-middle">No existen registros</td>
+                                        </tr>
+                                    @endforelse
 
                                 </tbody>
 
@@ -449,4 +379,110 @@
 
 </div>
 
+@endsection
+
+@section('page-styles')
+    <style>
+        .estado-hora-chip {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 999px;
+            color: #fff;
+            font-size: 0.7rem;
+            font-weight: 600;
+            line-height: 1.1;
+            text-align: center;
+            white-space: normal;
+        }
+
+        .estado-hora-chip.cancelada {
+            background-color: #ff3d4f;
+        }
+
+        .estado-hora-chip.pendiente {
+            background-color: #ffb640;
+        }
+
+        .estado-hora-chip.confirmada {
+            background-color: #6ac000;
+        }
+    </style>
+@endsection
+
+@section('page-script')
+    <script>
+        function confirmar(id)
+        {
+            $('.btn-confirmar-hora').attr('disabled', true);
+            $('.btn-anular-hora').attr('disabled', true);
+
+            let url = "{{ route('hora.medica.confirmar') }}";
+
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: {
+                    id_hora_medica: id,
+                    _token: CSRF_TOKEN,
+                },
+                success: function(data)
+                {
+                    if (data != null) {
+                        swal({
+                            title: "Exito!",
+                            text: "Se ha confirmado su hora medica",
+                            type: "success",
+                        });
+                    } else {
+                        swal({
+                            title: "Error!",
+                            text: "Se ha presentado un problema en la confirmación de su hora medica.\nIntente de nuevo.",
+                            type: "error",
+                        });
+                    }
+
+                    setTimeout(function() {
+                        window.location.reload();
+                    }, 500);
+                }
+            });
+        }
+
+        function anular(id)
+        {
+            $('.btn-confirmar-hora').attr('disabled', true);
+            $('.btn-anular-hora').attr('disabled', true);
+
+            let url = "{{ route('hora.medica.cancelar') }}";
+
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: {
+                    id_hora_medica: id,
+                    _token: CSRF_TOKEN,
+                },
+                success: function(data)
+                {
+                    if (data != null) {
+                        swal({
+                            title: "Exito!",
+                            text: "Se ha cancelado su hora medica",
+                            type: "success",
+                        });
+                    } else {
+                        swal({
+                            title: "Error!",
+                            text: "Se ha presentado un problema en la cancelación de su hora medica.\nIntente de nuevo.",
+                            type: "error",
+                        });
+                    }
+
+                    setTimeout(function() {
+                        window.location.reload();
+                    }, 500);
+                }
+            });
+        }
+    </script>
 @endsection
