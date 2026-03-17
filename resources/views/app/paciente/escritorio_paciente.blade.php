@@ -163,7 +163,7 @@
                                                 </span>
                                             </td>
                                             <td class="align-middle">
-                                                <span style="background-color: {{ $hora->color_estado }}; padding: 5px; border-radius: 12%; color: #fff;">
+                                                <span class="estado-hora-chip {{ $hora->id_estado == 2 ? 'confirmada' : ($hora->id_estado == 3 ? 'cancelada' : 'pendiente') }}">
                                                     {{ $hora->texto_estado }}
                                                 </span>
                                             </td>
@@ -219,8 +219,51 @@
 </div>
 @endsection
 
+@section('page-style')
+    <style>
+        .estado-hora-chip {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 999px;
+            color: #fff;
+            font-size: 0.76rem;
+            font-weight: 600;
+            line-height: 1.1;
+            text-align: center;
+            white-space: normal;
+        }
+
+        .estado-hora-chip.cancelada {
+            background-color: #ff3d4f;
+        }
+
+        .estado-hora-chip.pendiente {
+            background-color: #ffb640;
+        }
+
+        .estado-hora-chip.confirmada {
+            background-color: #6ac000;
+        }
+    </style>
+@endsection
+
 @section('page-script')
     <script>
+        function obtenerClaseEstadoHora(idEstado)
+        {
+            switch (parseInt(idEstado, 10))
+            {
+                case 2:
+                    return 'confirmada';
+
+                case 3:
+                    return 'cancelada';
+
+                default:
+                    return 'pendiente';
+            }
+        }
+
         function confirmar(id)
         {
             $('.btn-confirmar-hora').attr('disabled', true);
@@ -375,7 +418,7 @@
                                     var profesionalHtml = (value.nombre_profesional_completo || '') + '<br>' + (value.nombre_especialidad_resumen || '');
                                     var diaHoraFormato = moment(value.fecha_consulta+' '+value.hora_inicio).format('DD-MM-YYYY HH:mm');
                                     var atencionHtml = (value.nombre_lugar_atencion || '') + '<br>' + (value.direccion_lugar_atencion || '') + '<br><span style="font-weight:bold;">'+diaHoraFormato+' hrs</span>';
-                                    var estadoHtml = '<span style="background-color: '+(value.color_estado || '#6c757d')+'; padding: 5px; border-radius: 12%; color: #fff;">'+(value.texto_estado || '')+'</span>';
+                                    var estadoHtml = '<span class="estado-hora-chip '+obtenerClaseEstadoHora(value.id_estado)+'">'+(value.texto_estado || '')+'</span>';
 
                                     if (tabla) {
                                         tabla.row.add([
