@@ -30,11 +30,16 @@
                         <div class="row">
                             <div class="col-md-12 text-center mt-n4">
                                 <div class="change-profile text-center">
+                                    <input type="file" id="foto_perfil_input" accept="image/png,image/jpeg,image/jpg,image/webp" class="d-none">
                                     <div class="dropdown w-auto d-inline-block">
                                         <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <div class="profile-dp">
                                                 <div class="position-relative d-inline-block">
-                                                    <img class="img-radius img-fluid wid-100" src="{{ asset('images/iconos/usuario.svg') }}" alt="User image">
+                                                    <img
+                                                        class="img-radius img-fluid wid-100 patient-profile-photo"
+                                                        id="patient-profile-image"
+                                                        src="{{ $paciente->foto_perfil ? asset('storage/' . $paciente->foto_perfil) : asset('images/iconos/usuario.svg') }}"
+                                                        alt="Imagen de perfil">
                                                 </div>
                                                 <div class="overlay">
                                                     <span>Actualizar</span>
@@ -42,8 +47,8 @@
                                             </div>
                                         </a>
                                         <div class="dropdown-menu">
-                                            <a class="dropdown-item" href="#"><i class="feather icon-upload-cloud mr-2"></i>Cambiar imagen de perfil</a>
-                                            <a class="dropdown-item" href="#"><i class="feather icon-trash-2 mr-2"></i>Eliminar imagen</a>
+                                            <a class="dropdown-item" href="javascript:void(0)" onclick="seleccionar_foto_perfil(); return false;"><i class="feather icon-upload-cloud mr-2"></i>Cambiar imagen de perfil</a>
+                                            <a class="dropdown-item" href="javascript:void(0)" onclick="eliminar_foto_perfil(); return false;"><i class="feather icon-trash-2 mr-2"></i>Eliminar imagen</a>
                                         </div>
                                     </div>
                                 </div>
@@ -55,10 +60,6 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link text-reset" id="emergencia-tab" data-toggle="tab" href="#emergencia" role="tab" aria-controls="emergencia" aria-selected="false">Contactos de emergencia</a>
-                                    </li>
-
-                                    <li class="nav-item">
-                                        <a class="nav-link text-reset" id="datmedicos-tab" data-toggle="tab" href="#datmedicos" role="tab" aria-controls="datmedicos" aria-selected="false">Datos médicos</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link text-reset" id="pass-tab" data-toggle="tab" href="#pass" role="tab" aria-controls="pass" aria-selected="false">Contraseñas</a>
@@ -1378,6 +1379,25 @@
         // [ customer-scroll ] end
 
         $(document).ready(function () {
+            $('#foto_perfil_input').on('change', function(event) {
+                const archivo = event.target.files[0];
+
+                if (!archivo) {
+                    return;
+                }
+
+                if (!archivo.type.startsWith('image/')) {
+                    swal({
+                        title: "Foto de perfil",
+                        text: "Debes seleccionar una imagen válida.",
+                        icon: "error",
+                    });
+                    $(this).val('');
+                    return;
+                }
+
+                recortar_y_subir_foto(archivo);
+            });
 
             /* formatear rut */
             $("#rut_nuevo_contacto").rut({
@@ -1410,6 +1430,150 @@
             // });
 
         });
+
+        function seleccionar_foto_perfil() {
+            $('#foto_perfil_input').trigger('click');
+        }
+
+        function recortar_y_subir_foto(archivo) {
+            const lector = new FileReader();
+
+            lector.onload = function(e) {
+                const imagen = new Image();
+
+                imagen.onload = function() {
+                    const ladoOriginal = Math.min(imagen.width, imagen.height);
+                    const origenX = (imagen.width - ladoOriginal) / 2;
+                    const origenY = (imagen.height - ladoOriginal) / 2;
+                    const ladoSalida = 512;
+                    const canvas = document.createElement('canvas');
+
+                    canvas.width = ladoSalida;
+                    canvas.height = ladoSalida;
+
+                    const contexto = canvas.getContext('2d');
+                    contexto.drawImage(
+                        imagen,
+                        origenX,
+                        origenY,
+                        ladoOriginal,
+                        ladoOriginal,
+                        0,
+                        0,
+                        ladoSalida,
+                        ladoSalida
+                    );
+
+                    canvas.toBlob(function(blob) {
+                        if (!blob) {
+                            swal({
+                                title: "Foto de perfil",
+                                text: "No fue posible procesar la imagen.",
+                                icon: "error",
+                            });
+                            $('#foto_perfil_input').val('');
+                            return;
+                        }
+
+                        subir_foto_perfil(blob, archivo.name || 'foto_perfil.png');
+                    }, 'image/png', 0.95);
+                };
+
+                imagen.src = e.target.result;
+            };
+
+            lector.readAsDataURL(archivo);
+        }
+
+        function subir_foto_perfil(blob, nombreArchivo) {
+            const formData = new FormData();
+            formData.append('_token', CSRF_TOKEN);
+            formData.append('foto_perfil', blob, nombreArchivo.replace(/\.[^.]+$/, '') + '.png');
+
+            $.ajax({
+                url: "{{ route('paciente.actualizar.foto') }}",
+                type: "post",
+                data: formData,
+                processData: false,
+                contentType: false,
+            })
+            .done(function(data) {
+                if (data.estado == 1) {
+                    actualizar_imagenes_perfil(data.foto_url);
+                    swal({
+                        title: "Foto de perfil",
+                        text: data.mensaje,
+                        icon: "success",
+                    });
+                } else {
+                    swal({
+                        title: "Foto de perfil",
+                        text: data.mensaje || "No fue posible actualizar la foto.",
+                        icon: "error",
+                    });
+                }
+            })
+            .fail(function() {
+                swal({
+                    title: "Foto de perfil",
+                    text: "No fue posible actualizar la foto.",
+                    icon: "error",
+                });
+            })
+            .always(function() {
+                $('#foto_perfil_input').val('');
+            });
+        }
+
+        function eliminar_foto_perfil() {
+            swal({
+                title: "Eliminar imagen",
+                text: "La foto actual se eliminará del perfil.",
+                icon: "warning",
+                buttons: ["Cancelar", "Eliminar"],
+                dangerMode: true,
+            }).then(function(confirmado) {
+                if (!confirmado) {
+                    return;
+                }
+
+                $.ajax({
+                    url: "{{ route('paciente.eliminar.foto') }}",
+                    type: "post",
+                    data: {
+                        _token: CSRF_TOKEN,
+                    },
+                })
+                .done(function(data) {
+                    if (data.estado == 1) {
+                        actualizar_imagenes_perfil(data.foto_url);
+                        swal({
+                            title: "Foto de perfil",
+                            text: data.mensaje,
+                            icon: "success",
+                        });
+                    } else {
+                        swal({
+                            title: "Foto de perfil",
+                            text: data.mensaje || "No fue posible eliminar la foto.",
+                            icon: "error",
+                        });
+                    }
+                })
+                .fail(function() {
+                    swal({
+                        title: "Foto de perfil",
+                        text: "No fue posible eliminar la foto.",
+                        icon: "error",
+                    });
+                });
+            });
+        }
+
+        function actualizar_imagenes_perfil(url) {
+            $('#patient-profile-image').attr('src', url);
+            $('#patient-menu-image').attr('src', url);
+        }
 
         function buscar_contacto() {
 
@@ -2530,4 +2694,12 @@
 
 @section('page-styles')
     <link rel="stylesheet" href="{{ asset('css/perfiles_usuarios.css') }}">
+    <style>
+        .patient-profile-photo {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            aspect-ratio: 1 / 1;
+        }
+    </style>
 @endsection

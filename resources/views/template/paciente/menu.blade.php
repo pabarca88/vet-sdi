@@ -2,8 +2,14 @@
 	<div class="navbar-wrapper">
 		<div class="navbar-content scroll-div">
 			<div class="">
+				@php($pacienteMenu = \App\Models\Paciente::where('id_usuario', Auth::id())->first())
 				<div class="main-menu-header">
-					<img class="img-radius" src="{{ asset('images/iconos/usuario.svg') }}" alt="Imagen">
+					<img
+						class="img-radius"
+						id="patient-menu-image"
+						src="{{ !empty($pacienteMenu) && !empty($pacienteMenu->foto_perfil) ? asset('storage/' . $pacienteMenu->foto_perfil) : asset('images/iconos/usuario.svg') }}"
+						alt="Imagen"
+						style="width: 40px; height: 40px; object-fit: cover;">
 					<div class="user-details">
 						<div id="more-details">{{ @Auth::user()->name }}<i class="fa fa-caret-down"></i></div>
 					</div>

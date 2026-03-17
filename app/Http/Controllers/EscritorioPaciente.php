@@ -38,6 +38,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 
 use App\Helpers\Funciones;
 use App\Models\AcompananteDependiente;
@@ -1882,6 +1883,75 @@ class EscritorioPaciente extends Controller
         $direcion = $paciente->Direccion()->first();
 
         return view('app.paciente.perfil_paciente', ['paciente' => $paciente, 'direcion' => $direcion]);
+    }
+
+    public function actualizarFoto(Request $request)
+    {
+        try {
+            $request->validate([
+                'foto_perfil' => 'required|image|mimes:jpeg,jpg,png,webp|max:5120',
+            ]);
+
+            $paciente = Paciente::where('id_usuario', Auth::id())->first();
+
+            if (!$paciente) {
+                return response()->json([
+                    'estado' => 0,
+                    'mensaje' => 'Paciente no encontrado.',
+                ], 404);
+            }
+
+            if (!empty($paciente->foto_perfil)) {
+                Storage::disk('public')->delete($paciente->foto_perfil);
+            }
+
+            $ruta = $request->file('foto_perfil')->store('fotos_perfil', 'public');
+            $paciente->foto_perfil = $ruta;
+            $paciente->save();
+
+            return response()->json([
+                'estado' => 1,
+                'mensaje' => 'Foto de perfil actualizada correctamente.',
+                'foto_url' => asset('storage/' . $ruta),
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'estado' => 0,
+                'mensaje' => 'No fue posible actualizar la foto de perfil.',
+            ], 500);
+        }
+    }
+
+    public function eliminarFoto(Request $request)
+    {
+        try {
+            $paciente = Paciente::where('id_usuario', Auth::id())->first();
+
+            if (!$paciente) {
+                return response()->json([
+                    'estado' => 0,
+                    'mensaje' => 'Paciente no encontrado.',
+                ], 404);
+            }
+
+            if (!empty($paciente->foto_perfil)) {
+                Storage::disk('public')->delete($paciente->foto_perfil);
+            }
+
+            $paciente->foto_perfil = null;
+            $paciente->save();
+
+            return response()->json([
+                'estado' => 1,
+                'mensaje' => 'Foto de perfil eliminada correctamente.',
+                'foto_url' => asset('images/iconos/usuario.svg'),
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'estado' => 0,
+                'mensaje' => 'No fue posible eliminar la foto de perfil.',
+            ], 500);
+        }
     }
 
     /* Reservar Hora Médica */
