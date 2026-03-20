@@ -3323,6 +3323,9 @@
                 });
         };
 
+        let agendaHorasRequest = null;
+        let agendaHorasRequestSeq = 0;
+
         function buscar_hora_medica() {
             let buscar_horas = $('#buscar_horas').val();
             if (buscar_horas == '') {
@@ -3335,6 +3338,7 @@
             let id_lugares_atencion = $('#lugares_atencion_agenda').val();
             let url = "{{ route('profesional.buscar_horas_medicas') }}";
             let tabla = null;
+            const currentRequestSeq = ++agendaHorasRequestSeq;
 
             if ($.fn.DataTable.isDataTable('#simpletable')) {
                 tabla = $('#simpletable').DataTable();
@@ -3343,21 +3347,29 @@
                 $('#simpletable tbody').empty();
             }
 
-            $.ajax({
-                    url: url,
-                    type: "get",
-                    data: {
-                        buscar_horas: buscar_horas,
-                        id_lugares_atencion: id_lugares_atencion
-                    },
-                })
+            if (agendaHorasRequest && agendaHorasRequest.readyState !== 4) {
+                agendaHorasRequest.abort();
+            }
+
+            agendaHorasRequest = $.ajax({
+                url: url,
+                type: "get",
+                data: {
+                    buscar_horas: buscar_horas,
+                    id_lugares_atencion: id_lugares_atencion
+                },
+            })
                 .done(function(data) {
+                    if (currentRequestSeq !== agendaHorasRequestSeq) {
+                        return;
+                    }
+
                     if (data != null) {
 
                         console.log(data);
                         data = JSON.parse(data);
                         let filas = [];
-                        for (i = 0; i < data.length; i++) {
+                        for (let i = 0; i < data.length; i++) {
                             let pacienteHtml = obtenerHtmlPacienteEscritorio(data[i]);
                             let lugarAtencion = data[i].lugar_atencion ? data[i].lugar_atencion.nombre : '';
 
@@ -3378,8 +3390,12 @@
                             }
                         }
 
-                        if (tabla && filas.length > 0) {
-                            tabla.rows.add(filas).draw();
+                        if (tabla) {
+                            tabla.clear();
+                            if (filas.length > 0) {
+                                tabla.rows.add(filas);
+                            }
+                            tabla.draw();
                         }
                     } else {
                         //var fila = '<span><h5>no existen registros</h5></span>'
@@ -3387,6 +3403,9 @@
                     }
                 })
                 .fail(function(jqXHR, ajaxOptions, thrownError) {
+                    if (ajaxOptions === 'abort') {
+                        return;
+                    }
                     console.log(jqXHR, ajaxOptions, thrownError)
                 });
 
