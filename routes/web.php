@@ -996,6 +996,10 @@ Route::post('Convenios/editar', [App\Http\Controllers\EscritorioPaciente::class,
 
     Route::post('hora/medica/cancelar', [App\Http\Controllers\EscritorioProfesional::class, 'cancelar_hora'])->name('hora.medica.cancelar');
 
+    Route::post('paciente/hora/medica/confirmar', [App\Http\Controllers\AppPacienteController::class, 'confirmarHoraMedica'])->name('paciente.hora.medica.confirmar');
+
+    Route::post('paciente/hora/medica/cancelar', [App\Http\Controllers\AppPacienteController::class, 'anularHoraMedica'])->name('paciente.hora.medica.cancelar');
+
 
 
     /** VER HORAS MEDICAS */

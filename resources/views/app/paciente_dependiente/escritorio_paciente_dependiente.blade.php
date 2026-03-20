@@ -200,7 +200,7 @@
                                     @forelse ($hora_medica as $hora)
                                         <tr>
                                             <td class="text-center align-middle">
-                                                @if (in_array($hora->id_estado, [1, 8]))
+                                                @if (in_array((int) ($hora->id_estado_visual ?? $hora->id_estado), [1, 8, 16], true))
                                                     <button class="btn btn-info btn-sm rounded-circle btn-confirmar-hora"
                                                         data-toggle="tooltip" data-placement="top" title="Confirmar Hora"
                                                         onclick="confirmar({{ $hora->id }});">
@@ -211,7 +211,7 @@
                                                         onclick="anular({{ $hora->id }});">
                                                         <i class="feather icon-x"></i>
                                                     </button>
-                                                @elseif ($hora->id_estado == 2)
+                                                @elseif (($hora->id_estado_visual ?? $hora->id_estado) == 2)
                                                     <button class="btn btn-info btn-sm rounded-circle btn-confirmar-hora"
                                                         data-toggle="tooltip" data-placement="top" title="Hora confirmada"
                                                         disabled="disabled">
@@ -258,7 +258,8 @@
                                             </td>
 
                                             <td class="text-center align-middle">
-                                                <span class="estado-hora-chip {{ $hora->id_estado == 2 ? 'confirmada' : ($hora->id_estado == 3 ? 'cancelada' : 'pendiente') }}">
+                                                @php $estadoVisualHora = (int) ($hora->id_estado_visual ?? $hora->id_estado); @endphp
+                                                <span class="estado-hora-chip {{ in_array($estadoVisualHora, [1, 8, 16], true) ? 'pendiente' : ($estadoVisualHora == 2 ? 'confirmada' : ($estadoVisualHora == 3 ? 'cancelada' : (in_array($estadoVisualHora, [4, 5], true) ? 'en-proceso' : ($estadoVisualHora == 6 ? 'realizada' : ($estadoVisualHora == 7 ? 'inasistida' : 'desconocida'))))) }}">
                                                     {{ $hora->texto_estado }}
                                                 </span>
                                             </td>
@@ -406,6 +407,22 @@
         .estado-hora-chip.confirmada {
             background-color: #6ac000;
         }
+
+        .estado-hora-chip.en-proceso {
+            background-color: #7d4bc4;
+        }
+
+        .estado-hora-chip.realizada {
+            background-color: #17c1c1;
+        }
+
+        .estado-hora-chip.inasistida {
+            background-color: #6c757d;
+        }
+
+        .estado-hora-chip.desconocida {
+            background-color: #4a5568;
+        }
     </style>
 @endsection
 
@@ -416,18 +433,18 @@
             $('.btn-confirmar-hora').attr('disabled', true);
             $('.btn-anular-hora').attr('disabled', true);
 
-            let url = "{{ route('hora.medica.confirmar') }}";
+            let url = "{{ route('paciente.hora.medica.confirmar') }}";
 
             $.ajax({
                 url: url,
                 type: "POST",
                 data: {
-                    id_hora_medica: id,
+                    id_hora: id,
                     _token: CSRF_TOKEN,
                 },
                 success: function(data)
                 {
-                    if (data != null) {
+                    if (data != null && parseInt(data.estado, 10) === 1) {
                         swal({
                             title: "Exito!",
                             text: "Se ha confirmado su hora medica",
@@ -453,18 +470,18 @@
             $('.btn-confirmar-hora').attr('disabled', true);
             $('.btn-anular-hora').attr('disabled', true);
 
-            let url = "{{ route('hora.medica.cancelar') }}";
+            let url = "{{ route('paciente.hora.medica.cancelar') }}";
 
             $.ajax({
                 url: url,
                 type: "POST",
                 data: {
-                    id_hora_medica: id,
+                    id_hora: id,
                     _token: CSRF_TOKEN,
                 },
                 success: function(data)
                 {
-                    if (data != null) {
+                    if (data != null && parseInt(data.estado, 10) === 1) {
                         swal({
                             title: "Exito!",
                             text: "Se ha cancelado su hora medica",

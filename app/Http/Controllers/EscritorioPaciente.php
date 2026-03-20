@@ -111,6 +111,12 @@ class EscritorioPaciente extends Controller
                 $direccion = optional($lugarAtencion)->Direccion;
                 $mascota = $horaMedica->Mascota;
                 $estado = $horaMedica->Estado;
+                $fechaHoraAtencion = Carbon::parse($horaMedica->fecha_consulta . ' ' . $horaMedica->hora_inicio);
+                $estadoVisual = (int) $horaMedica->id_estado;
+
+                if ($fechaHoraAtencion->isFuture() && in_array($estadoVisual, [4, 5, 6, 7], true)) {
+                    $estadoVisual = 2;
+                }
 
                 $especialidad = '';
                 if (!empty(optional($profesional)->SubTipoEspecialidad->nombre)) {
@@ -137,18 +143,36 @@ class EscritorioPaciente extends Controller
                     optional($direccion)->direccion,
                     optional($direccion)->numero_dir,
                 ])->filter()->implode(' '));
-                switch ((int) $horaMedica->id_estado) {
+                switch ($estadoVisual) {
+                    case 1:
+                    case 8:
+                    case 16:
+                        $textoEstado = 'Hora pendiente por confirmar';
+                        break;
                     case 2:
                         $textoEstado = 'Hora confirmada';
                         break;
                     case 3:
                         $textoEstado = 'Hora cancelada';
                         break;
+                    case 4:
+                        $textoEstado = 'Hora en espera';
+                        break;
+                    case 5:
+                        $textoEstado = 'Hora en atencion';
+                        break;
+                    case 6:
+                        $textoEstado = 'Hora realizada';
+                        break;
+                    case 7:
+                        $textoEstado = 'Hora inasistida';
+                        break;
                     default:
-                        $textoEstado = 'Hora pendiente por confirmar';
+                        $textoEstado = optional($estado)->descripcion ?? 'Estado desconocido';
                         break;
                 }
 
+                $horaMedica->id_estado_visual = $estadoVisual;
                 $horaMedica->texto_estado = $textoEstado;
                 $horaMedica->color_estado = optional($estado)->color;
 

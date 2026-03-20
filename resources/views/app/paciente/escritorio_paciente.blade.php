@@ -109,7 +109,7 @@
                                     @forelse ($hora_medica as $hora)
                                         <tr>
                                             <td class="align-middle">
-                                                @if (in_array($hora->id_estado, [1, 8]))
+                                                @if (in_array((int) ($hora->id_estado_visual ?? $hora->id_estado), [1, 8, 16], true))
                                                     <button class="btn btn-info btn-icon btn-confirmar-hora"
                                                         data-toggle="tooltip" data-placement="top" title="Confirmar hora"
                                                         onclick="confirmar({{ $hora->id }});">
@@ -120,7 +120,7 @@
                                                         onclick="anular({{ $hora->id }});">
                                                         <i class="feather icon-x"></i>
                                                     </button>
-                                                @elseif ($hora->id_estado == 2)
+                                                @elseif (($hora->id_estado_visual ?? $hora->id_estado) == 2)
                                                     <button class="btn btn-info btn-icon btn-confirmar-hora"
                                                         data-toggle="tooltip" data-placement="top" title="Hora confirmada"
                                                         disabled="disabled">
@@ -163,7 +163,8 @@
                                                 </span>
                                             </td>
                                             <td class="align-middle">
-                                                <span class="estado-hora-chip {{ $hora->id_estado == 2 ? 'confirmada' : ($hora->id_estado == 3 ? 'cancelada' : 'pendiente') }}">
+                                                @php $estadoVisualHora = (int) ($hora->id_estado_visual ?? $hora->id_estado); @endphp
+                                                <span class="estado-hora-chip {{ in_array($estadoVisualHora, [1, 8, 16], true) ? 'pendiente' : ($estadoVisualHora == 2 ? 'confirmada' : ($estadoVisualHora == 3 ? 'cancelada' : (in_array($estadoVisualHora, [4, 5], true) ? 'en-proceso' : ($estadoVisualHora == 6 ? 'realizada' : ($estadoVisualHora == 7 ? 'inasistida' : 'desconocida'))))) }}">
                                                     {{ $hora->texto_estado }}
                                                 </span>
                                             </td>
@@ -244,6 +245,22 @@
         .estado-hora-chip.confirmada {
             background-color: #6ac000;
         }
+
+        .estado-hora-chip.en-proceso {
+            background-color: #7d4bc4;
+        }
+
+        .estado-hora-chip.realizada {
+            background-color: #17c1c1;
+        }
+
+        .estado-hora-chip.inasistida {
+            background-color: #6c757d;
+        }
+
+        .estado-hora-chip.desconocida {
+            background-color: #4a5568;
+        }
     </style>
 @endsection
 
@@ -253,14 +270,29 @@
         {
             switch (parseInt(idEstado, 10))
             {
+                case 1:
+                case 8:
+                case 16:
+                    return 'pendiente';
+
                 case 2:
                     return 'confirmada';
 
                 case 3:
                     return 'cancelada';
 
+                case 4:
+                case 5:
+                    return 'en-proceso';
+
+                case 6:
+                    return 'realizada';
+
+                case 7:
+                    return 'inasistida';
+
                 default:
-                    return 'pendiente';
+                    return 'desconocida';
             }
         }
 
@@ -269,20 +301,19 @@
             $('.btn-confirmar-hora').attr('disabled', true);
             $('.btn-anular-hora').attr('disabled', true);
 
-            let url = "{{ route('hora.medica.confirmar') }}";
+            let url = "{{ route('paciente.hora.medica.confirmar') }}";
 
             $.ajax({
                 url: url,
                 type: "POST",
                 data: {
-                    id_hora_medica: id,
+                    id_hora: id,
                     _token: CSRF_TOKEN,
                 },
                 success: function(data)
                 {
-                    if (data != null)
+                    if (data != null && parseInt(data.estado, 10) === 1)
                     {
-                        data = JSON.parse(data);
                         swal({
                             title: "Exito!",
                             text: "Se ha confirmado su hora medica",
@@ -310,20 +341,19 @@
             $('.btn-confirmar-hora').attr('disabled', true);
             $('.btn-anular-hora').attr('disabled', true);
 
-            let url = "{{ route('hora.medica.cancelar') }}";
+            let url = "{{ route('paciente.hora.medica.cancelar') }}";
 
             $.ajax({
                 url: url,
                 type: "POST",
                 data: {
-                    id_hora_medica: id,
+                    id_hora: id,
                     _token: CSRF_TOKEN,
                 },
                 success: function(data)
                 {
-                    if (data != null)
+                    if (data != null && parseInt(data.estado, 10) === 1)
                     {
-                        data = JSON.parse(data);
                         swal({
                             title: "Exito!",
                             text: "Se ha Cancelado su hora medica",
@@ -372,9 +402,19 @@
                                 $.each(data.registros, function (key, value) {
                                     var html = '';
                                     var acciones = '';
-                                    switch(value.id_estado)
+                                    const estadoVisual = parseInt(value.id_estado_visual ?? value.id_estado, 10);
+                                    switch(estadoVisual)
                                     {
                                         case 1:
+                                            acciones += '                <button class="btn btn-info btn-icon btn-confirmar-hora" data-toggle="tooltip" data-placement="top" title="Confirmar hora" onclick="confirmar('+value.id+');">';
+                                            acciones += '                    <i class="feather icon-check"></i>';
+                                            acciones += '                </button>';
+                                            acciones += '                <button class="btn btn-danger btn-icon btn-anular-hora" data-toggle="tooltip" data-placement="top" title="Anular hora" onclick="anular('+value.id+');">';
+                                            acciones += '                    <i class="feather icon-x"></i>';
+                                            acciones += '                </button>';
+                                            break
+
+                                        case 16:
                                             acciones += '                <button class="btn btn-info btn-icon btn-confirmar-hora" data-toggle="tooltip" data-placement="top" title="Confirmar hora" onclick="confirmar('+value.id+');">';
                                             acciones += '                    <i class="feather icon-check"></i>';
                                             acciones += '                </button>';
@@ -418,7 +458,7 @@
                                     var profesionalHtml = (value.nombre_profesional_completo || '') + '<br>' + (value.nombre_especialidad_resumen || '');
                                     var diaHoraFormato = moment(value.fecha_consulta+' '+value.hora_inicio).format('DD-MM-YYYY HH:mm');
                                     var atencionHtml = (value.nombre_lugar_atencion || '') + '<br>' + (value.direccion_lugar_atencion || '') + '<br><span style="font-weight:bold;">'+diaHoraFormato+' hrs</span>';
-                                    var estadoHtml = '<span class="estado-hora-chip '+obtenerClaseEstadoHora(value.id_estado)+'">'+(value.texto_estado || '')+'</span>';
+                                    var estadoHtml = '<span class="estado-hora-chip '+obtenerClaseEstadoHora(estadoVisual)+'">'+(value.texto_estado || '')+'</span>';
 
                                     if (tabla) {
                                         tabla.row.add([

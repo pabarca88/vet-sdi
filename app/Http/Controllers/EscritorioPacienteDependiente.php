@@ -87,6 +87,12 @@ class EscritorioPacienteDependiente extends Controller
                 $lugarAtencion = $horaMedica->LugarAtencion;
                 $direccion = optional($lugarAtencion)->Direccion;
                 $mascota = $horaMedica->Mascota;
+                $fechaHoraAtencion = Carbon::parse($horaMedica->fecha_consulta . ' ' . $horaMedica->hora_inicio);
+                $estadoVisual = (int) $horaMedica->id_estado;
+
+                if ($fechaHoraAtencion->isFuture() && in_array($estadoVisual, [4, 5, 6, 7], true)) {
+                    $estadoVisual = 2;
+                }
 
                 $especialidad = '';
                 if (!empty(optional($profesional)->SubTipoEspecialidad->nombre)) {
@@ -104,15 +110,32 @@ class EscritorioPacienteDependiente extends Controller
                     $especieMascota = $mascota->especie;
                 }
 
-                switch ((int) $horaMedica->id_estado) {
+                switch ($estadoVisual) {
+                    case 1:
+                    case 8:
+                    case 16:
+                        $textoEstado = 'Hora pendiente por confirmar';
+                        break;
                     case 2:
                         $textoEstado = 'Hora confirmada';
                         break;
                     case 3:
                         $textoEstado = 'Hora cancelada';
                         break;
+                    case 4:
+                        $textoEstado = 'Hora en espera';
+                        break;
+                    case 5:
+                        $textoEstado = 'Hora en atencion';
+                        break;
+                    case 6:
+                        $textoEstado = 'Hora realizada';
+                        break;
+                    case 7:
+                        $textoEstado = 'Hora inasistida';
+                        break;
                     default:
-                        $textoEstado = 'Hora pendiente por confirmar';
+                        $textoEstado = optional($horaMedica->Estado)->descripcion ?? 'Estado desconocido';
                         break;
                 }
 
@@ -125,6 +148,7 @@ class EscritorioPacienteDependiente extends Controller
                     optional($direccion)->direccion,
                     optional($direccion)->numero_dir,
                 ])->filter()->implode(' '));
+                $horaMedica->id_estado_visual = $estadoVisual;
                 $horaMedica->texto_estado = $textoEstado;
 
                 return $horaMedica;

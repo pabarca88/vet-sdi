@@ -1756,7 +1756,15 @@ class AppPacienteController extends Controller
     }
 
     public function anularHoraMedica(Request $request){
-        $hora_medica = HoraMedica::where('id', $request->id_hora)->first();
+        $idHora = $request->id_hora ?? $request->id_hora_medica;
+        $hora_medica = HoraMedica::where('id', $idHora)->first();
+
+        if (!$hora_medica) {
+            return response()->json([
+                'estado' => 0,
+                'msj' => 'Hora no encontrada',
+            ], 404);
+        }
 
         $hora_medica->comentarios_cancelacion = 'Cancelada por paciente desde app';
         $hora_medica->fecha_cancelacion = Carbon::now();
@@ -2059,7 +2067,23 @@ class AppPacienteController extends Controller
         //     'registros' => $request->all()
         // ], 200);
 
-        $hora_medica = HoraMedica::where('id', $request->id_hora)->first();
+        $idHora = $request->id_hora ?? $request->id_hora_medica;
+        $hora_medica = HoraMedica::where('id', $idHora)->first();
+
+        if (!$hora_medica) {
+            return response()->json([
+                'estado' => 0,
+                'msj' => 'Hora no encontrada',
+            ], 404);
+        }
+
+        $hora_medica->id_estado = 2;
+        if (!$hora_medica->save()) {
+            return response()->json([
+                'estado' => 0,
+                'msj' => 'No fue posible confirmar la hora',
+            ], 500);
+        }
 
         $notificacion = NotificacionConfirmacion::where('tipo_notificacion',1)
                                                 ->where('id_evento',$hora_medica->id)
