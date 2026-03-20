@@ -173,6 +173,14 @@ use PDF;
 
 class ficha_atencionController extends Controller
 {
+    private function decodeJsonIfNeeded($value, $assoc = false)
+    {
+        if (is_array($value) || is_object($value) || empty($value)) {
+            return $value;
+        }
+
+        return json_decode($value, $assoc);
+    }
 
     public function atencion_profesional_no_inscrito(Request $request)
     {
@@ -2104,7 +2112,7 @@ class ficha_atencionController extends Controller
         $examenes_rx_oral_endodoncia = $this->dameExamenesPiezaDentalOraxRxEnd($paciente->id, $id_ficha_atencion);
         foreach($examenes_rx_oral_endodoncia as $ero)
         {
-            $ero->numero_piezas = json_decode($ero->numero_piezas);
+            $ero->numero_piezas = $this->decodeJsonIfNeeded($ero->numero_piezas);
         }
         $examenes_rx_oral_odontop = $this->dameExamenesPiezaDentalOraxRxOdontop($paciente->id, $profesional->id_tipo_especialidad);
         $imagenes = $this->dameInfoImagenesDentalPaciente($paciente->id,'gral', $id_ficha_atencion);
@@ -3974,7 +3982,7 @@ class ficha_atencionController extends Controller
 
             // Puedes asignar este array al objeto `$e` si lo necesitas
             $e->decoded_imagenes = $nueva_lista_imagenes; // Agregamos el array decodificado al examen
-            $e->numero_piezas = json_decode($e->numero_piezas);
+            $e->numero_piezas = $this->decodeJsonIfNeeded($e->numero_piezas);
         }
 
         return $examenes;
@@ -14599,7 +14607,7 @@ class ficha_atencionController extends Controller
         }else{
             $procedimientos = ProcedimientosGruposPostImplantes::where('id_paciente',$id_paciente)->where('id_profesional', $id_profesional)->get();
             foreach($procedimientos as $p){
-                $p->grupo_piezas = json_decode($p->grupo_piezas);
+                $p->grupo_piezas = $this->decodeJsonIfNeeded($p->grupo_piezas);
             }
         }
 
