@@ -87,6 +87,32 @@ class EscritorioGeneral extends Controller
         return $datos;
     }
 
+    private function getVeterinaryProfessionalIds(): array
+    {
+        return array_values(array_unique(array_merge(
+            DB::table('fichas_atenciones')->whereNotNull('id_mascota')->distinct()->pluck('id_profesional')->toArray(),
+            DB::table('horas_medicas')->whereNotNull('id_mascota')->distinct()->pluck('id_profesional')->toArray()
+        )));
+    }
+
+    private function getVeterinaryProfessionalCatalog(): array
+    {
+        return [
+            3 => [
+                'area' => 'Consulta Especialista',
+                'item' => 'Otorrinolaringología',
+            ],
+            2734 => [
+                'area' => 'Consulta Especialista',
+                'item' => 'Consulta Cirujano',
+            ],
+            2781 => [
+                'area' => 'Consulta Especialista',
+                'item' => 'Odontología',
+            ],
+        ];
+    }
+
     /**
      * BUSQUEDA DE PROFESIONAL buscador
      *
@@ -97,6 +123,10 @@ class EscritorioGeneral extends Controller
     {
         $datos = array();
         $filtro = array();
+        $esVeterinaria = (int) $request->input('es_veterinaria_busqueda', 0) === 1;
+        $veterinariaArea = trim((string) $request->input('veterinaria_area', ''));
+        $veterinariaItem = trim((string) $request->input('veterinaria_item', ''));
+
         if(!empty($request->nombre))
             $filtro[] = array('nombre','like',$request->nombre.'%');
         if(!empty($request->apellido_uno))
@@ -105,11 +135,11 @@ class EscritorioGeneral extends Controller
             $filtro[] = array('apellido_dos','like',$request->apellido_dos.'%');
         // if(!empty($request->id_direccion))
         //     $filtro[] = array('id_direccion',request->id_direccion);
-        if(!empty($request->id_especialidad))
+        if(!$esVeterinaria && !empty($request->id_especialidad))
             $filtro[] = array('id_especialidad', $request->id_especialidad);
-        if(!empty($request->id_tipo_especialidad))
+        if(!$esVeterinaria && !empty($request->id_tipo_especialidad))
             $filtro[] = array('id_tipo_especialidad', $request->id_tipo_especialidad);
-        if(!empty($request->id_sub_tipo_especialidad))
+        if(!$esVeterinaria && !empty($request->id_sub_tipo_especialidad))
             $filtro[] = array('id_sub_tipo_especialidad', $request->id_sub_tipo_especialidad);
 
         // if(Auth::user()->hasRole('Profesional'))
@@ -172,11 +202,11 @@ class EscritorioGeneral extends Controller
 
             $sql .= " WHERE 1=1";
 
-            if(!empty($request->id_especialidad))
+            if(!$esVeterinaria && !empty($request->id_especialidad))
                 $sql .= " AND profesionales.id_especialidad = ".$request->id_especialidad."";
-            if(!empty($request->id_tipo_especialidad))
+            if(!$esVeterinaria && !empty($request->id_tipo_especialidad))
                 $sql .= " AND profesionales.id_tipo_especialidad = ".$request->id_tipo_especialidad."";
-            if(!empty($request->id_sub_tipo_especialidad))
+            if(!$esVeterinaria && !empty($request->id_sub_tipo_especialidad))
                 $sql .= " AND profesionales.id_sub_tipo_especialidad = ".$request->id_sub_tipo_especialidad."";
             if(!empty($request->nombre))
                 $sql .= " AND profesionales.nombre LIKE '".$request->nombre."%'";
@@ -205,6 +235,35 @@ class EscritorioGeneral extends Controller
             if(!empty($request->tipo_agenda))
                 $sql .= " AND profesionales.id IN (SELECT id_profesional FROM `profesional_horarios` WHERE tipo_agenda in (".$request->tipo_agenda.") GROUP BY id_profesional)";
 
+            if($esVeterinaria)
+            {
+                $veterinaryCatalog = $this->getVeterinaryProfessionalCatalog();
+                $veterinaryIds = $this->getVeterinaryProfessionalIds();
+
+                if (!empty($veterinaryIds)) {
+                    $sql .= " AND profesionales.id IN (".implode(',', array_map('intval', $veterinaryIds)).")";
+                } else {
+                    $sql .= " AND 1=0";
+                }
+
+                if ($veterinariaArea !== '' || $veterinariaItem !== '') {
+                    $filteredVeterinaryIds = [];
+                    foreach ($veterinaryCatalog as $professionalId => $meta) {
+                        $areaMatches = $veterinariaArea === '' || strcasecmp($meta['area'], $veterinariaArea) === 0;
+                        $itemMatches = $veterinariaItem === '' || strcasecmp($meta['item'], $veterinariaItem) === 0;
+                        if ($areaMatches && $itemMatches) {
+                            $filteredVeterinaryIds[] = (int) $professionalId;
+                        }
+                    }
+
+                    if (!empty($filteredVeterinaryIds)) {
+                        $sql .= " AND profesionales.id IN (".implode(',', $filteredVeterinaryIds).")";
+                    } else {
+                        $sql .= " AND 1=0";
+                    }
+                }
+            }
+
             // $sql .= " AND profesionales.id IN (
             //                 SELECT profesionales_lugares_atencion.id_profesional
             //                 FROM `profesionales_lugares_atencion`
@@ -230,6 +289,7 @@ class EscritorioGeneral extends Controller
             // die();
             $registros = DB::select($sql);
             $registros_validos = array();
+            $veterinaryCatalog = $this->getVeterinaryProfessionalCatalog();
             foreach ($registros as $key_r => $value_r)
             {
                 // $profesional_horarios = ProfesionalHorario::where('id_profesional',$value_r->profesionales_id)->get();
@@ -247,6 +307,12 @@ class EscritorioGeneral extends Controller
                     $nombre_imagen = asset('images/img_perfil/'.$array_rut[0].'.png');
                 }
                 $registros[$key_r]->img_profesional = $nombre_imagen;
+
+                if ($esVeterinaria) {
+                    $meta = $veterinaryCatalog[$value_r->profesionales_id] ?? null;
+                    $registros[$key_r]->veterinaria_area = $meta['area'] ?? $veterinariaArea;
+                    $registros[$key_r]->veterinaria_item = $meta['item'] ?? $veterinariaItem;
+                }
 
 
                 if($request->buscar_especialidad_hora24 == '1')

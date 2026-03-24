@@ -309,6 +309,41 @@
 
         function buscar_tipo_especialidad(element)
         {
+            if (window.esVeterinariaBusqueda) {
+                const areaSlug = $(element).val();
+                const catalogo = Array.isArray(window.catalogoVeterinarioBusqueda) ? window.catalogoVeterinarioBusqueda : [];
+                const area = catalogo.find(function(item) {
+                    return item.slug === areaSlug;
+                });
+
+                const labels = {
+                    buscar_especialidad_especialidad: $('#label_buscar_especialidad_especialidad'),
+                    buscar_videoconsulta_especialidad: $('#label_buscar_videoconsulta_especialidad'),
+                };
+                const selects = [
+                    $('#buscar_especialidad_especialidad'),
+                    $('#buscar_videoconsulta_especialidad'),
+                ];
+
+                selects.forEach(function($select) {
+                    $select.find('option').remove();
+                    $select.append('<option value="">Seleccione</option>');
+                });
+
+                const label = area ? area.label_item : 'Procedimiento / Exámenes';
+                labels.buscar_especialidad_especialidad.text(label);
+                labels.buscar_videoconsulta_especialidad.text(label);
+
+                if (area && Array.isArray(area.items)) {
+                    area.items.forEach(function(item) {
+                        selects.forEach(function($select) {
+                            $select.append('<option value="' + item + '">' + item + '</option>');
+                        });
+                    });
+                }
+
+                return;
+            }
 
             let tipo_especialidad_registro_1 = $('#buscar_especialidad_especialidad');
             tipo_especialidad_registro_1.find('option').remove();
@@ -461,7 +496,7 @@
 
             let buscar_especialidad_profesion = $('#buscar_especialidad_profesion').val();
             let buscar_especialidad_especialidad = $('#buscar_especialidad_especialidad').val();
-            let buscar_especialidad_subespec = $('#buscar_especialidad_subespec').val();
+            let buscar_especialidad_subespec = '';
             let buscar_especialidad_region = $('#buscar_especialidad_region').val();
             let buscar_especialidad_comuna = $('#buscar_especialidad_comuna').val();
             let buscar_especialidad_hora24 = 0;
@@ -489,6 +524,9 @@
                             id_especialidad : buscar_especialidad_profesion,
                             id_tipo_especialidad : buscar_especialidad_especialidad,
                             id_sub_tipo_especialidad : buscar_especialidad_subespec,
+                            es_veterinaria_busqueda : window.esVeterinariaBusqueda ? 1 : 0,
+                            veterinaria_area : window.esVeterinariaBusqueda ? buscar_especialidad_profesion : '',
+                            veterinaria_item : window.esVeterinariaBusqueda ? buscar_especialidad_especialidad : '',
                             id_region : buscar_especialidad_region,
                             id_ciudad : buscar_especialidad_comuna,
                             buscar_especialidad_hora24 : buscar_especialidad_hora24,
@@ -519,11 +557,16 @@
                                 html += '            <div class="text-center">';
                                 html += '                <a href="#!" data-toggle="modal" data-target="#modal-report">';
                                 html += '                    <span class="badge badge-primary mt-2">';
-                                {{--  html +=                         value_registro.especialidades_nombre;  --}}
-                                if(value_registro.tipos_especialidad_nombre != null)
-                                    html +=                         value_registro.tipos_especialidad_nombre+'<br>';
-                                if(value_registro.sub_tipo_especialidad_nombre != null)
-                                    html +=                         value_registro.sub_tipo_especialidad_nombre;
+                                if(window.esVeterinariaBusqueda && value_registro.veterinaria_area != null) {
+                                    html += value_registro.veterinaria_area+'<br>';
+                                    if(value_registro.veterinaria_item != null)
+                                        html += value_registro.veterinaria_item;
+                                } else {
+                                    if(value_registro.tipos_especialidad_nombre != null)
+                                        html += value_registro.tipos_especialidad_nombre+'<br>';
+                                    if(value_registro.sub_tipo_especialidad_nombre != null)
+                                        html += value_registro.sub_tipo_especialidad_nombre;
+                                }
                                 html += '                    </span>';
                                 html += '                    <h6 class="mb-1 mt-2">'+value_registro.profesionales_nombre+' '+value_registro.profesionales_apellido_uno+' '+value_registro.profesionales_apellido_dos+'</h6>';
                                 html += '                </a>';
@@ -599,6 +642,9 @@
                             id_especialidad : buscar_especialidad_profesion,
                             id_tipo_especialidad : buscar_especialidad_especialidad,
                             id_sub_tipo_especialidad : buscar_especialidad_subespec,
+                            es_veterinaria_busqueda : window.esVeterinariaBusqueda ? 1 : 0,
+                            veterinaria_area : '',
+                            veterinaria_item : '',
                             id_region : buscar_profesional_region,
                             id_ciudad : buscar_profesional_comuna,
                             buscar_especialidad_hora24 : buscar_especialidad_hora24,
@@ -631,10 +677,16 @@
                                 html += '                <a href="#!" data-toggle="modal" data-target="#modal-report">';
                                 html += '                    <span class="badge badge-primary mt-2">';
                                 {{--  html +=                         value_registro.especialidades_nombre;  --}}
-                                if(value_registro.tipos_especialidad_nombre != null)
-                                    html +=                         value_registro.tipos_especialidad_nombre+'<br>';
-                                if(value_registro.sub_tipo_especialidad_nombre != null)
-                                    html +=                         value_registro.sub_tipo_especialidad_nombre;
+                                if(window.esVeterinariaBusqueda && value_registro.veterinaria_area != null) {
+                                    html += value_registro.veterinaria_area+'<br>';
+                                    if(value_registro.veterinaria_item != null)
+                                        html += value_registro.veterinaria_item;
+                                } else {
+                                    if(value_registro.tipos_especialidad_nombre != null)
+                                        html += value_registro.tipos_especialidad_nombre+'<br>';
+                                    if(value_registro.sub_tipo_especialidad_nombre != null)
+                                        html += value_registro.sub_tipo_especialidad_nombre;
+                                }
                                 html += '                    </span>';
                                 html += '                    <h6 class="mb-1 mt-2">'+value_registro.profesionales_nombre+' '+value_registro.profesionales_apellido_uno+' '+value_registro.profesionales_apellido_dos+'</h6>';
                                 html += '                </a>';
@@ -684,7 +736,7 @@
 
             let buscar_videoconsulta_profesion = $('#buscar_videoconsulta_profesion').val();
             let buscar_videoconsulta_especialidad = $('#buscar_videoconsulta_especialidad').val();
-            let buscar_videoconsulta_subespec = $('#buscar_videoconsulta_subespec').val();
+            let buscar_videoconsulta_subespec = '';
             let buscar_videoconsulta_region = '';
             let buscar_videoconsulta_comuna = '';
             let buscar_videoconsulta_hora24 = 0;
@@ -712,6 +764,9 @@
                             id_especialidad : buscar_videoconsulta_profesion,
                             id_tipo_especialidad : buscar_videoconsulta_especialidad,
                             id_sub_tipo_especialidad : buscar_videoconsulta_subespec,
+                            es_veterinaria_busqueda : window.esVeterinariaBusqueda ? 1 : 0,
+                            veterinaria_area : window.esVeterinariaBusqueda ? buscar_videoconsulta_profesion : '',
+                            veterinaria_item : window.esVeterinariaBusqueda ? buscar_videoconsulta_especialidad : '',
                             id_region : buscar_videoconsulta_region,
                             id_ciudad : buscar_videoconsulta_comuna,
                             buscar_especialidad_hora24 : buscar_videoconsulta_hora24,
@@ -742,10 +797,16 @@
                                 html += '                <a href="#!" data-toggle="modal" data-target="#modal-report">';
                                 html += '                    <span class="badge badge-primary mt-2">';
                                 {{--  html +=                         value_registro.especialidades_nombre;  --}}
-                                if(value_registro.tipos_especialidad_nombre != null)
-                                    html +=                         value_registro.tipos_especialidad_nombre+'<br>';
-                                if(value_registro.sub_tipo_especialidad_nombre != null)
-                                    html +=                         value_registro.sub_tipo_especialidad_nombre;
+                                if(window.esVeterinariaBusqueda && value_registro.veterinaria_area != null) {
+                                    html += value_registro.veterinaria_area+'<br>';
+                                    if(value_registro.veterinaria_item != null)
+                                        html += value_registro.veterinaria_item;
+                                } else {
+                                    if(value_registro.tipos_especialidad_nombre != null)
+                                        html += value_registro.tipos_especialidad_nombre+'<br>';
+                                    if(value_registro.sub_tipo_especialidad_nombre != null)
+                                        html += value_registro.sub_tipo_especialidad_nombre;
+                                }
                                 html += '                    </span>';
                                 html += '                    <h6 class="mb-1 mt-2">'+value_registro.profesionales_nombre+' '+value_registro.profesionales_apellido_uno+' '+value_registro.profesionales_apellido_dos+'</h6>';
                                 html += '                </a>';

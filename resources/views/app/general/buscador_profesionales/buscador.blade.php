@@ -27,7 +27,7 @@
                                 <h5 class="m-b-10 font-weight-bold">Reservar hora médica</h5>
                             </div>
                             <ul class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="{{ ROUTE('paciente.home') }}" data-toggle="tooltip" data-placement="top"
+                                <li class="breadcrumb-item"><a href="{{ !empty($id_dependiente_activo) ? ROUTE('paciente.dependiente.home', [$id_dependiente_activo]) : ROUTE('paciente.home') }}" data-toggle="tooltip" data-placement="top"
                                         title="Volver a mi escritorio">
                                         <i class="feather icon-home"></i>
                                     </a>
@@ -72,11 +72,15 @@
                                         <div class="form-row">
                                             <div class="col-sm-12 col-md-4">
                                                 <div class="form-group">
-                                                    <label class="floating-label-activo-sm">Profesión</label>
+                                                    <label class="floating-label-activo-sm">{{ !empty($es_veterinaria_busqueda) ? 'Área' : 'Profesión' }}</label>
                                                     <select class="form-control form-control-sm" name="buscar_especialidad_profesion" id="buscar_especialidad_profesion" onchange="buscar_tipo_especialidad(this);">
                                                         <option value="">Seleccione</option>
 
-                                                        @if(isset($profesiones))
+                                                        @if(!empty($es_veterinaria_busqueda) && !empty($catalogo_veterinario_busqueda))
+                                                            @foreach($catalogo_veterinario_busqueda as $area)
+                                                                <option value="{{ $area['slug'] }}">{{ $area['nombre'] }}</option>
+                                                            @endforeach
+                                                        @elseif(isset($profesiones))
                                                             @foreach($profesiones as $pro_key => $pro)
                                                             @php
                                                                 $selected_id1 = '';
@@ -91,10 +95,11 @@
                                             </div>
                                             <div class="col-sm-12 col-md-4">
                                                 <div class="form-group">
-                                                    <label class="floating-label-activo-sm">Especialidad</label>
-                                                    <select class="form-control form-control-sm" name="buscar_especialidad_especialidad" id="buscar_especialidad_especialidad" onchange="buscar_sub_tipo_especialidad(this);">
+                                                    <label class="floating-label-activo-sm" id="label_buscar_especialidad_especialidad">{{ !empty($es_veterinaria_busqueda) ? 'Procedimiento / Exámenes' : 'Especialidad' }}</label>
+                                                    <select class="form-control form-control-sm" name="buscar_especialidad_especialidad" id="buscar_especialidad_especialidad">
                                                         <option value="">Seleccione</option>
-                                                        @if(isset($especialidades))
+                                                        @if(!empty($es_veterinaria_busqueda))
+                                                        @elseif(isset($especialidades))
                                                             @foreach($especialidades as $esp_key => $esp)
                                                             @php
                                                                 $selected_id2 = '';
@@ -107,25 +112,6 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-12 col-md-4">
-                                                <div class="form-group">
-                                                    <label class="floating-label-activo-sm">Sub-Especialidad</label>
-                                                    <select class="form-control form-control-sm" name="buscar_especialidad_subespec" id="buscar_especialidad_subespec">
-                                                        <option value="">Seleccione</option>
-                                                        @if(isset($sub_especialidades))
-                                                            @foreach($sub_especialidades as $sub_key => $sub)
-                                                                @php
-                                                                    $selected_id3 = '';
-                                                                    if($filtros['id_subespecialidad']==$sub->id && $filtros['id_subespecialidad']!=0)
-                                                                    $selected_id3 = 'selected';
-                                                                @endphp
-                                                                <option value="{{ $sub->id }}" {{$selected_id3}}>{{ $sub->nombre }}</option>
-                                                            @endforeach
-                                                        @endif
-                                                    </select>
-                                                </div>
-                                            </div>
-
                                             <div class="col-sm-12 col-md-4">
                                                 <div class="form-group">
                                                     <label class="floating-label-activo-sm">Región</label>
@@ -231,11 +217,15 @@
                                         <div class="form-row">
                                             <div class="col-sm-12 col-md-4">
                                                 <div class="form-group">
-                                                    <label class="floating-label-activo-sm">Profesión</label>
+                                                    <label class="floating-label-activo-sm">{{ !empty($es_veterinaria_busqueda) ? 'Área' : 'Profesión' }}</label>
                                                     <select class="form-control form-control-sm" name="buscar_videoconsulta_profesion" id="buscar_videoconsulta_profesion" onchange="buscar_tipo_especialidad(this);">
                                                         <option value="">Seleccione</option>
 
-                                                        @if(isset($profesiones))
+                                                        @if(!empty($es_veterinaria_busqueda) && !empty($catalogo_veterinario_busqueda))
+                                                            @foreach($catalogo_veterinario_busqueda as $area)
+                                                                <option value="{{ $area['slug'] }}">{{ $area['nombre'] }}</option>
+                                                            @endforeach
+                                                        @elseif(isset($profesiones))
                                                             @foreach($profesiones as $pro_key => $pro)
                                                             @php
                                                                 $selected_id1 = '';
@@ -250,10 +240,11 @@
                                             </div>
                                             <div class="col-sm-12 col-md-4">
                                                 <div class="form-group">
-                                                    <label class="floating-label-activo-sm">Especialidad</label>
-                                                    <select class="form-control form-control-sm" name="buscar_videoconsulta_especialidad" id="buscar_videoconsulta_especialidad" onchange="buscar_sub_tipo_especialidad(this);">
+                                                    <label class="floating-label-activo-sm" id="label_buscar_videoconsulta_especialidad">{{ !empty($es_veterinaria_busqueda) ? 'Procedimiento / Exámenes' : 'Especialidad' }}</label>
+                                                    <select class="form-control form-control-sm" name="buscar_videoconsulta_especialidad" id="buscar_videoconsulta_especialidad">
                                                         <option value="">Seleccione</option>
-                                                        @if(isset($especialidades))
+                                                        @if(!empty($es_veterinaria_busqueda))
+                                                        @elseif(isset($especialidades))
                                                             @foreach($especialidades as $esp_key => $esp)
                                                             @php
                                                                 $selected_id2 = '';
@@ -266,25 +257,6 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-12 col-md-4">
-                                                <div class="form-group">
-                                                    <label class="floating-label-activo-sm">Sub-Especialidad</label>
-                                                    <select class="form-control form-control-sm" name="buscar_videoconsulta_subespec" id="buscar_videoconsulta_subespec">
-                                                        <option value="">Seleccione</option>
-                                                        @if(isset($sub_especialidades))
-                                                            @foreach($sub_especialidades as $sub_key => $sub)
-                                                                @php
-                                                                    $selected_id3 = '';
-                                                                    if($filtros['id_subespecialidad']==$sub->id && $filtros['id_subespecialidad']!=0)
-                                                                    $selected_id3 = 'selected';
-                                                                @endphp
-                                                                <option value="{{ $sub->id }}" {{$selected_id3}}>{{ $sub->nombre }}</option>
-                                                            @endforeach
-                                                        @endif
-                                                    </select>
-                                                </div>
-                                            </div>
-
                                             {{-- <div class="col-sm-12 col-md-4">
                                                 <div class="form-group">
                                                     <label class="floating-label-activo-sm">Previsión</label>
@@ -329,6 +301,8 @@
 
 @section('page-script')
     <script>
+     window.esVeterinariaBusqueda = @json(!empty($es_veterinaria_busqueda));
+     window.catalogoVeterinarioBusqueda = @json($catalogo_veterinario_busqueda ?? []);
      @if( $filtros['id_profesion'] !=0 && $filtros['id_especialidad'] !=0 )
         buscar_profesional_especialidad();
      @endif

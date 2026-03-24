@@ -6,6 +6,8 @@ namespace App\Http\Controllers;
 
 
 
+use Carbon\Carbon;
+
 use App\Models\Ciudad;
 
 use App\Models\ConConsentimientosPcte;
@@ -156,6 +158,93 @@ class EscritorioPacienteDependiente extends Controller
 
     }
 
+    private function getVeterinarySearchCatalog(): array
+
+    {
+
+        return [
+            [
+                'slug' => 'procedimientos_examenes',
+                'nombre' => 'Procedimiento / Exámenes',
+                'label_item' => 'Procedimiento / Exámenes',
+                'items' => [
+                    'Exámenes Sanguíneos',
+                    'Radiografías',
+                    'Ecografía abdominal',
+                    'Ecografía tiroides',
+                    'Ecografía tórax extra cardiaca',
+                    'TAC',
+                    'Toma Muestra de Sangre',
+                    'Ecografía Cuello',
+                ],
+            ],
+            [
+                'slug' => 'consulta_veterinaria',
+                'nombre' => 'Consulta Veterinaria',
+                'label_item' => 'Consulta',
+                'items' => [
+                    'Consulta General Felino',
+                    'Consulta General Canino',
+                    'Implantación Microchip',
+                    'Control Felino',
+                    'Control Canino',
+                ],
+            ],
+            [
+                'slug' => 'consulta_especialista',
+                'nombre' => 'Consulta Especialista',
+                'label_item' => 'Especialidad',
+                'items' => [
+                    'Broncopulmonar',
+                    'Cardiología',
+                    'Neurología',
+                    'Odontología',
+                    'Especialista Felino',
+                    'Especialista Canino',
+                    'Nefrología',
+                    'Oftalmología',
+                    'Otorrinolaringología',
+                    'Dermatología',
+                    'Geriatría',
+                    'Consulta Cirujano',
+                    'Medicina Interna Canino',
+                    'Medicina Interna Felino',
+                    'Oncología',
+                    'Traumatología',
+                    'Fisiatría',
+                    'Sesión Fisiatría',
+                ],
+            ],
+            [
+                'slug' => 'vacunacion',
+                'nombre' => 'Vacunación',
+                'label_item' => 'Vacuna',
+                'items' => [
+                    'Vacunación Canino',
+                    'Vacunación Felino',
+                ],
+            ],
+            [
+                'slug' => 'visita_hospital',
+                'nombre' => 'Visita Hospital',
+                'label_item' => 'Servicio',
+                'items' => [
+                    'Visita Hospital',
+                ],
+            ],
+            [
+                'slug' => 'peluqueria',
+                'nombre' => 'Peluquería',
+                'label_item' => 'Servicio',
+                'items' => [
+                    'Peluquería / Baño y Mantenimiento',
+                    'Corte de uñas',
+                ],
+            ],
+        ];
+
+    }
+
     public function buscar_especialidad(Request $request)
 
     {
@@ -249,6 +338,8 @@ class EscritorioPacienteDependiente extends Controller
 
         $reg_confirmacion_hora = RegistroConfirmacionHoraAgenda::where('estado',1)->get();
 
+        $catalogo_veterinario_busqueda = $this->getVeterinarySearchCatalog();
+
 
 
         if(Auth::user()->hasRole('Paciente'))
@@ -259,7 +350,17 @@ class EscritorioPacienteDependiente extends Controller
 
             $paciente = Paciente::where('id_usuario', $user->id)->first();
 
-            $paciente_dependiente = Paciente::where('id', $id_dependiente_activo_)->first();
+            if (!$paciente) {
+                return back()->with('error', 'Responsable no encontrado');
+            }
+
+            $paciente_dependiente = Mascota::where('id', $id_dependiente_activo_)
+                ->where('id_responsable', $paciente->id)
+                ->first();
+
+            if (!$paciente_dependiente) {
+                return back()->with('error', 'Mascota no encontrada');
+            }
 
             // return view('app.paciente.buscador_profesional_paciente')->with(
 
@@ -269,7 +370,11 @@ class EscritorioPacienteDependiente extends Controller
 
                     'id_responsable' => $paciente->id,
 
-                    'id_dependiente_activo' => $profesiones,
+                    'id_dependiente_activo' => $paciente_dependiente->id,
+
+                    'es_veterinaria_busqueda' => true,
+
+                    'catalogo_veterinario_busqueda' => $catalogo_veterinario_busqueda,
 
                     'profesiones' => $profesiones,
 
@@ -280,6 +385,10 @@ class EscritorioPacienteDependiente extends Controller
                     'previsiones' => $previsiones,
 
                     'paciente' => $paciente_dependiente,
+
+                    'mascota' => $paciente_dependiente,
+
+                    'responsable' => $paciente,
 
                     'regiones' => $regiones,
 
@@ -361,9 +470,19 @@ class EscritorioPacienteDependiente extends Controller
 
         $paciente_responsable = Paciente::where('id_usuario', Auth::user()->id)->first();
 
+        if (!$paciente_responsable) {
+            return back()->with('error', 'Responsable no encontrado');
+        }
+
         /** dependiente */
 
-        $paciente_dependiente = Paciente::where('id', $id_dependiente_activo_)->first();
+        $paciente_dependiente = Mascota::where('id', $id_dependiente_activo_)
+            ->where('id_responsable', $paciente_responsable->id)
+            ->first();
+
+        if (!$paciente_dependiente) {
+            return back()->with('error', 'Mascota no encontrada');
+        }
 
 
 
@@ -373,7 +492,8 @@ class EscritorioPacienteDependiente extends Controller
 
         {
 
-            $fichas = FichaAtencion::where('id_paciente', $id_usuario_)
+            $fichas = FichaAtencion::where('id_paciente', $paciente_responsable->id)
+                                     ->where('id_mascota', $paciente_dependiente->id)
 
                                      ->where('id_profesional', $id_profesional_)
 
@@ -397,15 +517,17 @@ class EscritorioPacienteDependiente extends Controller
 
         // VER lista de profesionales
 
-        $paciente = Paciente::where('id_usuario', Auth::user()->id)->first();
-
-        $fichas = FichaAtencion::where('id_paciente', $paciente_dependiente->id)->get()->unique('id_profesional');
+        $fichas = FichaAtencion::where('id_paciente', $paciente_responsable->id)
+            ->where('id_mascota', $paciente_dependiente->id)
+            ->get()
+            ->unique('id_profesional');
 
 
 
         $fichas_desvinculados = FichaAtencion::select('id_profesional')
 
-                                        ->where('id_paciente', $paciente_dependiente->id)
+                                        ->where('id_paciente', $paciente_responsable->id)
+                                        ->where('id_mascota', $paciente_dependiente->id)
 
                                         ->where('desvincular', 1)
 
