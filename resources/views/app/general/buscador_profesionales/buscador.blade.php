@@ -24,7 +24,7 @@
                     <div class="row align-items-center">
                         <div class="col-md-12">
                             <div class="page-header-title">
-                                <h5 class="m-b-10 font-weight-bold">Reservar hora médica</h5>
+                                <h5 class="m-b-10 font-weight-bold">{{ !empty($es_veterinaria_busqueda) ? 'Reservar hora veterinaria' : 'Reservar hora médica' }}</h5>
                             </div>
                             <ul class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="{{ !empty($id_dependiente_activo) ? ROUTE('paciente.dependiente.home', [$id_dependiente_activo]) : ROUTE('paciente.home') }}" data-toggle="tooltip" data-placement="top"
@@ -32,7 +32,7 @@
                                         <i class="feather icon-home"></i>
                                     </a>
                                 </li>
-                                <li class="breadcrumb-item"><a href="buscador_profesional_paciente.php">Reservar hora médica</a></li>
+                                <li class="breadcrumb-item"><a href="buscador_profesional_paciente.php">{{ !empty($es_veterinaria_busqueda) ? 'Reservar hora veterinaria' : 'Reservar hora médica' }}</a></li>
                             </ul>
                         </div>
                     </div>
@@ -44,7 +44,7 @@
                 <div class="col-sm-12">
                     <div class="card">
                         <div class="card-header text-white bg-light">
-                            <h4 class="f-22 pt-1 text-c-blue text-center">Reserve su hora médica</h4>
+                            <h4 class="f-22 pt-1 text-c-blue text-center">{{ !empty($es_veterinaria_busqueda) ? 'Reserve su hora veterinaria' : 'Reserve su hora médica' }}</h4>
                             <input type="hidden" name="select_tipo_agenda" id="select_tipo_agenda" value="1,2">
                         </div>
                         <div class="card-body">
@@ -53,11 +53,13 @@
                                     <a class="nav-link active" onclick="$('#select_tipo_agenda').val(1);$('#div_resultado_busqueda').html('')" id="buscar_especialidad-tab" data-toggle="tab" href="#buscar_especialidad" role="tab" aria-controls="home" aria-selected="true">Especialidad</a>
                                 </li>
                                 <li class="nav-item text-uppercase mx-3">
-                                    <a class="nav-link" onclick="$('#select_tipo_agenda').val(1);$('#div_resultado_busqueda').html('')" id="buscar_profesional-tab" data-toggle="tab" href="#buscar_profesional" role="tab" aria-controls="buscar_profesional" aria-selected="false">Profesional</a>
+                                    <a class="nav-link" onclick="$('#select_tipo_agenda').val(1);$('#div_resultado_busqueda').html('')" id="buscar_profesional-tab" data-toggle="tab" href="#buscar_profesional" role="tab" aria-controls="buscar_profesional" aria-selected="false">{{ !empty($es_veterinaria_busqueda) ? 'Veterinario/a' : 'Profesional' }}</a>
                                 </li>
-                                <li class="nav-item text-uppercase mx-3">
-                                    <a class="nav-link" onclick="$('#select_tipo_agenda').val(3);$('#div_resultado_busqueda').html('')" id="buscar_videoconsulta-tab" data-toggle="tab" href="#buscar_videoconsulta" role="tab" aria-controls="buscar_videoconsulta" aria-selected="false">Videoconsulta</a>
-                                </li>
+                                @if(empty($es_veterinaria_busqueda))
+                                    <li class="nav-item text-uppercase mx-3">
+                                        <a class="nav-link" onclick="$('#select_tipo_agenda').val(3);$('#div_resultado_busqueda').html('')" id="buscar_videoconsulta-tab" data-toggle="tab" href="#buscar_videoconsulta" role="tab" aria-controls="buscar_videoconsulta" aria-selected="false">Videoconsulta</a>
+                                    </li>
+                                @endif
                             </ul>
                             <div class="tab-content" id="BuscadoresContent">
 
@@ -156,13 +158,13 @@
                                     <form>
                                         <div class="form-row">
                                             <div class="col-sm-12 col-md-12 text-center">
-                                                <h6 class="mb-4 mt-2">Ingrese los datos solicitados para buscar horas por profesional</h6>
+                                                <h6 class="mb-4 mt-2">{{ !empty($es_veterinaria_busqueda) ? 'Ingrese nombre o rut del veterinario/a. Región y comuna son opcionales para acotar la búsqueda.' : 'Ingrese los datos solicitados para buscar horas por profesional' }}</h6>
                                             </div>
                                         </div>
                                         <div class="form-row">
                                             <div class="col-sm-12 col-md-12">
                                                 <div class="form-group">
-                                                    <label class="floating-label-activo-sm">Nombre o Rut del profesional</label>
+                                                    <label class="floating-label-activo-sm">{{ !empty($es_veterinaria_busqueda) ? 'Nombre o Rut del veterinario/a' : 'Nombre o Rut del profesional' }}</label>
                                                     <input type="text" class="form-control form-control-sm" name="buscar_profesional_dato_profesional" id="buscar_profesional_dato_profesional">
                                                 </div>
                                             </div>
@@ -207,6 +209,7 @@
                                 </div>
 
                                 <!--Hora por videoconsulta-->
+                                @if(empty($es_veterinaria_busqueda))
                                 <div class="tab-pane fade" id="buscar_videoconsulta" role="tabpanel" aria-labelledby="buscar_videoconsulta-tab">
                                     {{--  <form>  --}}
                                         <div class="form-row">
@@ -281,6 +284,7 @@
                                         </div>
                                     {{--  </form>  --}}
                                 </div>
+                                @endif
                             </div>
                         </div>
                     </div>

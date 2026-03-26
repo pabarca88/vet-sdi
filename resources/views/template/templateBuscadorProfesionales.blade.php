@@ -184,45 +184,63 @@
             .done(function(data) {
                 {{--  console.log(data);  --}}
                 if (data.estado == 1) {
+                    const profesional = data.profesional;
+                    const direccion = profesional.direccion || null;
+                    const ciudad = direccion && direccion.ciudad ? direccion.ciudad : null;
+                    const tipoEspecialidad = profesional.tipo_especialidad ? profesional.tipo_especialidad.nombre : (profesional.especialidad ? profesional.especialidad.nombre : 'Veterinario/a');
+                    const subTipoEspecialidad = profesional.sub_tipo_especialidad ? profesional.sub_tipo_especialidad.nombre : '';
+                    const direccionTexto = direccion
+                        ? [direccion.direccion, direccion.numero_dir ? '#'+direccion.numero_dir : ''].filter(Boolean).join(' ')
+                        : 'No informado';
+
                     $('#modal_info_pro_foto').attr('src',data.profesional.img_profesional );
-                    $('#modal_info_pro_nombre').html(data.profesional.nombre+' '+data.profesional.apellido_uno+' '+data.profesional.apellido_dos);
-                    $('#modal_info_pro_tipo_especialidad').html(data.profesional.tipo_especialidad.nombre);
-                    if(data.profesional.id_sub_tipo_especialidad != 0)
-                        $('#modalinfo_pro_sub_tipo_especialidad').html(': '+data.profesional.sub_tipo_especialidad.nombre);
+                    $('#modal_info_pro_nombre').html(profesional.nombre+' '+profesional.apellido_uno+' '+profesional.apellido_dos);
+                    $('#modal_info_pro_tipo_especialidad').html(tipoEspecialidad);
+                    $('#modal_info_pro_rut').text(profesional.rut || 'No informado');
+                    $('#modal_info_pro_email').text(profesional.email || 'No informado');
+                    $('#modal_info_pro_telefono').text(profesional.telefono_uno || 'No informado');
+                    $('#modal_info_pro_ciudad').text(ciudad ? ciudad.nombre : 'No informado');
+                    $('#modal_info_pro_direccion').text(direccionTexto);
+                    if(subTipoEspecialidad !== '')
+                        $('#modalinfo_pro_sub_tipo_especialidad').html(': '+subTipoEspecialidad);
                     else
                         $('#modalinfo_pro_sub_tipo_especialidad').html('');
 
 
                     $('#modal_info_pro_academicos').html('');
-                    $(data.profesional.antecedente_academico).each(function(index, value){
+                    $(profesional.antecedente_academico || []).each(function(index, value){
                         var html_academicos ='';
-                        html_academicos += '    <div class="col-md-3" align="left">'+value.tipo_antecedente_academico.nombre+'</div>';
-                        html_academicos += '    <div class="col-md-4"><b>'+value.nombre+'</b></div>';
-                        html_academicos += '    <div class="col-md-5"><b>'+value.ciudad_pais+' '+value.universidad+'</b>'+value.anio+'</div>';
+                        html_academicos += '    <div class="col-md-3" align="left">'+(value.tipo_antecedente_academico ? value.tipo_antecedente_academico.nombre : 'Antecedente')+'</div>';
+                        html_academicos += '    <div class="col-md-4"><b>'+(value.nombre || 'No informado')+'</b></div>';
+                        html_academicos += '    <div class="col-md-5"><b>'+((value.ciudad_pais || '')+' '+(value.universidad || '')).trim()+'</b>'+(value.anio || '')+'</div>';
                         $('#modal_info_pro_academicos').append(html_academicos);
                     });
+                    $('#modal_info_pro_academicos_vacio').toggle((profesional.antecedente_academico || []).length === 0);
 
-                    $('#modal_info_pro_lugar_atencion').dataTable().fnClearTable();
-                    $('#modal_info_pro_lugar_atencion').dataTable().fnDestroy();
+                    if ($.fn.DataTable.isDataTable('#modal_info_pro_lugar_atencion')) {
+                        $('#modal_info_pro_lugar_atencion').DataTable().clear().destroy();
+                    }
 
                     $('#modal_info_pro_lugar_atencion tbody').html('');
-                    $.each(data.lugares_atencion,function(index, value){
+                    $.each(data.lugares_atencion || [],function(index, value){
                         {{--  console.log($(value.convenio).length);  --}}
 
                         var html_Lugares_atencion = '';
+                        var direccionLugar = value.direccion ? [value.direccion.direccion, value.direccion.numero_dir ? '#'+value.direccion.numero_dir : '', value.direccion.ciudad ? value.direccion.ciudad.nombre : ''].filter(Boolean).join(', ') : 'No informado';
                         html_Lugares_atencion += '<tr>';
-                        html_Lugares_atencion += '    <td><span><strong>'+value.nombre+':</strong></span><br> '+value.direccion.direccion+' #'+value.direccion.numero_dir+', '+value.direccion.ciudad.nombre+'</td>';
+                        html_Lugares_atencion += '    <td><span><strong>'+(value.nombre || 'Sin nombre')+':</strong></span><br> '+direccionLugar+'</td>';
                         if(value.convenio == '')
                             html_Lugares_atencion += '    <td style="color:#666666;text-align:left">No informado</td>';
                         else
                             html_Lugares_atencion += '    <td style="color:#666666;text-align:left">'+value.convenio.convenios+'</td>';
-                        html_Lugares_atencion += '    <td style="text-align:left">'+value.telefono+'</td>';
+                        html_Lugares_atencion += '    <td style="text-align:left">'+(value.telefono || 'No informado')+'</td>';
                         html_Lugares_atencion += '</tr>';
 
 
 
                         $('#modal_info_pro_lugar_atencion tbody').append(html_Lugares_atencion);
                     });
+                    $('#modal_info_pro_lugares_vacio').toggle((data.lugares_atencion || []).length === 0);
 
                     $('#modal_info_pro_lugar_atencion').DataTable({
                         responsive: true,
@@ -255,6 +273,7 @@
             // asigno id profesioanl
             $('#modal_reserva_hora_id_profesional').val(id_profesional);
             $('#modal_reserva_hora_tipo_agenda').val(tipo_agenda);
+            $('#reservar_hora .modal-title').text(window.esVeterinariaBusqueda ? 'Reservar hora veterinaria' : 'Reservar hora médica');
 
             carga_calendario_profesional();
 
@@ -577,7 +596,10 @@
                                     html += '                <p class="mb-3 text-muted"><i class="feather icon-calendar"></i>Próxima hora Sin Agenda</p>';
 
                                 html += '                <button type="button" class="btn btn-outline-info btn-sm" onclick="f_profesional('+value_registro.profesionales_id+');"><i class="feather icon-file-plus"></i> Ver ficha</button>';
-                                html += '                <button type="button" class="btn btn-info btn-sm" onclick="hora_medica('+value_registro.profesionales_id+','+value_registro.profesional_hora_mas_proxima.id_lugar_atencion+', \'1,2\');"><i class="feather icon-calendar"></i> Reservar hora</button>';
+                                if($(value_registro.profesional_hora_mas_proxima).length > 0)
+                                    html += '                <button type="button" class="btn btn-info btn-sm" onclick="hora_medica('+value_registro.profesionales_id+','+value_registro.profesional_hora_mas_proxima.id_lugar_atencion+', \'1,2\');"><i class="feather icon-calendar"></i> Reservar hora</button>';
+                                else
+                                    html += '                <button type="button" class="btn btn-secondary btn-sm" disabled><i class="feather icon-calendar"></i> Sin agenda</button>';
                                 html += '            </div>';
                                 html += '        </div>';
                                 html += '    </div>';
@@ -624,7 +646,15 @@
             if($('#buscar_profesional_hora24').prop('checked'))
                 buscar_especialidad_hora24 = 1;
 
-            if(buscar_profesional_profesional == '') {
+            if(window.esVeterinariaBusqueda)
+            {
+                if(buscar_profesional_profesional == '' && buscar_profesional_region == '' && buscar_profesional_comuna == '')
+                {
+                    requerido = 1;
+                    error += 'Ingrese al menos nombre/rut, región o comuna\n';
+                }
+            }
+            else if(buscar_profesional_profesional == '') {
                 requerido = 1;
                 error += 'Campo requerido Profesional\n';
             }
@@ -670,7 +700,7 @@
                                 html += '        <div class="card-body pt-0">';
                                 html += '            <div class="user-about-block text-center">';
                                 html += '                <div class="row align-items-end">';
-                                html += '                    <div class="col"><img class="img-radius img-fluid wid-70" src="storage/'+value_registro.profesionales_foto_perfil+'" alt="'+value_registro.profesionales_nombre+' '+value_registro.profesionales_apellido_uno+' '+value_registro.profesionales_apellido_dos+'"></div>';
+                                html += '                    <div class="col"><img class="img-radius img-fluid wid-70" src="'+value_registro.img_profesional+'" alt="'+value_registro.profesionales_nombre+' '+value_registro.profesionales_apellido_uno+' '+value_registro.profesionales_apellido_dos+'"></div>';
                                 html += '                </div>';
                                 html += '            </div>';
                                 html += '            <div class="text-center">';
@@ -697,7 +727,10 @@
                                     html += '                <p class="mb-3 text-muted"><i class="feather icon-calendar"></i>Próxima hora Sin Agenda</p>';
 
                                 html += '                <button type="button" class="btn btn-outline-info btn-sm" onclick="f_profesional('+value_registro.profesionales_id+');"><i class="feather icon-file-plus"></i> Ver ficha</button>';
-                                html += '                <button type="button" class="btn btn-info btn-sm" onclick="hora_medica('+value_registro.profesionales_id+','+value_registro.profesional_hora_mas_proxima.id_lugar_atencion+', \'1,2\');"><i class="feather icon-calendar"></i> Reservar hora</button>';
+                                if($(value_registro.profesional_hora_mas_proxima).length > 0)
+                                    html += '                <button type="button" class="btn btn-info btn-sm" onclick="hora_medica('+value_registro.profesionales_id+','+value_registro.profesional_hora_mas_proxima.id_lugar_atencion+', \'1,2\');"><i class="feather icon-calendar"></i> Reservar hora</button>';
+                                else
+                                    html += '                <button type="button" class="btn btn-secondary btn-sm" disabled><i class="feather icon-calendar"></i> Sin agenda</button>';
                                 html += '            </div>';
                                 html += '        </div>';
                                 html += '    </div>';
@@ -719,7 +752,7 @@
             else
             {
                 swal({
-                    title: "Busqueda por especialidad, campos Minimos Requeridos",
+                    title: window.esVeterinariaBusqueda ? "Busqueda veterinaria, campos Minimos Requeridos" : "Busqueda por especialidad, campos Minimos Requeridos",
                     text: error,
                     icon: "error",
                     // buttons: "Aceptar",
@@ -817,7 +850,10 @@
                                     html += '                <p class="mb-3 text-muted"><i class="feather icon-calendar"></i>Próxima hora Sin Agenda</p>';
 
                                 html += '                <button type="button" class="btn btn-outline-info btn-sm" onclick="f_profesional('+value_registro.profesionales_id+');"><i class="feather icon-file-plus"></i> Ver ficha</button>';
-                                html += '                <button type="button" class="btn btn-info btn-sm" onclick="hora_medica('+value_registro.profesionales_id+','+value_registro.profesional_hora_mas_proxima.id_lugar_atencion+', \'3\');"><i class="feather icon-calendar"></i> Reservar hora</button>';
+                                if($(value_registro.profesional_hora_mas_proxima).length > 0)
+                                    html += '                <button type="button" class="btn btn-info btn-sm" onclick="hora_medica('+value_registro.profesionales_id+','+value_registro.profesional_hora_mas_proxima.id_lugar_atencion+', \'3\');"><i class="feather icon-calendar"></i> Reservar hora</button>';
+                                else
+                                    html += '                <button type="button" class="btn btn-secondary btn-sm" disabled><i class="feather icon-calendar"></i> Sin agenda</button>';
                                 html += '            </div>';
                                 html += '        </div>';
                                 html += '    </div>';

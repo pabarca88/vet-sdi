@@ -87,30 +87,9 @@ class EscritorioGeneral extends Controller
         return $datos;
     }
 
-    private function getVeterinaryProfessionalIds(): array
+    private function getVeterinaryAdminEmail(): string
     {
-        return array_values(array_unique(array_merge(
-            DB::table('fichas_atenciones')->whereNotNull('id_mascota')->distinct()->pluck('id_profesional')->toArray(),
-            DB::table('horas_medicas')->whereNotNull('id_mascota')->distinct()->pluck('id_profesional')->toArray()
-        )));
-    }
-
-    private function getVeterinaryProfessionalCatalog(): array
-    {
-        return [
-            3 => [
-                'area' => 'Consulta Especialista',
-                'item' => 'Otorrinolaringología',
-            ],
-            2734 => [
-                'area' => 'Consulta Especialista',
-                'item' => 'Consulta Cirujano',
-            ],
-            2781 => [
-                'area' => 'Consulta Especialista',
-                'item' => 'Odontología',
-            ],
-        ];
+        return 'jkriman@gmail.com';
     }
 
     /**
@@ -188,11 +167,11 @@ class EscritorioGeneral extends Controller
             $sql .= "    regiones.nombre  regiones_nombre ";
             $sql .= " FROM profesionales ";
 
-            $sql .= " INNER JOIN direcciones ON (direcciones.id = profesionales.id_direccion ) ";
+            $sql .= " LEFT JOIN direcciones ON (direcciones.id = profesionales.id_direccion ) ";
 
-            $sql .= " INNER JOIN ciudades ON (ciudades.id = direcciones.id_ciudad) ";
+            $sql .= " LEFT JOIN ciudades ON (ciudades.id = direcciones.id_ciudad) ";
 
-            $sql .= " INNER JOIN regiones ON (regiones.id = ciudades.id_region ) ";
+            $sql .= " LEFT JOIN regiones ON (regiones.id = ciudades.id_region ) ";
 
             $sql .= " INNER JOIN especialidades ON (profesionales.id_especialidad = especialidades.id) ";
 
@@ -225,6 +204,12 @@ class EscritorioGeneral extends Controller
                 $sql .= " OR profesionales.rut = '".$request->nombre_rut."')";
             }
 
+            if(!empty($request->id_region))
+                $sql .= " AND regiones.id = ".(int) $request->id_region."";
+
+            if(!empty($request->id_ciudad))
+                $sql .= " AND direcciones.id_ciudad = ".(int) $request->id_ciudad."";
+
             if(!empty($request->id_institucion))
                 $sql .= " AND profesionales.id in (SELECT id_profesional FROM profesionales_lugares_atencion WHERE id_lugar_atencion = (SELECT id_lugar_atencion FROM instituciones WHERE id = ".$request->id_institucion.") and estado=1 )";
 
@@ -232,36 +217,12 @@ class EscritorioGeneral extends Controller
             // 2 -> Atención Dental
             // 3 -> Atención Telemedicina
             // 4 -> Examene
-            if(!empty($request->tipo_agenda))
+            if(!$esVeterinaria && !empty($request->tipo_agenda))
                 $sql .= " AND profesionales.id IN (SELECT id_profesional FROM `profesional_horarios` WHERE tipo_agenda in (".$request->tipo_agenda.") GROUP BY id_profesional)";
 
             if($esVeterinaria)
             {
-                $veterinaryCatalog = $this->getVeterinaryProfessionalCatalog();
-                $veterinaryIds = $this->getVeterinaryProfessionalIds();
-
-                if (!empty($veterinaryIds)) {
-                    $sql .= " AND profesionales.id IN (".implode(',', array_map('intval', $veterinaryIds)).")";
-                } else {
-                    $sql .= " AND 1=0";
-                }
-
-                if ($veterinariaArea !== '' || $veterinariaItem !== '') {
-                    $filteredVeterinaryIds = [];
-                    foreach ($veterinaryCatalog as $professionalId => $meta) {
-                        $areaMatches = $veterinariaArea === '' || strcasecmp($meta['area'], $veterinariaArea) === 0;
-                        $itemMatches = $veterinariaItem === '' || strcasecmp($meta['item'], $veterinariaItem) === 0;
-                        if ($areaMatches && $itemMatches) {
-                            $filteredVeterinaryIds[] = (int) $professionalId;
-                        }
-                    }
-
-                    if (!empty($filteredVeterinaryIds)) {
-                        $sql .= " AND profesionales.id IN (".implode(',', $filteredVeterinaryIds).")";
-                    } else {
-                        $sql .= " AND 1=0";
-                    }
-                }
+                $sql .= " AND profesionales.email <> '".addslashes($this->getVeterinaryAdminEmail())."'";
             }
 
             // $sql .= " AND profesionales.id IN (
@@ -289,12 +250,15 @@ class EscritorioGeneral extends Controller
             // die();
             $registros = DB::select($sql);
             $registros_validos = array();
-            $veterinaryCatalog = $this->getVeterinaryProfessionalCatalog();
             foreach ($registros as $key_r => $value_r)
             {
                 // $profesional_horarios = ProfesionalHorario::where('id_profesional',$value_r->profesionales_id)->get();
                 // $registros[$key_r]->profesional_horarios = $profesional_horarios;
-                $registros[$key_r]->profesional_hora_mas_proxima = $this->cargarFechaMasProxima($value_r->profesionales_id, $request->tipo_agenda);
+                if ($esVeterinaria) {
+                    $registros[$key_r]->profesional_hora_mas_proxima = array();
+                } else {
+                    $registros[$key_r]->profesional_hora_mas_proxima = $this->cargarFechaMasProxima($value_r->profesionales_id, $request->tipo_agenda);
+                }
                 // $registros[$key_r]->profesional_hora_mas_proxima = array();
 
                 // var_dump($registros[$key_r]->profesional_hora_mas_proxima);
@@ -309,9 +273,8 @@ class EscritorioGeneral extends Controller
                 $registros[$key_r]->img_profesional = $nombre_imagen;
 
                 if ($esVeterinaria) {
-                    $meta = $veterinaryCatalog[$value_r->profesionales_id] ?? null;
-                    $registros[$key_r]->veterinaria_area = $meta['area'] ?? $veterinariaArea;
-                    $registros[$key_r]->veterinaria_item = $meta['item'] ?? $veterinariaItem;
+                    $registros[$key_r]->veterinaria_area = $veterinariaArea !== '' ? $veterinariaArea : 'Veterinario/a';
+                    $registros[$key_r]->veterinaria_item = $veterinariaItem !== '' ? $veterinariaItem : ($value_r->ciudades_nombre ?? null);
                 }
 
 
