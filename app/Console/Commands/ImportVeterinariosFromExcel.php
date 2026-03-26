@@ -7,7 +7,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 
 class ImportVeterinariosFromExcel extends Command
 {
@@ -46,7 +46,7 @@ class ImportVeterinariosFromExcel extends Command
             return 1;
         }
 
-        $spreadsheet = IOFactory::load($path);
+        $spreadsheet = $this->loadSpreadsheet($path);
         $sheetNames = ['CENTRO', 'SUR'];
         $rawRows = [];
 
@@ -184,6 +184,16 @@ class ImportVeterinariosFromExcel extends Command
         $this->info('Importacion completada.');
 
         return 0;
+    }
+
+    protected function loadSpreadsheet(string $path)
+    {
+        $resolvedPath = realpath($path) ?: $path;
+
+        $reader = new Xlsx();
+        $reader->setReadDataOnly(true);
+
+        return $reader->load($resolvedPath);
     }
 
     protected function buildHeaderMap(array $header)

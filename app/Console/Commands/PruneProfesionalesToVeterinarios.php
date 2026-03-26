@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
-use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 
 class PruneProfesionalesToVeterinarios extends Command
 {
@@ -106,7 +106,7 @@ class PruneProfesionalesToVeterinarios extends Command
 
     private function loadVeterinaryRuts(string $path): array
     {
-        $spreadsheet = IOFactory::load($path);
+        $spreadsheet = $this->loadSpreadsheet($path);
         $keepRuts = [];
 
         foreach (['CENTRO', 'SUR'] as $sheetName) {
@@ -143,6 +143,16 @@ class PruneProfesionalesToVeterinarios extends Command
         }
 
         return $keepRuts;
+    }
+
+    private function loadSpreadsheet(string $path)
+    {
+        $resolvedPath = realpath($path) ?: $path;
+
+        $reader = new Xlsx();
+        $reader->setReadDataOnly(true);
+
+        return $reader->load($resolvedPath);
     }
 
     private function buildReferencingDeletes(array $deleteIds): array
