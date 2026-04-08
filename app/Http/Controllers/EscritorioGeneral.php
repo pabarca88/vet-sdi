@@ -648,9 +648,18 @@ class EscritorioGeneral extends Controller
         $datos = array();
 
         $profesional = Profesional::where('id', $request->id_profesional)->first();
-        $lugares_atencion = $profesional->LugaresAtencion()->where('estado',1)->get();
+        $lugares_atencion = collect();
 
-        if($lugares_atencion)
+        if ($profesional) {
+            $lugares_atencion = $profesional->LugaresAtencion()
+                                ->with(['Direccion' => function ($query) {
+                                    $query->with('Ciudad');
+                                }])
+                                ->where('estado',1)
+                                ->get();
+        }
+
+        if($lugares_atencion->count() > 0)
         {
             $datos['estado'] = 1;
             $datos['msj'] = 'registros';

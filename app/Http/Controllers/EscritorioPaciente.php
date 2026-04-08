@@ -2655,8 +2655,13 @@ class EscritorioPaciente extends Controller
         $validar = HoraMedica::where('id_paciente', $paciente->id)
                             ->where('id_profesional',$profesional->id)
                             ->where('tipo_hora_medica',$request->tipo_hora_medica)
-                            ->where('fecha_consulta',\Carbon\Carbon::parse($request->fecha_consulta)->format('Y-m-d'))
-                            ->first();
+                            ->where('fecha_consulta',\Carbon\Carbon::parse($request->fecha_consulta)->format('Y-m-d'));
+
+        if (!empty($request->id_mascota)) {
+            $validar->where('id_mascota', $request->id_mascota);
+        }
+
+        $validar = $validar->first();
 
         if($validar)
         {
@@ -2749,6 +2754,9 @@ class EscritorioPaciente extends Controller
 
             $hora_medica->descripcion = $paciente->nombres . ' ' . $paciente->apellido_uno . ' ' . $paciente->apellido_dos;
             $hora_medica->id_lugar_atencion = $request->id_lugar_atencion;
+            if (!empty($request->id_mascota)) {
+                $hora_medica->id_mascota = $request->id_mascota;
+            }
 
             $hora_medica->acomp_representante = $request->representante;
             $hora_medica->acomp_acompanante = $request->acompanante;
