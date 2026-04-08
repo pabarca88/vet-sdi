@@ -497,7 +497,17 @@
                             <div class="col-12 px-0">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        @include('general.secciones_ficha.partials.odontograma_felino')
+                                        @php
+                                            $mascotaOdontologia = $mascota ?? $paciente ?? null;
+                                            $especieOdontologia = strtolower(trim((string) (optional(optional($mascotaOdontologia)->especieMascota)->nombre ?? optional($mascotaOdontologia)->especie ?? '')));
+                                            $mostrarOdontogramaFelino = str_contains($especieOdontologia, 'felin') || str_contains($especieOdontologia, 'gato');
+                                        @endphp
+
+                                        @if($mostrarOdontogramaFelino)
+                                            @include('general.secciones_ficha.partials.odontograma_felino')
+                                        @else
+                                            @include('atencion_odontologica.generales.odontograma_adulto')
+                                        @endif
                                     </div>
                                 </div>
                             </div>

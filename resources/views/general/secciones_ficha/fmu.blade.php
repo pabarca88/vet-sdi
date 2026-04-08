@@ -993,7 +993,12 @@
                                 </div>
                                 <div id="odonto_c" class="collapse" aria-labelledby="odonto" data-parent="#odonto">
                                     <div class="card-body-aten-a">
-                                        @if(request()->filled('id_mascota'))
+                                        @php
+                                            $mascotaOdontograma = $mascota ?? $paciente ?? null;
+                                            $especieOdontograma = strtolower(trim((string) (optional(optional($mascotaOdontograma)->especieMascota)->nombre ?? optional($mascotaOdontograma)->especie ?? '')));
+                                            $mostrarOdontogramaFelino = str_contains($especieOdontograma, 'felin') || str_contains($especieOdontograma, 'gato');
+                                        @endphp
+                                        @if($mostrarOdontogramaFelino)
                                             @include('general.secciones_ficha.partials.odontograma_felino')
                                         @else
                                             @include('atencion_odontologica.generales.odontograma_adulto')

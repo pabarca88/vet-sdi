@@ -18,6 +18,8 @@
     $fotoMascota = $mascota->foto_perfil ?: asset('images/iconos/usuario_profesional.svg');
     $sexoMascota = $mascota->sexo === 'M' ? 'Masculino' : ($mascota->sexo === 'F' ? 'Femenino' : 'Sin registro');
     $especieMascota = optional($mascota->especieMascota)->nombre ?: ($mascota->otra_especie ?: $mascota->especie ?: 'N/N');
+    $especieMascotaNormalizada = strtolower(trim((string) $especieMascota));
+    $mostrarOdontogramaFelino = str_contains($especieMascotaNormalizada, 'felin') || str_contains($especieMascotaNormalizada, 'gato');
     $razaMascota = optional($mascota->razaMascota)->nombre ?: ($mascota->otra_especie ?: '-');
     $tamanoMascota = optional($mascota->tamanoMascota)->nombre ?: ($mascota->tamano ?: '-');
     $colorMascota = '-';
@@ -679,81 +681,18 @@
                             <div class="card-a">
                                 <div class="card-header-a" id="odonto_felino">
                                     <button class="accor-closed btn pt-1 pb-0 pl-1 btn-block text-left card-act-open collapsed" type="button" data-toggle="collapse" data-target="#odonto_felino_c" aria-expanded="false" aria-controls="odonto_felino_c">
-                                        Historial Odontológico Felino
+                                        Historial Odontológico
                                     </button>
                                 </div>
                                 <div id="odonto_felino_c" class="collapse" aria-labelledby="odonto_felino" data-parent="#odonto_felino">
                                     <div class="card-body-aten-a">
-                                        <div class="odontograma-felino-wrap">
-                                            <h4 class="odontograma-felino-titulo">ODONTOGRAMA FELINO (IMAGEN)</h4>
-
-                                            <div class="odontograma-felino-lienzo">
-                                                <div class="odontograma-felino-cuadrante">
-                                                    @foreach ($arcadaSuperiorIzquierda as $pieza)
-                                                        <label class="odontograma-pieza">
-                                                            <input type="checkbox" name="odontograma_felino[]" value="{{ $pieza }}">
-                                                            <span class="odontograma-caja"></span>
-                                                            <span class="odontograma-numero">{{ $pieza }}</span>
-                                                        </label>
-                                                    @endforeach
-                                                </div>
-
-                                                <div class="odontograma-felino-cuadrante">
-                                                    @foreach ($arcadaSuperiorDerecha as $pieza)
-                                                        <label class="odontograma-pieza">
-                                                            <input type="checkbox" name="odontograma_felino[]" value="{{ $pieza }}">
-                                                            <span class="odontograma-caja"></span>
-                                                            <span class="odontograma-numero">{{ $pieza }}</span>
-                                                        </label>
-                                                    @endforeach
-                                                </div>
-
-                                                <div class="odontograma-eje odontograma-eje-horizontal"></div>
-                                                <div class="odontograma-eje odontograma-eje-vertical"></div>
-
-                                                <div class="odontograma-felino-cuadrante">
-                                                    @foreach ($arcadaInferiorIzquierda as $pieza)
-                                                        <label class="odontograma-pieza">
-                                                            <input type="checkbox" name="odontograma_felino[]" value="{{ $pieza }}">
-                                                            <span class="odontograma-caja"></span>
-                                                            <span class="odontograma-numero">{{ $pieza }}</span>
-                                                        </label>
-                                                    @endforeach
-                                                </div>
-
-                                                <div class="odontograma-felino-cuadrante">
-                                                    @foreach ($arcadaInferiorDerecha as $pieza)
-                                                        <label class="odontograma-pieza">
-                                                            <input type="checkbox" name="odontograma_felino[]" value="{{ $pieza }}">
-                                                            <span class="odontograma-caja"></span>
-                                                            <span class="odontograma-numero">{{ $pieza }}</span>
-                                                        </label>
-                                                    @endforeach
-                                                </div>
+                                        @if ($mostrarOdontogramaFelino)
+                                            @include('general.secciones_ficha.partials.odontograma_felino')
+                                        @else
+                                            <div class="alert alert-info mb-0">
+                                                El odontograma felino se muestra cuando la mascota pertenece a especie felina.
                                             </div>
-
-                                            <div class="odontograma-felino-resumen">
-                                                <h4 class="odontograma-felino-subtitulo">PIEZAS DE ODONTOGRAMA FELINOS</h4>
-                                                <div class="odontograma-felino-grid">
-                                                    <div>
-                                                        <strong>ARCADA SUPERIOR IZQUIERDA</strong><br>
-                                                        N° PIEZAS: 109 AL 101
-                                                    </div>
-                                                    <div>
-                                                        <strong>ARCADA SUPERIOR DERECHA</strong><br>
-                                                        N° PIEZAS: 201 AL 209
-                                                    </div>
-                                                    <div>
-                                                        <strong>ARCADA INFERIOR IZQUIERDA</strong><br>
-                                                        N° PIEZAS: 409 AL 401
-                                                    </div>
-                                                    <div>
-                                                        <strong>ARCADA INFERIOR DERECHA</strong><br>
-                                                        N° PIEZAS: 301 AL 309
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
