@@ -10,7 +10,7 @@ File: style.css
 @import url(plugins/animate.min.css);
 
 
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
 
 // <uniquifier>: Use a unique and descriptive class name
 // <weight>: Use a value from 200 to 1000
@@ -428,6 +428,7 @@ label {
     margin-left: 0.5rem;
     margin-right: 0.5rem;
     font-size: 0.86rem;
+    color: #485465;
 }
 
 button {
@@ -2807,7 +2808,7 @@ textarea.form-control {
 .btn {
     font-family: 'Nunito', sans-serif;
     display: inline-block;
-    font-weight: 600;
+    font-weight: 700;
     color: #373a3c;
     text-align: center;
     vertical-align: middle;
@@ -4731,12 +4732,12 @@ input[type="button"].btn-block {
     display: block;
     padding: 0.5rem 0.2rem;
     color: #616161;
-    font-weight: 600;
+    font-weight: 800;
 
 }
 
 .nav-link.active {
-    font-weight: 600!important;
+    font-weight: 800!important;
     font-size: 0.90rem!important;
 }
 .nav-link:hover, .nav-link:focus {
@@ -7332,23 +7333,23 @@ button.bg-dark:focus {
 }
 
 .border {
-    border: 1px solid #e3eaef !important;
+    border: 1px solid #c6ced4 !important;
 }
 
 .border-top {
-    border-top: 1px solid #e3eaef !important;
+    border-top: 1px solid #c6ced4 !important;
 }
 
 .border-right {
-    border-right: 1px solid #e3eaef !important;
+    border-right: 1px solid #c6ced4 !important;
 }
 
 .border-bottom {
-    border-bottom: 1px solid #e3eaef !important;
+    border-bottom: 1px solid #c6ced4 !important;
 }
 
 .border-left {
-    border-left: 1px solid #e3eaef !important;
+    border-left: 1px solid #c6ced4 !important;
 }
 
 .border-0 {
@@ -20214,7 +20215,7 @@ a{
     margin-bottom: 0;
     color: #37474f;
     font-size: 0.9375rem;
-    font-weight: 600;
+    font-weight: 800;
     display: inline-block;
     margin-right: 10px;
     line-height: 1.1;
@@ -20623,7 +20624,7 @@ a{
 .badge {
     font-size: 80%;
     padding: 0.35em 0.6em;
-    font-weight: 600;
+    font-weight: 700;
 }
 
 .badge-light-primary {
@@ -20749,8 +20750,8 @@ a:hover {
 }
 
 h1, h2, h3, h4, h5, h6 {
-    color: #596679;
-    font-weight: 700;
+    color: #485465;
+    font-weight: 800;
 
 }
 
@@ -20830,12 +20831,12 @@ strong {
 
 .page-header .page-header-title + .breadcrumb > .breadcrumb-item:last-child a {
     color: #fff;
-    font-weight: 600;
+    font-weight: 800;
 }
 
 .page-header:not(.breadcumb-sticky) .page-header-title + .breadcrumb > .breadcrumb-item a {
     font-size: 18px;
-    font-weight: 600;
+    font-weight: 800;
 }
 
 .page-header.breadcumb-sticky {
@@ -23449,6 +23450,9 @@ pre[class*=language-]:before {
     padding: 25px 25px 10px;
     height: 116px;
     text-align: center;
+     font-family: Nunito, sans-serif;
+    font-weight:700;
+}
 }
 
 .pcoded-navbar .main-menu-header .user-details {
@@ -23582,6 +23586,7 @@ pre[class*=language-]:before {
     padding: 10px 7px 10px 45px;
     margin: 0;
     display: block;
+    font-weight: 600;
 }
 
 .pcoded-navbar .pcoded-inner-navbar li.pcoded-hasmenu .pcoded-submenu li > a:before {
@@ -25969,7 +25974,7 @@ pre[class*=language-]:before {
 }
 
 .pcoded-navbar.menu-light a {
-    color: #535763;
+    color: #485465;
 }
 
 .pcoded-navbar.menu-light.navbar-collapsed .pcoded-menu-caption:after {
@@ -29889,6 +29894,7 @@ div.dtk-focus-alt table.dataTable tbody th.focus {
     line-height: normal;
     z-index: 0;
     font-size: 12px;
+    font-family: Nunito, sans-serif ;
 }
 
 .highcharts-root {
@@ -33451,6 +33457,7 @@ font-family: 'Nunito', sans-serif;
     cursor: text!important;
     padding: 0px 3px!important;
     pointer-events: none !important;
+    color: #485465;
 }
 
 
@@ -33467,6 +33474,7 @@ font-family: 'Nunito', sans-serif;
     cursor: text!important;
     padding: 0px 3px!important;
     pointer-events: none !important;
+    color: #485465;
 }
 
 .bg-encabezado {
