@@ -392,6 +392,10 @@ class MascotasController extends Controller
         ];
     }
 
+    public function suscripcion_servicios(Request $request){
+        return view('app.paciente_dependiente.suscripcion_servicios');
+    }
+
     public function inscripcion_alimentos(Request $request){
         return view('app.paciente_dependiente.inscripcion_alimentos');
     }

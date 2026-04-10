@@ -34,22 +34,30 @@
                             </div>
                         </a>
                     </div>
-                    <div class="card subir">
+                         <div class="card subir">
+                          <a href="{{ ROUTE('paciente.mascotas.suscripcion_servicios') }}"> 
+                            <div class="card-body text-center py-3" style="cursor:pointer">
+                                <img class="wid-50 text-center mt-2" src="{{ asset('images/iconos/alimento.png') }}">
+                                <h5 class="mt-2"> Suscripciones y servicios cercanos </h5>
+                            </div>
+                        </a>
+                    </div>
+                   <!-- <div class="card subir">
                           <a href="{{ ROUTE('paciente.mascotas.inscripcion_alimentos') }}"> 
                             <div class="card-body text-center py-3" style="cursor:pointer">
                                 <img class="wid-50 text-center mt-2" src="{{ asset('images/iconos/alimento.png') }}">
                                 <h5 class="mt-2"> Registro de <br>mis alimentos </h5>
                             </div>
                         </a>
-                    </div>
-                    <div class="card subir">
+                    </div>-->
+                    <!--<div class="card subir">
                         <a href="{{ ROUTE('paciente.mascotas.inscripcion_medicamentos') }}">
                             <div class="card-body text-center py-3" style="cursor:pointer">
                                 <img class="wid-50 text-center mt-2" src="{{ asset('images/iconos/i-medic.svg') }}">
                                 <h5 class="mt-2"> Registro de <br>mis medicamentos</h5>
                             </div>
                         </a>
-                    </div>
+                    </div>-->
                     <div class="card subir">
                         <a href="{{ ROUTE('paciente.convenios') }}">
                             <div class="card-body text-center py-3" style="cursor:pointer">

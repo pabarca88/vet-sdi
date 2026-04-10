@@ -5700,6 +5700,10 @@ a.badge-success:focus, a.badge-success.focus {
    background-color: #A06CC1;
 }
 
+.badge-purple-light {
+    color: #872098;
+    background-color: #e7d5f2;
+}
 
 a.badge-info:hover, a.badge-info:focus {
     color: #fff;
