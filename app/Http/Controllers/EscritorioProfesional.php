@@ -7546,8 +7546,13 @@ return $ficha;
         $examenes = array();
         foreach ($ficha as $key_f => $value_f)
         {
-            $nombre_paciente = $value_f->Paciente()->first()->nombres .' ' .$value_f->Paciente()->first()->apellido_uno .' ' .$value_f->Paciente()->first()->apellido_dos;
-            $rut_paciente = $value_f->Paciente()->first()->rut;
+            $paciente = $value_f->Paciente()->first();
+            if (!$paciente) {
+                continue;
+            }
+
+            $nombre_paciente = $paciente->nombres .' ' .$paciente->apellido_uno .' ' .$paciente->apellido_dos;
+            $rut_paciente = $paciente->rut;
             $created_at = $value_f->created_at;
 
             $registros = ExamenPPF::where('id_ficha_atencion', $value_f->id)->get();
