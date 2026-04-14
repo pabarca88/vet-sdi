@@ -78,6 +78,10 @@
 
 @section('js-profesionales')
 <script>
+    window.convenioDameUrl = "{{ route('profesional.dame_convenio') }}";
+    window.convenioEditarUrl = "{{ route('profesional.editar_convenio') }}";
+    window.convenioEditarReload = true;
+
     $(document).ready(function() {
         $('#productos_convenio_').select2();
         $('#productos_convenio_edicion').select2();
@@ -277,7 +281,7 @@
 
     function dame_convenio(id){
         $.ajax({
-            url: "{{ ROUTE('adm_cm.dame_convenio') }}",
+            url: window.convenioDameUrl || "{{ route('profesional.dame_convenio') }}",
             type: 'POST',
             data: {
                 id: id,
@@ -287,19 +291,20 @@
                 $('#id_convenio_profesional').val(id);
                 console.log(response);
                 if(response.estado == 1){
-                    $('#nombre_convenio_prevision_editar').val(response.convenio.nombre_convenio_institucion);
-                    $('#tipo_convenio_edicion').val(response.convenio.id_tipo_convenio);
-                    $('#porcentaje_dcto_edicion').val(response.convenio.porcentaje_convenio_institucion);
-                    $('#tipo_convenio_institucion_edicion').val(response.convenio.id_tipo_convenio_institucion);
-                    $('#fecha_inicial_pago_convenio_edicion').val(response.convenio.fecha_inicio_convenio_institucion);
-                    $('#fecha_final_pago_convenio_edicion').val(response.convenio.fecha_fin_convenio_institucion);
-                    $('#productos_convenio_edicion').val(response.convenio.productos).trigger('change');
-                    $('#rut_representante_convenio_edicion').val(response.convenio.rut_representante_convenio_institucion);
-                    $('#nombre_representante_convenio_edicion').val(response.convenio.nombre_representante_convenio_institucion);
-                    $('#telefono_representante_convenio_edicion').val(response.convenio.telefono_representante_convenio_institucion);
-                    $('#email_representante_convenio_edicion').val(response.convenio.email_representante_convenio_institucion);
-                    $('#direccion_representante_convenio_edicion').val(response.convenio.direccion_representante_convenio_institucion);
-                    $('#observaciones_edicion_convenio').val(response.convenio.observaciones_convenio_institucion);
+                    $('#nombre_convenio_prevision_editar').val(response.convenio.nombre_convenio || '');
+                    $('#tipo_convenio_edicion').val(response.convenio.id_tipo_convenio || 0);
+                    $('#porcentaje_dcto_edicion').val(response.convenio.porcentaje || '');
+                    $('#fecha_inicial_pago_convenio_edicion').val(response.convenio.fecha_inicio || '');
+                    $('#fecha_final_pago_convenio_edicion').val(response.convenio.fecha_termino || '');
+                    $('#observaciones_edicion_convenio').val(response.convenio.observaciones || '');
+
+                    if (response.convenio.fecha_termino) {
+                        $('#convenio_infinito_edicion').prop('checked', false);
+                        $('#fecha_final_pago_convenio_edicion').prop('disabled', false);
+                    } else {
+                        $('#convenio_infinito_edicion').prop('checked', true);
+                        $('#fecha_final_pago_convenio_edicion').prop('disabled', true);
+                    }
                 }else{
                     alert('Error al cargar convenio');
                 }
@@ -481,6 +486,11 @@
 
 @section('modales')
     @include('app.adm_cm.modal_adm.convenio_usuario')
-    @include('app.adm_cm.modal_adm.convenio_profesional_nuevo')
+    @include('app.adm_cm.modal_adm.convenio_profesional_nuevo', [
+        'profesional' => $profesional,
+        'regiones' => $regiones,
+        'tipoproducto_convenios' => $tipoproducto_convenios,
+        'lugares_atencion' => $lugares_atencion,
+    ])
     @include('app.adm_cm.modal_adm.convenio_editar')
 @endsection

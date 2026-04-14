@@ -424,7 +424,7 @@
                                                             <label class="floating-label-activo-sm">Lugar de Atención</label>
                                                             <select name="lugar_atencion_convenio_prevision1" id="lugar_atencion_convenio_prevision1" class="form-control form-control-sm">
                                                                 <option value="0">Seleccione</option>
-                                                                @foreach($lugares_atencion as $key_la => $value_la)
+                                                                @foreach(($lugares_atencion ?? collect()) as $key_la => $value_la)
                                                                     <option value="{{ $value_la->lugar_atencion_id }}">{{ $value_la->lugar_atencion_nombre }}</option>
                                                                 @endforeach
                                                             </select>
@@ -678,7 +678,7 @@
                                                             <label class="floating-label-activo-sm">Lugar de Atención</label>
                                                             <select name="lugar_atencion_convenio_ffa1" id="lugar_atencion_convenio_ffa1" class="form-control form-control-sm">
                                                                 <option value="0">Seleccione</option>
-                                                                @foreach($lugares_atencion as $key_la => $value_la)
+                                                                @foreach(($lugares_atencion ?? collect()) as $key_la => $value_la)
                                                                     <option value="{{ $value_la->lugar_atencion_id }}">{{ $value_la->lugar_atencion_nombre }}</option>
                                                                 @endforeach
                                                             </select>
@@ -741,7 +741,7 @@
                                                     <label class="floating-label-activo-sm">Lugar Atención</label>
                                                     <select name="lugar_atencion_convenio" id="lugar_atencion_convenio" class="form-control form-control-sm">
                                                         <option value="0">Seleccione</option>
-                                                        @foreach($lugares_atencion as $key_la => $value_la)
+                                                        @foreach(($lugares_atencion ?? collect()) as $key_la => $value_la)
                                                             <option value="{{ $value_la->lugar_atencion_id }}">{{ $value_la->lugar_atencion_nombre }}</option>
                                                         @endforeach
                                                     </select>

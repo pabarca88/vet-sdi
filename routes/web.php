@@ -5140,6 +5140,8 @@ Route::get('/profesional/mensaje/{id}', [App\Http\Controllers\EscritorioGeneral:
 Route::get('/profesional/mensaje/{id}/json', [App\Http\Controllers\EscritorioGeneral::class, 'mensajeJson'])->name('profesional.mensaje.json');
 
 Route::post('/profesional/convenio/nuevo',[App\Http\Controllers\ConveniosController::class, 'nuevoConvenio'])->name('profesional.convenio_nuevo');
+Route::post('/profesional/convenio/dame',[App\Http\Controllers\ConveniosController::class, 'dameConvenioProfesional'])->name('profesional.dame_convenio');
+Route::post('/profesional/convenio/editar',[App\Http\Controllers\ConveniosController::class, 'editarConvenioProfesional'])->name('profesional.editar_convenio');
 
 Route::get('/profesional/mis_convenios',[App\Http\Controllers\ConveniosController::class, 'misPropiosConvenios'])->name('profesional.mis_propios_convenios');
 

@@ -14,6 +14,8 @@ use App\Models\TipoPago;
 use App\Models\Convenio;
 use App\Models\Profesional;
 use App\Models\ProfesionalConveniosIndependientes;
+use App\Models\ProfesionalesLugaresAtencion;
+use App\Models\LugarAtencion;
 use App\Models\Region;
 use App\Models\Instituciones;
 use App\Models\Servicios;
@@ -243,6 +245,16 @@ class ConveniosController extends Controller
 
     public function misPropiosConvenios(){
         $profesional = Profesional::where('id_usuario', Auth::user()->id)->first();
+        $lugares_atencion_ids = ProfesionalesLugaresAtencion::where('id_profesional', $profesional->id)
+            ->where('estado', 1)
+            ->pluck('id_lugar_atencion')
+            ->toArray();
+        $lugares_atencion = LugarAtencion::select(
+                'id as lugar_atencion_id',
+                'nombre as lugar_atencion_nombre'
+            )
+            ->whereIn('id', $lugares_atencion_ids)
+            ->get();
         $tipos_convenio = TipoConvenio::all();
         $tipos_producto = TipoProducto::all();
         $responsables = Responsable::all();
@@ -266,6 +278,7 @@ class ConveniosController extends Controller
             'tipos_convenio_institucion' => $tipos_convenio_institucion,
             'tipoproducto_convenios' => $tipoproducto_convenios,
             'regiones' => $regiones,
+            'lugares_atencion' => $lugares_atencion,
             'convenios_empresas' => $convenios_empresas,
             'convenios_prevision' => $convenios_prevision
         ]);
@@ -318,5 +331,83 @@ class ConveniosController extends Controller
             return ['estado' => 0, 'mensaje' => $e->getMessage()];
         }
 
+    }
+
+    public function dameConvenioProfesional(Request $request)
+    {
+        try {
+            $profesional = Profesional::where('id_usuario', Auth::user()->id)->first();
+            $convenio = EmpresasConvenios::where('id', $request->id)
+                ->where('id_profesional', $profesional->id)
+                ->first();
+
+            if (!$convenio) {
+                return ['estado' => 0, 'msj' => 'Convenio no encontrado'];
+            }
+
+            return ['estado' => 1, 'convenio' => $convenio];
+        } catch (\Exception $e) {
+            return ['estado' => 0, 'msj' => $e->getMessage()];
+        }
+    }
+
+    public function editarConvenioProfesional(Request $request)
+    {
+        try {
+            $profesional = Profesional::where('id_usuario', Auth::user()->id)->first();
+            $id_convenio = $request->id_convenio_institucion ?? $request->id_convenio;
+
+            $convenio = EmpresasConvenios::where('id', $id_convenio)
+                ->where('id_profesional', $profesional->id)
+                ->first();
+
+            if (!$convenio) {
+                return ['estado' => 0, 'msj' => 'Convenio no encontrado'];
+            }
+
+            if ($request->filled('nombre_convenio_edicion')) {
+                $convenio->nombre_convenio = $request->nombre_convenio_edicion;
+            } elseif ($request->filled('nombre_convenio')) {
+                $convenio->nombre_convenio = $request->nombre_convenio;
+            }
+
+            if ($request->has('tipo_convenio_edicion')) {
+                $convenio->id_tipo_convenio = $request->tipo_convenio_edicion != 0
+                    ? $request->tipo_convenio_edicion
+                    : null;
+            } elseif ($request->has('tipo_convenio')) {
+                $convenio->id_tipo_convenio = $request->tipo_convenio != 0
+                    ? $request->tipo_convenio
+                    : null;
+            }
+
+            if ($request->filled('porcentaje_dcto_edicion')) {
+                $convenio->porcentaje = $request->porcentaje_dcto_edicion;
+            } elseif ($request->filled('porcentaje')) {
+                $convenio->porcentaje = $request->porcentaje;
+            }
+
+            if ($request->filled('fecha_inicio')) {
+                $convenio->fecha_inicio = $request->fecha_inicio;
+            }
+
+            if ((int) $request->convenio_infinito === 1) {
+                $convenio->fecha_termino = null;
+            } elseif ($request->has('fecha_fin')) {
+                $convenio->fecha_termino = $request->fecha_fin ?: null;
+            }
+
+            if ($request->has('observaciones_edicion_convenio')) {
+                $convenio->observaciones = $request->observaciones_edicion_convenio;
+            } elseif ($request->has('observaciones')) {
+                $convenio->observaciones = $request->observaciones;
+            }
+
+            $convenio->save();
+
+            return ['estado' => 1, 'msj' => 'Convenio actualizado'];
+        } catch (\Exception $e) {
+            return ['estado' => 0, 'msj' => $e->getMessage()];
+        }
     }
 }

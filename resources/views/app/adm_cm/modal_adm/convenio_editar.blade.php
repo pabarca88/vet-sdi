@@ -547,6 +547,9 @@ function toggleFechaFinalFFA(){
 function guardar_edicion_convenio_institucion(){
     console.log('Guardar edición convenio institución');
     var id_convenio_institucion = $('#id_convenio_institucion').val();
+    if(id_convenio_institucion == '' || id_convenio_institucion == undefined){
+        id_convenio_institucion = $('#id_convenio_profesional').val();
+    }
 
     // Obtener la pestaña activa
     var tabActiva = $('.tab-pane.active').attr('id');
@@ -573,7 +576,7 @@ function guardar_edicion_convenio_institucion(){
             valido = 0;
             mensaje += '<li>Debe seleccionar tipo de convenio</li>';
         }
-        if(lugar_atencion_edicion == 0){
+        if(lugar_atencion_edicion == 0 && !window.convenioEditarReload){
             valido = 0;
             mensaje += '<li>Debe seleccionar lugar de atención</li>';
         }
