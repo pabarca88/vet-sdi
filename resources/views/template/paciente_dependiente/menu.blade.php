@@ -1,10 +1,11 @@
 <nav class="pcoded-navbar menu-light">
 	<div class="navbar-wrapper">
 		<div class="navbar-content scroll-div">
-			@php
-				$perfilMascota = $mascota ?? $paciente ?? null;
-				$nombreMascota = trim(($perfilMascota->nombre ?? $perfilMascota->nombres ?? '') . ' ' . ($perfilMascota->apellido_uno ?? ''));
-				$nombreMascota = $nombreMascota !== '' ? $nombreMascota : (@Auth::user()->name ?? 'Mascota');
+				@php
+					$perfilMascota = $mascota ?? $paciente ?? null;
+					$idDependienteActivo = $perfilMascota->id ?? $id_dependiente_activo ?? null;
+					$nombreMascota = trim(($perfilMascota->nombre ?? $perfilMascota->nombres ?? '') . ' ' . ($perfilMascota->apellido_uno ?? ''));
+					$nombreMascota = $nombreMascota !== '' ? $nombreMascota : (@Auth::user()->name ?? 'Mascota');
 
 				$nombreResponsable = @Auth::user()->name ?? 'Sin responsable';
 				if (!empty($responsable)) {
@@ -71,27 +72,31 @@
 						<span class="pcoded-mtext text-center">Mi Escritorio</span>
 					</a>
 					<ul class="pcoded-submenu">
-						<li><a href="{{ ROUTE('paciente.dependiente.home', [$paciente->id]) }}">Mi Escritorio Paciente</a></li>
-						<li><a href="{{ ROUTE('paciente.dependiente.agendar_hora', [$paciente->id,'0','0','0']) }}">Reservar Hora Médica</a></li>
-						<li><a href="{{ ROUTE('paciente.dependiente.mis_profesionales', [$paciente->id]) }}">Mis Veterinarios</a></li>
-						<li><a href="{{ ROUTE('paciente.dependiente.mi_ficha', [$paciente->id]) }}">Ficha Veterinaria Única</a></li>
-						<li><a href="{{ ROUTE('paciente.dependiente.receta', [$paciente->id]) }}">Documentos</a></li>
-						<li><a href="{{ ROUTE('paciente.dependiente.receta.examen', [$paciente->id]) }}">Exámenes</a></li>
-						<li><a href="{{ ROUTE('paciente.dependiente.receta.examen', [$paciente->id]) }}">Controles</a></li>
-						<li><a href="{{ ROUTE('registro_vacunas', ['id_dependiente_activo'=> $paciente->id]) }}">Registro Vacunas</a></li>
-						<li><a href="{{ ROUTE('registro_desparasitacion', ['id_dependiente_activo'=> $paciente->id]) }}">Registro Desparasitación</a></li>
+						@if ($idDependienteActivo)
+							<li><a href="{{ ROUTE('paciente.dependiente.home', [$idDependienteActivo]) }}">Mi Escritorio Paciente</a></li>
+							<li><a href="{{ ROUTE('paciente.dependiente.agendar_hora', [$idDependienteActivo,'0','0','0']) }}">Reservar Hora Médica</a></li>
+							<li><a href="{{ ROUTE('paciente.dependiente.mis_profesionales', [$idDependienteActivo]) }}">Mis Veterinarios</a></li>
+							<li><a href="{{ ROUTE('paciente.dependiente.mi_ficha', [$idDependienteActivo]) }}">Ficha Veterinaria Única</a></li>
+							<li><a href="{{ ROUTE('paciente.dependiente.receta', [$idDependienteActivo]) }}">Documentos</a></li>
+							<li><a href="{{ ROUTE('paciente.dependiente.receta.examen', [$idDependienteActivo]) }}">Exámenes</a></li>
+							<li><a href="{{ ROUTE('paciente.dependiente.receta.examen', [$idDependienteActivo]) }}">Controles</a></li>
+							<li><a href="{{ ROUTE('registro_vacunas', ['id_dependiente_activo'=> $idDependienteActivo]) }}">Registro Vacunas</a></li>
+							<li><a href="{{ ROUTE('registro_desparasitacion', ['id_dependiente_activo'=> $idDependienteActivo]) }}">Registro Desparasitación</a></li>
+						@endif
 					</ul>
 				</li>
 				<li class="nav-item pcoded-hasmenu">
 					<a href="javascript:void(0)" class="nav-link">
 						<span class="pcoded-micon">
 							<i class="feather icon-settings"></i>
-						</span>
+					</span>
 						<span class="pcoded-mtext text-center">Configuraciones</span></a>
 					<ul class="pcoded-submenu">
 						{{-- <li><a href="{{ ROUTE('paciente.dependiente.perfil') }}">Editar Perfil</a></li> --}}
-						<li><a href="{{ ROUTE('paciente.dependiente.rompeclave', [$paciente->id]) }}">Rompeclave</a></li>
-						<li><a href="{{ ROUTE('paciente.dependiente.subcripcion', [$paciente->id]) }}">Pagos y Suscripción</a></li>
+						@if ($idDependienteActivo)
+							<li><a href="{{ ROUTE('paciente.dependiente.rompeclave', [$idDependienteActivo]) }}">Rompeclave</a></li>
+							<li><a href="{{ ROUTE('paciente.dependiente.subcripcion', [$idDependienteActivo]) }}">Pagos y Suscripción</a></li>
+						@endif
 					</ul>
 				</li>
 

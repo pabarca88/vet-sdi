@@ -653,9 +653,25 @@ class EscritorioPacienteDependiente extends Controller
 
     {
 
-        $paciente = Paciente::where('id', $request->id_dependiente_activo)->first();
+        $paciente_responsable = Paciente::where('id_usuario', Auth::user()->id)->first();
+        if (!$paciente_responsable) {
+            return back()->with('error', 'Responsable no encontrado');
+        }
 
-        return view('app.paciente_dependiente.receta.inicio_receta',['id_dependiente_activo' => $request->id_dependiente_activo, 'paciente' => $paciente]);
+        $paciente = Mascota::where('id', $request->id_dependiente_activo)
+            ->where('id_responsable', $paciente_responsable->id)
+            ->first();
+
+        if (!$paciente) {
+            return back()->with('error', 'Mascota no encontrada');
+        }
+
+        return view('app.paciente_dependiente.receta.inicio_receta', [
+            'id_dependiente_activo' => $request->id_dependiente_activo,
+            'paciente' => $paciente,
+            'mascota' => $paciente,
+            'responsable' => $paciente_responsable,
+        ]);
 
     }
 
@@ -665,9 +681,25 @@ class EscritorioPacienteDependiente extends Controller
 
     {
 
-        $paciente = Paciente::where('id', $request->id_dependiente_activo)->first();
+        $paciente_responsable = Paciente::where('id_usuario', Auth::user()->id)->first();
+        if (!$paciente_responsable) {
+            return back()->with('error', 'Responsable no encontrado');
+        }
 
-        return view('app.paciente_dependiente.receta.mis_examenes',['id_dependiente_activo' => $request->id_dependiente_activo, 'paciente' => $paciente]);
+        $paciente = Mascota::where('id', $request->id_dependiente_activo)
+            ->where('id_responsable', $paciente_responsable->id)
+            ->first();
+
+        if (!$paciente) {
+            return back()->with('error', 'Mascota no encontrada');
+        }
+
+        return view('app.paciente_dependiente.receta.mis_examenes', [
+            'id_dependiente_activo' => $request->id_dependiente_activo,
+            'paciente' => $paciente,
+            'mascota' => $paciente,
+            'responsable' => $paciente_responsable,
+        ]);
 
     }
 
@@ -677,13 +709,30 @@ class EscritorioPacienteDependiente extends Controller
 
     {
 
-        $paciente = Paciente::where('id', $request->id_dependiente_activo)->first();
+        $paciente_responsable = Paciente::where('id_usuario', Auth::user()->id)->first();
+        if (!$paciente_responsable) {
+            return back()->with('error', 'Responsable no encontrado');
+        }
 
-        $fichas = FichaAtencion::where('id_paciente', $paciente->id)->get();
+        $paciente = Mascota::where('id', $request->id_dependiente_activo)
+            ->where('id_responsable', $paciente_responsable->id)
+            ->first();
 
+        if (!$paciente) {
+            return back()->with('error', 'Mascota no encontrada');
+        }
 
+        $fichas = FichaAtencion::where('id_mascota', $paciente->id)
+            ->where('id_paciente', $paciente_responsable->id)
+            ->get();
 
-        return view('app.paciente_dependiente.receta.mis_recetas', ['fichas' => $fichas, 'id_dependiente_activo' => $request->id_dependiente_activo, 'paciente' => $paciente]);
+        return view('app.paciente_dependiente.receta.mis_recetas', [
+            'fichas' => $fichas,
+            'id_dependiente_activo' => $request->id_dependiente_activo,
+            'paciente' => $paciente,
+            'mascota' => $paciente,
+            'responsable' => $paciente_responsable,
+        ]);
 
     }
 
@@ -693,13 +742,30 @@ class EscritorioPacienteDependiente extends Controller
 
     {
 
-        $paciente = Paciente::where('id', $request->id_dependiente_activo)->first();
+        $paciente_responsable = Paciente::where('id_usuario', Auth::user()->id)->first();
+        if (!$paciente_responsable) {
+            return back()->with('error', 'Responsable no encontrado');
+        }
 
-        $fichas = FichaAtencion::where('id_paciente', $paciente->id)->get();
+        $paciente = Mascota::where('id', $request->id_dependiente_activo)
+            ->where('id_responsable', $paciente_responsable->id)
+            ->first();
 
+        if (!$paciente) {
+            return back()->with('error', 'Mascota no encontrada');
+        }
 
+        $fichas = FichaAtencion::where('id_mascota', $paciente->id)
+            ->where('id_paciente', $paciente_responsable->id)
+            ->get();
 
-        return view('app.paciente_dependiente.receta.mis_certificados', ['fichas' => $fichas, 'id_dependiente_activo' => $request->id_dependiente_activo, 'paciente' => $paciente]);
+        return view('app.paciente_dependiente.receta.mis_certificados', [
+            'fichas' => $fichas,
+            'id_dependiente_activo' => $request->id_dependiente_activo,
+            'paciente' => $paciente,
+            'mascota' => $paciente,
+            'responsable' => $paciente_responsable,
+        ]);
 
     }
 
@@ -709,13 +775,30 @@ class EscritorioPacienteDependiente extends Controller
 
     {
 
-        $paciente = Paciente::where('id', $request->id_dependiente_activo)->first();
+        $paciente_responsable = Paciente::where('id_usuario', Auth::user()->id)->first();
+        if (!$paciente_responsable) {
+            return back()->with('error', 'Responsable no encontrado');
+        }
 
-        $fichas = FichaAtencion::where('id_paciente', $paciente->id)->get();
+        $paciente = Mascota::where('id', $request->id_dependiente_activo)
+            ->where('id_responsable', $paciente_responsable->id)
+            ->first();
 
+        if (!$paciente) {
+            return back()->with('error', 'Mascota no encontrada');
+        }
 
+        $fichas = FichaAtencion::where('id_mascota', $paciente->id)
+            ->where('id_paciente', $paciente_responsable->id)
+            ->get();
 
-        return view('app.paciente_dependiente.receta.mis_licencias', ['fichas' => $fichas, 'id_dependiente_activo' => $request->id_dependiente_activo, 'paciente' => $paciente]);
+        return view('app.paciente_dependiente.receta.mis_licencias', [
+            'fichas' => $fichas,
+            'id_dependiente_activo' => $request->id_dependiente_activo,
+            'paciente' => $paciente,
+            'mascota' => $paciente,
+            'responsable' => $paciente_responsable,
+        ]);
 
     }
 
