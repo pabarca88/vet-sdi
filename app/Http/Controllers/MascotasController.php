@@ -393,7 +393,192 @@ class MascotasController extends Controller
     }
 
     public function suscripcion_servicios(Request $request){
-        return view('app.paciente_dependiente.suscripcion_servicios');
+        $paciente = Paciente::where('id_usuario', Auth::id())->first();
+        $mascotas = collect();
+        $mascotaActiva = null;
+
+        if ($paciente) {
+            $mascotas = Mascota::where('id_responsable', $paciente->id)
+                ->orderBy('nombre')
+                ->get();
+
+            $mascotaActiva = $this->resolverMascota($request->input('id_dependiente_activo'));
+
+            if (!$mascotaActiva && $mascotas->count() === 1) {
+                $mascotaActiva = $mascotas->first();
+            }
+        }
+
+        $petsData = $mascotas->map(function ($mascota) {
+            return [
+                'id' => $mascota->id,
+                'nombre' => $mascota->nombre,
+                'suscripciones' => array_values($mascota->suscripciones_servicios_registro ?? []),
+                'reservas' => array_values($mascota->reservas_servicios_registro ?? []),
+            ];
+        })->values();
+
+        return view('app.paciente_dependiente.suscripcion_servicios', [
+            'paciente' => $paciente,
+            'mascotas' => $mascotas,
+            'mascotaActiva' => $mascotaActiva,
+            'petsData' => $petsData,
+        ]);
+    }
+
+    public function guardarSuscripcionServicio(Request $request)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'id_mascota' => 'required|integer',
+                'servicio' => 'required|string|in:alimentos,farmacia,pet_shop',
+                'lugar_nombre' => 'required|string|max:255',
+                'lugar_direccion' => 'nullable|string|max:255',
+                'items' => 'required|array|min:1',
+                'items.*.name' => 'required|string|max:255',
+                'items.*.quantity' => 'required|integer|min:1',
+                'items.*.presentation' => 'required|string|max:255',
+            ],
+            [
+                'id_mascota.required' => 'Debe seleccionar una mascota.',
+                'servicio.in' => 'El servicio seleccionado no admite suscripción.',
+                'items.required' => 'Debe agregar al menos un producto.',
+                'items.min' => 'Debe agregar al menos un producto.',
+            ]
+        );
+
+        if ($validator->fails()) {
+            return response()->json([
+                'estado' => 0,
+                'msj' => 'Datos inválidos',
+                'error' => $validator->errors(),
+            ], 422);
+        }
+
+        $paciente = Paciente::where('id_usuario', Auth::id())->first();
+        if (!$paciente) {
+            return response()->json([
+                'estado' => 0,
+                'msj' => 'Responsable no encontrado',
+            ], 404);
+        }
+
+        $mascota = Mascota::where('id', $request->input('id_mascota'))
+            ->where('id_responsable', $paciente->id)
+            ->first();
+
+        if (!$mascota) {
+            return response()->json([
+                'estado' => 0,
+                'msj' => 'Mascota no encontrada',
+            ], 404);
+        }
+
+        $suscripciones = $this->normalizarRegistros($mascota->suscripciones_servicios_registro);
+        $registro = [
+            'id' => uniqid('sus_', true),
+            'servicio' => $request->input('servicio'),
+            'lugar_nombre' => trim((string) $request->input('lugar_nombre')),
+            'lugar_direccion' => trim((string) $request->input('lugar_direccion', '')),
+            'items' => collect($request->input('items', []))
+                ->map(function ($item) {
+                    return [
+                        'name' => trim((string) ($item['name'] ?? '')),
+                        'quantity' => (int) ($item['quantity'] ?? 0),
+                        'presentation' => trim((string) ($item['presentation'] ?? '')),
+                    ];
+                })
+                ->filter(function ($item) {
+                    return $item['name'] !== '' && $item['quantity'] > 0 && $item['presentation'] !== '';
+                })
+                ->values()
+                ->all(),
+            'estado' => 'pendiente',
+            'created_at' => now()->toDateTimeString(),
+        ];
+
+        $suscripciones[] = $registro;
+        $mascota->suscripciones_servicios_registro = $suscripciones;
+        $mascota->save();
+
+        return response()->json([
+            'estado' => 1,
+            'msj' => 'Suscripción registrada correctamente',
+            'registro' => $registro,
+            'suscripciones' => $this->normalizarRegistros($mascota->suscripciones_servicios_registro),
+        ]);
+    }
+
+    public function guardarReservaServicio(Request $request)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'id_mascota' => 'required|integer',
+                'servicio' => 'required|string|in:peluqueria,hotel_mascotas',
+                'lugar_nombre' => 'required|string|max:255',
+                'lugar_direccion' => 'nullable|string|max:255',
+                'fecha' => 'required|date',
+                'hora' => 'required|date_format:H:i',
+            ],
+            [
+                'id_mascota.required' => 'Debe seleccionar una mascota.',
+                'servicio.in' => 'El servicio seleccionado no admite reserva.',
+                'fecha.required' => 'Debe seleccionar una fecha.',
+                'hora.required' => 'Debe seleccionar una hora.',
+            ]
+        );
+
+        if ($validator->fails()) {
+            return response()->json([
+                'estado' => 0,
+                'msj' => 'Datos inválidos',
+                'error' => $validator->errors(),
+            ], 422);
+        }
+
+        $paciente = Paciente::where('id_usuario', Auth::id())->first();
+        if (!$paciente) {
+            return response()->json([
+                'estado' => 0,
+                'msj' => 'Responsable no encontrado',
+            ], 404);
+        }
+
+        $mascota = Mascota::where('id', $request->input('id_mascota'))
+            ->where('id_responsable', $paciente->id)
+            ->first();
+
+        if (!$mascota) {
+            return response()->json([
+                'estado' => 0,
+                'msj' => 'Mascota no encontrada',
+            ], 404);
+        }
+
+        $reservas = $this->normalizarRegistros($mascota->reservas_servicios_registro);
+        $registro = [
+            'id' => uniqid('res_', true),
+            'servicio' => $request->input('servicio'),
+            'lugar_nombre' => trim((string) $request->input('lugar_nombre')),
+            'lugar_direccion' => trim((string) $request->input('lugar_direccion', '')),
+            'fecha' => $request->input('fecha'),
+            'hora' => $request->input('hora'),
+            'estado' => 'pendiente',
+            'created_at' => now()->toDateTimeString(),
+        ];
+
+        $reservas[] = $registro;
+        $mascota->reservas_servicios_registro = $reservas;
+        $mascota->save();
+
+        return response()->json([
+            'estado' => 1,
+            'msj' => 'Reserva registrada correctamente',
+            'registro' => $registro,
+            'reservas' => $this->normalizarRegistros($mascota->reservas_servicios_registro),
+        ]);
     }
 
     public function inscripcion_alimentos(Request $request){

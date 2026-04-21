@@ -40,6 +40,8 @@ class Mascota extends Model
         'vacunas',
         'vacunas_registro',
         'desparasitaciones_registro',
+        'suscripciones_servicios_registro',
+        'reservas_servicios_registro',
         'viajes',
         'vive_con_animales',
         'id_user',
@@ -55,6 +57,8 @@ class Mascota extends Model
         'ultima_desparasitacion' => 'date',
         'vacunas_registro' => 'array',
         'desparasitaciones_registro' => 'array',
+        'suscripciones_servicios_registro' => 'array',
+        'reservas_servicios_registro' => 'array',
         'vive_con_animales' => 'boolean',
     ];
 

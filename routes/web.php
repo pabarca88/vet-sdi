@@ -837,7 +837,9 @@ Route::post('Convenios/editar', [App\Http\Controllers\EscritorioPaciente::class,
     Route::put('mascotas/{mascota}', [App\Http\Controllers\MascotasController::class, 'update'])->whereNumber('mascota')->name('paciente.mascotas.update');
     Route::delete('mascotas/{mascota}', [App\Http\Controllers\MascotasController::class, 'destroy'])->whereNumber('mascota')->name('paciente.mascotas.destroy');
     Route::get('/inscripcion_alimentos',[App\Http\Controllers\MascotasController::class, 'inscripcion_alimentos'])->name('paciente.mascotas.inscripcion_alimentos');
-         Route::get('/suscripcion_servicios',[App\Http\Controllers\MascotasController::class, 'suscripcion_servicios'])->name('paciente.mascotas.suscripcion_servicios');
+    Route::get('/suscripcion_servicios',[App\Http\Controllers\MascotasController::class, 'suscripcion_servicios'])->name('paciente.mascotas.suscripcion_servicios');
+    Route::post('/suscripcion_servicios/suscripcion',[App\Http\Controllers\MascotasController::class, 'guardarSuscripcionServicio'])->name('paciente.mascotas.suscripcion_servicios.guardar');
+    Route::post('/suscripcion_servicios/reserva',[App\Http\Controllers\MascotasController::class, 'guardarReservaServicio'])->name('paciente.mascotas.suscripcion_servicios.reserva');
     Route::get('/inscripcion_medicamentos',[App\Http\Controllers\MascotasController::class, 'inscripcion_medicamentos'])->name('paciente.mascotas.inscripcion_medicamentos');
     Route::get('/promociones_especiales',[App\Http\Controllers\MascotasController::class, 'promociones_especiales'])->name('paciente.mascotas.promociones_especiales');
     Route::get('/promociones_generales',[App\Http\Controllers\MascotasController::class, 'promociones_generales'])->name('paciente.mascotas.promociones_generales');
