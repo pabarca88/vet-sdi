@@ -12,6 +12,7 @@ use App\Models\TamanoMascota;
 use App\Models\FichaAtencion;
 use App\Models\HoraMedica;
 use App\Models\Profesional;
+use App\Models\Producto;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -22,6 +23,41 @@ use Illuminate\Support\Facades\Validator;
 
 class MascotasController extends Controller
 {
+    public function buscarProductosSuscripcion(Request $request)
+    {
+        $search = trim((string) $request->input('search', ''));
+
+        $productos = Producto::query()
+            ->when($search !== '', function ($query) use ($search) {
+                $query->where(function ($subQuery) use ($search) {
+                    $subQuery->where('nombre', 'like', '%' . $search . '%')
+                        ->orWhere('codigo_interno', 'like', '%' . $search . '%')
+                        ->orWhere('descripcion', 'like', '%' . $search . '%');
+                });
+            })
+            ->orderBy('nombre', 'asc')
+            ->limit(20)
+            ->get(['id', 'nombre', 'codigo_interno', 'descripcion']);
+
+        $response = $productos->map(function ($producto) {
+            $label = $producto->nombre;
+
+            if (!empty($producto->codigo_interno)) {
+                $label .= ' (' . $producto->codigo_interno . ')';
+            }
+
+            return [
+                'value' => $producto->id,
+                'label' => $label,
+                'name' => $producto->nombre,
+                'codigo_interno' => $producto->codigo_interno,
+                'descripcion' => $producto->descripcion,
+            ];
+        })->values();
+
+        return response()->json($response);
+    }
+
     public function index()
     {
         $paciente = Paciente::where('id_usuario', Auth::id())->first();

@@ -477,6 +477,7 @@
     };
 
     let subscriptionItems = [];
+    let subscriptionAutocompleteResults = [];
 
     function showMessage(title, text, icon) {
         swal({
@@ -956,6 +957,7 @@
             $presentation.html('<option value="">Seleccione</option>');
 
             if (!response || !response.length) {
+                $presentation.html('<option value="sin_presentacion" selected>Sin presentación registrada</option>');
                 return;
             }
 
@@ -972,23 +974,51 @@
             minLength: 2,
             source: function (request, response) {
                 $.ajax({
-                    url: "{{ route('dental.getArticulo') }}",
-                    type: 'post',
+                    url: "{{ route('paciente.mascotas.suscripcion_servicios.productos') }}",
+                    type: 'GET',
                     dataType: 'json',
                     data: {
-                        _token: "{{ csrf_token() }}",
                         search: request.term
                     },
                     success: function (data) {
+                        subscriptionAutocompleteResults = Array.isArray(data) ? data : [];
                         response(data);
                     }
                 });
+            },
+            focus: function (event, ui) {
+                $('#subscriptionItemName').val(ui.item.label);
+                return false;
             },
             select: function (event, ui) {
                 $('#subscriptionItemName').val(ui.item.label);
                 $('#subscriptionItemId').val(ui.item.value);
                 loadSubscriptionPresentations(ui.item.value);
                 return false;
+            },
+            change: function (event, ui) {
+                if (ui.item) {
+                    $('#subscriptionItemName').val(ui.item.label);
+                    $('#subscriptionItemId').val(ui.item.value);
+                    loadSubscriptionPresentations(ui.item.value);
+                    return false;
+                }
+
+                const currentValue = $('#subscriptionItemName').val().trim().toLowerCase();
+                const matchedItem = subscriptionAutocompleteResults.find(function (item) {
+                    return String(item.label).trim().toLowerCase() === currentValue ||
+                        String(item.name || '').trim().toLowerCase() === currentValue;
+                });
+
+                if (matchedItem) {
+                    $('#subscriptionItemName').val(matchedItem.label);
+                    $('#subscriptionItemId').val(matchedItem.value);
+                    loadSubscriptionPresentations(matchedItem.value);
+                    return false;
+                }
+
+                $('#subscriptionItemId').val('');
+                $('#subscriptionPresentation').html('<option value="">Seleccione</option>');
             }
         });
     }
