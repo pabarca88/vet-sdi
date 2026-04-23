@@ -45,6 +45,7 @@
                                         <thead>
                                             <tr>
                                                 <th>Mascota</th>
+                                                <th>Responsable</th>
                                                 <th>Especie</th>
                                                 <th>Raza</th>
                                                 <th>Convenio</th>
@@ -56,6 +57,15 @@
                                             @forelse ($mascotas as $mascota)
                                                 @php
                                                     $responsable = $mascota->Responsable;
+                                                    $nombreResponsable = trim(collect([
+                                                        optional($responsable)->nombres,
+                                                        optional($responsable)->apellido_uno,
+                                                        optional($responsable)->apellido_dos,
+                                                    ])->filter()->implode(' '));
+                                                    $rutResponsable = optional($responsable)->rut;
+                                                    $responsableTexto = $nombreResponsable !== ''
+                                                        ? $nombreResponsable . ($rutResponsable ? '<br>' . $rutResponsable : '')
+                                                        : '-';
                                                     $especie = optional($mascota->especieMascota)->nombre ?? $mascota->especie ?? '-';
                                                     $raza = $mascota->otra_especie ?? '-';
                                                     $convenio = optional(optional($responsable)->Prevision)->nombre ?? '-';
@@ -87,6 +97,7 @@
                                                 @endphp
                                                 <tr>
                                                     <td>{{ $mascota->nombre ?? '-' }}</td>
+                                                    <td>{!! $responsableTexto !!}</td>
                                                     <td>{{ $especie }}</td>
                                                     <td>{{ $raza }}</td>
                                                     <td>{{ $convenio }}</td>
@@ -111,7 +122,7 @@
                                                 </tr>
                                             @empty
                                                 <tr>
-                                                    <td colspan="6" class="text-center">Sin registros</td>
+                                                    <td colspan="7" class="text-center">Sin registros</td>
                                                 </tr>
                                             @endforelse
                                         </tbody>
