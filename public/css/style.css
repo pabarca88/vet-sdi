@@ -2282,7 +2282,7 @@ pre code {
     background-color: #fff;
     background-clip: padding-box;
     border: 1px solid #ced4da;
-    border-radius: 3px;
+    border-radius: 8px;
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
@@ -2412,14 +2412,14 @@ select.form-control:focus::-ms-value {
 .input-dental {
     height: calc(1rem + 0.7rem + 2px)!important;
     border: 1px solid #ced4da!important;
-    border-radius: 3px!important;
+    border-radius: 8px!important;
 }
 .form-control-xs {
     height: calc(1rem + 0.8rem + 2px);
     padding: 0.4rem 0.5rem 0.1rem 0.5rem;
     font-size: 0.9rem;
     line-height: 1.5;
-    border-radius: 3px;
+    border-radius: 8px;
 }
 
 .form-control-sm {
@@ -2427,7 +2427,7 @@ select.form-control:focus::-ms-value {
     padding: 0.1rem 0.5rem 0.1rem 0.5rem;
     font-size: 0.9rem;
     line-height: 1.5;
-    border-radius: 3px;
+    border-radius: 8px;
 }
 
 
@@ -2466,7 +2466,7 @@ select.form-control:focus::-ms-value {
     padding: 0.7rem 2rem;
     font-size: 1.25rem;
     line-height: 1.5;
-    border-radius: 3;
+    border-radius: 8;
 }
 
 select.form-control[size], select.form-control[multiple] {
@@ -2476,6 +2476,7 @@ select.form-control[size], select.form-control[multiple] {
 textarea.form-control {
      height: auto;
     padding: 0.3rem 0.5rem 0.4rem 0.5rem;
+    border-radius: 8px;
 }
 
 
@@ -5479,6 +5480,48 @@ input[type="button"].btn-block {
     background-color: #ecf0f5;
     border-radius: 0.25rem;
 }
+
+/**BREADCRUMB PROPIO**/
+.breadcrumb-two {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    list-style: none;
+    background-color: #ecf0f5;
+    border-radius: 0.25rem;
+}
+
+
+.breadcrumb-item-two {
+    display: flex;
+}
+
+.breadcrumb-item-two + .breadcrumb-item-two {
+    padding-left: 0.5rem;
+}
+
+.breadcrumb-item-two + .breadcrumb-item-two::before {
+    display: inline-block;
+    padding-right: 0.5rem;
+    color: #485465;
+    content: "/";
+    font-size: 18px;
+}
+
+.breadcrumb-item-two + .breadcrumb-item-two:hover::before {
+    text-decoration: underline;
+}
+
+.breadcrumb-item-two + .breadcrumb-item-two:hover::before {
+    text-decoration: none;
+}
+
+.breadcrumb-item-two.active {
+    color: #6c757d;
+}
+
+/**BREADCRUMB PROPIO**/
 
 .breadcrumb-item {
     display: flex;
@@ -20794,6 +20837,78 @@ strong {
     font-weight: 700;
 }
 
+
+/**PROPIO*/
+.pcoded-content-two {
+    position: relative;
+    display: block;
+    padding: 22px;
+    margin-top: 8px;
+}
+
+.page-header-two {
+    background: transparent;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.page-header-two .page-header-title + .breadcrumb {
+    background: transparent;
+    padding: 0;
+    margin-bottom: 0;
+}
+
+.page-header-two .page-header-title + .breadcrumb > .breadcrumb-item {
+    line-height: 1;
+}
+
+.page-header-two .page-header-title + .breadcrumb > .breadcrumb-item:before {
+    color: #485465;
+}
+
+.page-header-two .page-header-title + .breadcrumb > .breadcrumb-item a {
+    color: #485465;
+    font-weight: 400;
+}
+
+.page-header-two .page-header-title + .breadcrumb > .breadcrumb-item:last-child a {
+    color: #485465;
+    font-weight: 800;
+}
+
+.page-header-two:not(.breadcumb-sticky) .page-header-title + .breadcrumb > .breadcrumb-item a {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.page-header-two.breadcumb-sticky {
+    overflow: hidden;
+    position: relative;
+}
+
+.page-header-two.breadcumb-sticky .page-header-title {
+    display: inline-block;
+}
+
+.page-header-two.breadcumb-sticky .page-header-title h5 {
+    margin-bottom: 0;
+    color: #485465;
+}
+
+.page-header-two.breadcumb-sticky .breadcrumb-item + .breadcrumb-item::before,
+    .page-header.breadcumb-sticky .page-header-title + .breadcrumb > .breadcrumb-item a,
+    .page-header.breadcumb-sticky .page-header-title + .breadcrumb > .breadcrumb-item:last-child a {
+    color: #485465;
+}
+
+.page-header-two.breadcumb-sticky .breadcrumb {
+    display: inline-flex;
+    float: right;
+    margin-top: 4px;
+}
+
+/*CIERRE PROPIO */
+
 .img-radius {
     border-radius: 50%;
 }
@@ -33457,7 +33572,6 @@ font-family: 'Nunito', sans-serif;
     cursor: text!important;
     padding: 0px 3px!important;
     pointer-events: none !important;
-    color: #485465;
 }
 
 
@@ -33474,7 +33588,6 @@ font-family: 'Nunito', sans-serif;
     cursor: text!important;
     padding: 0px 3px!important;
     pointer-events: none !important;
-    color: #485465;
 }
 
 .bg-encabezado {
@@ -33523,11 +33636,241 @@ font-family: 'Nunito', sans-serif;
 
 
 
+
+.bg-c-info {
+
+    background-color: #1CBEBE;  
+
+}
+
+
+
+.btn.btn-icon {
+
+    width: 33px;
+
+    height: 33px;
+
+    padding: 0;
+
+    border-radius: 50%;
+
+    font-size: 14px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+}
+
+
+
+
+
+@media (min-width: 992px) { 
+
+
+
+.subir {
+
+      
+
+  transform: translate(0px);
+
+  transition: 0.5s;
+
+}
+
+
+
+.subir:hover {
+
+      
+
+  transform: translateY(-10px);
+
+  transition: 0.5s;
+
+}
+
+
+
+.opacidad {
+
+    opacity:1;
+
+    transition: 0.2s;
+
+}
+
+
+
+.opacidad:hover {
+
+    opacity:0.7;
+
+    transition: 0.2s;   
+
+}
+
+
+
+.opacidad_collapse {
+
+    opacity:1;
+
+    transition: 0.2s;
+
+
+
+}
+
+
+
+.opacidad_collapse:hover {
+
+    opacity:0.8;
+
+    transition: 0.2s;   
+
+}
+
+
+
+
+
+.bg-c-orange {
+
+    background-color: #E27222;
+
+}
+
+
+
+.btn-horas-rojo {
+
+    color: #fff;
+
+    background-color: #dc3545;
+
+    border-color: none;
+
+    padding: 2px 3px 2px 3px;
+
+    margin: 1px;
+
+    font-size: 10px;
+
+    cursor:pointer;
+
+    transition: 0.5s;
+
+}
+
+
+
+.btn-horas-rojo:hover {
+
+    color: #fff;
+
+    background-color: #BC0214;
+
+    border-color: none;
+
+    padding: 2px 3px 2px 3px;
+
+    cursor:pointer;
+
+    transition: 0.5s;   
+
+}
+
+
+
+.btn-horas-verde {
+
+    color: #fff;
+
+    background-color: #72B02C;
+
+    border-color: none;
+
+    padding: 2px 3px 2px 3px;
+
+    margin: 1px;
+
+    font-size: 10px;
+
+    cursor:pointer;
+
+    transition: 0.5s;
+
+}
+
+
+
+.btn-horas-verde:hover {
+
+    color: #fff;
+
+    background-color: #4D8013;
+
+    border-color: none;
+
+    padding: 2px 3px 2px 3px;
+
+    cursor:pointer;
+
+    transition: 0.5s;
+
+}
+
+
+
+.card-derecho {
+
+  flex-direction: row;
+
+}
+
+
+
+.card-derecho img {
+
+  width: 30%;
+
+}
+
+
+
+}
+
+
+
+.badge-purple {
+
+    color: #fff;
+
+    background-color: #A06CC1;
+
+}
+
+
+
 /**COLORES**/
 
 .bg-blue-light {
     background-color: #ededed;
 }
+
+.bg-c-info {
+
+    background-color: #1CBEBE;  
+
+}
+
 
 
 
@@ -34090,7 +34433,7 @@ box-shadow: 0px 1px 6px 2px rgba(0,0,0,0.12)!important;"
   font-size: 0.94rem;
   transition: 0.4s;
   padding: 5px 0px 0px 3px;
-  color: #8a4fa6 !important !important;
+  color: #89358c !important !important;
 
 }
 
