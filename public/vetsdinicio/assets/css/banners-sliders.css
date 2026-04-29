@@ -1,0 +1,17 @@
+@media (max-width: 575.98px) { 
+	.oculto-xs-sm {
+		display: none;
+	} 
+}
+
+@media (min-width: 575.99px) { 
+	.oculto-md-lg-xl {
+		display: none;
+	} 
+}
+
+@media (max-width: 991.98px) { 
+	.oculto-xs-sm-md {
+		display: none;
+	} 
+}

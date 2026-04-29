@@ -76,6 +76,43 @@ Route::get('/', function () {
 
 });
 
+Route::prefix('vetsdinicio')->group(function () {
+    $renderVetsdiInicio = function (string $file) {
+        $basePath = base_path('public/vetsdinicio');
+        $fullPath = $basePath.'/'.$file;
+
+        abort_unless(file_exists($fullPath), 404);
+
+        $originalWorkingDirectory = getcwd();
+        chdir($basePath);
+
+        ob_start();
+
+        try {
+            require $fullPath;
+            $content = ob_get_clean();
+        } finally {
+            if (ob_get_level() > 0) {
+                @ob_end_clean();
+            }
+
+            if ($originalWorkingDirectory !== false) {
+                chdir($originalWorkingDirectory);
+            }
+        }
+
+        return response($content);
+    };
+
+    Route::get('/', fn () => $renderVetsdiInicio('index.php'));
+    Route::get('index.php', fn () => $renderVetsdiInicio('index.php'));
+    Route::get('reserva', fn () => $renderVetsdiInicio('reserva.php'));
+    Route::get('reserva.php', fn () => $renderVetsdiInicio('reserva.php'));
+    Route::get('contactosdi.php', fn () => $renderVetsdiInicio('contactosdi.php'));
+    Route::get('politicasyprivacidad.php', fn () => $renderVetsdiInicio('politicasyprivacidad.php'));
+    Route::get('terminosycondiciones.php', fn () => $renderVetsdiInicio('terminosycondiciones.php'));
+});
+
 
 
 

@@ -13,6 +13,7 @@ use App\Http\Controllers\JitsiController;
 use App\Http\Controllers\VentaManualRecetaController;
 use App\Http\Controllers\DentalController;
 use App\Http\Controllers\CentroMedicoController;
+use App\Http\Controllers\VetsdiInicioReservaController;
 
 
 
@@ -143,6 +144,16 @@ Route::post('/paciente/anular_hora_medica', [App\Http\Controllers\AppPacienteCon
 Route::post('/paciente/confirmar_hora_medica', [App\Http\Controllers\AppPacienteController::class, 'confirmarHoraMedica']);
 Route::get('/paciente/dame_regiones', [App\Http\Controllers\AppPacienteController::class, 'dameRegiones']);
 Route::get('/paciente/dame_ciudades', [App\Http\Controllers\AppPacienteController::class, 'dameCiudades']);
+
+Route::prefix('vetsdinicio/reservas')->group(function () {
+    Route::get('/catalogo', [VetsdiInicioReservaController::class, 'catalogo']);
+    Route::get('/ciudades', [VetsdiInicioReservaController::class, 'ciudades']);
+    Route::get('/tipos-especialidad', [VetsdiInicioReservaController::class, 'tiposEspecialidad']);
+    Route::get('/subtipos-especialidad', [VetsdiInicioReservaController::class, 'subtiposEspecialidad']);
+    Route::get('/profesionales', [VetsdiInicioReservaController::class, 'profesionales']);
+    Route::get('/horas', [VetsdiInicioReservaController::class, 'horas']);
+    Route::post('/agendar', [VetsdiInicioReservaController::class, 'reservar']);
+});
 
 
 //  Escritorio Paciente

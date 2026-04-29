@@ -393,89 +393,104 @@ class HomeController extends Controller
     public function registro_paciente(Request $request)
     {
         $datos = array();
+        $emailAuth = @Auth::user()->email;
+        $idUsuarioAuth = @Auth::user()->id;
 
-        $validacionEmail = Paciente::where('email',@Auth::user()->email)->first();
+        $paciente = Paciente::where('email', $emailAuth)->first();
+        if (!$paciente && !empty($request->rut_verificacion)) {
+            $paciente = Paciente::where('rut', $request->rut_verificacion)->first();
+        }
 
-        if(!$validacionEmail)
-        {
+        if ($paciente && !empty($paciente->id_usuario) && (int) $paciente->id_usuario !== (int) $idUsuarioAuth) {
+            $datos['estado'] = 0;
+            $datos['msj'] = 'El paciente ya está asociado a otra cuenta.';
+            return $datos;
+        }
+
+        $esNuevoPaciente = false;
+        if (!$paciente) {
             $paciente = new Paciente();
             $paciente->token = md5(uniqid());
-            $paciente->rut = $request->rut_verificacion;
-            $paciente->nombres = $request->nombre_registro;
-            $paciente->apellido_uno = $request->primer_apellido_registro;
-            $paciente->apellido_dos = $request->segundo_apellido_registro;
-            $paciente->fecha_nac = $request->fecha_nacimiento_registro;
-            $paciente->sexo = $request->sexo_registro;
-            $paciente->id_usuario = @Auth::user()->id;
-            $paciente->email = @Auth::user()->email;
-            $paciente->id_prevision = $request->prevision_registro;
-            $paciente->telefono_uno = $request->telefono_registro;
-            $paciente->telefono_dos = $request->telefono_dos_registro;
-
-            $direccion = new Direccion();
-            $direccion->direccion = $request->direccion;
-            $direccion->numero_dir = $request->numero_dir;
-            $direccion->id_ciudad = $request->id_ciudad;
-            if (!$direccion->save()) {
-                // return 'error';
-                $paciente->id_direccion = 0;
-                $datos['direccion']['estado'] = 0;
-                $datos['direccion']['msj'] = 'falla al registrar';
-            } else {
-                $paciente->id_direccion = $direccion->id;
-                $datos['direccion']['estado'] = 1;
-                $datos['direccion']['msj'] = 'registro exitoso';
-            }
-
-            if (!$paciente->save()) {
-                $datos['estado'] = 0;
-                $datos['msj'] = 'falla al registrar paciente';
-            } else {
-
-                $user = User::find( @Auth::user()->id );
-                $user->name = $request->nombre_registro.' '.$request->primer_apellido_registro.' '.$request->segundo_apellido_registro;
-                if($user->save())
-                {
-                    $datos['user']['estado'] = 1;
-                    $datos['user']['msj'] = 'registro exitoso';
-                }
-
-                /** envio de correo de confirmacion  */
-                $blade = 'bienvenida_paciente';
-                $to = array(
-                        array('email' => @Auth::user()->email,'name' => $request->nombre_registro.' '.$request->primer_apellido_registro.' '.$request->segundo_apellido_registro),
-                    );
-                $cc = array();
-                $bcc = array();
-                $asunto = 'MED-SDI - Bienvenido!';
-                $body = array('nombre'=>$request->nombre_registro.' '.$request->primer_apellido_registro.' '.$request->segundo_apellido_registro);
-                $archivo = '';/** pendiente */
-                $id_institucion = '';
-
-                $result_mail =  SendMailController::envioCorreo($blade, $to, $cc, $bcc, $asunto, $body, $archivo, $id_institucion);
-
-                if($result_mail['estado'])
-                {
-                    $datos['mail']['estado'] = 1;
-                    $datos['mail']['msj'] = 'Notificacion de bienvenida enviado';
-                }
-                else
-                {
-                    $datos['mail']['estado'] = 0;
-                    $datos['mail']['msj'] = 'Falle en envio de Notificacion de bienvenida';
-                }
-
-
-                $datos['estado'] = 1;
-                $datos['msj'] = 'registro exitoso';
-                $datos['email'] = @Auth::user()->email;
-
-            }
+            $esNuevoPaciente = true;
         }
-        else
-        {
+
+        $paciente->rut = $request->rut_verificacion;
+        $paciente->nombres = $request->nombre_registro;
+        $paciente->apellido_uno = $request->primer_apellido_registro;
+        $paciente->apellido_dos = $request->segundo_apellido_registro;
+        $paciente->fecha_nac = $request->fecha_nacimiento_registro;
+        $paciente->sexo = $request->sexo_registro;
+        $paciente->id_usuario = $idUsuarioAuth;
+        $paciente->email = $emailAuth;
+        $paciente->id_prevision = $request->prevision_registro;
+        $paciente->telefono_uno = $request->telefono_registro;
+        $paciente->telefono_dos = $request->telefono_dos_registro;
+
+        $direccion = null;
+        if (!empty($paciente->id_direccion)) {
+            $direccion = Direccion::find($paciente->id_direccion);
+        }
+        if (!$direccion) {
+            $direccion = new Direccion();
+        }
+
+        $direccion->direccion = $request->direccion;
+        $direccion->numero_dir = $request->numero_dir;
+        $direccion->id_ciudad = $request->id_ciudad;
+        if (!$direccion->save()) {
+            $paciente->id_direccion = 0;
+            $datos['direccion']['estado'] = 0;
+            $datos['direccion']['msj'] = 'falla al registrar';
+        } else {
+            $paciente->id_direccion = $direccion->id;
+            $datos['direccion']['estado'] = 1;
+            $datos['direccion']['msj'] = $esNuevoPaciente ? 'registro exitoso' : 'actualizacion exitosa';
+        }
+
+        if (!$paciente->save()) {
             $datos['estado'] = 0;
-            $datos['msj'] = 'correo de paciente ya registrado';
+            $datos['msj'] = 'falla al registrar paciente';
+        } else {
+
+            $user = User::find($idUsuarioAuth);
+            $user->name = $request->nombre_registro.' '.$request->primer_apellido_registro.' '.$request->segundo_apellido_registro;
+            if($user->save())
+            {
+                $datos['user']['estado'] = 1;
+                $datos['user']['msj'] = 'registro exitoso';
+            }
+
+            /** envio de correo de confirmacion  */
+            $blade = 'bienvenida_paciente';
+            $to = array(
+                    array('email' => $emailAuth,'name' => $request->nombre_registro.' '.$request->primer_apellido_registro.' '.$request->segundo_apellido_registro),
+                );
+            $cc = array();
+            $bcc = array();
+            $asunto = 'MED-SDI - Bienvenido!';
+            $body = array('nombre'=>$request->nombre_registro.' '.$request->primer_apellido_registro.' '.$request->segundo_apellido_registro);
+            $archivo = '';/** pendiente */
+            $id_institucion = '';
+
+            $result_mail =  SendMailController::envioCorreo($blade, $to, $cc, $bcc, $asunto, $body, $archivo, $id_institucion);
+
+            if($result_mail['estado'])
+            {
+                $datos['mail']['estado'] = 1;
+                $datos['mail']['msj'] = 'Notificacion de bienvenida enviado';
+            }
+            else
+            {
+                $datos['mail']['estado'] = 0;
+                $datos['mail']['msj'] = 'Falle en envio de Notificacion de bienvenida';
+            }
+
+
+            $datos['estado'] = 1;
+            $datos['msj'] = $esNuevoPaciente ? 'registro exitoso' : 'paciente existente asociado correctamente';
+            $datos['email'] = $emailAuth;
+            $datos['id_paciente'] = $paciente->id;
+
         }
 
         return $datos;

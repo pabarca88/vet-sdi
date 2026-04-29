@@ -1,0 +1,249 @@
+.reserva-page {
+    background:
+        radial-gradient(circle at top right, rgba(30, 190, 190, 0.2), transparent 28%),
+        linear-gradient(180deg, #eef8f7 0%, #f9fbff 52%, #ffffff 100%);
+    min-height: 100vh;
+}
+
+.reserva-wrapper {
+    padding-top: 110px;
+    padding-bottom: 80px;
+}
+
+.reserva-hero {
+    padding: 2.5rem 0 1.5rem;
+}
+
+.reserva-badge {
+    display: inline-block;
+    background: #1ebebe;
+    color: #fff;
+    padding: 0.45rem 0.9rem;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    margin-bottom: 1.2rem;
+}
+
+.reserva-hero h1 {
+    color: #163b70;
+    font-size: 2.4rem;
+    font-weight: 800;
+    line-height: 1.05;
+    margin-bottom: 1rem;
+}
+
+.reserva-hero p {
+    color: #44617f;
+    font-size: 1.05rem;
+    max-width: 42rem;
+}
+
+.reserva-main {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.reserva-section-card,
+.reserva-summary-card,
+.professional-card,
+.availability-panel {
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(34, 72, 120, 0.08);
+    border-radius: 26px;
+    box-shadow: 0 18px 45px rgba(22, 59, 112, 0.08);
+}
+
+.reserva-section-card {
+    padding: 1.6rem;
+}
+
+.reserva-summary-card {
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.reserva-summary-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(30, 190, 190, 0.09), rgba(61, 40, 112, 0.05));
+    pointer-events: none;
+}
+
+.reserva-summary-card > * {
+    position: relative;
+}
+
+.summary-eyebrow,
+.section-step {
+    color: #6f4ab1;
+    font-size: 0.88rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.reserva-summary-card h2,
+.section-heading h3 {
+    color: #163b70;
+    font-weight: 800;
+}
+
+.reserva-summary-card h2 {
+    font-size: 1.45rem;
+    margin: 0.5rem 0 0.8rem;
+}
+
+.section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 1rem;
+    margin-bottom: 1.4rem;
+}
+
+.section-heading p {
+    color: #67809b;
+    margin: 0;
+    max-width: 32rem;
+}
+
+.reservation-feedback {
+    margin-top: 1rem;
+}
+
+.reservation-feedback .alert {
+    border-radius: 18px;
+}
+
+.reservation-results {
+    margin-top: 1.25rem;
+    display: grid;
+    gap: 1rem;
+}
+
+.professional-card {
+    padding: 1.25rem;
+}
+
+.professional-head {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+}
+
+.professional-photo {
+    width: 72px;
+    height: 72px;
+    border-radius: 20px;
+    object-fit: cover;
+    border: 3px solid rgba(30, 190, 190, 0.14);
+    background: #f5f9ff;
+}
+
+.professional-name {
+    color: #163b70;
+    font-weight: 800;
+    font-size: 1.2rem;
+    margin-bottom: 0.25rem;
+}
+
+.professional-meta {
+    color: #597491;
+    line-height: 1.45;
+    font-size: 0.95rem;
+}
+
+.availability-panel {
+    margin-top: 1rem;
+    padding: 1rem;
+}
+
+.timeslots {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    margin-top: 1rem;
+}
+
+.timeslot-btn {
+    border: 1px solid rgba(111, 74, 177, 0.24);
+    border-radius: 999px;
+    padding: 0.55rem 0.95rem;
+    background: #fff;
+    color: #163b70;
+    font-weight: 700;
+    transition: all 0.2s ease;
+}
+
+.timeslot-btn:hover,
+.timeslot-btn.is-selected {
+    background: #6f4ab1;
+    border-color: #6f4ab1;
+    color: #fff;
+}
+
+.reservation-selection-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.85rem;
+    margin-top: 0.9rem;
+}
+
+.reservation-selection-grid span {
+    display: block;
+    color: #67809b;
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.18rem;
+}
+
+.reservation-selection-grid strong {
+    color: #163b70;
+    display: block;
+}
+
+.reservation-note {
+    color: #597491;
+    font-size: 0.95rem;
+}
+
+.reservation-action {
+    min-height: 48px;
+    font-weight: 700;
+}
+
+.availability-empty {
+    color: #67809b;
+    margin-top: 0.85rem;
+    margin-bottom: 0;
+}
+
+@media (max-width: 991px) {
+    .reserva-wrapper {
+        padding-top: 96px;
+    }
+
+    .section-heading {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 767px) {
+    .reserva-hero h1 {
+        font-size: 1.9rem;
+    }
+
+    .professional-head {
+        flex-direction: column;
+    }
+
+    .reservation-selection-grid {
+        grid-template-columns: 1fr;
+    }
+}

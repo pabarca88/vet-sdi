@@ -66,6 +66,9 @@
                                         @endif
                                         <b style="color:##0071bc!important;">Lugar de Atención:</b><br> {{ $detalle['body']['lugar_atencion'] }}<br>
                                         <b style="color:##0071bc!important;">Dirección:</b><br> {{ $detalle['body']['direccion'] }}
+                                        @if(!empty($detalle['body']['mascota_nombre']))
+                                            <br><b style="color:##0071bc!important;">Mascota:</b><br> {{ $detalle['body']['mascota_nombre'] }}@if(!empty($detalle['body']['mascota_especie'])) ({{ $detalle['body']['mascota_especie'] }})@endif
+                                        @endif
                                     </p>
                                 </td>
                             </tr>
