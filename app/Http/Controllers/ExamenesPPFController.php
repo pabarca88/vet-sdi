@@ -348,6 +348,14 @@ class ExamenesPPFController extends Controller
 
         $registros = ExamenPPF::where($filtros)->get();
 
+        foreach ($registros as $registro) {
+            $profesional = Profesional::find($registro->id_profesional);
+            $registro->responsable = $profesional ? trim($profesional->nombre . ' ' . $profesional->apellido) : '';
+            $registro->fecha = !empty($registro->created_at) ? date('d-m-Y', strtotime($registro->created_at)) : '';
+            $registro->hora = !empty($registro->created_at) ? date('H:i', strtotime($registro->created_at)) : '';
+            $registro->lado = $registro->otro;
+        }
+
         $nombre_paciente = '';
         $id_paciente = '';
 

@@ -65,7 +65,14 @@
 		
 		document.addEventListener('scroll', function() {
 			var jaasContainer = document.getElementById('jaas-container');
+			if (!jaasContainer) {
+				return;
+			}
+
 			var iframe = jaasContainer.querySelector('iframe');
+			if (!iframe) {
+				return;
+			}
 			
 			var offsetTop = jaasContainer.offsetTop;
 

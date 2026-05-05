@@ -2,69 +2,37 @@
     <!--INDICACIONES-->
     <div class="row">
         <div class="col-sm-12 col-md-12 text-center">
-            <p class="my-0">Completar diagnóstico para activar botones</p>
+            <p class="my-0">Medicamentos y exámenes disponibles sin autorización por app</p>
         </div>
     </div>
     <div class="row">
-        @if(!empty(session('lic_token')) && session('lic_estado') == 1)
-            @if (isset($fichaAtencion) && $fichaAtencion->hipotesis_diagnostico != null)
-                <div class="col-sm-12 col-md-6 text-center">
-                    <div class="btn-group btn-group-sm w-100" data-toggle="buttons">
-                        <button type="button" id="btn_agregar_medicamento" class=" btn_agregar_medicamento btn btn-info btn-sm mt-1 wid-80" onclick="i_medicamento();"><i class="feather icon-plus"></i> Indicar medicamento</button>
-                        <button type="button" onclick="ver_pdf_receta($('#id_fc').val());" class=" btn_medicamento_pdf btn btn-primary  btn-sm mt-1 wid-20" id="btn_medicamento_pdf"><i class="feather icon-file"></i> Ver PDF</button>
-                        {{-- <button type="button" onclick="ver_pdf_receta_retenido($('#id_fc').val());" class="btn btn-warning-light btn-sm mt-1" id=""><i class="feather icon-file"></i> Ver PDF</button> --}}
-                    </div>
-                </div>
-                <div class="col-sm-12 col-md-6">
-                    <div class="btn-group btn-group-sm w-100" data-toggle="buttons">
-                        <button type="button" id="btn_agregar_examen" class="btn_agregar_examen btn btn-info btn-sm mt-1 wid-80" onclick="mostrar_modal_examen_cirguria();"><i class="feather icon-plus"></i> Indicar examen</button>
-                        <button type="button" onclick="ver_pdf_orden_examenes($('#id_fc').val());" class=" btn_examenes_pdf btn btn-primary  btn-sm mt-1 wid-20" id="btn_examenes_pdf"><i class="feather icon-file"></i> Ver PDF</button>
-                    </div>
-                </div>
-            @else
-                <div class="col-sm-12 col-md-6 text-center">
-                    <div class="btn-group btn-group-sm w-100" data-toggle="buttons">
-                        <button type="button" disabled="disabled" id="btn_agregar_medicamento" class=" btn_agregar_medicamento btn btn-info btn-sm mt-1 wid-80" onclick="i_medicamento();"><i class="feather icon-plus"></i> Indicar medicamento</button>
-                        <button type="button" disabled="disabled" onclick="ver_pdf_receta($('#id_fc').val());" class=" btn_medicamento_pdf btn btn-primary  btn-sm mt-1 wid-20" id="btn_medicamento_pdf"><i class="feather icon-file"></i> Ver PDF</button>
-                        {{-- <button type="button" disabled="disabled" onclick="ver_pdf_receta_retenido($('#id_fc').val());" class="btn_medicamento_pdf btn btn-warning-light btn-sm mt-1" id="btn_medicamento_retenida_pdf"><i class="feather icon-file"></i> Ver PDF</button> --}}
-                    </div>
-                </div>
-                <div class="col-sm-12 col-md-6">
-                    <div class="btn-group btn-group-sm w-100" data-toggle="buttons">
-                        <button type="button" disabled="disabled" id="btn_agregar_examen" class=" btn_agregar_examen btn btn-info btn-sm mt-1 wid-80" onclick="mostrar_modal_examen_cirguria();"><i class="feather icon-plus"></i> Indicar examen</button>
-                        <button type="button" disabled="disabled" onclick="ver_pdf_orden_examenes($('#id_fc').val());" class=" btn_examenes_pdf btn btn-primary btn-sm mt-1 wid-20" id="btn_examenes_pdf"><i class="feather icon-file"></i> Ver PDF</button>
-                    </div>
-                </div>
-            @endif
-        @else
-            <div class="col-sm-12 col-md-6 text-center">
-                <div class="btn-group btn-group-sm w-100" data-toggle="buttons">
-                    <button type="button" disabled="disabled" id="btn_agregar_medicamento" class=" btn_agregar_medicamento btn btn-info btn-sm mt-1 wid-80" onclick="i_medicamento();"><i class="feather icon-plus"></i> Indicar medicamento</button>
-                    <button type="button" disabled="disabled" onclick="ver_pdf_receta($('#id_fc').val());" class=" btn_medicamento_pdf btn btn-primary  btn-sm mt-1 wid-20" id="btn_medicamento_pdf"><i class="feather icon-file"></i> Ver PDF</button>
-                    {{-- <button type="button" disabled="disabled" onclick="ver_pdf_receta_retenido($('#id_fc').val());" class="btn_medicamento_pdf btn btn-warning-light btn-sm mt-1" id="btn_medicamento_retenida_pdf"><i class="feather icon-file"></i> PDF PDF</button> --}}
-                </div>
+        <div class="col-sm-12 col-md-6 text-center">
+            <div class="btn-group btn-group-sm w-100" data-toggle="buttons">
+                <button type="button" id="btn_agregar_medicamento" class=" btn_agregar_medicamento btn btn-info-light-c btn-sm mt-1 wid-80" onclick="i_medicamento();"><i class="feather icon-plus"></i> Indicar medicamento</button>
+                <button type="button" onclick="ver_pdf_receta($('#id_fc').val());" class=" btn_medicamento_pdf btn btn-primary-light-c  btn-sm mt-1 wid-20" id="btn_medicamento_pdf"><i class="feather icon-file"></i> Ver PDF</button>
+                {{-- <button type="button" onclick="ver_pdf_receta_retenido($('#id_fc').val());" class="btn btn-warning-light btn-sm mt-1" id=""><i class="feather icon-file"></i> Ver PDF</button> --}}
             </div>
-            <div class="col-sm-12 col-md-6">
-                <div class="btn-group btn-group-sm w-100" data-toggle="buttons">
-                    <button type="button" disabled="disabled" id="btn_agregar_examen" class=" btn_agregar_examen btn btn-info btn-sm mt-1 wid-80" onclick="mostrar_modal_examen_cirguria();"><i class="feather icon-plus"></i> Indicar examen</button>
-                    <button type="button" disabled="disabled" onclick="ver_pdf_orden_examenes($('#id_fc').val());" class=" btn_examenes_pdf btn btn-primary  btn-sm mt-1 wid-20" id="btn_examenes_pdf"><i class="feather icon-file"></i> Ver PDF</button>
-                </div>
+        </div>
+        <div class="col-sm-12 col-md-6">
+            <div class="btn-group btn-group-sm w-100" data-toggle="buttons">
+                <button type="button" id="btn_agregar_examen" class="btn_agregar_examen btn btn-info-light-c btn-sm mt-1 wid-80" onclick="mostrar_modal_examen_cirguria();"><i class="feather icon-plus"></i> Indicar examen</button>
+                <button type="button" onclick="ver_pdf_orden_examenes($('#id_fc').val());" class=" btn_examenes_pdf btn btn-primary-light-c  btn-sm mt-1 wid-20" id="btn_examenes_pdf"><i class="feather icon-file"></i> Ver PDF</button>
             </div>
-        @endif
-
+        </div>
     </div>
 </div>
 
 
 @section('modals-med-exa')
     @include('general.secciones_ficha.receta_examen.modal_recetario_sdi')
-    @include('app.cirugia.modals.modals_cesarea.modal_indicar_examenes')
+    @include('app.cirugia.modals.modals_cesarea.modal_indicar_examenes', ['modalIndicarExamenesId' => 'indicar_examenes_receta'])
 @endsection
 
 @section('page-script-med-exa')
     {{--  SCRIPT MEDICAMENTOS EXAMENES COMUNES  --}}
     <script>
         var creatinina = 0;
+        var modalIndicarExamenesId = '#indicar_examenes_receta';
         $(document).ready(function() {
             {{--  EXAMENES  --}}
             {{--  funcion para capturar el tipo de examen y buscar los subtipo que estan relacionados con el  --}}
@@ -147,46 +115,15 @@
             });
 
             $('#descripcion_hipotesis').keyup(function(){
-                if($.trim(this.value) != '')
-                {
-                   if( lic_token != '' && lic_estado == 1)
-                    {
-                        $('.btn_agregar_medicamento').removeAttr("disabled");
-                        $('.btn_medicamento_pdf').removeAttr("disabled");
-                        $('.btn_agregar_examen').removeAttr("disabled");
-                        $('.btn_examenes_pdf').removeAttr("disabled");
+                $('.btn_agregar_medicamento').removeAttr("disabled");
+                $('.btn_medicamento_pdf').removeAttr("disabled");
+                $('.btn_agregar_examen').removeAttr("disabled");
+                $('.btn_examenes_pdf').removeAttr("disabled");
 
-                        $('.btn_agregar_medicamento').removeClass('btn-info');$('.btn_agregar_medicamento').addClass('btn-info-light-c');
-                        $('.btn_medicamento_pdf').removeClass('btn-primary');$('.btn_medicamento_pdf').addClass('btn-primary-light-c');
-                        $('.btn_agregar_examen').removeClass('btn-info');$('.btn_agregar_examen').addClass('btn-info-light-c');
-                        $('.btn_examenes_pdf').removeClass('btn-primary');$('.btn_examenes_pdf').addClass('btn-primary-light-c');
-                    }
-                    else
-                    {
-                        $('.btn_agregar_medicamento').attr('disabled','disabled');
-                        $('.btn_medicamento_pdf').attr('disabled','disabled');
-                        $('.btn_agregar_examen').attr('disabled','disabled');
-                        $('.btn_examenes_pdf').attr('disabled','disabled');
-
-                        $('.btn_agregar_medicamento').removeClass('btn-info-light-c');$('.btn_agregar_medicamento').addClass('btn-info');
-                        $('.btn_medicamento_pdf').removeClass('btn-primary-light-c');$('.btn_medicamento_pdf').addClass('btn-primary');
-                        $('.btn_agregar_examen').removeClass('btn-info-light-c');$('.btn_agregar_examen').addClass('btn-info');
-                        $('.btn_examenes_pdf').removeClass('btn-primary-light-c');$('.btn_examenes_pdf').addClass('btn-primary');
-                    }
-
-                }
-                else
-                {
-                    $('.btn_agregar_medicamento').attr('disabled','disabled');
-                    $('.btn_medicamento_pdf').attr('disabled','disabled');
-                    $('.btn_agregar_examen').attr('disabled','disabled');
-                    $('.btn_examenes_pdf').attr('disabled','disabled');
-
-                    $('.btn_agregar_medicamento').removeClass('btn-info-light-c');$('.btn_agregar_medicamento').addClass('btn-info');
-                    $('.btn_medicamento_pdf').removeClass('btn-primary-light-c');$('.btn_medicamento_pdf').addClass('btn-primary');
-                    $('.btn_agregar_examen').removeClass('btn-info-light-c');$('.btn_agregar_examen').addClass('btn-info');
-                    $('.btn_examenes_pdf').removeClass('btn-primary-light-c');$('.btn_examenes_pdf').addClass('btn-primary');
-                }
+                $('.btn_agregar_medicamento').removeClass('btn-info').addClass('btn-info-light-c');
+                $('.btn_medicamento_pdf').removeClass('btn-primary').addClass('btn-primary-light-c');
+                $('.btn_agregar_examen').removeClass('btn-info').addClass('btn-info-light-c');
+                $('.btn_examenes_pdf').removeClass('btn-primary').addClass('btn-primary-light-c');
             });
 
         });
@@ -719,11 +656,25 @@
 
         {{--  METODOS DE EXAMENES  --}}
         function mostrar_modal_examen_cirguria() {
-
+            var $modal = $(modalIndicarExamenesId);
+            console.log('modal examen receta encontrados:', $modal.length);
             ver_examenes_ficha_medica();
-            ver_examenes_ficha_medica_esp();
-			$("#indicar_examenes").modal("show");
-            $('#indicar_examenes').modal({backdrop: 'static', keyboard: false});
+            if (!$modal.length) {
+                swal({
+                    title: "Ingreso de examen(es).",
+                    text: 'No se encontró la ventana para indicar exámenes.',
+                    icon: "error",
+                });
+                return;
+            }
+
+            $modal.appendTo('body');
+            $modal.css('display', 'block').attr('aria-modal', 'true').removeAttr('aria-hidden').addClass('show');
+            $('body').addClass('modal-open');
+
+            if (!$('.modal-backdrop.show').length) {
+                $('<div class="modal-backdrop fade show"></div>').appendTo('body');
+            }
 
         }
 
@@ -744,9 +695,18 @@
                     console.log('regresar');
                 } else {
 
-                    $('#indicar_examenes').modal('hide');
+                    $(modalIndicarExamenesId).removeClass('show').css('display', 'none').attr('aria-hidden', 'true');
+                    $('.modal-backdrop').remove();
+                    $('body').removeClass('modal-open');
                 }
             })
+        }
+
+        function ocultarModalExamenesFicha()
+        {
+            $(modalIndicarExamenesId).removeClass('show').css('display', 'none').attr('aria-hidden', 'true');
+            $('.modal-backdrop').remove();
+            $('body').removeClass('modal-open');
         }
 
 
@@ -906,21 +866,17 @@
 
 
         function registro_examen_ficha() {
-            var rows1 = [];
-            $('#tabla_examen_cirugia_d tr').each(function(i, n) {
-                if (i > 0) {
-                    rol = {};
-                    var data = $(this).find("td");
-                    rol["id_examen"] = $.trim($(data[0]).text().split("\n").join(""));
-                    rol["nombre_examen"] = $.trim($(data[1]).text().split("\n").join(""));
-                    rol["lado"] = $.trim($(data[3]).text().split("\n").join(""));
-                    rol["nombre_examen_especialidad"] = $.trim($(data[2]).text().split("\n").join(""));
-                    rol["tipo"] = $.trim($(data[4]).text().split("\n").join(""));
-                    // rol["subtipo"] = $.trim($(data[2]).text().split("\n").join(""));
-                    rol["prioridad"] = $.trim($(data[5]).text().split("\n").join(""));
-                    rol["con_contraste"] = $.trim($(data[6]).text().split("\n").join(""));
-                    rows1.push(rol);
-                }
+            var examenesSolicitados = $(modalIndicarExamenesId).data('examenesSolicitados') || [];
+            var rows1 = examenesSolicitados.map(function(item) {
+                return {
+                    id_examen: item.id_examen || '',
+                    nombre_examen: item.nombre_examen || '',
+                    lado: item.lado || '',
+                    nombre_examen_especialidad: item.nombre_examen || '',
+                    tipo: item.tipo || '',
+                    prioridad: item.prioridad || '',
+                    con_contraste: item.con_contraste || 'N/C'
+                };
             });
 
             $('#examenes').val(JSON.stringify(rows1));
@@ -955,6 +911,8 @@
                         console.log(data)
 
                         if(data.falla == '0'){
+                            ocultarModalExamenesFicha();
+                            ver_examenes_ficha_medica();
                             swal({
                                 title: "Ingreso de examen(es).",
                                 text: 'Examenes registrados con Exito.',
@@ -999,15 +957,10 @@
         {
 
             let url = "{{ route('pdf.orden_examenes') }}";
-            @if(!empty(session('lic_token')) && session('lic_estado') == 1)
-                var token = "session('lic_token')";
-            @else
-                var token = '';
-            @endif
             Fancybox.show(
                 [
                     {
-                    src: url+'?id_ficha_atencion='+id_ficha_atencion+'&auto='+token,
+                    src: url+'?id_ficha_atencion='+id_ficha_atencion,
                     type: "iframe",
                     preload: false,
                     },
@@ -1113,7 +1066,10 @@
             var _token = CSRF_TOKEN;
             var id_ficha = $('#id_fc').val();
             var id_hora_medica = $('#hora_medica').val();
-            $('#tabla_examen_cirugia').html('');
+
+            if (typeof renderExamenesCirugiaTablaD === 'function') {
+                renderExamenesCirugiaTablaD([], 'Cargando exámenes...');
+            }
 
             $.ajax({
 
@@ -1134,80 +1090,9 @@
                     console.log('----------ver_examenes_ficha_medica-------------');
                     console.log(data);
                     console.log('-----------------------');
-                    var html = '';
-
-                    html += '<thead>';
-                    html += '    <tr>';
-                    html += '        <th class="text-center align-middle" style="display:none">ID</th>';
-                    html += '        <th class="text-center align-middle" style="display:none">NOMBRE</th>';
-                    html += '        <th class="text-center align-middle">Nombre Examen</th>';
-                    html += '        <th class="text-center align-middle">Lado</th>';
-                    html += '        <th class="text-center align-middle">Tipo</th>';
-                    {{--  html += '        <th class="text-center align-middle">Sub-Tipo</th>';  --}}
-                    html += '        <th class="text-center align-middle">Prioridad</th>';
-                    html += '        <th class="text-center align-middle">Con Contraste</th>';
-                    html += '        <th class="text-center align-middle">Acción</th>';
-                    html += '    </tr>';
-                    html += '</thead>';
-                    html += '<tbody>';
-
-                    if(data.estado == 1)
-                    {
-                        let prioridad = ['', 'Baja', 'Media','Alta','Urgente'];
-                        $.each(data.registros, function(index, value)
-                        {
-
-                            if(value.examen == 'CREATININA EN SANGRE')
-                            {
-                                html += '<tr class="tr_examen_cirugia" id="row' + index + '">';
-                                html += '    <td class="text-center align-middle text-wrap" style="display:none">'+value.id_examen+'</td>';
-                                html += '    <td class="text-center align-middle text-wrap" style="display:none">'+value.examen+'</td>';
-                                html += '    <td class="text-center align-middle text-wrap">'+value.examen+'</td>';
-                                if(value.otro == 0 || value.otro == 'null' || value.otro == ' ')
-                                    html += '    <td class="text-center align-middle text-wrap"> </td>';
-                                else
-                                    html += '    <td class="text-center align-middle text-wrap">'+value.otro+'</td>';
-                                html += '    <td class="text-center align-middle text-wrap">'+value.tipo_examen+'</td>';
-                                html += '    <td class="text-center align-middle text-wrap">'+prioridad[value.id_prioridad]+'</td>';
-                                var text_con_contraste = 'N/C';
-                                if(value.con_contraste == 1)
-                                    text_con_contraste = 'Con Contraste';
-                                html += '    <td class="text-center align-middle text-wrap">'+text_con_contraste+'</td>';
-                                html += '    <td class="text-center align-middle text-wrap"><div name="remove" id="' + index +'" class="btn btn-danger btn_remove" onclick="eliminar_examen_contraste(\'row' + index + '\');">Quitar</div></td>';
-                                html += '</tr>';
-                            }
-                            else
-                            {
-                                html += '<tr class="tr_examen_cirugia" id="row' + index + '">';
-                                html += '    <td class="text-center align-middle text-wrap" style="display:none">'+value.id_examen+'</td>';
-                                html += '    <td class="text-center align-middle text-wrap" style="display:none">'+value.examen+'</td>';
-                                html += '    <td class="text-center align-middle text-wrap">'+value.examen+'</td>';
-                                if(value.otro == 0 || value.otro == 'null' || value.otro == ' ')
-                                    html += '    <td class="text-center align-middle text-wrap"> </td>';
-                                else
-                                    html += '    <td class="text-center align-middle text-wrap">'+value.otro+'</td>';
-                                html += '    <td class="text-center align-middle text-wrap">'+value.tipo_examen+'</td>';
-                                html += '    <td class="text-center align-middle text-wrap">'+prioridad[value.id_prioridad]+'</td>';
-                                var text_con_contraste = 'N/C';
-                                if(value.con_contraste == 1)
-                                    text_con_contraste = 'Con Contraste';
-                                html += '    <td class="text-center align-middle text-wrap">'+text_con_contraste+'</td>';
-                                html += '    <td class="text-center align-middle text-wrap"><div name="remove" id="' + index +'" class="btn btn-danger btn_remove" onclick="eliminar_examen(\'row' + index + '\');">Quitar</div></td>';
-                                html += '</tr>';
-                            }
-                        });
-
+                    if (typeof renderExamenesCirugiaTablaD === 'function') {
+                        renderExamenesCirugiaTablaD(data.estado == 1 ? data.registros : [], data.msj);
                     }
-                    else
-                    {
-
-                        html += '<tr class="examenes_sin_registros">';
-                        html += '    <td class="text-center align-middle " colspan="6">'+data.msj+'</td>';
-                        html += '</tr>';
-
-                    }
-                    html += '</tbody>';
-                    $('#tabla_examen_cirugia').html(html);
                 }
             })
             .fail(function(jqXHR, ajaxOptions, thrownError) {
