@@ -16,7 +16,7 @@
                                 <li class="breadcrumb-item">
                                     <a href="{{ route('profesional.home') }}" data-toggle="tooltip" data-placement="top" title="Volver a mi escritorio"><i class="feather icon-home"></i></a>
                                 </li>
-                                <li class="breadcrumb-item"><a href="#">Mascotas</a></li>
+                                <li class="breadcrumb-item"><a href="#">Mascotas y responsables</a></li>
                             </ul>
                         </div>
                     </div>
@@ -31,7 +31,7 @@
                     <div class="card-header text-center bg-info">
                         <div class="row">
                             <div class="col-sm-12 col-md-12 col-lg mb-1 align-botton d-flex justify-content-between">
-                                <h4 class="text-white f-20 d-inline ml-4 mt-1 float-left">Mascotas</h4>
+                                <h4 class="text-white f-20 d-inline ml-4 mt-1 float-left">Mascotas y responsables</h4>
                                 <button class="btn btn-purple btn-sm  d-inline float-md-right" onclick="enviar_difusion_pacientes()"><i class="feather icon-mail"></i>  Enviar mensaje de difusión</button>
                             </div>
                         </div>
@@ -103,7 +103,7 @@
                                                     <td>{{ $convenio }}</td>
                                                     <td>{{ $chip }}</td>
                                                     <td>
-                                                        <button type="button" class="btn btn-info btn-xs js-ver-mascota"
+                                                        <button type="button" class="btn btn-info btn-xxs js-ver-mascota"
                                                             data-toggle="modal" data-target="#modalMascotaDetalle"
                                                             data-nombre="{{ $mascota->nombre ?? 'Mascota' }}"
                                                             data-especie="{{ $especie }}"
@@ -117,6 +117,8 @@
                                                             data-foto="{{ $fotoMascota }}"
                                                             data-galeria='@json($galeriaMascota)'>
                                                             <i class="feather icon-eye"></i> Ver mascota
+                                                        </button>
+                                                        <button type="button" class="btn btn-purple btn-xxs"><i class="feather icon-file-text"></i> Ver ficha veterinaria
                                                         </button>
                                                     </td>
                                                 </tr>
@@ -145,9 +147,7 @@
             <div class="modal-content">
                 <div class="modal-header bg-info text-center">
                     <h4 class="modal-title text-white w-100 font-weight-bold">Nuevo Correo</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                 </div>
                 <div class="modal-body mx-3">
                     <div class="md-form mb-5">
@@ -197,7 +197,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header bg-info">
-                    <h5 class="modal-title text-white mt-1" id="modalMascotaDetalleLabel">Detalle de la mascota</h5>
+                    <h5 class="modal-title text-white mt-1" id="modalMascotaDetalleLabel">Información de la mascota</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
                 </div>
@@ -238,42 +238,39 @@
                         <div class="d-flex flex-wrap" id="modal_mascota_galeria"></div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                </div>
             </div>
         </div>
     </div>
 
     <!-- Modal Presupuestos -->
-<div class="modal fade" id="modalPresupuestos" tabindex="-1" role="dialog" aria-labelledby="modalPresupuestosLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Historial de Presupuestos</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <table class="table table-sm table-bordered">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Fecha</th>
-                            <th>Profesional</th>
-                            <th>Total</th>
-                            <th>Estado</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tbodyPresupuestos">
-                        <tr><td colspan="5" class="text-center">Cargando...</td></tr>
-                    </tbody>
-                </table>
+    <div class="modal fade" id="modalPresupuestos" tabindex="-1" role="dialog" aria-labelledby="modalPresupuestosLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Historial de Presupuestos</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-sm table-bordered">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Fecha</th>
+                                <th>Profesional</th>
+                                <th>Total</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbodyPresupuestos">
+                            <tr><td colspan="5" class="text-center">Cargando...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 
     <!--EMITIR DOCUMENTO-->

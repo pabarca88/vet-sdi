@@ -2822,7 +2822,7 @@ textarea.form-control {
     padding: 0.5rem 1.1875rem;
     font-size: 0.90rem;
     line-height: 1.5;
-    border-radius: 20px;
+    border-radius: 8px;
     transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
@@ -3354,14 +3354,14 @@ fieldset:disabled a.btn {
 }
 
 .btn-outline-purple {
-    color: #A06CC1;
+    color: #613584;
     background-color: transparent;
-    border-color: #A06CC1;
+    border-color: #613584;
 }
 .btn-outline-purple:hover {
     color: #fff;
-    background-color: #A06CC1;
-    border-color: #A06CC1;
+    background-color: #613584;
+    border-color: #613584;
 }
 
 
@@ -3634,7 +3634,7 @@ fieldset:disabled a.btn {
     padding: 0.7rem 2rem;
     font-size: 1.25rem;
     line-height: 1.5;
-    border-radius: 7px;
+    border-radius: 9px;
     font-weight:600;
 }
 
@@ -3642,7 +3642,7 @@ fieldset:disabled a.btn {
     padding: 0.4rem 0.5rem 0.3rem 0.5rem;
     font-size: 0.88rem;
     line-height: 1.5;
-    border-radius: 20px;
+    border-radius: 8px;
     font-weight:600;
 }
 
@@ -33324,7 +33324,7 @@ new-task label input[type=checkbox] {
 .user-profile .profile-tabs .nav-item.show .nav-link,
     .user-profile .profile-tabs .nav-link.active {
     border-color: transparent;
-    color: #732dac!important;
+    color: #27a8a5!important;
 }
 
 .user-profile .profile-tabs .nav-item.show .nav-link:after,
@@ -33882,7 +33882,7 @@ font-family: 'Nunito', sans-serif;
     font-size: 0.9rem;
     line-height: 1.5;
     font-weight: 600;
-    border-radius: 20px;
+    border-radius: 8px;
   }
 
 /**BOTONES XXS**/
@@ -33894,7 +33894,7 @@ font-family: 'Nunito', sans-serif;
     line-height: 1.5;
     font-weight: 700;
     border-radius: 20px;
-    margin-bottom: 4px;
+    margin-bottom: 7px;
     margin-top: 2px;
   }
 
@@ -36072,4 +36072,130 @@ transition: 0.2s!important;
 
 .swal-modal {
     z-index: 20001 !important;
+}
+
+
+/**NUEVO HEADER LETRA NEGRA**/
+.card-header-new {
+    padding: 0.7rem  0.5rem 0.8rem;
+    margin-bottom: 0;
+    font-size: 1.1rem;
+    background-color: #fff;
+    border-bottom: 1px solid;
+    border-color: #ced4da;
+}
+
+
+.card-header-new h5 {
+    font-size: 1.1rem!important;
+    margin-top: 8px;
+    font-weight: 700;
+    background-color: #fff;
+    padding-left: 10px;
+    color: #343a40 !important;
+    margin-bottom: 5px;
+
+}
+
+.card-header-new:first-child {
+    border-radius: calc(0.7rem - 0px) calc(0.7rem - 0px) 0 0;
+}
+
+.card-header-new-md {
+    padding: 0.3rem  0.5rem 0.3rem;
+    margin-bottom: 0;
+    font-size: 1.1rem;
+    background-color: #fff;
+    border-bottom: 1px solid;
+    border-color: #ced4da;
+}
+
+ 
+.card-header-new-md h5 {
+    font-size: 1.06rem!important;
+    margin-top: 8px;
+    font-weight: 700;
+    background-color: #fff;
+    color: #343a40 !important;
+    padding-left: 10px;
+
+}
+
+.card-header-new-md:first-child {
+    border-radius: calc(0.7rem - 0px) calc(0.7rem - 0px) 0 0;
+}
+
+
+/*****ICONOS CON FONDO**/
+
+.icono-purple {
+    background-color: #613584;
+    margin-right: 5px;
+    color: #fff;
+    padding: 5px;
+    border-radius: 8px;
+}
+
+.icono-purple-light {
+    background-color: #EBD9FF;
+    margin-right: 5px;
+    color: #613584;
+    padding: 5px;
+    border-radius: 8px;
+}
+
+.icono-agenda {
+    background-color: #fff;
+    margin-right: 5px;
+    font-size: 1.2rem;
+    color: #EBD9FF;
+    padding: 5px;
+    border-radius: 50px;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+
+/*****MODALES VETSDI**/
+.modal-title-sdi {
+    font-size: 1.3rem!important;
+    color: #fff;
+    margin-top: 7px;
+}
+
+
+
+.modal-header-sdi {
+    line-height:1.23;
+    background-color: #613584 !important;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 10px 20px;
+    border-top-right-radius: calc(0.7rem - 1px);
+    border-top-left-radius: calc(0.7rem - 1px);
+}
+
+.modal-header-sdi .close {
+    padding: 17px 8px!important;
+    margin: 1px -10px auto!important;
+    background-color:#0f7174!important;
+    transition: 0.2s!important;
+    border-radius:100px!important;
+}
+.modal-header-sdi .close:hover {
+    padding: 17px 8px!important;
+    margin: 1px -10px auto!important;
+    background-color:#0f8282!important;
+    border-radius:100px!important;
+}
+
+/*****MODALES VETSDI**/
+
+/*****TITULOS**/
+.titulo-sm {
+    text-transform: uppercase;
+    color: #613584;
+    font-weight: 600;
+    font-size: 0.74rem;
 }

@@ -9,21 +9,22 @@
                 <div class="row align-items-center">
                     <div class="col-md-12">
                         <div class="page-header-title">
-                            <h5 class="m-b-10 font-weight-bold">Escritorio Inicio</h5>
+                            <h4 class="m-b-10 font-weight-bold text-white">Hola, Nombre</h4>
+                            <p class="text-white">Bienvenido/a a tu escritorio de cuidado de mascotas</p>
                         </div>
-                        <ul class="breadcrumb">
+                        <!--<ul class="breadcrumb">
                             <li class="breadcrumb-item">
-                                <a href="{{ ROUTE('paciente.home') }}">Administrar mis mascotas y compañeros</a>
+                                <a href="{{ ROUTE('paciente.home') }}">Bienvenido/a a tu escritorio de cuidado de mascotas</a>
                             </li>
-                        </ul>
+                        </ul>-->
                     </div>
                 </div>
             </div>
-        </div>+
+        </div>
         <!--Cierre: Header-->
         <!--Botones superiores-->
 
-        <div class="row m-b-30">
+        <div class="row m-b-30 mt-n2">
             <div class="col-md-12">
                 <div class="card-deck">
                     <div class="card subir">
@@ -34,7 +35,7 @@
                             </div>
                         </a>
                     </div>
-                         <div class="card subir">
+                    <div class="card subir">
                           <a href="{{ ROUTE('paciente.mascotas.suscripcion_servicios') }}"> 
                             <div class="card-body text-center py-3" style="cursor:pointer">
                                 <img class="wid-50 text-center mt-2" src="{{ asset('images/iconos/alimento.png') }}">
@@ -42,15 +43,15 @@
                             </div>
                         </a>
                     </div>
-                   <!-- <div class="card subir">
+                    <!--<div class="card subir">
                           <a href="{{ ROUTE('paciente.mascotas.inscripcion_alimentos') }}"> 
                             <div class="card-body text-center py-3" style="cursor:pointer">
                                 <img class="wid-50 text-center mt-2" src="{{ asset('images/iconos/alimento.png') }}">
                                 <h5 class="mt-2"> Registro de <br>mis alimentos </h5>
                             </div>
                         </a>
-                    </div>-->
-                    <!--<div class="card subir">
+                    </div>
+                    <div class="card subir">
                         <a href="{{ ROUTE('paciente.mascotas.inscripcion_medicamentos') }}">
                             <div class="card-body text-center py-3" style="cursor:pointer">
                                 <img class="wid-50 text-center mt-2" src="{{ asset('images/iconos/i-medic.svg') }}">
@@ -58,14 +59,14 @@
                             </div>
                         </a>
                     </div>-->
-                    <div class="card subir">
+                    <!--<div class="card subir">
                         <a href="{{ ROUTE('paciente.convenios') }}">
                             <div class="card-body text-center py-3" style="cursor:pointer">
                                 <img class="wid-50 text-center mt-2" src="{{ asset('images/iconos/convenios.png') }}">
                                 <h5 class="mt-2"> Mis convenios <br>de atención</h5>
                             </div>
                         </a>
-                    </div>
+                    </div>-->
                     {{--  <div class="card subir">
                         <a href="https://www.cronicos.cl/" class="btn" type="button">
                             <div class="card-body text-center py-3" style="cursor:pointer">

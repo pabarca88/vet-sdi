@@ -5,10 +5,10 @@
         <div class="pcoded-content">
             <div class="page-header">
                 <div class="page-block">
-                    <div class="row">
+                    <div class="row mt-2">
                         <div class="col-md-12">
                             <div class="page-header-title">
-                                <h5 class="font-weight-bolder">Editar perfil</h5>
+                                <!--<h5 class="font-weight-bolder">Editar perfil</h5>-->
                             </div>
                             <ul class="breadcrumb mb-4">
                                 <li class="breadcrumb-item">
@@ -17,7 +17,7 @@
                                     </a>
                                 </li>
                                 <li class="breadcrumb-item">
-                                    <a href="{{ ROUTE('paciente.perfil') }}">Editar perfil</a>
+                                    <a href="#">Mi cuenta</a>
                                 </li>
                             </ul>
                         </div>
@@ -56,29 +56,15 @@
                             <div class="col-md-12 mt-md-2 m-0">
                                 <ul class="nav nav-tabs profile-tabs nav-fill mt-1" id="myTab" role="tablist">
                                     <li class="nav-item">
-                                        <a class="nav-link text-reset active" id="personal-tab" data-toggle="tab" href="#personal" role="tab" aria-controls="personal" aria-selected="true">Información personal</a>
+                                        <a class="nav-link text-reset active" id="personal-tab" data-toggle="tab" href="#personal" role="tab" aria-controls="personal" aria-selected="true"><i class="feather icon-user"></i> Mi perfil</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link text-reset" id="emergencia-tab" data-toggle="tab" href="#emergencia" role="tab" aria-controls="emergencia" aria-selected="false">Contactos de emergencia</a>
+                                        <a class="nav-link text-reset" id="seguridad-tab" data-toggle="tab" href="#seguridad" role="tab" aria-controls="seguridad" aria-selected="false"><i class="feather icon-lock"></i> Seguridad</a>
                                     </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link text-reset" id="pass-tab" data-toggle="tab" href="#pass" role="tab" aria-controls="pass" aria-selected="false">Contraseñas</a>
-                                    </li>
+                                    <!--<li class="nav-item">
+                                        <a class="nav-link text-reset" id="emergencia-tab" data-toggle="tab" href="#facturacion" role="tab" aria-controls="facturacion" aria-selected="false"><i class="feather icon-credit-card"></i> Plan y facturación</a>
+                                    </li>-->
                                 </ul>
-                                <!--<ul class="nav nav-tabs justify-content-center" id="myTab" role="tablist">
-                                    <li class="nav-item">
-                                        <a class="btn btn-outline-info btn-sm mb-2 mx-2 active" id="personal-tab" data-toggle="tab" href="#info_personal" role="tab" aria-controls="info_personal" aria-selected="true"><i class="feather icon-user mr-2"></i>Información personal</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="btn btn-outline-info btn-sm mb-2 mx-2" id="emergencia-tab" data-toggle="tab" href="#emergencia" role="tab" aria-controls="emergencia" aria-selected="false"><i class="feather icon-user-plus mr-2"></i>Contactos de emergencia</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="btn btn-outline-info btn-sm mb-2 mx-2" id="datmedicos-tab" data-toggle="tab" href="#datmedicos" role="tab" aria-controls="datmedicos" aria-selected="false"><i class="feather icon-plus-circle mr-2"></i>Datos médicos</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="btn btn-outline-info btn-sm mb-2 mx-2" id="pass-tab" data-toggle="tab" href="#pass" role="tab" aria-controls="pass" aria-selected="false"><i class="feather icon-lock mr-2"></i>Contraseñas</a>
-                                    </li>
-                                </ul>-->
                             </div>
                         </div>
                     </div>
@@ -87,46 +73,46 @@
             <div class="row">
                 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                     <div class="tab-content" id="myTabContent">
-                        <!--TAB INFORMACIÓN PERSONAL-->
+                        <!--MI PERFIL-->
                         <div class="tab-pane fade show active" id="personal" role="tabpanel" aria-labelledby="personal-tab">
                             <div class="row">
-                                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                                    <!--Card Información Básica-->
+                                <div class="col-12">
                                     <div class="card">
-                                        <div class="card-header d-flex align-items-center justify-content-between bg-primary">
-                                            <h5 class="mb-0 text-white">Datos personales</h5>
-                                            <button type="button" class="btn btn-light btn-icon m-0 float-right" data-toggle="collapse" data-target=".info_basica" aria-expanded="false" aria-controls="info_basica-1 info_basica-2">
+                                        <div class="card-header-new d-flex align-items-center justify-content-between">
+                                            <h5 class="mb-0"><i class="feather icon-user icono-purple"></i> Mi perfil</h5>
+                                            <button type="button" class="btn btn-outline-purple btn-icon m-0 float-right" data-toggle="collapse" data-target=".info_basica" aria-expanded="false" aria-controls="info_basica-1 info_basica-2">
                                                 <i class="feather icon-edit"></i>
                                             </button>
                                         </div>
-                                        <!--Datos Personales-->
                                         <div class="card-body info_basica collapse show" id="info_basica-1">
                                             <form>
-                                                <div class="form-row">
-                                                    <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                                                        <label class="font-weight-bolder ml-0 mb-0">Rut</label>
+                                                <!--INFO PERSONAL-->
+                                                <div class="form-row mb-4">
+                                                    <div class="col-12">
+                                                        <h6 class="titulo-sm">Información personal</h6>
+                                                    </div>
+                                                    <div class="form-group col-sm-12 col-md-6 col-lg-4 col-xl-3 col-xxl-2">
+                                                        <label class="font-weight-bolder ml-0 mb-0">RUT</label>
                                                         <div> {{ $paciente->rut }} </div>
                                                     </div>
-                                                    <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                                    <div class="form-group col-sm-12 col-md-6 col-lg-4 col-xl-3 col-xxl-2">
                                                         <label class="font-weight-bolder ml-0 mb-0">Nombre</label>
                                                         <div> {{ $paciente->nombres }} </div>
                                                     </div>
-                                                </div>
-                                                <div class="form-row">
-                                                    <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                     
+                                                    <div class="form-group col-sm-12 col-md-6 col-lg-4 col-xl-3 col-xxl-2">
                                                         <label class="font-weight-bolder ml-0 mb-0">Primer
                                                         Apellido</label>
                                                         <div> {{ $paciente->apellido_uno }}</div>
                                                     </div>
-                                                    <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                                    <div class="form-group col-sm-12 col-md-6 col-lg-4 col-xl-3 col-xxl-2">
                                                         <label class="font-weight-bolder ml-0 mb-0">Segundo
                                                         Apellido</label>
                                                         <div> {{ $paciente->apellido_dos }}
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="form-row">
-                                                    <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                           
+                                                    <div class="form-group col-sm-12 col-md-6 col-lg-4 col-xl-3 col-xxl-2">
                                                         <label class="font-weight-bolder ml-0 mb-0">Sexo</label>
                                                         <div>
                                                             @if ($paciente->sexo == 'F')
@@ -136,47 +122,78 @@
                                                             @endif
                                                         </div>
                                                     </div>
-                                                    <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                                    <div class="form-group col-sm-12 col-md-6 col-lg-4 col-xl-3 col-xxl-2">
                                                         <label class="font-weight-bolder ml-0 mb-0">Nacimiento</label>
                                                         <div>
                                                             {{ \Carbon\Carbon::parse($paciente->fecha_nac)->format('d-m-Y') }}
                                                         </div>
                                                     </div>
                                                 </div>
+ 
+                                                <!--CONTACTO-->
+                                                <div class="form-row mb-4">
+                                                     <div class="col-12">
+                                                        <h6 class="titulo-sm">Contacto</h6>
+                                                    </div>
+                                                    <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-3 col-xxl-2">
+                                                        <label class="font-weight-bolder ml-0 mb-0">Correo electrónico</label>
+                                                        <div>{{ $paciente->email }}</div>
+                                                    </div>
+                                                    <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-3 col-xxl-2">
+                                                        <label class="font-weight-bolder ml-0 mb-0">Celular</label>
+                                                        <div>{{ $paciente->telefono_uno }}</div>
+                                                    </div>
+                                                </div>
+                                                <!--RESIDENCIA-->
                                                 <div class="form-row">
-                                                    <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                                                        <label class="font-weight-bolder ml-0 mb-0">Previsión</label>
-                                                        <div> Fonasa </div>
+                                                    <div class="col-12">
+                                                        <h6 class="titulo-sm">Residencia</h6>
+                                                    </div>
+                                                    <div class="form-group col-sm-12 col-md-12 col-lg-4 col-xl-3">
+                                                        <label class="font-weight-bolder ml-0 mb-0">Dirección</label>
+                                                        <div>
+                                                            @if ($direccion_paciente)
+                                                                {{ $direccion_paciente->direccion }} {{ $direccion_paciente->numero_dir }}
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group col-sm-12 col-md-6 col-lg-4 col-xl-3">
+                                                        <label class="font-weight-bolder ml-0 mb-0">Región</label>
+                                                        <div>{{ $direccion_txt_region_paciente }}</div>
+                                                    </div>
+                                                    <div class="form-group col-sm-12 col-md-6 col-lg-4 col-xl-3">
+                                                        <label class="font-weight-bolder ml-0 mb-0">Comuna</label>
+                                                        <div>{{ $direccion_txt_ciudad_paciente }}</div>
                                                     </div>
                                                 </div>
                                             </form>
                                         </div>
+                                       
                                         <!--Cierre: Datos Personales-->
                                         <!--(Editar)Datos Personales-->
                                         <div class="card-body info_basica collapse" id="pinfo_basica_2">
                                             <form>
-                                                <div class="form-row">
-                                                    <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                                                        <label class="floating-label-activo">Rut</label>
+                                                <div class="form-row mb-3">
+                                                    <div class="col-12">
+                                                        <h6 class="titulo-sm mb-4">Información personal</h6>
+                                                    </div>
+                                                    <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-3 col-xxl-2">
+                                                        <label class="floating-label-activo">RUT</label>
                                                         <input type="text" class="form-control form-control-sm" placeholder="Rut" id="perfil_rut" name="perfil_rut" value="{{ $paciente->rut }}" disabled>
                                                     </div>
-                                                    <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                                    <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-3 col-xxl-2">
                                                         <label class="floating-label-activo">Nombre</label>
                                                         <input type="text" class="form-control form-control-sm" placeholder="Nombre" id="perfil_nombre" name="perfil_nombre" value="{{ $paciente->nombres }}">
                                                     </div>
-                                                </div>
-                                                <div class="form-row">
-                                                    <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                                    <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-3 col-xxl-2">
                                                         <label class="floating-label-activo">Primer Apellido</label>
                                                         <input type="text" class="form-control form-control-sm" id="perfil_apellido_uno" name="perfil_apellido_uno" placeholder="Primer Apellido" value="{{ $paciente->apellido_uno }}">
                                                     </div>
-                                                    <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                                    <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-3 col-xxl-2">
                                                         <label class="floating-label-activo">Segundo Apellido</label>
                                                         <input type="text" class="form-control form-control-sm" id="perfil_apellido_dos" name="perfil_apellido_dos" placeholder="Segundo Apellido" value="{{ $paciente->apellido_dos }}">
                                                     </div>
-                                                </div>
-                                                <div class="form-row">
-                                                    <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                                    <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-3 col-xxl-2 pt-2">
                                                         <label class="floating-label-activo">Sexo</label>
                                                         <div class="form-check form-check-inline">
                                                             <input class="form-check-input" type="radio" id="perfil_sexo" name="perfil_sexo" value="M" @if ($paciente->sexo == 'M') checked @endif>
@@ -187,39 +204,98 @@
                                                             <label class="form-check-label" for="inlineRadio2">Mujer</label>
                                                         </div>
                                                     </div>
-                                                    <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                                    <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-3 col-xxl-2">
                                                         <label class="floating-label-activo">Nacimiento</label>
                                                         <input type="date" class="form-control form-control-sm" id="perfil_nac" name="perfil_nac" value="{{ $paciente->fecha_nac }}">
                                                     </div>
                                                 </div>
-                                                <div class="form-row">
-                                                    <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                                                        <label class="floating-label-activo">Previsión</label>
-                                                        <select class="form-control form-control-sm" id="perfil_prevision" name="perfil_prevision">
-                                                            <option value="">Seleccione su previsión</option>
-                                                            @if (isset($previsiones))
-                                                                @foreach ($previsiones as $prevision)
-                                                                <option value="{{ $prevision->id }}" @if ($paciente->id_prevision == $prevision->id) selected @endif>
-                                                                    {{ $prevision->nombre }}
-                                                                </option>
+     
+                                                
+                                                <div class="form-row mb-3">
+                                                    <div class="col-12">
+                                                        <h6 class="titulo-sm mb-4">Contacto</h6>
+                                                    </div>
+                                                    <div class="form-group col-sm-6 col-md-6 col-lg-6 col-xl-3 col-xxl-2">
+                                                        <label class="floating-label-activo">Correo electrónico</label>
+                                                        <input type="text" class="form-control form-control-sm" id="Perfil_email" name="Perfil_email" placeholder="Correo Electrónico" value="{{ $paciente->email }}">
+                                                    </div>
+                                                    <div class="form-group col-sm-6 col-md-6 col-lg-6 col-xl-3 col-xxl-2">
+                                                        <label class="floating-label-activo">Celular</label>
+                                                        <input type="text" class="form-control form-control-sm" placeholder="Teléfono" id="Perfil_fono" name="Perfil_fono" value="{{ $paciente->telefono_uno }}">
+                                                    </div>
+                                                </div>
+                                         
+                                         
+                                                <div class="form-row mb-3">
+                                                    <div class="col-12">
+                                                        <h6 class="titulo-sm mb-4">Residencia</h6>
+                                                    </div>
+                                                    <div class="form-group col-sm-12 col-md-9 col-lg-9 col-xl-9 col-xxl-5">
+                                                        <label class="floating-label-activo">Dirección</label>
+                                                        <input type="text" class="form-control form-control-sm" placeholder="Dirección" name="perfil_dire" id="perfil_dire" value="{{ $paciente->Direccion()->first()->direccion }}">
+                                                    </div>
+                                                    <div class="form-group col-sm-12 col-md-3 col-lg-3 col-xl-3 col-xxl-1">
+                                                        <label class="floating-label-activo">Nº</label>
+                                                        <input type="text" class="form-control form-control-sm" placeholder="n&uacute;mero #" name="perfil_numero_dir" id="perfil_numero_dir" value="{{ $paciente->Direccion()->first()->numero_dir }}">
+                                                    </div>
+                                                    <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-3">
+                                                        <label class="floating-label-activo">Región</label>
+                                                        <select class="form-control form-control-sm" onchange="buscar_ciudad();" id="perfil_region" name="perfil_region">
+                                                            <option value="">Seleccione</option>
+                                                            @if (isset($regiones))
+                                                                @foreach ($regiones as $region)
+                                                                    @if ( !empty($direccion_id_region_paciente) )
+                                                                        <option value="{{ $region->id }}" @if ($region->id == $direccion_id_region_paciente) selected @endif>
+                                                                            {{ $region->nombre }}
+                                                                        </option>
+                                                                    @else
+                                                                        <option value="{{ $region->id }}" >
+                                                                            {{ $region->nombre }}
+                                                                        </option>
+                                                                    @endif
+
                                                                 @endforeach
                                                             @endif
                                                         </select>
                                                     </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-sm-12 d-flex justify-content-end">
-                                                        <button type="button" class="btn btn-danger-light-c btn-sm mr-2"><i class="feather icon-x"></i> Cancelar</button>
-                                                        <button type="button" onclick="editar_paciente_datos_personales();" class="btn btn-sm btn-info-light-c"><i class="feather icon-save"></i> Guardar cambios</button>
+                                                    <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-3">
+                                                        <label class="floating-label-activo">Ciudad</label>
+                                                        <select class="form-control form-control-sm" id="perfil_ciudad" name="perfil_ciudad">
+                                                            <option value="">Seleccione su comuna</option>
+                                                            @if (isset($ciudades))
+                                                                @foreach ($ciudades as $ciudad)
+                                                                    @if (!empty($direccion_id_ciudad_paciente))
+                                                                        <option value="{{ $ciudad->id }}" @if ($ciudad->id == $direccion_id_ciudad_paciente) selected @endif>
+                                                                            {{ $ciudad->nombre }}
+                                                                        </option>
+                                                                    @else
+                                                                        <option value="{{ $ciudad->id }}">
+                                                                            {{ $ciudad->nombre }}
+                                                                        </option>
+                                                                    @endif
+                                                                @endforeach
+                                                            @endif
+                                                        </select>
                                                     </div>
+                                            
+                                                    
                                                 </div>
+                                                <hr>
+                                                <div class="form-row">
+                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex justify-content-end">
+                                                        <button type="button" class="btn btn-sm btn-danger mr-2"><i class="feather icon-x"></i> Cancelar</button>
+                                                        <button type="submit" class="btn btn-sm btn-info"><i class="feather icon-save"></i> Guardar cambios</button>
+                                                    </div>
+                                     
+                                                </div>
+                              
                                             </form>
                                         </div>
                                         <!--Cierre: (Editar)Datos Personales-->
                                     </div>
                                     <!--Cierre: Card Datos Personales-->
                                 </div>
-                                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                {{--<div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
                                     <!--Card Contacto-->
                                     <div class="card">
                                         <div class="card-header d-flex align-items-center justify-content-between bg-primary">
@@ -367,13 +443,92 @@
                                         <!--(Editar) Residencia-->
                                     </div>
                                     <!--Cierre: Card Residencia-->
+                                </div>--}}
+                            </div>
+                        </div>
+                        <!--CIERRE: MI PERFIL-->
+
+                        <!--SEGURIDAD-->
+                        <div class="tab-pane fade" id="seguridad" role="tabpanel" aria-labelledby="seguridad-tab">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 mt-n3">
+                                    <ul class="nav nav-tabs-secciones-info" id="seguridad_paciente" role="tablist">
+                                        <li class="nav-item-secciones-info">
+                                            <a class="nav-secciones-info text-uppercase active" id="p-director-tab" data-toggle="tab" href="#p-director" role="tab" aria-controls="p-director" aria-selected="true">Contraseña</a>
+                                        </li>
+                                        <!--<li class="nav-item-secciones-info">
+                                            <a class="nav-secciones-info text-uppercase" id="d-activo-tab" data-toggle="tab" href="#d-activo" role="tab" aria-controls="d-activo" aria-selected="false">-</a>
+                                        </li>-->
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                    <div class="tab-content" id="seguridad_paciente">
+                                        <div class="tab-pane fade show active" id="pass" role="tabpanel" aria-labelledby="pass-tab">
+                                            <div class="row">
+                                                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                                    <!--CARD CONTRASEÑA PERSONAL-->
+                                                    <div class="card">
+                                                        <div class="card-header-new d-flex align-items-center justify-content-between">
+                                                            <h5 class="mb-0"><i class="feather icon-lock icono-purple"></i> Contraseña</h5>
+                                                            <button type="button" class="btn btn-outline-purple btn-icon m-0 float-right" data-toggle="collapse" data-target=".pass_personal" aria-expanded="false" aria-controls="pass_personal_1 pass_personal_2">
+                                                                <i class="feather icon-edit"></i>
+                                                            </button>
+                                                        </div>
+                                                        <!--CONTRASEÑA PERSONAL-->
+                                                        <div class="card-body pass_personal collapse show" id="pass_personal_1">
+                                                            <form >
+                                                                <div class="form-row">
+                                                                    <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                                                        <label class="font-weight-bolder ml-0 mb-0">Contraseña actual</label>
+                                                                        <div> •••••••• </div>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                        <!--CIERRE: CONTRASEÑA PERSONAL-->
+                                                        <!--(EDITAR)CONTRASEÑA PERSONAL-->
+                                                        <div class="card-body border-top pass_personal collapse" id="pass_personal_2">
+                                                            <form method="get" action="{{ route('perfil.cambio_contrasena')}}">
+                                                                @csrf
+                                                                <input type="hidden" name="contrasena_mail" id="contrasena_mail" value="{{ Auth::user()->email }}">
+                                                                <div class="form-row">
+                                                                    <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                                                        <label class="floating-label-activo">Contraseña actual</label>
+                                                                        <input type="text" class="form-control form-control-sm" id="contrasena_actual" name="contrasena_actual">
+                                                                    </div>
+                                                                    <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                                                        <label class="floating-label-activo">Nueva contraseña</label>
+                                                                        <input type="text" class="form-control form-control-sm" id="password_registro" name="password_registro">
+                                                                    </div>
+                                                                    <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                                                        <label class="floating-label-activo">Repita nueva contraseña</label>
+                                                                        <input type="text" class="form-control form-control-sm" id="password_confirmacion_registro" name="password_confirmacion_registro">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-row">
+                                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex justify-content-end">
+                                                                        <button type="button" class="btn btn-sm btn-danger mr-2"><i class="feather icon-x"></i> Cancelar</button>
+                                                                        <button type="submit" class="btn btn-sm btn-info"><i class="feather icon-save"></i> Guardar cambios</button>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                        <!--CIERRE: (EDITAR)CONTRASEÑA PERSONAL-->
+                                                    </div>
+                                                    <!--CIERRE: CARD CONTRASEÑA PERSONAL-->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <!--CIERRE: TAB INFORMACIÓN PERSONAL-->
+                        <!--CIERRE: SEGURIDAD-->
 
-                        <!--TAB CONTACTOS DE EMERGENCIA-->
-                        <div class="tab-pane fade" id="emergencia" role="tabpanel" aria-labelledby="emergencia-tab">
+                        <!--PLAN Y FACTURACIÓN-->
+                        <div class="tab-pane fade" id="facturacion" role="tabpanel" aria-labelledby="facturacion-tab">
                             <div class="row">
                                 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                                     <div class="card">
@@ -442,913 +597,7 @@
                                 </div>
                             </div>
                         </div>
-                        <!--CIERRE: TAB CONTACTOS DE EMERGENCIA-->
-
-                        <!--Tab Datos médicos OJO IDENTIFICAR AL PROFESIONAL RESPONSABLE Y PONER UN ALERT DICIENDO LO IMPORTANTE QUE ES EL LLENADO CORRECTO-->
-                        <div class="tab-pane fade" id="datmedicos" role="tabpanel" aria-labelledby="datmedicos-tab">
-                            <div class="row">
-                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 mt-0">
-                                    <ul class="nav nav-tabs-secciones mb-3" style="margin-top: 0px!important;" id="d-med" role="tablist">
-                                        <li class="nav-item-secciones">
-                                            <a class="nav-secciones active text-uppercase" id="tran-donacion-tab" data-toggle="tab" href="#tran-donacion" role="tab" aria-controls="tran-donacion" aria-selected="false">Transfusión y donación de órganos</a>
-                                        </li>
-                                        <li class="nav-item-secciones">
-                                            <a class="nav-secciones text-uppercase" id="a-general-tab" data-toggle="tab" href="#a-general" role="tab" aria-controls="a-general" aria-selected="false">Datos médicos generales</a>
-                                        </li>
-                                        <li class="nav-item-secciones">
-                                            <a class="nav-secciones text-uppercase" id="act-datos-tab" data-toggle="tab" href="#act-datos" role="tab" aria-controls="act-datos" aria-selected="false">Actualización datos médicos</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                                    <div class="tab-content" id="d-med">
-                                        <!--MÉDICO RESPONSABLE DE LA ACTUALIZACIÓN DE DATOS-->
-                                        <div class="tab-pane fade " id="act-datos" role="tabpanel" aria-labelledby="atect-datos-tab">
-                                            <div class="row">
-                                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                                                    <!--Card Datos profesional-->
-                                                    <div class="card">
-                                                        <div class="card-header d-flex align-items-center justify-content-between bg-c-blue">
-                                                            <h5 class="mb-0 text-white">Última actualización de datos <i>(Médico responsable)</i></h5>
-                                                        </div>
-                                                        <!--Datos profesional-->
-                                                        <div class="card-body info_basica_sos collapse show" id="info_basica_sos_1">
-                                                            @if (count($log_datos_medicos)>0)
-                                                                <div class="form-row">
-                                                                    <div class="form-group col-sm-12 col-md-6 col-lg-4 col-xl-3">
-                                                                        <label class="font-weight-bolder ml-0 mb-0">Fecha</label>
-                                                                        <div>
-                                                                            @if ($log_datos_medicos[0])
-                                                                                {{ date('d-m-Y H:i:s',strtotime($log_datos_medicos[0]->created_at)) }}
-                                                                            @else
-                                                                                00-00-000 00:00:00
-                                                                            @endif
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="form-group col-sm-12 col-md-6 col-lg-4 col-xl-3">
-                                                                        <label class="font-weight-bolder ml-0 mb-0">Nombre del Profesional</label>
-                                                                        <div>
-                                                                            @if ($log_datos_medicos[0])
-                                                                                {{ $log_datos_medicos[0]->nombre . ' ' . $log_datos_medicos[0]->apellido_uno . ' ' . $log_datos_medicos[0]->apellido_dos }}
-                                                                            @else
-                                                                                -
-                                                                            @endif
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="form-group col-sm-12 col-md-6 col-lg-4 col-xl-3">
-                                                                        <label class="font-weight-bolder ml-0 mb-0">Rut del Profesional</label>
-                                                                        <div>
-                                                                            @if ($log_datos_medicos[0])
-                                                                                {{ $log_datos_medicos[0]->rut }}
-                                                                            @else
-                                                                                -
-                                                                            @endif
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="form-group col-sm-12 col-md-6 col-lg-4 col-xl-3">
-                                                                        <label class="font-weight-bolder ml-0 mb-0">Especialidad</label>
-                                                                        <div>
-                                                                            @if ($log_datos_medicos[0])
-                                                                                {{ $log_datos_medicos[0]->tipo_especialidad }}
-                                                                                @if ($log_datos_medicos[0]->sub_tipo_especialidad)
-                                                                                    , {{ $log_datos_medicos[0]->sub_tipo_especialidad}}
-                                                                                @endif
-                                                                            @else
-                                                                                -
-                                                                            @endif
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="form-group col-sm-12 col-md-6 col-lg-12 col-xl-12">
-                                                                        <label class="font-weight-bolder ml-0 mb-0">Detalle de actualización</label>
-                                                                        <div>
-                                                                            @if ($log_datos_medicos[0])
-                                                                                {!! $log_datos_medicos[0]->datos !!}
-                                                                            @else
-                                                                                -
-                                                                            @endif
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            @else
-                                                                {{--  --}}
-                                                            @endif
-
-                                                        </div>
-                                                        <!--Cierre: Datos profesional-->
-                                                    </div>
-                                                    <!--Cierre: Card Datos profesional-->
-                                                </div>
-                                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                                                    <div class="card">
-                                                        <div class="card-header bg-primary">
-                                                            <h5 class="mb-0 text-white">Registro de actualizaciones</h5>
-                                                        </div>
-                                                        <div class="card-body">
-                                                            <div class="table-responsive">
-                                                                <table class="table table-bordered table-xs p-10">
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th>Fecha</th>
-                                                                            <th>Profesional</th>
-                                                                            <th>Actualización</th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        @foreach ($log_datos_medicos as $log)
-                                                                            <tr>
-                                                                                <td>{{ date('d-m-Y',strtotime($log->created_at) ) }} <br>{{ date('H:i:s',strtotime($log->created_at) ) }}</td>
-                                                                                <td>{{ $log->rut }}<br>{{ $log->nombre.' '.$log->apellido_uno.' '.$log->apellido_dos }}<br> {{ !empty($log->especialidad)?$log->especialidad:'' }} {{ !empty($log->tipo_especialidad)?', '.$log->tipo_especialidad:'' }} {{ !empty($log->sub_tipo_especialidad)?', '.$log->sub_tipo_especialidad:'' }}</td>
-                                                                                <td class="text-wrap" style="font-size: 12px!important;">{!! $log->datos !!}</td>
-                                                                            </tr>
-                                                                        @endforeach
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!--TRANSFUSIONES Y DONACIÓN DE ÓRGANOS-->
-                                        <div class="tab-pane fade show active" id="tran-donacion" role="tabpanel" aria-labelledby="tran-donacion-tab">
-                                        <div class="row">
-                                                <div class="col-md-12">
-                                                    <!--Card Datos Sangre Donación de Organos-->
-                                                    <div class="card">
-                                                        <div class="card-header d-flex align-items-center justify-content-between bg-c-blue">
-                                                            <h5 class="mb-0 text-white">Antecedentes I (Transfusiones y Donación de Órganos)</h5>
-                                                            {{-- <button type="button" class="btn btn-light btn-icon m-0 float-right" data-toggle="collapse" data-target=".info_residencial_sos" aria-expanded="false" aria-controls="info_residencial_sos_1 info_residencial_sos_2">
-                                                                <i class="feather icon-edit"></i>
-                                                            </button> --}}
-                                                        </div>
-                                                        <!--Sangre Donación de Organo-->
-                                                        <div class="card-body info_residencial_sos collapse show" id="info_residencial_sos_1">
-                                                            <div class="form-row">
-                                                                <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-4">
-                                                                    <label class="font-weight-bolder ml-0 mb-0">¿Acepta transfusión?</label>
-                                                                    <div>@if ($paciente->Antecedentes()->first() != null && $paciente->Antecedentes()->first()->transfusion == 1)
-                                                                        SI
-                                                                        @else
-                                                                        NO
-                                                                        @endif
-                                                                    </div>
-                                                                </div>
-                                                                <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-4">
-                                                                    <label class="font-weight-bolder ml-0 mb-0">¿Donante de Sangre?</label>
-                                                                    <div>
-                                                                        @if ($paciente->Antecedentes()->first() != null && $paciente->Antecedentes()->first()->dona_organos == 1)
-                                                                        SI
-                                                                        @else
-                                                                        NO
-                                                                        @endif
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-row">
-                                                                <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-4">
-                                                                    <label class="font-weight-bolder ml-0 mb-0">Grupo sanguíneo</label>
-                                                                    <div>@if ($paciente->Antecedentes()->first() != null)
-                                                                            @if ($paciente->Antecedentes()->first()->GrupoSanguineo()->first() != null)
-                                                                            {{ $paciente->Antecedentes()->first()->GrupoSanguineo()->first()->nombre_gs }}
-                                                                            @endif
-                                                                            @else
-                                                                            Sin registro
-                                                                            @endif
-                                                                    </div>
-                                                                </div>
-                                                                <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-4">
-                                                                    <label class="font-weight-bolder ml-0 mb-0">Comentarios de grupo sanguíneo</label>
-                                                                    <div>
-                                                                        @if ($paciente->Antecedentes()->first() != null)
-                                                                            @if ($paciente->Antecedentes()->first()->GrupoSanguineo()->first() != null)
-                                                                                {{ $paciente->Antecedentes()->first()->GrupoSanguineo()->first()->descripcion_gs }}
-                                                                            @endif
-                                                                        @else
-                                                                            Sin registro
-                                                                        @endif
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-row">
-                                                                <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-4">
-                                                                    <label class="font-weight-bolder ml-0 mb-0">Vacuna o Hepatitis</label>
-                                                                    <div>
-                                                                        @if ($paciente->Antecedentes()->first() != null && $paciente->Antecedentes()->first()->hepatitis == 1)
-                                                                            SI
-                                                                        @else
-                                                                            NO
-                                                                        @endif
-                                                                    </div>
-                                                                </div>
-                                                                <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-4">
-                                                                    <label class="font-weight-bolder ml-0 mb-0">Comentarios</label>
-                                                                    <div>@if ($paciente->Antecedentes()->first() != null && $paciente->Antecedentes()->first()->comentario_hepa != '')
-                                                                        {{ $paciente->Antecedentes()->first()->comentario_hepa }}
-                                                                        @else
-                                                                        Sin registro
-                                                                        @endif
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-row">
-                                                                <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-4">
-                                                                    <label class="font-weight-bolder ml-0 mb-0">¿Donante total de órganos?</label>
-                                                                    <div>@if ($paciente->Antecedentes()->first() != null && $paciente->Antecedentes()->first()->dona_organos == 1)
-                                                                            SI
-                                                                            @else
-                                                                            NO
-                                                                            @endif</div>
-                                                                </div>
-                                                                <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-4">
-                                                                    <label class="font-weight-bolder ml-0 mb-0">¿Donante parcial de órganos?</label>
-                                                                    <div>@if ($paciente->Antecedentes()->first() != null && $paciente->Antecedentes()->first()->dona_organos_parcial == 1)
-                                                                            SI
-                                                                            @else
-                                                                            NO
-                                                                            @endif
-                                                                        </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-row">
-                                                                <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-4">
-                                                                    <label class="font-weight-bolder ml-0 mb-0">Órganos a donar</label>
-                                                                    <div>
-                                                                        @if ($paciente->Antecedentes()->first() != null && $paciente->Antecedentes()->first()->comentarios != '')
-                                                                            {{ $paciente->Antecedentes()->first()->comentarios }}
-                                                                        @else
-                                                                            Sin Registros
-                                                                        @endif
-                                                                    </div>
-                                                                </div>
-                                                                <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-4">
-                                                                    <label class="font-weight-bolder ml-0 mb-0">Impedimento para donar</label>
-                                                                    <div>
-                                                                        @if ($paciente->Antecedentes()->first() != null && $paciente->Antecedentes()->first()->impedimento_donar != '')
-                                                                            {{ $paciente->Antecedentes()->first()->impedimento_donar }}
-                                                                        @else
-                                                                            Sin Registros
-                                                                        @endif
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <!--Cierre: Sangre Donación de Organo-->
-                                                        <!--(Editar) Sangre Donación de Organo-->
-                                                        {{--
-                                                        <div class="card-body info_residencial_sos collapse " id="info_residencial_sos_2">
-
-                                                                <div class="form-row">
-                                                                    <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-3">
-                                                                        <label class="floating-label-activo">¿Acepta transfusión?</label>
-                                                                        <select class="form-control form-control-sm">
-                                                                            <option value="">Seleccione</option>
-                                                                            <option value="">Si</option>
-                                                                            <option value="">No</option>
-                                                                        </select>
-                                                                    </div>
-                                                                    <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-3">
-                                                                        <label class="floating-label-activo">¿Donante de sangre?</label>
-                                                                        <select class="form-control form-control-sm">
-                                                                            <option value="">Seleccione</option>
-                                                                            <option value="">Si</option>
-                                                                            <option value="">No</option>
-                                                                        </select>
-                                                                    </div>
-                                                                    <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-3">
-                                                                        <label class="floating-label-activo">Grupo sanguíneo</label>
-                                                                        <select name="editar_grupo_sanguineo" id="editar_grupo_sanguineo" class="form-control form-control-sm">
-                                                                                <!--<option value="">Seleccione</option>-->
-                                                                                @if (isset($grupo_sanguineo) && $grupo_sanguineo != null && $grupo_sanguineo != '')
-                                                                                @foreach ($grupo_sanguineo as $gs)
-                                                                                @if (isset($paciente->Antecedentes()->first()->id_grupo_sanguineo) && $gs->id == $paciente->Antecedentes()->first()->id_grupo_sanguineo)
-                                                                                <option value="{{ $gs->id }}" selected>
-                                                                                    {{ $gs->nombre_gs }}
-                                                                                </option>
-                                                                                @else
-                                                                                <option value="{{ $gs->id }}">
-                                                                                    {{ $gs->nombre_gs }}
-                                                                                </option>
-                                                                                @endif
-                                                                                @endforeach
-                                                                                @endif
-
-                                                                            </select>
-                                                                    </div>
-                                                                    <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-3">
-                                                                        <label class="floating-label-activo">Comentario grupo sanguíneo</label>
-                                                                        @if ($paciente->Antecedentes()->first() != null && $paciente->Antecedentes()->first()->comentario_gs != null)
-                                                                            <textarea id="comentarios_gruposangre" class="form-control form-control-sm" rows="1" onfocus="this.rows=4" onblur="this.rows=1;">{{ $paciente->Antecedentes()->first()->comentario_gs }}</textarea>
-                                                                        @else
-                                                                            <textarea id="comentarios_gruposangre" class="form-control form-control-sm" rows="1" onfocus="this.rows=4" onblur="this.rows=1;"></textarea>
-                                                                        @endif
-                                                                    </div>
-                                                                    <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                                                                        <label class="floating-label-activo">Vacuna o Hepatitis</label>
-                                                                        <select class="form-control form-control-sm">
-                                                                            <option value="">Seleccione</option>
-                                                                            <option value="">Si</option>
-                                                                            <option value="">No</option>
-                                                                        </select>
-                                                                    </div>
-                                                                    <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                                                                        <label class="floating-label-activo">Comentarios (Vacuna o Hepatitis)</label>
-                                                                        <input type="text" class="form-control form-control-sm">
-                                                                    </div>
-                                                                    <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-3">
-                                                                        <label class="floating-label-activo">¿Donante total de órganos)</label>
-                                                                        <select class="form-control form-control-sm">
-                                                                            <option value="">Seleccione</option>
-                                                                            <option value="">Si</option>
-                                                                            <option value="">No</option>
-                                                                        </select>
-                                                                    </div>
-                                                                    <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-3">
-                                                                        <label class="floating-label-activo">¿Donante parcial de órganos?</label>
-                                                                        <select class="form-control form-control-sm">
-                                                                            <option value="">Seleccione</option>
-                                                                            <option value="">Si</option>
-                                                                            <option value="">No</option>
-                                                                        </select>
-                                                                    </div>
-                                                                    <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-3">
-                                                                        <label class="floating-label-activo">Órganos a donar</label>
-                                                                        @if ($paciente->Antecedentes()->first() != null && $paciente->Antecedentes()->first()->comentarios != null)
-                                                                        <textarea id="comentarios_organo" class="form-control form-control-sm" rows="1" onfocus="this.rows=4" onblur="this.rows=1;">
-                                                                        {{ $paciente->Antecedentes()->first()->comentarios }}
-                                                                        </textarea>
-                                                                        @else
-                                                                        <textarea id="comentarios_organo" class="form-control form-control-sm" rows="1" onfocus="this.rows=4" onblur="this.rows=1;"></textarea>
-                                                                        @endif
-                                                                    </div>
-                                                                    <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-3">
-                                                                        <label class="floating-label-activo">Impedimento para donar</label>
-                                                                        @if ($paciente->Antecedentes()->first() != null && $paciente->Antecedentes()->first()->impedimento_donar != null)
-                                                                        <textarea id="comentarios_impedimento" class="form-control form-control-sm" rows="1" onfocus="this.rows=4" onblur="this.rows=1;">{{ $paciente->Antecedentes()->first()->impedimento_donar }}</textarea>
-                                                                        @else
-                                                                        <textarea id="comentarios_impedimento" class="form-control form-control-sm" rows="1" onfocus="this.rows=4" onblur="this.rows=1;"></textarea>
-                                                                        @endif
-                                                                    </div>
-                                                                </div>
-
-
-                                                                <!--<div class="row">
-                                                                <div class="col-md-6">
-                                                                    <div class="form-group row">
-                                                                        <label class="col-sm-4 col-form-label font-weight-bolder">
-                                                                            ¿Acepta Transfusión?
-                                                                        </label>
-                                                                        <div class="col-sm-7 my-auto">
-
-                                                                            @if ($paciente->Antecedentes()->first() != null && $paciente->Antecedentes()->first()->transfusion == 1)
-                                                                            <div class="form-check form-check-inline">
-                                                                                <input class="form-check-input" type="radio" name="edit_transfusion" id="edit_transfusion" value="1" checked>
-                                                                                <label class="form-check-label" for="transfusion_si">Si</label>
-                                                                            </div>
-                                                                            <div class="form-check form-check-inline">
-                                                                                <input class="form-check-input" type="radio" name="edit_transfusion" id="edit_transfusion" value="0">
-                                                                                <label class="form-check-label" for="transfusion_no">No</label>
-                                                                            </div>
-                                                                            @else
-                                                                            <div class="form-check form-check-inline">
-                                                                                <input class="form-check-input" type="radio" name="edit_transfusion" id="edit_transfusion" value="1">
-                                                                                <label class="form-check-label" for="transfusion_si">Si</label>
-                                                                            </div>
-                                                                            <div class="form-check form-check-inline">
-                                                                                <input class="form-check-input" type="radio" name="edit_transfusion" id="edit_transfusion" value="0" checked>
-                                                                                <label class="form-check-label" for="transfusion_no">No</label>
-                                                                            </div>
-                                                                            @endif
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-6">
-                                                                    <div class="form-group row">
-                                                                        <label class="col-sm-4 col-form-label font-weight-bolder">¿Donante
-                                                                            de Sangre?</label>
-
-
-                                                                        @if ($paciente->Antecedentes()->first() != null && $paciente->Antecedentes()->first()->dona_sangre == 1)
-                                                                        <div class="col-sm-7 my-auto">
-                                                                            <div class="form-check form-check-inline">
-                                                                                <input class="form-check-input" type="radio" name="edit_dona_sangre" id="edit_dona_sangre" value="1" checked>
-                                                                                <label class="form-check-label" for="dona_sangre_si">Si</label>
-                                                                            </div>
-                                                                            <div class="form-check form-check-inline">
-                                                                                <input class="form-check-input" type="radio" name="edit_dona_sangre" id="edit_dona_sangre" value="0">
-                                                                                <label class="form-check-label" for="dona_sangre_no">No</label>
-                                                                            </div>
-                                                                        </div>
-                                                                        @else
-                                                                        <div class="col-sm-7 my-auto">
-                                                                            <div class="form-check form-check-inline">
-                                                                                <input class="form-check-input" type="radio" name="edit_dona_sangre" id="edit_dona_sangre" value="1">
-                                                                                <label class="form-check-label" for="donante_sangre_si">Si</label>
-                                                                            </div>
-                                                                            <div class="form-check form-check-inline">
-                                                                                <input class="form-check-input" type="radio" name="edit_dona_sangre" id="edit_dona_sangre" value="0" checked>
-                                                                                <label class="form-check-label" for="donante_sangre_no">No</label>
-                                                                            </div>
-                                                                        </div>
-                                                                        @endif
-
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-md-6">
-                                                                    <div class="form-group row">
-                                                                        <label class="col-sm-4 col-form-label font-weight-bolder">Grupo
-                                                                            Sanguíneo</label>
-                                                                        <div class="col-sm-7 my-auto">
-                                                                            <select name="editar_grupo_sanguineo" id="editar_grupo_sanguineo" class="form-control">
-                                                                                <option value="">Seleccione</option>
-
-                                                                                @if (isset($grupo_sanguineo) && $grupo_sanguineo != null && $grupo_sanguineo != '')
-                                                                                @foreach ($grupo_sanguineo as $gs)
-                                                                                @if (isset($paciente->Antecedentes()->first()->id_grupo_sanguineo) && $gs->id == $paciente->Antecedentes()->first()->id_grupo_sanguineo)
-                                                                                <option value="{{ $gs->id }}" selected>
-                                                                                    {{ $gs->nombre_gs }}
-                                                                                </option>
-                                                                                @else
-                                                                                <option value="{{ $gs->id }}">
-                                                                                    {{ $gs->nombre_gs }}
-                                                                                </option>
-                                                                                @endif
-                                                                                @endforeach
-                                                                                @endif
-
-                                                                            </select>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-6">
-                                                                    <div class="form-group row">
-                                                                        <label class="col-sm-4 col-form-label font-weight-bolder">Comentarios
-                                                                            de grupo sanguíneo</label>
-                                                                        hoy
-                                                                        @if ($paciente->Antecedentes()->first() != null && $paciente->Antecedentes()->first()->comentario_gs != null)
-                                                                        <div class="col-sm-7">
-                                                                            <textarea id="comentarios_gruposangre" class="form-control" placeholder="Comentarios de grupo sanguíneo">{{ $paciente->Antecedentes()->first()->comentario_gs }}</textarea>
-                                                                        </div>
-                                                                        @else
-                                                                        <div class="col-sm-7">
-                                                                            <textarea id="comentarios_gruposangre" class="form-control" placeholder="Comentarios de grupo sanguíneo"></textarea>
-                                                                        </div>
-                                                                        @endif
-
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-md-6">
-                                                                    <div class="form-group row">
-                                                                        <label class="col-sm-4 col-form-label font-weight-bolder">Vacuna o
-                                                                            Hepatitis</label>
-                                                                        @if ($paciente->Antecedentes()->first() != null && $paciente->Antecedentes()->first()->hepatitis == 1)
-                                                                        <div class="col-sm-7 my-auto">
-                                                                            <div class="form-check form-check-inline">
-                                                                                <input class="form-check-input" type="radio" name="edit_hepatitis" id="edit_hepatitis" value="1" checked>
-                                                                                <label class="form-check-label" for="edit_hepatitis_si">Si</label>
-                                                                            </div>
-                                                                            <div class="form-check form-check-inline">
-                                                                                <input class="form-check-input" type="radio" name="edit_hepatitis" id="edit_hepatitis" value="0">
-                                                                                <label class="form-check-label" for="edit_hepatitis_no">No</label>
-                                                                            </div>
-                                                                        </div>
-                                                                        @else
-                                                                        <div class="col-sm-7 my-auto">
-                                                                            <div class="form-check form-check-inline">
-                                                                                <input class="form-check-input" type="radio" name="edit_hepatitis" id="edit_hepatitis" value="1">
-                                                                                <label class="form-check-label" for="edit_hepatitis_si">Si</label>
-                                                                            </div>
-                                                                            <div class="form-check form-check-inline">
-                                                                                <input class="form-check-input" type="radio" name="edit_hepatitis" id="edit_hepatitis" value="0" checked>
-                                                                                <label class="form-check-label" for="edit_hepatitis_no">No</label>
-                                                                            </div>
-                                                                        </div>
-                                                                        @endif
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-6">
-                                                                    <div class="form-group row">
-                                                                        <label class="col-sm-4 col-form-label font-weight-bolder">
-                                                                            Comentarios
-                                                                        </label>
-                                                                        @if ($paciente->Antecedentes()->first() != null && $paciente->Antecedentes()->first()->comentario_hepa != null)
-                                                                        <div class="col-sm-7">
-                                                                            <textarea id="comentarios_hepatitis" class="form-control" placeholder="Comentarios de grupo sanguíneo">{{ $paciente->Antecedentes()->first()->comentario_hepa }}</textarea>
-                                                                        </div>
-                                                                        @else
-                                                                        <div class="col-sm-7">
-                                                                            <textarea id="comentarios_hepatitis" class="form-control" placeholder="Comentarios">
-                                                                                                                                                                                                                                                                                                                    </textarea>
-                                                                        </div>
-                                                                        @endif
-
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-md-6">
-                                                                    <div class="form-group row">
-                                                                        <label class="col-sm-4 col-form-label font-weight-bolder">¿Donante
-                                                                            Total de Órganos?</label>
-
-                                                                        @if ($paciente->Antecedentes()->first() != null && $paciente->Antecedentes()->first()->dona_organos == 1)
-                                                                        <div class="col-sm-7 my-auto">
-                                                                            <div class="form-check form-check-inline">
-                                                                                <input class="form-check-input" type="radio" name="edit_donante_total" id="edit_donante_total" value="1" checked>
-                                                                                <label class="form-check-label" for="donante_total_si">Si</label>
-                                                                            </div>
-                                                                            <div class="form-check form-check-inline">
-                                                                                <input class="form-check-input" type="radio" name="edit_donante_total" id="edit_donante_total" value="0">
-                                                                                <label class="form-check-label" for="donante_total_no">No</label>
-                                                                            </div>
-                                                                        </div>
-                                                                        @else
-                                                                        <div class="col-sm-7 my-auto">
-                                                                            <div class="form-check form-check-inline">
-                                                                                <input class="form-check-input" type="radio" name="edit_donante_total" id="edit_donante_total" value="1">
-                                                                                <label class="form-check-label" for="donante_total_si">Si</label>
-                                                                            </div>
-                                                                            <div class="form-check form-check-inline">
-                                                                                <input class="form-check-input" type="radio" name="edit_donante_total" id="edit_donante_total" value="0" checked>
-                                                                                <label class="form-check-label" for="donante_total_no">No</label>
-                                                                            </div>
-                                                                        </div>
-                                                                        @endif
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-6">
-                                                                    <div class="form-group row">
-                                                                        <label class="col-sm-4 col-form-label font-weight-bolder">¿Donante
-                                                                            Parcial de Órganos?</label>
-
-                                                                        @if ($paciente->Antecedentes()->first() != null && $paciente->Antecedentes()->first()->dona_organos == 1)
-                                                                        <div class="col-sm-7 my-auto">
-                                                                            <div class="form-check form-check-inline">
-                                                                                <input class="form-check-input" type="radio" name="edit_donante_parcial" id="edit_donante_parcial" value="1" checked>
-                                                                                <label class="form-check-label" for="donante_parcial_si">Si</label>
-                                                                            </div>
-                                                                            <div class="form-check form-check-inline">
-                                                                                <input class="form-check-input" type="radio" name="edit_donante_parcial" id="edit_donante_parcial" value="0">
-                                                                                <label class="form-check-label" for="donante_parcial_no">No</label>
-                                                                            </div>
-                                                                        </div>
-                                                                        @else
-                                                                        <div class="col-sm-7 my-auto">
-                                                                            <div class="form-check form-check-inline">
-                                                                                <input class="form-check-input" type="radio" name="edit_donante_parcial" id="edit_donante_parcial" value="1">
-                                                                                <label class="form-check-label" for="donante_parcial_si">Si</label>
-                                                                            </div>
-                                                                            <div class="form-check form-check-inline">
-                                                                                <input class="form-check-input" type="radio" name="edit_donante_parcial" id="edit_donante_parcial" value="0" checked>
-                                                                                <label class="form-check-label" for="donante_parcial_no">No</label>
-                                                                            </div>
-                                                                        </div>
-                                                                        @endif
-
-
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="row">
-                                                                <div class="col-md-6">
-                                                                    <div class="form-group row">
-                                                                        <label class="col-sm-4 col-form-label font-weight-bolder">
-                                                                            Órganos a donar
-                                                                        </label>
-                                                                        <div class="col-sm-7">
-                                                                            @if ($paciente->Antecedentes()->first() != null && $paciente->Antecedentes()->first()->comentarios != null)
-                                                                            <textarea id="comentarios_organo" class="form-control" placeholder="Órganos a donar">
-                                                                            {{ $paciente->Antecedentes()->first()->comentarios }}
-                                                                            </textarea>
-                                                                            @else
-                                                                            <textarea id="comentarios_organo" class="form-control" placeholder="Órganos a donar"></textarea>
-                                                                            @endif
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-6">
-                                                                    <div class="form-group row">
-                                                                        <label class="col-sm-4 col-form-label font-weight-bolder">Impedimento
-                                                                            para donar</label>
-
-
-
-                                                                        <div class="col-sm-7">
-                                                                            @if ($paciente->Antecedentes()->first() != null && $paciente->Antecedentes()->first()->impedimento_donar != null)
-                                                                            <textarea id="comentarios_impedimento" class="form-control" placeholder="Impedimento para donar">{{ $paciente->Antecedentes()->first()->impedimento_donar }}</textarea>
-                                                                            @else
-                                                                            <textarea id="comentarios_impedimento" class="form-control" placeholder="Impedimento para donar"></textarea>
-                                                                            @endif
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>-->
-                                                            <div class="row">
-                                                                <div class="col-sm-12 d-flex justify-content-end">
-                                                                    <button type="button" class="btn btn-danger-light-c btn-sm mr-2"><i class="feather icon-x"></i> Cancelar</button>
-                                                                    <button type="button" onclick="editar_antecedentes_paciente({{ $paciente->id }});"class="btn btn-sm btn-info-light-c"><i class="feather icon-save"></i> Guardar cambios</button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        --}}
-                                                        <!--cierre(Editar) Sangre Donación de Organo-->
-                                                    </div>
-                                                    <!--Cierre: Datos Sangre Donación de Organos-->
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!--ATENCIÓN ESPECIALIDAD GENERAL-->
-                                        <div class="tab-pane fade " id="a-general" role="tabpanel" aria-labelledby="a-general-tab">
-                                            @include( 'app.profesional.edicion_paciente.antecedentes_paciente_dos' )
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!--CIERRE: TAB TAB DATOS MÉDICOS-->
-
-                        <!--TAB CAMBIAR CONTRASEÑAS-->
-                        <div class="tab-pane fade" id="pass" role="tabpanel" aria-labelledby="pass-tab">
-                            <div class="row">
-                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                                    <!--CARD DATOS ROMPE CLAVE-->
-                                    <div class="card">
-                                        <div class="card-header d-flex align-items-center justify-content-between bg-primary">
-                                            <h5 class="mb-0 text-white">Autorizaciones</h5>
-                                            <button type="button" class="btn btn-light btn-icon m-0 float-right" data-toggle="collapse" data-target=".rompeclave" aria-expanded="false" aria-controls="rompeclave_1 rompeclave_2">
-                                                <i class="feather icon-edit"></i>
-                                            </button>
-                                        </div>
-                                        <!--DATOS ROMPE CLAVE-->
-                                        <div class="card-body rompeclave collapse show" id="rompeclave_1">
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <form>
-                                                        <div class="form-group row">
-                                                            <div class="col-sm-10 col-form-label font-weight-bolder ml-0">¿Autoriza a que servicio de Hospitalización y/o Urgencia tenga acceso a su FMU?</div>
-                                                            @if ($paciente->auto_fmu)
-                                                                <div class="col-sm-2 my-auto ml-0 " id="txt_auto_fmu"><span class="text-success">SI</span></div>
-                                                            @else
-                                                                <div class="col-sm-2 my-auto ml-0 " id="txt_auto_fmu"><span class="text-danger">NO</span></div>
-                                                            @endif
-
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <form>
-                                                        <div class="form-group row">
-                                                            <div class="col-sm-10 col-form-label font-weight-bolder ml-0">¿Autoriza al Medico de turno de MED-SDI a dar información basica a los servicio de Hospitalización y/o Urgencia</div>
-                                                            @if ($paciente->auto_inf_turno)
-                                                                <div class="col-sm-2 my-auto ml-0 " id="txt_auto_inf_turno"><span class="text-success">SI</span></div>
-                                                            @else
-                                                                <div class="col-sm-2 my-auto ml-0 " id="txt_auto_inf_turno"><span class="text-danger">NO</span></div>
-                                                            @endif
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <form>
-                                                        <div class="form-group row">
-                                                            <div class="col-sm-10 col-form-label font-weight-bolder ml-0">¿Autoriza además entrar a datos confidenciales?</div>
-                                                            @if ($paciente->auto_inf_confd)
-                                                                <div class="col-sm-2 my-auto ml-0" id="txt_auto_info_confd"><span class="text-success">SI</span></div>
-                                                            @else
-                                                                <div class="col-sm-2 my-auto ml-0" id="txt_auto_info_confd"><span class="text-danger">NO</span></div>
-                                                            @endif
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!--CIERRE: DATOS ROMPE CLAVE-->
-                                        <!--(EDITAR)DATOS ROMPE CLAVE-->
-                                        <div class="card-body rompeclave collapse" id="rompeclave_2">
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <div class="form-group row">
-                                                        <label class="col-sm-6 col-form-label font-weight-bolder">¿Autoriza a que servicio de Hospitalización y/o Urgencia tenga acceso a su FMU?</label>
-                                                        <div class="col-sm-5 my-auto">
-                                                            @if ($paciente->auto_fmu)
-                                                                <div class="form-check form-check-inline">
-                                                                    <input class="form-check-input" type="radio" name="auto_fmu" id="auto_fmu" value="SI"  checked="checked">
-                                                                    <label class="form-check-label" for="auto_fmu">SI</label>
-                                                                </div>
-                                                                <div class="form-check form-check-inline">
-                                                                    <input class="form-check-input" type="radio" name="auto_fmu" id="auto_fmu" value="NO">
-                                                                    <label class="form-check-label" for="auto_fmu">NO</label>
-                                                                </div>
-                                                            @else
-                                                                <div class="form-check form-check-inline">
-                                                                    <input class="form-check-input" type="radio" name="auto_fmu" id="auto_fmu" value="SI">
-                                                                    <label class="form-check-label" for="auto_fmu">SI</label>
-                                                                </div>
-                                                                <div class="form-check form-check-inline">
-                                                                    <input class="form-check-input" type="radio" name="auto_fmu" id="auto_fmu" value="NO" checked="checked">
-                                                                    <label class="form-check-label" for="auto_fmu">NO</label>
-                                                                </div>
-                                                            @endif
-
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group row">
-                                                        <label class="col-sm-6 col-form-label font-weight-bolder">¿Autoriza al Medico de turno de MED-SDI a dar información basica a los servicio de Hospitalización y/o Urgencia</label>
-                                                        <div class="col-sm-5 my-auto">
-                                                            @if ($paciente->auto_inf_turno)
-                                                                <div class="form-check form-check-inline">
-                                                                    <input class="form-check-input" type="radio" name="auto_inf_turno" id="auto_inf_turno" value="SI" checked="checked">
-                                                                    <label class="form-check-label" for="auto_inf_turno">SI</label>
-                                                                </div>
-                                                                <div class="form-check form-check-inline">
-                                                                    <input class="form-check-input" type="radio" name="auto_inf_turno" id="auto_inf_turno" value="NO">
-                                                                    <label class="form-check-label" for="auto_inf_turno">NO</label>
-                                                                </div>
-                                                            @else
-                                                                <div class="form-check form-check-inline">
-                                                                    <input class="form-check-input" type="radio" name="auto_inf_turno" id="auto_inf_turno" value="SI">
-                                                                    <label class="form-check-label" for="auto_inf_turno">SI</label>
-                                                                </div>
-                                                                <div class="form-check form-check-inline">
-                                                                    <input class="form-check-input" type="radio" name="auto_inf_turno" id="auto_inf_turno" value="NO" checked="checked">
-                                                                    <label class="form-check-label" for="auto_inf_turno">NO</label>
-                                                                </div>
-                                                            @endif
-
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group row">
-                                                        <label class="col-sm-6 col-form-label font-weight-bolder">¿Autoriza además entrar a datos confidenciales?</label>
-                                                        <div class="col-sm-5 my-auto">
-                                                            @if ($paciente->auto_inf_confd)
-                                                                <div class="form-check form-check-inline">
-                                                                    <input class="form-check-input" type="radio" name="auto_inf_confd" id="auto_inf_confd" value="SI" checked="checked">
-                                                                    <label class="form-check-label" for="auto_inf_confd">SI</label>
-                                                                </div>
-                                                                <div class="form-check form-check-inline">
-                                                                    <input class="form-check-input" type="radio" name="auto_inf_confd" id="auto_inf_confd" value="NO">
-                                                                    <label class="form-check-label" for="auto_inf_confd">NO</label>
-                                                                </div>
-                                                            @else
-                                                                <div class="form-check form-check-inline">
-                                                                    <input class="form-check-input" type="radio" name="auto_inf_confd" id="auto_inf_confd" value="SI">
-                                                                    <label class="form-check-label" for="auto_inf_confd">SI</label>
-                                                                </div>
-                                                                <div class="form-check form-check-inline">
-                                                                    <input class="form-check-input" type="radio" name="auto_inf_confd" id="auto_inf_confd" value="NO" checked="checked">
-                                                                    <label class="form-check-label" for="auto_inf_confd">NO</label>
-                                                                </div>
-                                                            @endif
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                                                    <div class="alert alert-warning" role="alert">
-                                                        <p class="text-justify">Este botón autoriza a Salud Digital
-                                                            Integrada a entregar un rompe clave para que un
-                                                            <strong>PROFESIONAL DE UN SERVICIO DE URGENCIAS</strong> acceda
-                                                            a su Ficha Médica Única en el caso de que usted esé inconsciente
-                                                            o no este en condiciones de permitirlo personalmente. Tenga en
-                                                            cuenta que el acceder a sus datos médicos puede contribuir a
-                                                            salvar su vida o recuperar valiosos minutos que ayudarán en lo
-                                                            posible a disminuir las secuelas de una
-                                                            <strong>URGENCIA</strong>.
-                                                        <p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-row">
-                                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex justify-content-end">
-                                                    <button type="button" class="btn btn-sm btn-danger-light-c mr-2"><i class="feather icon-x"></i> Cancelar</button>
-                                                    <button type="button" class="btn btn-sm btn-info-light-c" onclick="registrar_autorizaciones();"><i class="feather icon-save"></i> Guardar cambios</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!--CIERRE: (EDITAR) ROMPE CLAVE-->
-                                    </div>
-                                    <!--CIERRE: CARD ROMPE CLAVE-->
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                                    <!--CARD CONTRASEÑA PERSONAL-->
-                                    <div class="card">
-                                        <div class="card-header d-flex align-items-center justify-content-between bg-info">
-                                            <h5 class="mb-0 text-white">Contraseña personal</h5>
-                                            <button type="button" class="btn btn-light btn-icon m-0 float-right" data-toggle="collapse" data-target=".pass_personal" aria-expanded="false" aria-controls="pass_personal_1 pass_personal_2">
-                                                <i class="feather icon-edit"></i>
-                                            </button>
-                                        </div>
-                                        <!--CONTRASEÑA PERSONAL-->
-                                        <div class="card-body pass_personal collapse show" id="pass_personal_1">
-                                            <form >
-                                                <div class="form-row">
-                                                    <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                                                        <label class="font-weight-bolder ml-0 mb-0">Contraseña actual</label>
-                                                        <div> •••••••• </div>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                        <!--CIERRE: CONTRASEÑA PERSONAL-->
-                                        <!--(EDITAR)CONTRASEÑA PERSONAL-->
-                                        <div class="card-body border-top pass_personal collapse" id="pass_personal_2">
-                                            <form method="get" action="{{ route('perfil.cambio_contrasena')}}">
-                                                @csrf
-                                                <input type="hidden" name="contrasena_mail" id="contrasena_mail" value="{{ Auth::user()->email }}">
-                                                <div class="form-row">
-                                                    <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                                                        <label class="floating-label-activo">Contraseña actual</label>
-                                                        <input type="text" class="form-control form-control-sm" id="contrasena_actual" name="contrasena_actual">
-                                                    </div>
-                                                    <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                                                        <label class="floating-label-activo">Nueva contraseña</label>
-                                                        <input type="text" class="form-control form-control-sm" id="password_registro" name="password_registro">
-                                                    </div>
-                                                    <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                                                        <label class="floating-label-activo">Repita nueva contraseña</label>
-                                                        <input type="text" class="form-control form-control-sm" id="password_confirmacion_registro" name="password_confirmacion_registro">
-                                                    </div>
-                                                </div>
-                                                <div class="form-row">
-                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex justify-content-end">
-                                                        <button type="button" class="btn btn-sm btn-danger-light-c mr-2"><i class="feather icon-x"></i> Cancelar</button>
-                                                        <button type="submit" class="btn btn-sm btn-info-light-c"><i class="feather icon-save"></i> Guardar cambios</button>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                        <!--CIERRE: (EDITAR)CONTRASEÑA PERSONAL-->
-                                    </div>
-                                    <!--CIERRE: CARD CONTRASEÑA PERSONAL-->
-                                </div>
-                                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                                    <!--CARD CONTRASEÑA CONFIDENCIAL-->
-                                    <div class="card">
-                                        <div class="card-header d-flex align-items-center justify-content-between bg-danger">
-                                            <h5 class="mb-0 text-white">Contraseña confidencial</h5>
-                                            <button type="button" class="btn btn-light btn-icon m-0 float-right" data-toggle="collapse" data-target=".pass_confidencial" aria-expanded="false" aria-controls="pass_confidencial_1 pass_confidencial_2">
-                                                <i class="feather icon-edit"></i>
-                                            </button>
-                                        </div>
-                                        <!--CONTRASEÑA CONFIDENCIAL-->
-                                        <div class="card-body pass_confidencial collapse show" id="pass_confidencial_1">
-                                            <form>
-                                                <div class="form-row">
-                                                    <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                                                        <label class="font-weight-bolder ml-0 mb-0">Contraseña actual</label>
-                                                        <div> •••••••• </div>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                        <!--CIERRE: CONTRASEÑA CONFIDENCIAL-->
-                                        <!--(EDITAR)CONTRASEÑA CONFIDENCIAL-->
-                                        <div class="card-body pass_confidencial collapse" id="pass_confidencial_2">
-                                            <form>
-                                                <div class="form-row">
-                                                    <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                                                        <label class="floating-label-activo">Contraseña actual</label>
-                                                        <input type="text" class="form-control form-control-sm" id="" name="">
-                                                    </div>
-                                                    <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                                                        <label class="floating-label-activo">Nueva contraseña</label>
-                                                        <input type="text" class="form-control form-control-sm" id="" name="">
-                                                    </div>
-                                                    <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                                                        <label class="floating-label-activo">Repita nueva contraseña</label>
-                                                        <input type="text" class="form-control form-control-sm" id="" name="">
-                                                    </div>
-                                                </div>
-                                                <div class="form-row">
-                                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex justify-content-end">
-                                                        <button type="submit" class="btn btn-sm btn-danger-light-c mr-2"><i class="feather icon-x"></i> Cancelar</button>
-                                                        <button type="submit" class="btn btn-sm btn-info-light-c"><i class="feather icon-save"></i> Guardar cambios</button>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                        <!--CIERRE: (EDITAR)CONTRASEÑA CONFIDENCIAL-->
-                                    </div>
-                                    <!--CIERRE: CARD CONTRASEÑA CONFIDENCIAL-->
-                                </div>
-                            </div>
-                        </div>
-                        <!--CIERRE: TAB CAMBIAR CONTRASEÑAS-->
+                        <!--CIERRE: PLAN Y FACTURACIÓN-->
                     </div>
                 </div>
             </div>

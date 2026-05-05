@@ -16,21 +16,14 @@
 
                     <div class="col-md-12">
 
-                        <div class="page-header-title">
+                        <div class="page-header-title pt-2">
 
-                            <h5 class="m-b-10 font-weight-bold">Escritorio de {{ $mascota->nombres ?? $mascota->nombre }}</h5>
+                            <h4 class="font-weight-bold text-white mb-0">Escritorio de <span class="text-capitalize">{{ $mascota->nombres ?? $mascota->nombre }}</span></h4>
+                            <p class="text-white">Toda su información veterinaria en un solo lugar</p>
+                              <a class="btn btn-outline-light btn-xxs mt-3" href="{{ ROUTE('paciente.dependiente.home', ['id_dependiente_activo'=> $mascota->id]) }}"><i class="feather icon-home"></i> Volver al Inicio </a>
 
                         </div>
 
-                        <ul class="breadcrumb">
-
-                            <li class="breadcrumb-item">
-
-                                <a href="{{ ROUTE('paciente.dependiente.home', ['id_dependiente_activo'=> $mascota->id]) }}">Mi Escritorio </a>
-
-                            </li>
-
-                        </ul>
 
                     </div>
 
@@ -320,7 +313,7 @@
 
         <!--Cierre: Botones acceso examenes y profesional no inscrito-->
 
-        <!--Row Botones-->
+        <!--Row Botones
 
         <div class="row">
 
@@ -374,7 +367,7 @@
 
         </div>
 
-        <!--Cierre: Row Botones-->
+        Cierre: Row Botones-->
 
     </div>
 

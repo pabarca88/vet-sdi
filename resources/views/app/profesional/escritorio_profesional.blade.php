@@ -5,24 +5,26 @@
     <div class="pcoded-main-container">
         <div class="pcoded-content">
             <!--Header-->
-            <div class="page-header">
-                <div class="page-block">
-                    <div class="row align-items-center">
-                        <div class="col-md-12">
-                            <div class="page-header-title">
-                            </div>
-                            <ul class="breadcrumb">
-                                <li class="breadcrumb-item mt-4">
-                                    <a href="#">Escritorio profesional</a>
-                                </li>
-                            </ul>
+             <div class="page-header">
+            <div class="page-block">
+                <div class="row align-items-center">
+                    <div class="col-md-12">
+                        <div class="page-header-title mt-3">
+                            <h4 class="m-b-10 font-weight-bold text-white">Hola, {{ $profesional->nombre }}</h4>
+                            <p class="text-white">Bienvenido/a a tu escritorio, todo lo que necesitas para tu práctica diaria.</p>
                         </div>
+                        <!--<ul class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="{{ ROUTE('paciente.home') }}">Bienvenido/a a tu escritorio de cuidado de mascotas</a>
+                            </li>
+                        </ul>-->
                     </div>
                 </div>
             </div>
+        </div>
             <!--Cierre: Header-->
             <!--Botones superiores-->
-            <div class="row mb-3">
+            <div class="row mt-n3 mb-3">
                 <div class="col-md-12">
                     <div class="card-deck">
                         <div class="card subir">
@@ -38,7 +40,7 @@
                             <a href="{{ route('profesional.pacientes') }}">
                                 <div class="card-body text-center px-2" style="cursor:pointer">
                                     <img class="wid-40 text-center" src="{{ asset('images/iconos/mascotas.svg') }}">
-                                    <h6 class="mt-1">Responsables de<br>mis mascotas</h6>
+                                    <h6 class="mt-1">Mascotas y responsables</h6>
                                 </div>
                             </a>
                         </div>
