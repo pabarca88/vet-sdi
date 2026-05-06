@@ -118,14 +118,18 @@ class RecomendacionController extends Controller
 
                 $token_doc_temp = (object)CertificadoController::certificadoDocumento((int)$atencion, (int)$aficionado, (int)$activo, 1, $registro->id);
                 $token_doc = $token_doc_temp->certificado;
+                $token_auto_firma = !empty(session('lic_token')) ? session('lic_token') : $cod_auto;
+                if(empty($token_auto_firma))
+                    $token_auto_firma = $token_doc;
 
                 $registro_2 = Recomendacion::find($registro->id);
                 $registro_2->cod_doc = $token_doc;
+                $registro_2->cod_auto = $token_auto_firma;
                 $registro_2->save();
 
                 /** REGISTRAR FIRMA PROFESIONAL */
-                $papeleria_token = session('lic_token');
-                $papeleria_log_id = session('lic_log_id');
+                $papeleria_token = $token_auto_firma;
+                $papeleria_log_id = !empty(session('lic_log_id')) ? session('lic_log_id') : 0;
                 $prof_firma_registro = (object)CertificadoController::registroProfesionalFirma((int)$aficionado, $papeleria_token, $papeleria_log_id, "1", $registro->id);
 
             }

@@ -1,4 +1,8 @@
-<div id="indicar_examenes" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal_indicar_examen"
+@php
+    $modalIndicarExamenesId = $modalIndicarExamenesId ?? 'indicar_examenes';
+@endphp
+
+<div id="{{ $modalIndicarExamenesId }}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal_indicar_examen"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg"  data-backdrop="static" tabindex="-1" aria-labelledby="staticBackdropLabel" role="document">
         <div class="modal-content">
@@ -135,21 +139,167 @@
 </div>
 
 <script>
-    function indicar_examen_cirugia_d() {
+    function obtenerPrioridadTexto(prioridad) {
+        var prioridades = {
+            1: 'Baja',
+            2: 'Media',
+            3: 'Alta',
+            4: 'Urgente'
+        };
 
-        var tipo_examen = $("#tipo_examen_d option:selected").text();
-        var id_tipo_examen = $("#tipo_examen_d").val();
-        var sub_tipo_examen = $("#sub_tipo_examen_d option:selected").text();
-        var id_sub_tipo_examen = $("#sub_tipo_examen_d").val();
-        var examen = $("#examen_d option:selected").text();
-        var id_examen = $("#examen_d").val();
-        var prioridad = $("#prioridad_d option:selected").text();
-        var lado = $("#lado_d option:selected").text();
+        if (prioridades[prioridad]) {
+            return prioridades[prioridad];
+        }
+
+        return prioridad || 'Media';
+    }
+
+    function normalizarExamenModal(item, index) {
+        var examen = item && item.datos_examen ? item.datos_examen : item || {};
+        var fecha = item && item.fecha ? item.fecha : '';
+        var hora = item && item.hora ? item.hora : '';
+        var responsable = item && item.responsable ? item.responsable : '';
+        var textoContraste = examen.imagenologia_con_contraste_d || item.con_contraste_texto || 'N/C';
+
+        if (textoContraste === 'N/C' && (examen.imagenologia_con_contraste || item.con_contraste == 1)) {
+            textoContraste = 'Con Contraste';
+        }
+
+        if (!fecha && item && item.created_at) {
+            var fechaCreacion = new Date(item.created_at);
+            if (!Number.isNaN(fechaCreacion.getTime())) {
+                fecha = fechaCreacion.toLocaleDateString('es-CL');
+                hora = fechaCreacion.toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit', hour12: false });
+            }
+        }
+
+        if (!fecha && item && item.id) {
+            fecha = 'Generado';
+        }
+
+        if (!responsable && item && item.id) {
+            responsable = 'Registrado';
+        }
+
+        return {
+            uid: item.uid || ('examen-modal-' + index + '-' + (item.id || examen.id_examen || Date.now())),
+            id: item.id || null,
+            id_examen: examen.id_examen || item.id_examen || '',
+            nombre_examen: examen.examen || item.examen || item.nombre_examen || '',
+            lado: examen.lado || item.otro || item.lado || '',
+            tipo: examen.tipo_examen || item.tipo_examen || item.tipo || '',
+            prioridad: obtenerPrioridadTexto(examen.prioridad || item.prioridad || item.id_prioridad),
+            con_contraste: textoContraste,
+            fecha: fecha,
+            hora: hora,
+            responsable: responsable
+        };
+    }
+
+    function obtenerExamenesModal() {
+        return getModalIndicarExamenesRoot().data('examenesSolicitados') || [];
+    }
+
+    function guardarExamenesModal(examenes) {
+        getModalIndicarExamenesRoot().data('examenesSolicitados', examenes);
+    }
+
+    function getModalIndicarExamenesRoot() {
+        var modalSelector = window.modalIndicarExamenesId || '#{{ $modalIndicarExamenesId }}';
+        return $(modalSelector);
+    }
+
+    function getTablaExamenesCirugiaD() {
+        return getModalIndicarExamenesRoot().find('#tabla_examen_cirugia_d');
+    }
+
+    function getTablaExamenesCirugiaDDataTable() {
+        var $table = getTablaExamenesCirugiaD();
+
+        if (!$table.length) {
+            return null;
+        }
+
+        if ($.fn.DataTable.isDataTable($table[0])) {
+            return $table.DataTable();
+        }
+
+        return $table.DataTable({
+            paging: false,
+            info: false,
+            searching: true,
+            ordering: false,
+            responsive: true,
+            autoWidth: false,
+            language: {
+                lengthMenu: "Mostrar _MENU_ registros por página",
+                zeroRecords: "No se encontraron resultados",
+                info: "Mostrando la página _PAGE_ de _PAGES_",
+                infoEmpty: "No hay registros disponibles",
+                infoFiltered: "(filtrando de _MAX_ registros)",
+                search: "Buscar:",
+                paginate: {
+                    first: "Primero",
+                    last: "Último",
+                    next: "Siguiente",
+                    previous: "Anterior"
+                }
+            }
+        });
+    }
+
+    function renderExamenesCirugiaTablaD(examenes, mensaje) {
+        var $table = getTablaExamenesCirugiaD();
+        var table = getTablaExamenesCirugiaDDataTable();
+        var registros = Array.isArray(examenes) ? examenes.map(normalizarExamenModal) : [];
+
+        if (!table || !$table.length) {
+            console.error('No se encontró la tabla de exámenes del modal activo.');
+            return;
+        }
+
+        guardarExamenesModal(registros);
+        table.clear();
+
+        if (!registros.length) {
+            table.draw();
+            $table.find('tbody').html(
+                '<tr class="examenes_sin_registros"><td class="text-center align-middle" colspan="7">' + (mensaje || 'No se han agregado Examenes a esta Ficha.') + '</td></tr>'
+            );
+            return;
+        }
+
+        registros.forEach(function(resp, index) {
+            table.row.add([
+                `${resp.fecha || ''} ${resp.hora || ''} <br> ${resp.responsable || ''}`,
+                resp.nombre_examen || '',
+                resp.lado || '',
+                resp.tipo || '',
+                resp.prioridad || '',
+                resp.con_contraste || 'N/C',
+                `<div class="btn btn-danger btn_remove btn-sm" onclick="quitarExamenDelModal('${resp.uid}', ${index});"><i class="fas fa-trash"></i></div>`
+            ]);
+        });
+
+        table.draw(false);
+    }
+
+    function indicar_examen_cirugia_d() {
+        var $modal = getModalIndicarExamenesRoot();
+
+        var tipo_examen = $modal.find("#tipo_examen_d option:selected").text();
+        var id_tipo_examen = $modal.find("#tipo_examen_d").val();
+        var sub_tipo_examen = $modal.find("#sub_tipo_examen_d option:selected").text();
+        var id_sub_tipo_examen = $modal.find("#sub_tipo_examen_d").val();
+        var examen = $modal.find("#examen_d option:selected").text();
+        var id_examen = $modal.find("#examen_d").val();
+        var prioridad = $modal.find("#prioridad_d option:selected").text();
+        var lado = $modal.find("#lado_d option:selected").text();
         var id_paciente = $('#id_paciente').val();
         var id_ficha_atencion = $('#id_fc').val();
 
         var imagenologia_con_contraste_d = 'N/C';
-        if($('#imagenologia_con_contraste_d').is(':checked'))
+        if($modal.find('#imagenologia_con_contraste_d').is(':checked'))
             imagenologia_con_contraste_d = 'Con Contraste';
 
         var valido = 0;
@@ -174,64 +324,24 @@
 
 
         if (valido == 0) {
-            let data = {
-                tipo_examen: tipo_examen,
-                id_tipo_examen: id_tipo_examen,
-                sub_tipo_examen: sub_tipo_examen,
-                id_sub_tipo_examen: id_sub_tipo_examen,
-                examen: examen,
+            var examenesActuales = obtenerExamenesModal();
+
+            examenesActuales.push(normalizarExamenModal({
+                uid: 'draft-' + Date.now(),
                 id_examen: id_examen,
+                nombre_examen: examen,
+                examen: examen,
+                lado: lado === 'Seleccione' ? '' : lado,
+                tipo: tipo_examen,
+                tipo_examen: tipo_examen,
                 prioridad: prioridad,
-                lado: lado,
-                id_paciente: id_paciente,
-                id_ficha_atencion: id_ficha_atencion,
-                imagenologia_con_contraste_d: imagenologia_con_contraste_d,
-                _token: "{{ csrf_token() }}"
-            }
+                con_contraste_texto: imagenologia_con_contraste_d,
+                responsable: 'Pendiente',
+                fecha: 'Pendiente',
+                hora: '',
+            }, examenesActuales.length));
 
-            var url = "{{ route('examen.indicar_examen_cirugia') }}";
-            $.ajax({
-                    url: url,
-                    type: "post",
-                    data: data,
-                    dataType: "json",
-                })
-                .done(function(data) {
-                    console.log(data);
-                    if (data.estado == 'success') {
-                        let examenes = data.examenes;
-                        // Obtén la instancia de DataTables
-                        var table = $('#tabla_examen_cirugia_d').DataTable();
-
-                        // Limpia los datos de la tabla
-                        table.clear();
-
-                        // Agrega las nuevas filas
-                        examenes.forEach(function(resp) {
-                            let examen = resp.datos_examen;
-                            table.row.add([
-                                `${resp.fecha} ${resp.hora} <br> ${resp.responsable}`,
-                                examen.examen,
-                                examen.lado,
-                                examen.tipo_examen,
-                                examen.prioridad,
-                                examen.imagenologia_con_contraste_d ? $examen.imagenologia_con_contraste_d : 'N/C',
-                                `<div class="btn btn-danger btn_remove btn-sm" onclick="eliminar_examen_cirugia_d(${resp.id});"><i class="fas fa-trash"></i></div>`
-                            ]).draw(false); // Redibuja la tabla sin reiniciar la paginación
-                        });
-                    } else {
-                        swal({
-                            title: "Ingreso de examen(es).",
-                            text: data.mensaje,
-                            icon: "error",
-                            buttons: "Aceptar",
-                            //SuccessMode: true,
-                        });
-                    }
-                })
-                .fail(function(jqXHR, ajaxOptions, thrownError) {
-                    console.log(jqXHR, ajaxOptions, thrownError)
-                });
+            renderExamenesCirugiaTablaD(examenesActuales, 'Examen agregado correctamente.');
         }else{
             swal({
                 title: "Ingreso de examen(es).",
@@ -276,13 +386,25 @@
 
 
 
-        $("#tipo_examen_d").val('');
-        $("#sub_tipo_examen_d").val('');
-        $("#examen_d").val('');
-        $("#prioridad_d").val(2);
-        $('#imagenologia_con_contraste_d').prop('checked', false);
-        $('#mensaje_imagenologia_con_contraste_d').hide();
-        $("#lado_d").val(0);
+        $modal.find("#tipo_examen_d").val('');
+        $modal.find("#sub_tipo_examen_d").val('');
+        $modal.find("#examen_d").val('');
+        $modal.find("#prioridad_d").val(2);
+        $modal.find('#imagenologia_con_contraste_d').prop('checked', false);
+        $modal.find('#mensaje_imagenologia_con_contraste_d').hide();
+        $modal.find("#lado_d").val(0);
+    }
+
+    function quitarExamenDelModal(uid, index){
+        var examenesActuales = obtenerExamenesModal().filter(function(examenActual, examenIndex) {
+            if (uid) {
+                return examenActual.uid !== uid;
+            }
+
+            return examenIndex !== index;
+        });
+
+        renderExamenesCirugiaTablaD(examenesActuales, 'No se han agregado Examenes a esta Ficha.');
     }
 
     function eliminar_examen_cirugia_d(id){
@@ -293,7 +415,7 @@
             buttons: ["Cancelar", 'Aceptar'],
         }).then((result) => {
             if (result == true) {
-                eliminar_examen_cirugia_ajax_d(id);
+                quitarExamenDelModal(id, null);
             } else {
                 console.log('regresar');
             }
@@ -303,62 +425,6 @@
     }
 
     function eliminar_examen_cirugia_ajax_d(id){
-        var url = "{{ route('examen.eliminar_examen_cirugia') }}";
-        var id_paciente = $('#id_paciente').val();
-        var id_ficha_atencion = $('#id_fc').val();
-        $.ajax({
-                url: url,
-                type: "post",
-                data: {
-                    id: id,
-                    id_paciente: id_paciente,
-                    id_ficha_atencion: id_ficha_atencion,
-                    _token: "{{ csrf_token() }}"
-                },
-                dataType: "json",
-            })
-            .done(function(data) {
-                console.log(data);
-                if (data.estado == 'success') {
-                    let examenes = data.examenes;
-                    var table = $('#tabla_examen_cirugia_d').DataTable();
-
-
-                    // Limpia los datos de la tabla
-                    table.clear().draw();
-                    console.log(examenes.length);
-                    // Agrega las nuevas filas
-                    examenes.forEach(function(resp) {
-                        let examen = resp.datos_examen;
-                        table.row.add([
-                            `${resp.fecha} ${resp.hora} <br> ${resp.responsable}`,
-                            examen.examen,
-                            examen.lado,
-                            examen.tipo_examen,
-                            examen.prioridad,
-                            examen.imagenologia_con_contraste_d ? examen.imagenologia_con_contraste_d : 'N/C',
-                            `<div class="btn btn-danger btn_remove btn-sm" onclick="eliminar_examen_cirugia_d(${resp.id});"><i class="fas fa-trash"></i></div>`
-                        ]).draw(false); // Redibuja la tabla sin reiniciar la paginación
-                    });
-                    swal({
-                        title: "Ingreso de examen(es).",
-                        text: data.mensaje,
-                        icon: "success",
-                        buttons: "Aceptar",
-                        //SuccessMode: true,
-                    })
-                } else {
-                    swal({
-                        title: "Ingreso de examen(es).",
-                        text: data.mensaje,
-                        icon: "error",
-                        buttons: "Aceptar",
-                        //SuccessMode: true,
-                    });
-                }
-            })
-            .fail(function(jqXHR, ajaxOptions, thrownError) {
-                console.log(jqXHR, ajaxOptions, thrownError)
-            });
+        quitarExamenDelModal(id, null);
     }
 </script>
