@@ -118,8 +118,9 @@
                                                             data-galeria='@json($galeriaMascota)'>
                                                             <i class="feather icon-eye"></i> Ver mascota
                                                         </button>
-                                                        <button type="button" class="btn btn-purple btn-xxs"><i class="feather icon-file-text"></i> Ver ficha veterinaria
-                                                        </button>
+                                                        <a href="{{ route('profesional.mascota.ficha_veterinaria', ['mascota' => $mascota->id]) }}"
+                                                            class="btn btn-purple btn-xxs"><i class="feather icon-file-text"></i> Ver ficha veterinaria
+                                                        </a>
                                                     </td>
                                                 </tr>
                                             @empty

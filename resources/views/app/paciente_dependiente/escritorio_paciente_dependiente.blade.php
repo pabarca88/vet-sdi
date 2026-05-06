@@ -20,7 +20,7 @@
 
                             <h4 class="font-weight-bold text-white mb-0">Escritorio de <span class="text-capitalize">{{ $mascota->nombres ?? $mascota->nombre }}</span></h4>
                             <p class="text-white">Toda su información veterinaria en un solo lugar</p>
-                              <a class="btn btn-outline-light btn-xxs mt-3" href="{{ ROUTE('paciente.dependiente.home', ['id_dependiente_activo'=> $mascota->id]) }}"><i class="feather icon-home"></i> Volver al Inicio </a>
+                              <a class="btn btn-outline-light btn-xxs mt-3" href="{{ ROUTE('paciente.home') }}"><i class="feather icon-home"></i> Volver al Inicio </a>
 
                         </div>
 

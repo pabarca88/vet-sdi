@@ -1155,6 +1155,10 @@ Route::group([
 
     Route::post('ver_ficha_atencion', [App\Http\Controllers\EscritorioProfesional::class, 'ver_ficha_atencion'])->name('profesional.ver_ficha_atencion');
 
+    Route::get('mascotas/{mascota}/ficha-veterinaria', [App\Http\Controllers\EscritorioProfesional::class, 'verFichaVeterinariaMascota'])
+        ->whereNumber('mascota')
+        ->name('profesional.mascota.ficha_veterinaria');
+
 
 
      /** ANTECEDENTES MEDICOS DEL PACIENTE  */

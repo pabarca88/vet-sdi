@@ -16,6 +16,7 @@ use App\Models\Bancos;
 use Carbon\Carbon;
 use App\Models\CertificadoReposo;
 use App\Models\Ciudad;
+use App\Models\ConConsentimientosPcte;
 use App\Models\ContactoEmergencia;
 use App\Models\ControlObesidad;
 use App\Models\ControlNutricion;
@@ -1334,6 +1335,160 @@ class EscritorioProfesional extends Controller
                 'region' => $region
             ]
         );
+    }
+
+    public function verFichaVeterinariaMascota($idMascota)
+    {
+        $profesional = Profesional::where('id_usuario', Auth::user()->id)->first();
+        if (!$profesional) {
+            return back()->with('error', 'Profesional no encontrado');
+        }
+
+        $mascota = Mascota::with(['Responsable.Prevision', 'especieMascota', 'razaMascota', 'tamanoMascota'])
+            ->where('id', $idMascota)
+            ->first();
+
+        if (!$mascota) {
+            return back()->with('error', 'Mascota no encontrada');
+        }
+
+        $tieneAcceso = FichaAtencion::where('id_profesional', $profesional->id)
+            ->where('id_mascota', $mascota->id)
+            ->exists();
+
+        if (!$tieneAcceso) {
+            return back()->with('error', 'No tienes acceso a la ficha veterinaria de esta mascota');
+        }
+
+        $responsable = $mascota->Responsable;
+        if (!$responsable) {
+            return back()->with('error', 'Responsable de la mascota no encontrado');
+        }
+
+        $datosFvu = $this->buildVeterinaryRecordDataProfesional($mascota, $responsable);
+
+        return view('app.profesional.ficha_veterinaria_unica', array_merge($datosFvu, [
+            'paciente' => $mascota,
+            'responsable' => $responsable,
+            'mascota' => $mascota,
+            'profesional' => $profesional,
+        ]));
+    }
+
+    private function buildVeterinaryRecordDataProfesional(Mascota $mascota, Paciente $responsable): array
+    {
+        $fichas = FichaAtencion::with(['Profesional', 'LugarAtencion', 'PresupuestosMascota'])
+            ->where('id_mascota', $mascota->id)
+            ->where('id_paciente', $responsable->id)
+            ->orderByDesc('created_at')
+            ->orderByDesc('id')
+            ->get();
+
+        $fichaIds = $fichas->pluck('id')->filter()->values();
+
+        $documentosConsentimiento = $fichaIds->isEmpty()
+            ? collect()
+            : ConConsentimientosPcte::with('Consentimiento')
+                ->whereIn('id_fc', $fichaIds)
+                ->orderByDesc('id')
+                ->get()
+                ->map(function ($documento) {
+                    return [
+                        'tipo' => 'Consentimiento informado',
+                        'nombre' => optional($documento->Consentimiento)->nombre ?: 'Consentimiento informado',
+                        'fecha' => $documento->fecha_cons ?: optional($documento->created_at)->format('Y-m-d'),
+                        'estado' => $documento->confirmacion,
+                    ];
+                });
+
+        $documentosPresupuesto = $fichas->flatMap(function ($ficha) {
+            return $ficha->PresupuestosMascota->map(function ($presupuesto) {
+                return [
+                    'tipo' => 'Presupuesto',
+                    'nombre' => 'Presupuesto veterinario',
+                    'fecha' => optional($presupuesto->fecha)->format('Y-m-d')
+                        ?: optional($presupuesto->created_at)->format('Y-m-d'),
+                    'estado' => $presupuesto->estado ?? null,
+                ];
+            });
+        });
+
+        $documentos = $documentosConsentimiento
+            ->merge($documentosPresupuesto)
+            ->sortByDesc(function ($documento) {
+                return $documento['fecha'] ?: '1900-01-01';
+            })
+            ->values();
+
+        return [
+            'responsable_mascota' => $responsable,
+            'galeria_mascota' => $this->extractGalleryUrlsProfesional($mascota->galeria),
+            'vacunas_fvu' => collect($this->normalizePetRecordsProfesional($mascota->vacunas_registro))
+                ->sortByDesc('fecha_dosis')
+                ->values(),
+            'desparasitaciones_fvu' => collect($this->normalizePetRecordsProfesional($mascota->desparasitaciones_registro))
+                ->sortByDesc('fecha_dosis')
+                ->values(),
+            'fichas_veterinarias' => $fichas,
+            'documentos_mascota' => $documentos,
+        ];
+    }
+
+    private function normalizePetRecordsProfesional($records): array
+    {
+        if (empty($records)) {
+            return [];
+        }
+
+        if (is_string($records)) {
+            $decoded = json_decode($records, true);
+            $records = is_array($decoded) ? $decoded : [];
+        }
+
+        if (!is_array($records)) {
+            return [];
+        }
+
+        return array_values(array_filter($records, function ($item) {
+            return is_array($item);
+        }));
+    }
+
+    private function extractGalleryUrlsProfesional($gallery): array
+    {
+        if (empty($gallery)) {
+            return [];
+        }
+
+        if (is_string($gallery)) {
+            $decoded = json_decode($gallery, true);
+            $gallery = is_array($decoded) ? $decoded : [$gallery];
+        }
+
+        if (!is_array($gallery)) {
+            return [];
+        }
+
+        $urls = [];
+
+        foreach ($gallery as $item) {
+            if (is_string($item) && trim($item) !== '') {
+                $urls[] = trim($item);
+                continue;
+            }
+
+            if (!is_array($item)) {
+                continue;
+            }
+
+            foreach (['url', 'src', 'original'] as $key) {
+                if (!empty($item[$key])) {
+                    $urls[] = $item[$key];
+                }
+            }
+        }
+
+        return array_values(array_unique(array_filter($urls)));
     }
 
     public function buscar_evaluaciones_especialidad(Request $req){
