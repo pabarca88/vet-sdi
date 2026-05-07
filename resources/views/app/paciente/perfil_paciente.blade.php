@@ -1,5 +1,13 @@
 @extends('template.paciente.template')
 @section('content')
+    @php
+        $fotoPerfilPaciente = asset('images/iconos/usuario.svg');
+        if (!empty($paciente->foto_perfil)) {
+            $fotoPerfilPaciente = \Illuminate\Support\Str::startsWith($paciente->foto_perfil, ['http://', 'https://', '/'])
+                ? $paciente->foto_perfil
+                : asset('storage/' . $paciente->foto_perfil);
+        }
+    @endphp
     <!--Container Completo-->
     <div class="pcoded-main-container">
         <div class="pcoded-content">
@@ -38,7 +46,7 @@
                                                     <img
                                                         class="img-radius img-fluid wid-100 patient-profile-photo"
                                                         id="patient-profile-image"
-                                                        src="{{ $paciente->foto_perfil ? asset('storage/' . $paciente->foto_perfil) : asset('images/iconos/usuario.svg') }}"
+                                                        src="{{ $fotoPerfilPaciente }}"
                                                         alt="Imagen de perfil">
                                                 </div>
                                                 <div class="overlay">
@@ -283,8 +291,8 @@
                                                 <hr>
                                                 <div class="form-row">
                                                     <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex justify-content-end">
-                                                        <button type="button" class="btn btn-sm btn-danger mr-2"><i class="feather icon-x"></i> Cancelar</button>
-                                                        <button type="submit" class="btn btn-sm btn-info"><i class="feather icon-save"></i> Guardar cambios</button>
+                                                        <button type="button" class="btn btn-sm btn-danger mr-2" onclick="location.reload();"><i class="feather icon-x"></i> Cancelar</button>
+                                                        <button type="button" onclick="guardar_perfil_paciente();" class="btn btn-sm btn-info"><i class="feather icon-save"></i> Guardar cambios</button>
                                                     </div>
                                      
                                                 </div>
@@ -490,26 +498,26 @@
                                                         <!--CIERRE: CONTRASEÑA PERSONAL-->
                                                         <!--(EDITAR)CONTRASEÑA PERSONAL-->
                                                         <div class="card-body border-top pass_personal collapse" id="pass_personal_2">
-                                                            <form method="get" action="{{ route('perfil.cambio_contrasena')}}">
+                                                            <form onsubmit="event.preventDefault(); cambiar_contrasena_perfil();">
                                                                 @csrf
                                                                 <input type="hidden" name="contrasena_mail" id="contrasena_mail" value="{{ Auth::user()->email }}">
                                                                 <div class="form-row">
                                                                     <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12">
                                                                         <label class="floating-label-activo">Contraseña actual</label>
-                                                                        <input type="text" class="form-control form-control-sm" id="contrasena_actual" name="contrasena_actual">
+                                                                        <input type="password" class="form-control form-control-sm" id="contrasena_actual" name="contrasena_actual">
                                                                     </div>
                                                                     <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12">
                                                                         <label class="floating-label-activo">Nueva contraseña</label>
-                                                                        <input type="text" class="form-control form-control-sm" id="password_registro" name="password_registro">
+                                                                        <input type="password" class="form-control form-control-sm" id="password_registro" name="password_registro">
                                                                     </div>
                                                                     <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12">
                                                                         <label class="floating-label-activo">Repita nueva contraseña</label>
-                                                                        <input type="text" class="form-control form-control-sm" id="password_confirmacion_registro" name="password_confirmacion_registro">
+                                                                        <input type="password" class="form-control form-control-sm" id="password_confirmacion_registro" name="password_confirmacion_registro">
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-row">
                                                                     <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex justify-content-end">
-                                                                        <button type="button" class="btn btn-sm btn-danger mr-2"><i class="feather icon-x"></i> Cancelar</button>
+                                                                        <button type="button" class="btn btn-sm btn-danger mr-2" onclick="$('#contrasena_actual, #password_registro, #password_confirmacion_registro').val('');"><i class="feather icon-x"></i> Cancelar</button>
                                                                         <button type="submit" class="btn btn-sm btn-info"><i class="feather icon-save"></i> Guardar cambios</button>
                                                                     </div>
                                                                 </div>
@@ -1215,6 +1223,58 @@
 
         };
 
+        function guardar_perfil_paciente() {
+            let url = "{{ route('paciente.perfil.guardar') }}";
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    _token: CSRF_TOKEN,
+                    perfil_nombre: $('#perfil_nombre').val(),
+                    perfil_apellido_uno: $('#perfil_apellido_uno').val(),
+                    perfil_apellido_dos: $('#perfil_apellido_dos').val(),
+                    perfil_sexo: $('input[name="perfil_sexo"]:checked').val(),
+                    perfil_nac: $('#perfil_nac').val(),
+                    perfil_email: $('#Perfil_email').val(),
+                    perfil_fono: $('#Perfil_fono').val(),
+                    perfil_dire: $('#perfil_dire').val(),
+                    perfil_numero_dir: $('#perfil_numero_dir').val(),
+                    perfil_region: $('#perfil_region').val(),
+                    perfil_ciudad: $('#perfil_ciudad').val(),
+                },
+            })
+            .done(function(response) {
+                swal({
+                    title: "Perfil actualizado",
+                    text: response.message || "Los datos se guardaron correctamente.",
+                    icon: "success",
+                    buttons: "Aceptar",
+                });
+
+                setTimeout(function() {
+                    location.reload();
+                }, 1500);
+            })
+            .fail(function(jqXHR) {
+                let mensaje = "No fue posible guardar el perfil.";
+
+                if (jqXHR.responseJSON && jqXHR.responseJSON.message) {
+                    mensaje = jqXHR.responseJSON.message;
+                } else if (jqXHR.responseJSON && jqXHR.responseJSON.errors) {
+                    mensaje = Object.values(jqXHR.responseJSON.errors).flat().join('\n');
+                }
+
+                swal({
+                    title: "Error al guardar",
+                    text: mensaje,
+                    icon: "error",
+                    buttons: "Aceptar",
+                });
+            });
+        }
+
         function editar_paciente_datos_residencia() {
 
             // let id_paciente = id;
@@ -1361,6 +1421,48 @@
                 })
 
         };
+
+        function cambiar_contrasena_perfil() {
+            let url = "{{ route('paciente.perfil.cambiar_contrasena') }}";
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    _token: CSRF_TOKEN,
+                    contrasena_actual: $('#contrasena_actual').val(),
+                    password_registro: $('#password_registro').val(),
+                    password_confirmacion_registro: $('#password_confirmacion_registro').val(),
+                },
+            })
+            .done(function(response) {
+                swal({
+                    title: "Contraseña actualizada",
+                    text: response.message || "La contraseña se guardó correctamente.",
+                    icon: "success",
+                    buttons: "Aceptar",
+                });
+
+                $('#contrasena_actual, #password_registro, #password_confirmacion_registro').val('');
+            })
+            .fail(function(jqXHR) {
+                let mensaje = "No fue posible cambiar la contraseña.";
+
+                if (jqXHR.responseJSON && jqXHR.responseJSON.message) {
+                    mensaje = jqXHR.responseJSON.message;
+                } else if (jqXHR.responseJSON && jqXHR.responseJSON.errors) {
+                    mensaje = Object.values(jqXHR.responseJSON.errors).flat().join('\n');
+                }
+
+                swal({
+                    title: "Error al cambiar contraseña",
+                    text: mensaje,
+                    icon: "error",
+                    buttons: "Aceptar",
+                });
+            });
+        }
 
         function agregar_alergia_paciente(id_paciente) {
 

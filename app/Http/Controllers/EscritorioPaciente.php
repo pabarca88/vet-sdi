@@ -2532,6 +2532,101 @@ class EscritorioPaciente extends Controller
         return $datos;
     }
 
+    public function guardarPerfil(Request $request)
+    {
+        $paciente = Paciente::where('id_usuario', Auth::id())->first();
+
+        if (!$paciente) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Paciente no encontrado.',
+            ], 404);
+        }
+
+        $request->validate([
+            'perfil_nombre' => 'required|string|max:255',
+            'perfil_apellido_uno' => 'required|string|max:255',
+            'perfil_apellido_dos' => 'nullable|string|max:255',
+            'perfil_sexo' => 'required|in:M,F',
+            'perfil_nac' => 'required|date',
+            'perfil_email' => 'required|email|max:255',
+            'perfil_fono' => 'required|string|max:30',
+            'perfil_dire' => 'required|string|max:255',
+            'perfil_numero_dir' => 'required|string|max:50',
+            'perfil_region' => 'required|integer|exists:regiones,id',
+            'perfil_ciudad' => 'required|integer|exists:ciudades,id',
+        ]);
+
+        $paciente->nombres = $request->perfil_nombre;
+        $paciente->apellido_uno = $request->perfil_apellido_uno;
+        $paciente->apellido_dos = $request->perfil_apellido_dos;
+        $paciente->sexo = $request->perfil_sexo;
+        $paciente->fecha_nac = $request->perfil_nac;
+        $paciente->email = $request->perfil_email;
+        $paciente->telefono_uno = $request->perfil_fono;
+        $paciente->save();
+
+        $direccion = Direccion::find($paciente->id_direccion);
+        if (!$direccion) {
+            $direccion = new Direccion();
+        }
+
+        $direccion->direccion = $request->perfil_dire;
+        $direccion->numero_dir = $request->perfil_numero_dir;
+        $direccion->id_ciudad = $request->perfil_ciudad;
+        $direccion->save();
+
+        if ((int) $paciente->id_direccion !== (int) $direccion->id) {
+            $paciente->id_direccion = $direccion->id;
+            $paciente->save();
+        }
+
+        $user = User::find($paciente->id_usuario);
+        if ($user) {
+            $user->name = trim($request->perfil_nombre . ' ' . $request->perfil_apellido_uno);
+            $user->email = $request->perfil_email;
+            $user->save();
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Perfil actualizado correctamente.',
+        ]);
+    }
+
+    public function cambiarContrasenaPerfil(Request $request)
+    {
+        $request->validate([
+            'contrasena_actual' => 'required|string',
+            'password_registro' => 'required|string|min:6',
+            'password_confirmacion_registro' => 'required|string|same:password_registro',
+        ]);
+
+        $user = User::find(Auth::id());
+
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Usuario no encontrado.',
+            ], 404);
+        }
+
+        if (!Hash::check($request->contrasena_actual, $user->password)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'La contraseña actual no es válida.',
+            ], 422);
+        }
+
+        $user->password = Hash::make($request->password_registro);
+        $user->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Contraseña actualizada correctamente.',
+        ]);
+    }
+
     //Falta revisar el modelo y valdiaciones
     public function crearcontacto(Request $request)
     {

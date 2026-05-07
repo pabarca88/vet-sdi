@@ -831,6 +831,10 @@ Route::post('Convenios/editar', [App\Http\Controllers\EscritorioPaciente::class,
 
     Route::post('Perfil/editdirec', [App\Http\Controllers\EscritorioPaciente::class, 'editdirec'])->name('paciente.perfil.editdirec');
 
+    Route::post('Perfil/guardar', [App\Http\Controllers\EscritorioPaciente::class, 'guardarPerfil'])->name('paciente.perfil.guardar');
+
+    Route::post('Perfil/cambiar-contrasena', [App\Http\Controllers\EscritorioPaciente::class, 'cambiarContrasenaPerfil'])->name('paciente.perfil.cambiar_contrasena');
+
     Route::get('Perfil/crearContacto', [App\Http\Controllers\EscritorioPaciente::class, 'crearcontacto'])->name('paciente.perfil.crearcontacto');
 
     Route::post('Perfil/autorizacion/editar', [App\Http\Controllers\EscritorioPaciente::class, 'editarAutorizacion'])->name('paciente.perfil.registro_autorizacion');
