@@ -372,7 +372,7 @@
                     <div class="row">
                         <div class="col-sm-12 col-md-12">
                             <div class="dt-responsive table-responsive">
-                                <table id="simpletable" class="table table-striped table-bordered nowrap">
+                                <table id="tabla_lugares_existentes" class="table table-striped table-bordered nowrap">
                                     <thead>
                                         <tr>
                                             <th class="text-center align-middle">Desasociar /Agregar</th>
