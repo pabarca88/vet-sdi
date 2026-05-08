@@ -19,6 +19,7 @@
     $sexoMascota = $mascota->sexo === 'M' ? 'Masculino' : ($mascota->sexo === 'F' ? 'Femenino' : 'Sin registro');
     $especieMascota = optional($mascota->especieMascota)->nombre ?: ($mascota->otra_especie ?: $mascota->especie ?: 'N/N');
     $especieMascotaNormalizada = strtolower(trim((string) $especieMascota));
+    $mostrarOdontogramaCanino = str_contains($especieMascotaNormalizada, 'canin') || str_contains($especieMascotaNormalizada, 'perro');
     $mostrarOdontogramaFelino = str_contains($especieMascotaNormalizada, 'felin') || str_contains($especieMascotaNormalizada, 'gato');
     $razaMascota = optional($mascota->razaMascota)->nombre ?: ($mascota->otra_especie ?: '-');
     $tamanoMascota = optional($mascota->tamanoMascota)->nombre ?: ($mascota->tamano ?: '-');
@@ -686,11 +687,11 @@
                                 </div>
                                 <div id="odonto_felino_c" class="collapse" aria-labelledby="odonto_felino" data-parent="#odonto_felino">
                                     <div class="card-body-aten-a">
-                                        @if ($mostrarOdontogramaFelino)
-                                            @include('general.secciones_ficha.partials.odontograma_felino')
+                                        @if ($mostrarOdontogramaCanino || $mostrarOdontogramaFelino)
+                                            @include('general.secciones_ficha.partials.odontograma_mascota')
                                         @else
                                             <div class="alert alert-info mb-0">
-                                                El odontograma felino se muestra cuando la mascota pertenece a especie felina.
+                                                El odontograma de mascota se muestra cuando la especie corresponde a perro o gato.
                                             </div>
                                         @endif
                                     </div>

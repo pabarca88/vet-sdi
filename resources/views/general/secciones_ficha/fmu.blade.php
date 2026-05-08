@@ -996,10 +996,11 @@
                                         @php
                                             $mascotaOdontograma = $mascota ?? $paciente ?? null;
                                             $especieOdontograma = strtolower(trim((string) (optional(optional($mascotaOdontograma)->especieMascota)->nombre ?? optional($mascotaOdontograma)->especie ?? '')));
+                                            $mostrarOdontogramaCanino = str_contains($especieOdontograma, 'canin') || str_contains($especieOdontograma, 'perro');
                                             $mostrarOdontogramaFelino = str_contains($especieOdontograma, 'felin') || str_contains($especieOdontograma, 'gato');
                                         @endphp
-                                        @if($mostrarOdontogramaFelino)
-                                            @include('general.secciones_ficha.partials.odontograma_felino')
+                                        @if($mostrarOdontogramaCanino || $mostrarOdontogramaFelino)
+                                            @include('general.secciones_ficha.partials.odontograma_mascota')
                                         @else
                                             @include('atencion_odontologica.generales.odontograma_adulto')
                                         @endif

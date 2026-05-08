@@ -83,6 +83,12 @@ class HomeController extends Controller
                 break;
             case 'Profesional':
                 $profesional = Profesional::where('id_usuario', $usuario->id)->first();
+                if (!$profesional) {
+                    Auth::logout();
+                    request()->session()->invalidate();
+                    request()->session()->regenerateToken();
+                    return redirect()->route('home.ingreso');
+                }
                 /** laboratorio */
                 if($profesional->id_especialidad == 4 && $profesional->id_tipo_especialidad == 55)
                 {
@@ -175,6 +181,12 @@ class HomeController extends Controller
                 break;
             case 'Profesional':
                 $profesional = Profesional::where('id_usuario', $usuario->id)->first();
+                if (!$profesional) {
+                    Auth::logout();
+                    request()->session()->invalidate();
+                    request()->session()->regenerateToken();
+                    return redirect()->route('home.ingreso');
+                }
                 if($profesional->id_especialidad == 4 && $profesional->id_tipo_especialidad == 55)
                 {
                     // $prof_lug_at = ProfesionalesLugaresAtencion::where('id_profesional', $profesional->id)->where()->get();

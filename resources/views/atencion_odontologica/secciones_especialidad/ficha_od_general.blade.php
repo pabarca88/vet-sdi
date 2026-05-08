@@ -500,11 +500,12 @@
                                         @php
                                             $mascotaOdontologia = $mascota ?? $paciente ?? null;
                                             $especieOdontologia = strtolower(trim((string) (optional(optional($mascotaOdontologia)->especieMascota)->nombre ?? optional($mascotaOdontologia)->especie ?? '')));
+                                            $mostrarOdontogramaCanino = str_contains($especieOdontologia, 'canin') || str_contains($especieOdontologia, 'perro');
                                             $mostrarOdontogramaFelino = str_contains($especieOdontologia, 'felin') || str_contains($especieOdontologia, 'gato');
                                         @endphp
 
-                                        @if($mostrarOdontogramaFelino)
-                                            @include('general.secciones_ficha.partials.odontograma_felino')
+                                        @if($mostrarOdontogramaCanino || $mostrarOdontogramaFelino)
+                                            @include('general.secciones_ficha.partials.odontograma_mascota')
                                         @else
                                             @include('atencion_odontologica.generales.odontograma_adulto')
                                         @endif

@@ -3,6 +3,14 @@
     use Illuminate\Support\Str;
 
     $esMascota = request()->filled('id_mascota');
+    $nombreEspecieMascotaUrg = strtolower(trim(
+        (string) (
+            optional(optional($mascota ?? null)->especieMascota)->nombre
+            ?? optional($mascota ?? null)->especie
+            ?? ''
+        )
+    ));
+    $esCaninaUrg = $esMascota && Str::contains($nombreEspecieMascotaUrg, ['canin', 'perro']);
 
     // Crear un array para almacenar el estado final de cada pieza
     $piezasEstado = [];
@@ -59,7 +67,7 @@
 
     .fila {
         display: grid;
-        grid-template-columns: repeat(8, 1fr);
+        grid-template-columns: repeat(var(--odonto-cols, 8), 1fr);
         gap: 5px;
     }
 
@@ -121,21 +129,28 @@
 </style>
 @php
     if ($esMascota) {
-        $filaSuperior = array_merge(range(109, 101), range(201, 209));
-        $filaInferior = array_merge(range(409, 401), range(301, 309));
-        $imagenTemporalFelino = 'images/dental/dientes/d11.png';
+        if ($esCaninaUrg) {
+            $filaSuperior = [110, 109, 108, 107, 106, 105, 104, 103, 102, 101, 201, 202, 203, 204, 205, 206, 207, 208, 209, 210];
+            $filaInferior = [411, 410, 409, 408, 407, 406, 405, 404, 403, 402, 401, 301, 302, 303, 304, 305, 306, 307, 308, 309, 310, 311];
+            $baseImagenMascotaUrg = 'images/dental/odontograma_canino';
+        } else {
+            $filaSuperior = [109, 108, 107, 106, 104, 103, 102, 101, 201, 202, 203, 204, 206, 207, 208, 209];
+            $filaInferior = [409, 408, 407, 404, 403, 402, 401, 301, 302, 303, 304, 307, 308, 309];
+            $baseImagenMascotaUrg = 'images/dental/odontograma_felino/dientes';
+        }
     }
 @endphp
 <div class="odontograma">
     @if ($esMascota)
-        <div class="fila mb-3">
+        <div class="fila mb-3" style="--odonto-cols: {{ count($filaSuperior) }};">
             @foreach ($filaSuperior as $pieza)
                 @php
                     $codigoPieza = (string) $pieza;
                     $estadoPieza = $piezasEstado[$codigoPieza] ?? 'normal';
+                    $imagenMascotaUrg = "{$baseImagenMascotaUrg}/d{$codigoPieza}.png";
                 @endphp
                 <div class="pieza_urg" data-pieza_urg="{{ $codigoPieza }}">
-                    <img src="{{ asset($imagenTemporalFelino) }}" alt="{{ $codigoPieza }}">
+                    <img src="{{ asset($imagenMascotaUrg) }}" alt="{{ $codigoPieza }}">
                     @if ($estadoPieza === 'carie')
                         <span class="pieza-urg-marca pieza-urg-caries"></span>
                     @endif
@@ -146,14 +161,15 @@
                 </div>
             @endforeach
         </div>
-        <div class="fila">
+        <div class="fila" style="--odonto-cols: {{ count($filaInferior) }};">
             @foreach ($filaInferior as $pieza)
                 @php
                     $codigoPieza = (string) $pieza;
                     $estadoPieza = $piezasEstado[$codigoPieza] ?? 'normal';
+                    $imagenMascotaUrg = "{$baseImagenMascotaUrg}/d{$codigoPieza}.png";
                 @endphp
                 <div class="pieza_urg" data-pieza_urg="{{ $codigoPieza }}">
-                    <img src="{{ asset($imagenTemporalFelino) }}" alt="{{ $codigoPieza }}">
+                    <img src="{{ asset($imagenMascotaUrg) }}" alt="{{ $codigoPieza }}">
                     @if ($estadoPieza === 'carie')
                         <span class="pieza-urg-marca pieza-urg-caries"></span>
                     @endif
