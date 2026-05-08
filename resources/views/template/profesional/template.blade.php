@@ -4433,8 +4433,9 @@
 
 
                     if (data != null) {
-
-                        data = JSON.parse(data);
+                        if (typeof data === 'string') {
+                            data = JSON.parse(data);
+                        }
                         // console.log(data);
 
                         $('#modal_editar_horario_atencion').modal('show');
@@ -4917,10 +4918,13 @@
                             DangerMode: true,
                         })
                         // alert('Horario Topa con otro')
+                        return;
                     }
 
                     if (data != null) {
-                        data = JSON.parse(data);
+                        if (typeof data === 'string') {
+                            data = JSON.parse(data);
+                        }
                         console.log(data);
 
                         $('#modal_editar_horario_atencion').modal('hide');

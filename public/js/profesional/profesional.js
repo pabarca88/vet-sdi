@@ -692,7 +692,9 @@ function mi_horario_agregar() {
     })
         .done(function (data) {
             if (data != null) {
-                data = JSON.parse(data);
+                if (typeof data === 'string') {
+                    data = JSON.parse(data);
+                }
                 console.log(data);
 
                 $('#modal_editar_horario_atencion').modal('hide');
@@ -930,4 +932,3 @@ $(document).ready(function () {
         responsive: true,
     });
 });
-

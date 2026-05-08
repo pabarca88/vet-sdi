@@ -10641,7 +10641,7 @@ public function eliminarPiezaCoronaProtesis(Request $req){
         $profesional = Profesional::where('id_usuario', Auth::user()->id)->first();
         $horario = ProfesionalHorario::where('id_profesional', $profesional->id)->where('id_lugar_atencion', $request->id_lugar_atencion)->get();
 
-        return json_encode($horario);
+        return response()->json($horario);
     }
 
     public function mi_horario_lugar_atencion_agregar(Request $request)
