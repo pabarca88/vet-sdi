@@ -2,6 +2,26 @@
 @section('content')
     @php
         $profesionalAgendaReferencia = collect($profesionales ?? [])->first();
+        $institucionDireccion = $institucion->Direccion()->first();
+        $institucionCiudad = $institucionDireccion ? $institucionDireccion->Ciudad()->first() : null;
+        $institucionRegion = $institucionCiudad ? $institucionCiudad->Region()->first() : null;
+
+        $responsableUsuario = isset($responsable) ? $responsable->Usuario()->first() : null;
+        $responsableDireccion = isset($responsable) ? $responsable->Direccion()->first() : null;
+        $responsableCiudad = $responsableDireccion ? $responsableDireccion->Ciudad()->first() : null;
+        $responsableRegion = $responsableCiudad ? $responsableCiudad->Region()->first() : null;
+
+        $directorCmDireccion = isset($director_cm) && $director_cm ? $director_cm->Direccion()->first() : null;
+        $directorCmCiudad = $directorCmDireccion ? $directorCmDireccion->Ciudad()->first() : null;
+        $directorCmRegion = $directorCmCiudad ? $directorCmCiudad->Region()->first() : null;
+
+        $subdirectorCmDireccion = isset($subdirector_cm) && $subdirector_cm ? $subdirector_cm->Direccion()->first() : null;
+        $subdirectorCmCiudad = $subdirectorCmDireccion ? $subdirectorCmDireccion->Ciudad()->first() : null;
+        $subdirectorCmRegion = $subdirectorCmCiudad ? $subdirectorCmCiudad->Region()->first() : null;
+
+        $directorGestionDireccion = isset($director_gestion_cuidado) && $director_gestion_cuidado ? $director_gestion_cuidado->Direccion()->first() : null;
+        $directorGestionCiudad = $directorGestionDireccion ? $directorGestionDireccion->Ciudad()->first() : null;
+        $directorGestionRegion = $directorGestionCiudad ? $directorGestionCiudad->Region()->first() : null;
     @endphp
     <!--****Container Completo****-->
     <style>
@@ -340,19 +360,19 @@
                                                     <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6">
                                                         <label class="font-weight-bolder ml-0 mb-0">Región</label>
                                                         <div>
-                                                            {{ $institucion->Direccion()->first()->Ciudad()->first()->Region()->first()->nombre }}
+                                                            {{ $institucionRegion->nombre ?? '' }}
                                                         </div>
                                                     </div>
                                                     <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6">
                                                         <label class="font-weight-bolder ml-0 mb-0">Comuna</label>
                                                         <div>
-                                                            {{ $institucion->Direccion()->first()->Ciudad()->first()->nombre }}
+                                                            {{ $institucionCiudad->nombre ?? '' }}
                                                         </div>
                                                     </div>
                                                     <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6">
                                                         <label class="font-weight-bolder ml-0 mb-0">Dirección</label>
                                                         <div>
-                                                            {{ $institucion->Direccion()->first()->direccion . ' ' . $institucion->Direccion()->first()->numero_dir }}
+                                                            {{ trim(($institucionDireccion->direccion ?? '') . ' ' . ($institucionDireccion->numero_dir ?? '')) }}
                                                         </div>
                                                     </div>
                                                     <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6">
@@ -382,7 +402,7 @@
                                                             @if (isset($regiones))
                                                                 @foreach ($regiones as $region)
                                                                     <option value="{{ $region->id }}"
-                                                                        @if ($region->id == $institucion->Direccion()->first()->Ciudad()->first()->Region()->first()->id) selected @endif>
+                                                                        @if ($region->id == ($institucionRegion->id ?? null)) selected @endif>
                                                                         {{ $region->nombre }}
                                                                     </option>
                                                                 @endforeach
@@ -396,7 +416,7 @@
                                                             <option value="">Seleccione su comuna</option>
                                                             @if (isset($ciudades))
                                                                 @foreach ($ciudades as $ciudad)
-                                                                    @if ($institucion->Direccion()->first()->id_ciudad == $ciudad->id)
+                                                                    @if (($institucionDireccion->id_ciudad ?? null) == $ciudad->id)
                                                                         <option value="{{ $ciudad->id }}" selected>
                                                                         @else
                                                                         <option value="{{ $ciudad->id }}">
@@ -412,13 +432,13 @@
                                                         <label class="floating-label-activo-sm">Dirección</label>
                                                         <input type="text" class="form-control form-control-sm"
                                                             name="editar_direccion" id="editar_direccion"
-                                                            value="{{ $institucion->Direccion()->first()->direccion }}">
+                                                            value="{{ $institucionDireccion->direccion ?? '' }}">
                                                     </div>
                                                     <div class="form-group col-sm-12 col-md-3 col-lg-3 col-xl-3">
                                                         <label class="floating-label-activo-sm">Nº</label>
                                                         <input type="text" class="form-control form-control-sm"
                                                             name="editar_numero_dir" id="editar_numero_dir"
-                                                            value="{{ $institucion->Direccion()->first()->numero_dir }}">
+                                                            value="{{ $institucionDireccion->numero_dir ?? '' }}">
                                                     </div>
                                                     <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6">
                                                         <label class="col-form-label font-weight-bolder">Sucursal</label>
@@ -623,7 +643,7 @@
                                                 id="form_cambio_contrasena_perfil_responsable"
                                                 name="form_cambio_contrasena_perfil_responsable">
                                                 <input type="hidden" name="responsable_id" id="responsable_id"
-                                                    value="{{ $responsable->Usuario()->first()->id }}">
+                                                    value="{{ $responsableUsuario->id ?? '' }}">
                                                 @csrf
                                                 <div class="form-row">
                                                     <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6">
@@ -745,19 +765,19 @@
                                                     <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6">
                                                         <label class="font-weight-bolder ml-0 mb-0">Región</label>
                                                         <div>
-                                                            {{ $responsable->Direccion()->first()->Ciudad()->first()->Region()->first()->nombre }}
+                                                            {{ $responsableRegion->nombre ?? '' }}
                                                         </div>
                                                     </div>
                                                     <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6">
                                                         <label class="font-weight-bolder ml-0 mb-0">Comuna</label>
                                                         <div>
-                                                            {{ $responsable->Direccion()->first()->Ciudad()->first()->nombre }}
+                                                            {{ $responsableCiudad->nombre ?? '' }}
                                                         </div>
                                                     </div>
                                                     <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6">
                                                         <label class="font-weight-bolder ml-0 mb-0">Dirección</label>
                                                         <div>
-                                                            {{ $responsable->Direccion()->first()->direccion . ' ' . $responsable->Direccion()->first()->numero_dir }}
+                                                            {{ trim(($responsableDireccion->direccion ?? '') . ' ' . ($responsableDireccion->numero_dir ?? '')) }}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -777,7 +797,7 @@
                                                             @if (isset($regiones))
                                                                 @foreach ($regiones as $region)
                                                                     <option value="{{ $region->id }}"
-                                                                        @if ($region->id == $responsable->Direccion()->first()->Ciudad()->first()->Region()->first()->id) selected @endif>
+                                                                        @if ($region->id == ($responsableRegion->id ?? null)) selected @endif>
                                                                         {{ $region->nombre }}
                                                                     </option>
                                                                 @endforeach
@@ -792,7 +812,7 @@
                                                             @if (isset($ciudades))
                                                                 @foreach ($ciudades as $ciudad)
                                                                     <option value="{{ $ciudad->id }}"
-                                                                        @if ($responsable->Direccion()->first()->id_ciudad == $ciudad->id) selected @endif>
+                                                                        @if (($responsableDireccion->id_ciudad ?? null) == $ciudad->id) selected @endif>
                                                                         {{ $ciudad->nombre }}
                                                                     </option>
                                                                 @endforeach
@@ -803,13 +823,13 @@
                                                         <label class="floating-label-activo-sm">Dirección</label>
                                                         <input type="text" class="form-control form-control-sm"
                                                             name="perfil_dire" id="perfil_dire"
-                                                            value="{{ $responsable->Direccion()->first()->direccion }}">
+                                                            value="{{ $responsableDireccion->direccion ?? '' }}">
                                                     </div>
                                                     <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6">
                                                         <label class="floating-label-activo-sm">Nº</label>
                                                         <input type="text" class="form-control form-control-sm"
                                                             name="perfil_numero_dir" id="perfil_numero_dir"
-                                                            value="{{ $responsable->Direccion()->first()->numero_dir }}">
+                                                            value="{{ $responsableDireccion->numero_dir ?? '' }}">
                                                     </div>
                                                     <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12">
                                                         <div class="d-flex justify-content-end">
@@ -1008,7 +1028,7 @@
                                                                                 <label
                                                                                     class="font-weight-bolder ml-0 mb-0">Región</label>
                                                                                 <div id="region_director_medico">
-                                                                                    {{ $director_cm->Direccion()->first()->Ciudad()->first()->Region()->first()->nombre }}
+                                                                                    {{ $directorCmRegion->nombre ?? '' }}
                                                                                 </div>
                                                                             </div>
                                                                             <div
@@ -1016,7 +1036,7 @@
                                                                                 <label
                                                                                     class="font-weight-bolder ml-0 mb-0">Comuna</label>
                                                                                 <div id="comuna_director_medico">
-                                                                                    {{ $director_cm->Direccion()->first()->Ciudad()->first()->nombre }}
+                                                                                    {{ $directorCmCiudad->nombre ?? '' }}
                                                                                 </div>
                                                                             </div>
                                                                             <div
@@ -1024,7 +1044,7 @@
                                                                                 <label
                                                                                     class="font-weight-bolder ml-0 mb-0">Dirección</label>
                                                                                 <div id="direccion_director_medico">
-                                                                                    {{ $director_cm->Direccion()->first()->direccion . ' ' . $responsable->Direccion()->first()->numero_dir }}
+                                                                                    {{ trim(($directorCmDireccion->direccion ?? '') . ' ' . ($directorCmDireccion->numero_dir ?? '')) }}
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -1202,7 +1222,7 @@
                                                                                         @foreach ($regiones as $region)
                                                                                             <option
                                                                                                 value="{{ $region->id }}"
-                                                                                                @if ($region->id == $director_cm->Direccion()->first()->Ciudad()->first()->Region()->first()->id) selected @endif>
+                                                                                                @if ($region->id == ($directorCmRegion->id ?? null)) selected @endif>
                                                                                                 {{ $region->nombre }}
                                                                                             </option>
                                                                                         @endforeach
@@ -1223,7 +1243,7 @@
                                                                                         @foreach ($ciudades as $ciudad)
                                                                                             <option
                                                                                                 value="{{ $ciudad->id }}"
-                                                                                                @if ($director_cm->Direccion()->first()->id_ciudad == $ciudad->id) selected @endif>
+                                                                                                @if (($directorCmDireccion->id_ciudad ?? null) == $ciudad->id) selected @endif>
                                                                                                 {{ $ciudad->nombre }}
                                                                                             </option>
                                                                                         @endforeach
@@ -1237,7 +1257,7 @@
                                                                                 <input type="text"
                                                                                     class="form-control form-control-sm"
                                                                                     name="perfil_dire_director_medico" id="perfil_dire_director_medico"
-                                                                                    value="{{ $director_cm->Direccion()->first()->direccion }}">
+                                                                                    value="{{ $directorCmDireccion->direccion ?? '' }}">
                                                                             </div>
                                                                             <div
                                                                                 class="form-group col-sm-12 col-md-12 col-lg-3 col-xl-3">
@@ -1247,7 +1267,7 @@
                                                                                     class="form-control form-control-sm"
                                                                                     name="perfil_numero_dir_director_medico"
                                                                                     id="perfil_numero_dir_director_medico"
-                                                                                    value="{{ $director_cm->Direccion()->first()->numero_dir }}">
+                                                                                    value="{{ $directorCmDireccion->numero_dir ?? '' }}">
                                                                             </div>
                                                                         </div>
                                                                         <!--EDITAR CONTRASEÑA-->
@@ -1264,7 +1284,7 @@
                                                                                 <input type="hidden"
                                                                                     name="responsable_id"
                                                                                     id="responsable_id"
-                                                                                    value="{{ $responsable->Usuario()->first()->id }}">
+                                                                                    value="{{ $responsableUsuario->id ?? '' }}">
                                                                                 @csrf
                                                                                 <div
                                                                                     class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6">
@@ -1450,7 +1470,7 @@
                                                                                 <label
                                                                                     class="font-weight-bolder ml-0 mb-0">Región</label>
                                                                                 <div id="region_subdirector_cm">
-                                                                                    {{ $subdirector_cm->Direccion()->first()->Ciudad()->first()->Region()->first()->nombre }}
+                                                                                    {{ $subdirectorCmRegion->nombre ?? '' }}
                                                                                 </div>
                                                                             </div>
                                                                             <div
@@ -1458,7 +1478,7 @@
                                                                                 <label
                                                                                     class="font-weight-bolder ml-0 mb-0">Comuna</label>
                                                                                 <div id="comuna_subdirector_cm">
-                                                                                    {{ $subdirector_cm->Direccion()->first()->Ciudad()->first()->nombre }}
+                                                                                    {{ $subdirectorCmCiudad->nombre ?? '' }}
                                                                                 </div>
                                                                             </div>
                                                                             <div
@@ -1466,7 +1486,7 @@
                                                                                 <label
                                                                                     class="font-weight-bolder ml-0 mb-0">Dirección</label>
                                                                                 <div id="direccion_subdirector_cm">
-                                                                                    {{ $subdirector_cm->Direccion()->first()->direccion . ' ' . $responsable->Direccion()->first()->numero_dir }}
+                                                                                    {{ trim(($subdirectorCmDireccion->direccion ?? '') . ' ' . ($subdirectorCmDireccion->numero_dir ?? '')) }}
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -1648,7 +1668,7 @@
                                                                                             @foreach ($regiones as $region)
                                                                                                 <option
                                                                                                     value="{{ $region->id }}"
-                                                                                                    @if ($region->id == $subdirector_cm->Direccion()->first()->Ciudad()->first()->Region()->first()->id) selected @endif>
+                                                                                                    @if ($region->id == ($subdirectorCmRegion->id ?? null)) selected @endif>
                                                                                                     {{ $region->nombre }}
                                                                                                 </option>
                                                                                             @endforeach
@@ -1669,7 +1689,7 @@
                                                                                             @foreach ($ciudades as $ciudad)
                                                                                                 <option
                                                                                                     value="{{ $ciudad->id }}"
-                                                                                                    @if ($subdirector_cm->Direccion()->first()->id_ciudad == $ciudad->id) selected @endif>
+                                                                                                    @if (($subdirectorCmDireccion->id_ciudad ?? null) == $ciudad->id) selected @endif>
                                                                                                     {{ $ciudad->nombre }}
                                                                                                 </option>
                                                                                             @endforeach
@@ -1684,7 +1704,7 @@
                                                                                         class="form-control form-control-sm"
                                                                                         name="perfil_direccion_subdirector_cm"
                                                                                         id="perfil_direccion_subdirector_cm"
-                                                                                        value="{{ $subdirector_cm->Direccion()->first()->direccion }}">
+                                                                                        value="{{ $subdirectorCmDireccion->direccion ?? '' }}">
                                                                                 </div>
                                                                                 <div
                                                                                     class="form-group col-sm-12 col-md-12 col-lg-3 col-xl-3">
@@ -1694,7 +1714,7 @@
                                                                                         class="form-control form-control-sm"
                                                                                         name="perfil_numero_direccion_subdirector_cm"
                                                                                         id="perfil_numero_direccion_subdirector_cm"
-                                                                                        value="{{ $subdirector_cm->Direccion()->first()->numero_dir }}">
+                                                                                        value="{{ $subdirectorCmDireccion->numero_dir ?? '' }}">
                                                                                 </div>
                                                                             </div>
                                                                         @endif
@@ -1712,7 +1732,7 @@
                                                                                 <input type="hidden"
                                                                                     name="responsable_id"
                                                                                     id="responsable_id"
-                                                                                    value="{{ $responsable->Usuario()->first()->id }}">
+                                                                                    value="{{ $responsableUsuario->id ?? '' }}">
                                                                                 @csrf
                                                                                 <div
                                                                                     class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6">
@@ -1907,7 +1927,7 @@
                                                                                 <label
                                                                                     class="font-weight-bolder ml-0 mb-0">Región</label>
                                                                                 <div id="region_director_farmacia">
-                                                                                    {{ $director_gestion_cuidado->Direccion()->first()->Ciudad()->first()->Region()->first()->nombre }}
+                                                                                    {{ $directorGestionRegion->nombre ?? '' }}
                                                                                 </div>
                                                                             </div>
                                                                             <div
@@ -1915,7 +1935,7 @@
                                                                                 <label
                                                                                     class="font-weight-bolder ml-0 mb-0">Comuna</label>
                                                                                 <div id="ciudad_director_farmacia">
-                                                                                    {{ $director_gestion_cuidado->Direccion()->first()->Ciudad()->first()->nombre }}
+                                                                                    {{ $directorGestionCiudad->nombre ?? '' }}
                                                                                 </div>
                                                                             </div>
                                                                             <div
@@ -1923,7 +1943,7 @@
                                                                                 <label
                                                                                     class="font-weight-bolder ml-0 mb-0">Dirección</label>
                                                                                 <div id="direccion_director_farmacia">
-                                                                                    {{ $director_gestion_cuidado->Direccion()->first()->direccion . ' ' . $director_gestion_cuidado->Direccion()->first()->numero_dir }}
+                                                                                    {{ trim(($directorGestionDireccion->direccion ?? '') . ' ' . ($directorGestionDireccion->numero_dir ?? '')) }}
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -2102,7 +2122,7 @@
                                                                                             @foreach ($regiones as $region)
                                                                                                 <option
                                                                                                     value="{{ $region->id }}"
-                                                                                                    @if ($region->id == $director_gestion_cuidado->Direccion()->first()->Ciudad()->first()->Region()->first()->id) selected @endif>
+                                                                                                    @if ($region->id == ($directorGestionRegion->id ?? null)) selected @endif>
                                                                                                     {{ $region->nombre }}
                                                                                                 </option>
                                                                                             @endforeach
@@ -2123,7 +2143,7 @@
                                                                                             @foreach ($ciudades as $ciudad)
                                                                                                 <option
                                                                                                     value="{{ $ciudad->id }}"
-                                                                                                    @if ($director_gestion_cuidado->Direccion()->first()->id_ciudad == $ciudad->id) selected @endif>
+                                                                                                    @if (($directorGestionDireccion->id_ciudad ?? null) == $ciudad->id) selected @endif>
                                                                                                     {{ $ciudad->nombre }}
                                                                                                 </option>
                                                                                             @endforeach
@@ -2138,7 +2158,7 @@
                                                                                         class="form-control form-control-sm"
                                                                                         name="perfil_dire_director_farmacia"
                                                                                         id="perfil_dire_director_farmacia"
-                                                                                        value="{{ $director_gestion_cuidado->Direccion()->first()->direccion }}">
+                                                                                        value="{{ $directorGestionDireccion->direccion ?? '' }}">
                                                                                 </div>
                                                                                 <div
                                                                                     class="form-group col-sm-12 col-md-12 col-lg-3 col-xl-3">
@@ -2148,7 +2168,7 @@
                                                                                         class="form-control form-control-sm"
                                                                                         name="perfil_numero_dir_director_farmacia"
                                                                                         id="perfil_numero_dir_director_farmacia"
-                                                                                        value="{{ $director_gestion_cuidado->Direccion()->first()->numero_dir }}">
+                                                                                        value="{{ $directorGestionDireccion->numero_dir ?? '' }}">
                                                                                 </div>
                                                                             </div>
                                                                         @endif
@@ -2166,7 +2186,7 @@
                                                                                 <input type="hidden"
                                                                                     name="responsable_id"
                                                                                     id="responsable_id"
-                                                                                    value="{{ $responsable->Usuario()->first()->id }}">
+                                                                                    value="{{ $responsableUsuario->id ?? '' }}">
                                                                                 @csrf
                                                                                 <div
                                                                                     class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6">
