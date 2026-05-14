@@ -37,6 +37,34 @@
                         </div>
                     </div>
                     <div class="card-body">
+                        <form method="GET" action="{{ route('profesional.pacientes') }}" class="mb-4">
+                            <div class="form-row align-items-end">
+                                <div class="col-md-4 mb-2">
+                                    <label class="floating-label-activo-sm mb-0">Centro activo</label>
+                                    <select name="contexto" class="form-control form-control-sm">
+                                        @foreach ($contextosCentro as $contexto)
+                                            <option value="{{ $contexto['key'] }}" @selected(($contextoActivo['key'] ?? '') === $contexto['key'])>
+                                                {{ $contexto['label'] }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <label class="floating-label-activo-sm mb-0">Buscador</label>
+                                    <input
+                                        type="text"
+                                        name="q"
+                                        value="{{ $search }}"
+                                        class="form-control form-control-sm"
+                                        placeholder="Buscar por responsable, RUT o nombre de mascota">
+                                </div>
+                                <div class="col-md-2 mb-2">
+                                    <button class="btn btn-info btn-sm btn-block" type="submit">
+                                        <i class="feather icon-search"></i> Buscar
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
                         <div class="row">
                             <div class="col-md-12 mb-3">
                                 <div class="table-responsive">
@@ -50,6 +78,7 @@
                                                 <th>Raza</th>
                                                 <th>Convenio</th>
                                                 <th>Chip-Tatuaje</th>
+                                                <th>Centro</th>
                                                 <th>Acción</th>
                                             </tr>
                                         </thead>
@@ -94,6 +123,7 @@
                                                         }
                                                     }
                                                     $galeriaMascota = array_values(array_unique($galeriaMascota));
+                                                    $centroActivo = $contextoActivo['label'] ?? 'Sin contexto';
                                                 @endphp
                                                 <tr>
                                                     <td>{{ $mascota->nombre ?? '-' }}</td>
@@ -102,6 +132,7 @@
                                                     <td>{{ $raza }}</td>
                                                     <td>{{ $convenio }}</td>
                                                     <td>{{ $chip }}</td>
+                                                    <td>{{ $centroActivo }}</td>
                                                     <td>
                                                         <button type="button" class="btn btn-info btn-xxs js-ver-mascota"
                                                             data-toggle="modal" data-target="#modalMascotaDetalle"
@@ -125,7 +156,7 @@
                                                 </tr>
                                             @empty
                                                 <tr>
-                                                    <td colspan="7" class="text-center">Sin registros</td>
+                                                    <td colspan="8" class="text-center">Sin registros</td>
                                                 </tr>
                                             @endforelse
                                         </tbody>

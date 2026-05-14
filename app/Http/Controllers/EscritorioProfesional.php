@@ -118,6 +118,8 @@ use App\Models\RecetaControl;
 use App\Models\Region;
 use App\Models\RegistroConfirmacionHoraAgenda;
 use App\Models\RazaMascota;
+use App\Support\LugarAtencionInstitucionResolver;
+use App\Support\UserCenterContext;
 use App\Models\ServiciosInternos;
 use App\Models\ServiciosInternosSalas;
 use App\Models\SolicitudPabellonQuirurgico;
@@ -1293,13 +1295,39 @@ class EscritorioProfesional extends Controller
     public function mis_pacientes()
     {
         $profesional = Profesional::where('id_usuario', Auth::user()->id)->first();
-        $ficha_atencion = FichaAtencion::where('id_profesional', $profesional->id)->distinct()->get(['id_paciente']);
-        $mascotasIds = FichaAtencion::where('id_profesional', $profesional->id)
+        $context = UserCenterContext::forProfessional(Auth::user(), request());
+        $activeContext = $context['active'];
+        $scopeLugarIds = collect($activeContext['scope_lugar_ids'] ?? [])
+            ->filter()
+            ->map(fn ($id) => (int) $id)
+            ->unique()
+            ->values();
+
+        $fichaQuery = FichaAtencion::where('id_profesional', $profesional->id);
+        if ($scopeLugarIds->isNotEmpty()) {
+            $fichaQuery->whereIn('id_lugar_atencion', $scopeLugarIds);
+        }
+
+        $ficha_atencion = (clone $fichaQuery)->distinct()->get(['id_paciente']);
+        $mascotasIds = (clone $fichaQuery)
             ->whereNotNull('id_mascota')
             ->distinct()
             ->pluck('id_mascota');
+
+        $search = trim((string) request('q', ''));
         $mascotas = Mascota::with(['Responsable.Prevision', 'especieMascota', 'razaMascota', 'tamanoMascota'])
             ->whereIn('id', $mascotasIds)
+            ->when($search !== '', function ($query) use ($search) {
+                $query->where(function ($subQuery) use ($search) {
+                    $subQuery->where('nombre', 'like', '%' . $search . '%')
+                        ->orWhereHas('Responsable', function ($responsableQuery) use ($search) {
+                            $responsableQuery->where('rut', 'like', '%' . $search . '%')
+                                ->orWhere('nombres', 'like', '%' . $search . '%')
+                                ->orWhere('apellido_uno', 'like', '%' . $search . '%')
+                                ->orWhere('apellido_dos', 'like', '%' . $search . '%');
+                        });
+                });
+            })
             ->orderBy('nombre')
             ->get();
         $prevision = Prevision::all();
@@ -1332,7 +1360,10 @@ class EscritorioProfesional extends Controller
                 'paciente' => $paciente,
                 'mascotas' => $mascotas,
                 'profesional' => $profesional,
-                'region' => $region
+                'region' => $region,
+                'contextosCentro' => $context['contexts'],
+                'contextoActivo' => $activeContext,
+                'search' => $search,
             ]
         );
     }
@@ -2660,6 +2691,7 @@ class EscritorioProfesional extends Controller
         $validator = Validator::make($request->all(), [
             'id_paciente' => 'required|integer|exists:pacientes,id',
             'id_hora_medica' => 'nullable|integer|exists:horas_medicas,id',
+            'id_lugar_atencion' => 'required|integer|exists:lugares_atencion,id',
             'tiene_chip' => 'required|boolean',
             'chip' => 'nullable|string|max:255',
             'nombre' => 'required|string|max:255',
@@ -2772,6 +2804,10 @@ class EscritorioProfesional extends Controller
                 'msj' => 'Problemas al registrar la mascota',
             ];
         }
+
+        $idLugarAtencion = (int) $request->input('id_lugar_atencion');
+        $idInstitucion = LugarAtencionInstitucionResolver::resolve($idLugarAtencion);
+        $mascota->vincularLugarAtencion($idLugarAtencion, $idInstitucion, 'agenda_profesional');
 
         if ($request->filled('id_hora_medica')) {
             $horaMedica = HoraMedica::where('id', $request->input('id_hora_medica'))

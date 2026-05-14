@@ -64,6 +64,8 @@ use App\Models\TiposLaboratorio;
 use App\Models\TipoProductoConvenios;
 use App\Models\SubTipoEspecialidad;
 use App\Models\User;
+use App\Models\Mascota;
+use App\Models\FichaAtencion;
 
 use Barryvdh\DomPDF\Facade\Pdf;
 use Spatie\Permission\Models\Role;
@@ -78,118 +80,23 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 
 use Carbon\Carbon;
+use App\Support\UserCenterContext;
 
 class AdministradorCmController extends Controller
 {
     public function index()
     {
-        $institucion = '';
-        $tipo_institucion = '1';
-        $id_busqueda = Auth::user()->id;
-
-        /** INFORMACION DE INSTITUCION Y RESPONSABLE */
-        if(Auth::user()->id == 3)
-        {
-            $id_busqueda = 5;
-            $registro = Instituciones::where('id', $id_busqueda)->first();
-        }
-        else
-        {
-            $registro = Instituciones::where('id_usuario',Auth::user()->id)->first();
+        $context = UserCenterContext::forAdmin(Auth::user(), request());
+        $activeContext = $context['active'];
+        if (!$activeContext) {
+            return back()->with('error', 'No hay instituciones o sucursales disponibles para este usuario.');
         }
 
-        if($registro)
-        {
-            // var_dump($registro);
-            // var_dump($registro->UsuarioAdministrador()->first());
-            //var_dump($registro->UsuarioAdministrador()->first()->id);
-            /** INSTITUCION */
-            $institucion = $registro;
-            $responsable = AdminInstServ::where('id',$registro->UsuarioAdministrador()->first()->id)->first();
-            $tipo_institucion = 'institucion';
-
+        $institucion = Instituciones::find($activeContext['id_institucion']);
+        if (!$institucion) {
+            return back()->with('error', 'Institución no encontrada');
         }
-        else
-        {
-            $registro = Servicios::where('id_usuario',Auth::user()->id)->first();
-            if($registro)
-            {
-                /** SERVICIOS */
-                $institucion = $registro;
-                $tipo_institucion = 'servicio';
-            }
-            else
-            {
-                /** busqueda por responsable */
-                $responsable = AdminInstServ::where('id_admin',Auth::user()->id)->first();
 
-                if($responsable)
-                {
-                    $registro = Instituciones::where('id_responsable',$responsable->id)->first();
-                    if($registro)
-                    {
-                        // var_dump($registro);
-                        // var_dump($registro->UsuarioAdministrador()->first());
-                        /** INSTITUCION */
-                        $institucion = $registro;
-                        $tipo_institucion = 'institucion';
-
-                    }
-                    else
-                    {
-                        $registro = Servicios::where('id_responsable',$responsable->id)->first();
-                        if($registro)
-                        {
-                            /** SERVICIOS */
-                            $institucion = $registro;
-                            $tipo_institucion = 'servicio';
-                        }
-                        else
-                        {
-
-                            $result_contrato = ContratoDependiente::where('tipo_empleado', 'like', '%ADMINISTRADOR%')
-                                    ->where('id_empleado', $responsable->id)
-                                    ->whereIn('estado', [2,3])
-                                    ->first();
-
-                            if($result_contrato)
-                            {
-                                $registro = Instituciones::where('id',$result_contrato->id_institucion)->first();
-                                if($registro)
-                                {
-                                    /** INSTITUCION */
-                                    $institucion = $registro;
-                                    $tipo_institucion = 'institucion';
-                                }
-                                else
-                                {
-                                    $registro = Servicios::where('id',$result_contrato->id_institucion)->first();
-                                    if($registro)
-                                    {
-                                        /** SERVICIOS */
-                                        $institucion = $registro;
-                                        $tipo_institucion = 'servicio';
-                                    }
-                                    else
-                                    {
-                                        return back()->with('error','Institución no encontrada');
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                return back()->with('error','Permisos de usuario no validos para Ingresar al modulo');
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    return back()->with('error','Institución no encontrada');
-                }
-
-            }
-        }
         $usuario = Auth::user();
         $roles = $usuario->roles()->orderBy('id', 'DESC')->pluck('name')->toArray();
         $adm_medico = false;
@@ -199,8 +106,13 @@ class AdministradorCmController extends Controller
                 break;
             }
         }
-        /** FIN INFORMACION DE INSTITUCION Y RESPONSABLE */
-        return view('app.adm_cm.home')->with(['institucion' => $institucion, 'adm_medico' => $adm_medico]);
+
+        return view('app.adm_cm.home')->with([
+            'institucion' => $institucion,
+            'adm_medico' => $adm_medico,
+            'contextosCentro' => $context['contexts'],
+            'contextoActivo' => $activeContext,
+        ]);
     }
 
     public function areaContratosNuevos(){
@@ -575,45 +487,53 @@ class AdministradorCmController extends Controller
 
     public function configuracion()
     {
-        $institucion = '';
+        $institucion = null;
+        $responsable = null;
         $tipo_institucion = '1';
-        $id_busqueda = Auth::user()->id;
-        if(Auth::user()->id == 3)
-        {
-            $id_busqueda = 5;
-            $registro = Instituciones::where('id', $id_busqueda)->first();
-        }
-        else
-        {
-            $registro = Instituciones::where('id_usuario',Auth::user()->id)->first();
+        $context = UserCenterContext::forAdmin(Auth::user(), request());
+        $activeContext = $context['active'] ?? null;
+        $registro = null;
+
+        if (!empty($activeContext['id_institucion'])) {
+            $registro = Instituciones::find($activeContext['id_institucion']);
+
+            if ($registro && !empty($activeContext['id_lugar_atencion'])) {
+                $registro->id_lugar_atencion = $activeContext['id_lugar_atencion'];
+            }
         }
 
+        if (!$registro) {
+            $id_busqueda = Auth::user()->id;
+            if(Auth::user()->id == 3)
+            {
+                $id_busqueda = 5;
+                $registro = Instituciones::where('id', $id_busqueda)->first();
+            }
+            else
+            {
+                $registro = Instituciones::where('id_usuario',Auth::user()->id)->first();
+            }
+        }
 
         if($registro)
         {
-            // var_dump($registro);
-            // var_dump($registro->UsuarioAdministrador()->first());
-            //var_dump($registro->UsuarioAdministrador()->first()->id);
-            /** INSTITUCION */
             $institucion = $registro;
-            $responsable = AdminInstServ::where('id',$registro->UsuarioAdministrador()->first()->id)->first();
-            // $responsable_comercial = AdminInstServ::where('id',$registro->UsuarioComercial()->first()->id)->first();
-            // $responsable_farmacia = AdminInstServ::where('id',$registro->UsuarioFarmacia()->first()->id)->first();
+            $usuarioAdministrador = $registro->UsuarioAdministrador()->first();
+            if ($usuarioAdministrador) {
+                $responsable = AdminInstServ::where('id', $usuarioAdministrador->id)->first();
+            }
             $tipo_institucion = 'institucion';
-
         }
         else
         {
             $registro = Servicios::where('id_usuario',Auth::user()->id)->first();
             if($registro)
             {
-                /** SERVICIOS */
                 $institucion = $registro;
                 $tipo_institucion = 'servicio';
             }
             else
             {
-                /** busqueda por responsable */
                 $responsable = AdminInstServ::where('id_admin',Auth::user()->id)->first();
 
                 if($responsable)
@@ -621,10 +541,12 @@ class AdministradorCmController extends Controller
                     $registro = Instituciones::where('id_responsable',$responsable->id)->first();
                     if($registro)
                     {
-                        // var_dump($registro);
-                        // var_dump($registro->UsuarioAdministrador()->first());
-                        /** INSTITUCION */
                         $institucion = $registro;
+
+                        if (!empty($activeContext['id_lugar_atencion'])) {
+                            $institucion->id_lugar_atencion = $activeContext['id_lugar_atencion'];
+                        }
+
                         $tipo_institucion = 'institucion';
 
                     }
@@ -633,7 +555,6 @@ class AdministradorCmController extends Controller
                         $registro = Servicios::where('id_responsable',$responsable->id)->first();
                         if($registro)
                         {
-                            /** SERVICIOS */
                             $institucion = $registro;
                             $tipo_institucion = 'servicio';
                         }
@@ -648,6 +569,10 @@ class AdministradorCmController extends Controller
                     return back()->with('error','Institución no encontrada');
                 }
             }
+        }
+
+        if (!$institucion) {
+            return back()->with('error','Institución no encontrada');
         }
 
 
@@ -4783,141 +4708,63 @@ class AdministradorCmController extends Controller
 
     public function adm_buscar_pacientes()
     {
-        $institucion = '';
-        $tipo_institucion = '1';
-        $id_busqueda = Auth::user()->id;
-
-        /** INFORMACION DE INSTITUCION Y RESPONSABLE */
-        if(Auth::user()->id == 3)
-        {
-            $id_busqueda = 5;
-            $registro = Instituciones::where('id', $id_busqueda)->first();
-        }
-        else
-        {
-            $registro = Instituciones::where('id_usuario',Auth::user()->id)->first();
+        $context = UserCenterContext::forAdmin(Auth::user(), request());
+        $activeContext = $context['active'];
+        if (!$activeContext) {
+            return back()->with('error', 'No hay instituciones o sucursales disponibles para este usuario.');
         }
 
-        if($registro)
-        {
-            // var_dump($registro);
-            // var_dump($registro->UsuarioAdministrador()->first());
-            //var_dump($registro->UsuarioAdministrador()->first()->id);
-            /** INSTITUCION */
-            $institucion = $registro;
-            $responsable = AdminInstServ::where('id',$registro->UsuarioAdministrador()->first()->id)->first();
-            $tipo_institucion = 'institucion';
-
+        $institucion = Instituciones::find($activeContext['id_institucion']);
+        if (!$institucion) {
+            return back()->with('error', 'Institución no encontrada');
         }
-        else
-        {
-            $registro = Servicios::where('id_usuario',Auth::user()->id)->first();
-            if($registro)
-            {
-                /** SERVICIOS */
-                $institucion = $registro;
-                $tipo_institucion = 'servicio';
-            }
-            else
-            {
-                /** busqueda por responsable */
-                $responsable = AdminInstServ::where('id_admin',Auth::user()->id)->first();
 
-                if($responsable)
-                {
-                    $registro = Instituciones::where('id_responsable',$responsable->id)->first();
-                    if($registro)
-                    {
-                        // var_dump($registro);
-                        // var_dump($registro->UsuarioAdministrador()->first());
-                        /** INSTITUCION */
-                        $institucion = $registro;
-                        $tipo_institucion = 'institucion';
+        $scopeLugarIds = collect($activeContext['scope_lugar_ids'] ?? [])
+            ->filter()
+            ->map(fn ($id) => (int) $id)
+            ->unique()
+            ->values();
 
-                    }
-                    else
-                    {
-                        $registro = Servicios::where('id_responsable',$responsable->id)->first();
-                        if($registro)
-                        {
-                            /** SERVICIOS */
-                            $institucion = $registro;
-                            $tipo_institucion = 'servicio';
-                        }
-                        else
-                        {
+        $fichaMascotaIds = FichaAtencion::whereIn('id_lugar_atencion', $scopeLugarIds)
+            ->whereNotNull('id_mascota')
+            ->pluck('id_mascota');
 
-                            $result_contrato = ContratoDependiente::where('tipo_empleado', 'like', '%ADMINISTRADOR%')
-                                    ->where('id_empleado', $responsable->id)
-                                    ->whereIn('estado', [2,3])
-                                    ->first();
+        $search = trim((string) request('q', ''));
 
-                            if($result_contrato)
-                            {
-                                $registro = Instituciones::where('id',$result_contrato->id_institucion)->first();
-                                if($registro)
-                                {
-                                    /** INSTITUCION */
-                                    $institucion = $registro;
-                                    $tipo_institucion = 'institucion';
-                                }
-                                else
-                                {
-                                    $registro = Servicios::where('id',$result_contrato->id_institucion)->first();
-                                    if($registro)
-                                    {
-                                        /** SERVICIOS */
-                                        $institucion = $registro;
-                                        $tipo_institucion = 'servicio';
-                                    }
-                                    else
-                                    {
-                                        return back()->with('error','Institución no encontrada');
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                return back()->with('error','Permisos de usuario no validos para Ingresar al modulo');
-                            }
-                        }
-                    }
+        $mascotas = Mascota::with(['Responsable.Prevision', 'especieMascota', 'razaMascota', 'tamanoMascota', 'lugaresAtencion'])
+            ->where(function ($query) use ($scopeLugarIds, $fichaMascotaIds) {
+                $query->whereHas('lugaresAtencion', function ($subQuery) use ($scopeLugarIds) {
+                    $subQuery->whereIn('id_lugar_atencion', $scopeLugarIds);
+                });
+
+                if ($fichaMascotaIds->isNotEmpty()) {
+                    $query->orWhereIn('id', $fichaMascotaIds);
                 }
-                else
-                {
-                    return back()->with('error','Institución no encontrada');
-                }
-
-            }
-        }
-        /** FIN INFORMACION DE INSTITUCION Y RESPONSABLE */
-
-        /** CARGA DE ASISTENTES */
-        $LugarAtencion = LugarAtencion::where('id',$institucion->id_lugar_atencion)->first();
-        $lista_asistente = array();
-        $profesionales_contratados = ProfesionalesLugaresAtencion::select('profesionales.*','especialidades.nombre as especialidad','tipos_especialidad.nombre as tipo_especialidad','sub_tipo_especialidad.nombre as sub_tipo_especialidad')
-            ->join('profesionales','profesionales_lugares_atencion.id_profesional','=','profesionales.id')
-            ->join('especialidades','profesionales.id_especialidad','=','especialidades.id')
-            ->leftjoin('tipos_especialidad','profesionales.id_tipo_especialidad','=','tipos_especialidad.id')
-            ->leftjoin('sub_tipo_especialidad','profesionales.id_sub_tipo_especialidad','=','sub_tipo_especialidad.id')
-            ->where('profesionales_lugares_atencion.id_lugar_atencion',$institucion->id_lugar_atencion)
+            })
+            ->when($search !== '', function ($query) use ($search) {
+                $query->where(function ($subQuery) use ($search) {
+                    $subQuery->where('nombre', 'like', '%' . $search . '%')
+                        ->orWhereHas('Responsable', function ($responsableQuery) use ($search) {
+                            $responsableQuery->where('rut', 'like', '%' . $search . '%')
+                                ->orWhere('nombres', 'like', '%' . $search . '%')
+                                ->orWhere('apellido_uno', 'like', '%' . $search . '%')
+                                ->orWhere('apellido_dos', 'like', '%' . $search . '%');
+                        });
+                });
+            })
+            ->orderBy('nombre')
             ->get();
 
+        $lugaresActivos = LugarAtencion::whereIn('id', $scopeLugarIds)->get()->keyBy('id');
 
-        if($LugarAtencion)
-        {
-            $url = 'app.adm_cm.pacientes'; // institucion
-            $array_data = array(
-                'lugares_atencion' => $LugarAtencion,
-                'institucion' => $institucion,
-                'profesionales' => $profesionales_contratados
-            );
-            return view($url, $array_data);
-        }
-        else
-        {
-            return back()->with('warning', 'El Lugar de Atencion no se encontro');
-        }
+        return view('app.adm_cm.mis_pacientes', [
+            'institucion' => $institucion,
+            'mascotas' => $mascotas,
+            'lugares_atencion' => $lugaresActivos,
+            'contextosCentro' => $context['contexts'],
+            'contextoActivo' => $activeContext,
+            'search' => $search,
+        ]);
 
     }
 

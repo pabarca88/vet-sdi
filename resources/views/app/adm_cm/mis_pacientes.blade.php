@@ -1,176 +1,139 @@
 @extends('template.adm_cm.template')
 
-@section('content')
-
-{{--  ESTILOS PROPIOS DE LA VISTA   --}}
-
 @section('page-styles')
-
     <link href='{{ asset('css/perfiles_usuarios.css') }}' rel='stylesheet' />
-
 @endsection
-
-
-
-{{--  CONTENIDO  --}}
 
 @section('content')
-
-<!--Container Completo-->
-
 <div class="pcoded-main-container">
-
     <div class="pcoded-content">
-
-        <!--Header-->
-
         <div class="page-header">
-
             <div class="page-block">
-
                 <div class="row align-items-center">
-
                     <div class="col-md-12">
-
-                        <div class="page-header-title">
-
-
-                        </div>
-
                         <ul class="breadcrumb">
-
-                            <li class="breadcrumb-item"><a href="escritorio_asistente.php" data-toggle="tooltip" data-placement="top" title="Volver a mi escritorio"><i class="feather icon-home"></i></a></li>
-
-                            <li class="breadcrumb-item"><a href="pacientes.php">Mis mascotas y Responsables</a></li>
-
+                            <li class="breadcrumb-item">
+                                <a href="{{ route('adm_cm.home', ['contexto' => $contextoActivo['key'] ?? null]) }}" data-toggle="tooltip" data-placement="top" title="Volver a mi escritorio">
+                                    <i class="feather icon-home"></i>
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item"><a href="#">Mascotas y Responsables</a></li>
                         </ul>
-
                     </div>
-
                 </div>
-
             </div>
-
         </div>
 
-        <!--Cierre: Header-->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header bg-info">
+                        <div class="row align-items-center">
+                            <div class="col-md-6">
+                                <h5 class="text-white mb-0">Mascotas y Responsables</h5>
+                                <small class="text-white-50">
+                                    Contexto activo:
+                                    {{ $contextoActivo['label'] ?? ($institucion->nombre ?? 'Sin contexto') }}
+                                </small>
+                            </div>
+                            <div class="col-md-6 text-md-right mt-2 mt-md-0">
+                                <span class="badge badge-light">{{ $contextoActivo['role_label'] ?? 'Administrador' }}</span>
+                            </div>
+                        </div>
+                    </div>
 
-         <!--Buscador de pacientes-->
-
-            <div class="row">
-
-                <div class="col-sm-12">
-
-                    <div class="card">
-
-                        <div class="card-header bg-info">
-
-                            <div class="row">
-
-                                <div class="col-md-12 align-botton">
-
-
-                                    <button type="button" class="btn btn-outline-light btn-sm d-inline float-right mr-4" onclick="r_paciente();">
-
-                                        <i class="feather icon-plus"></i> Mascotas y Resposables {{ mb_strtoupper($institucion->nombre) }}
-
-                                    </button>
-
+                    <div class="card-body">
+                        <form method="GET" action="{{ route('adm_cm.pacientes') }}" class="mb-4">
+                            <div class="form-row align-items-end">
+                                <div class="col-md-4 mb-2">
+                                    <label class="floating-label-activo-sm mb-0">Institución / Sucursal</label>
+                                    <select name="contexto" class="form-control form-control-sm">
+                                        @foreach ($contextosCentro as $contexto)
+                                            <option value="{{ $contexto['key'] }}" @selected(($contextoActivo['key'] ?? '') === $contexto['key'])>
+                                                {{ $contexto['label'] }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 </div>
-
+                                <div class="col-md-6 mb-2">
+                                    <label class="floating-label-activo-sm mb-0">Buscador</label>
+                                    <input
+                                        type="text"
+                                        name="q"
+                                        value="{{ $search }}"
+                                        class="form-control form-control-sm"
+                                        placeholder="Buscar por nombre del responsable, RUT o nombre de mascota">
+                                </div>
+                                <div class="col-md-2 mb-2">
+                                    <button type="submit" class="btn btn-info btn-sm btn-block">
+                                        <i class="feather icon-search"></i> Buscar
+                                    </button>
+                                </div>
                             </div>
+                        </form>
 
-                        </div>
-
-                        <div class="card-body">
-
-                            <div class="row">
-
-                                <div class="col-sm-6 col-md-12">
-
-                                    <table id="pacientes_asistente" class="display table table-striped dt-responsive nowrap table-xs" style="width:100%">
-
-                                    <thead>
-
+                        <div class="table-responsive">
+                            <table class="display table table-striped dt-responsive nowrap table-xs" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th class="align-middle">Mascota</th>
+                                        <th class="align-middle">Responsable</th>
+                                        <th class="align-middle">Especie</th>
+                                        <th class="align-middle">Raza</th>
+                                        <th class="align-middle">Previsión</th>
+                                        <th class="align-middle">Chip</th>
+                                        <th class="align-middle">Centro</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse ($mascotas as $mascota)
+                                        @php
+                                            $responsable = $mascota->Responsable;
+                                            $responsableNombre = trim(collect([
+                                                optional($responsable)->nombres,
+                                                optional($responsable)->apellido_uno,
+                                                optional($responsable)->apellido_dos,
+                                            ])->filter()->implode(' '));
+                                            $lugaresMascota = collect($mascota->lugaresAtencion ?? [])
+                                                ->pluck('id_lugar_atencion')
+                                                ->map(fn ($id) => optional($lugares_atencion->get($id))->nombre)
+                                                ->filter()
+                                                ->unique()
+                                                ->values();
+                                        @endphp
                                         <tr>
-
-                                            <th class="align-middle">Paciente</th>
-
-                                            <th class="align-middle">Nacimiento</th>
-
-                                            <th class="align-middle">Contacto</th>
-
-                                            <th class="align-middle">Previsión</th>
-
-                                            <th class="align-middle">Tipo de usuario</th>
-
-                                        </tr>
-
-                                    </thead>
-
-                                    <tbody>
-
-                                        <tr>
-
-                                            <td class="align-middle">Pepita Vargas Díaz<br>
-
-                                            22.234.455-0</td>
-
-                                            <td class="align-middle">24/01/1986</td>
-
-                                            <td class="align-middle">Las Cruces #124 Viña del Mar, Chile<br>paciente@gmail.com<br>+569 4324343</td>
-
-                                            <td class="align-middle">Colmena</td>
-
                                             <td class="align-middle">
-
-                                                <span class="badge badge-primary">Básico</span>
-
+                                                <strong>{{ $mascota->nombre ?: '-' }}</strong><br>
+                                                <small class="text-muted">{{ optional($mascota->tamanoMascota)->nombre ?? ($mascota->tamano ?? '-') }}</small>
                                             </td>
-
+                                            <td class="align-middle">
+                                                {{ $responsableNombre !== '' ? $responsableNombre : '-' }}<br>
+                                                <small class="text-muted">{{ optional($responsable)->rut ?: 'Sin RUT' }}</small>
+                                            </td>
+                                            <td class="align-middle">{{ optional($mascota->especieMascota)->nombre ?? ($mascota->especie ?? '-') }}</td>
+                                            <td class="align-middle">{{ optional($mascota->razaMascota)->nombre ?? ($mascota->otra_especie ?? '-') }}</td>
+                                            <td class="align-middle">{{ optional(optional($responsable)->Prevision)->nombre ?? '-' }}</td>
+                                            <td class="align-middle">{{ $mascota->tiene_chip ? ($mascota->chip ?: 'Sí') : 'No' }}</td>
+                                            <td class="align-middle">
+                                                @if ($lugaresMascota->isNotEmpty())
+                                                    {{ $lugaresMascota->implode(', ') }}
+                                                @else
+                                                    <span class="text-muted">Sin centro asociado</span>
+                                                @endif
+                                            </td>
                                         </tr>
-
+                                    @empty
                                         <tr>
-
-                                            <td class="text-center align-middle">Alonso Peña Díaz<br>
-
-                                            18.564.455-0</td>
-
-                                            <td class="text-center align-middle">11/03/1996</td>
-
-                                            <td class="text-center align-middle">Villarrica #14 Valparaíso, Chile<br>paciente@gmail.com<br>+569 4324343</td>
-
-                                            <td class="text-center align-middle">Colmena</td>
-
-                                            <td class="align-middle text-center">
-
-                                                <span class="badge badge-warning">Premium</span>
-
-                                            </td>
-
+                                            <td colspan="7" class="text-center">No hay mascotas ni responsables para el contexto activo.</td>
                                         </tr>
-
-                                    </tbody>
-
-                                </table>
-
-                            </div>
-
+                                    @endforelse
+                                </tbody>
+                            </table>
                         </div>
-
                     </div>
-
                 </div>
-
             </div>
-
         </div>
-
     </div>
-
 </div>
-
-<!--Cierre: Container Completo-->
-
 @endsection
-

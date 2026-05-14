@@ -1,5 +1,8 @@
 @extends('template.adm_cm.template')
 @section('content')
+    @php
+        $profesionalAgendaReferencia = collect($profesionales ?? [])->first();
+    @endphp
     <!--****Container Completo****-->
     <style>
         .select2-container--open {
@@ -37,7 +40,7 @@
             <input type="hidden" name="id_area" id="id_area" value="">
             <input type="hidden" name="id_laboratorio" id="id_laboratorio" value="">
             <input type="hidden" name="id_box" id="id_box" value="">
-            <input type="hidden" name="id_director_cm" id="id_director_cm" value="{{ $director_cm->id }}">
+            <input type="hidden" name="id_director_cm" id="id_director_cm" value="{{ $director_cm->id ?? '' }}">
             <input type="hidden" name="id_director_comercial" id="id_director_comercial" value="{{ isset($subdirector_cm) ? $subdirector_cm->id : '' }}">
             <input type="hidden" name="id_director_farmacia" id="id_director_farmacia" value="{{ isset($director_gestion_cuidado) ? $director_gestion_cuidado->id : '' }}">
 
@@ -3792,7 +3795,7 @@
                                 <label class="floating-label-activo-sm">Seleccione </label>
                                 <select name="tipo_agenda_medica" id="tipo_agenda_medica" class="form-control form-control-sm" onclick="validar_tipo_agenda();">
 
-                                    @if($profesional->id_especialidad == 2)
+                                    @if(($profesionalAgendaReferencia->id_especialidad ?? null) == 2)
                                         <option value="2">Atención Dental</option>
                                     @else
                                         <option value="0">Seleccione</option>

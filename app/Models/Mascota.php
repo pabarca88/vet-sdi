@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Paciente;
 use App\Models\EspecieMascota;
 use App\Models\TamanoMascota;
+use Illuminate\Database\Eloquent\Builder;
 
 class Mascota extends Model
 {
@@ -80,5 +81,44 @@ class Mascota extends Model
     public function tamanoMascota()
     {
         return $this->belongsTo(TamanoMascota::class, 'tamano_id');
+    }
+
+    public function lugaresAtencion()
+    {
+        return $this->hasMany(MascotaLugarAtencion::class, 'id_mascota', 'id');
+    }
+
+    public function vincularLugarAtencion(?int $idLugarAtencion, ?int $idInstitucion = null, ?string $origen = null): void
+    {
+        if (empty($idLugarAtencion)) {
+            return;
+        }
+
+        $this->lugaresAtencion()->updateOrCreate(
+            ['id_lugar_atencion' => $idLugarAtencion],
+            [
+                'id_institucion' => $idInstitucion,
+                'origen' => $origen,
+            ]
+        );
+    }
+
+    public function scopePorLugarAtencion(Builder $query, $idLugarAtencion): Builder
+    {
+        if (empty($idLugarAtencion)) {
+            return $query;
+        }
+
+        $ids = is_array($idLugarAtencion)
+            ? $idLugarAtencion
+            : array_filter(array_map('trim', explode(',', (string) $idLugarAtencion)));
+
+        if (empty($ids)) {
+            return $query;
+        }
+
+        return $query->whereHas('lugaresAtencion', function (Builder $subQuery) use ($ids) {
+            $subQuery->whereIn('id_lugar_atencion', $ids);
+        });
     }
 }

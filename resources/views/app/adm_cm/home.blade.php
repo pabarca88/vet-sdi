@@ -21,9 +21,33 @@
                         <div class="col-md-12">
 
                             <div class="page-header-title">
-                                <h4 class=" font-weight-bold text-white">Hola, Nombre del Administrador (Solo nombre)</h4>
+                                @php
+                                    $nombreAdministrador = trim(Auth::user()->name ?? Auth::user()->nombre ?? 'Administrador');
+                                    $primerNombreAdministrador = collect(preg_split('/\s+/', $nombreAdministrador))
+                                        ->filter()
+                                        ->first() ?? 'Administrador';
+                                @endphp
+                                <h4 class=" font-weight-bold text-white">Hola, {{ $primerNombreAdministrador }}</h4>
                                 <p class="text-white">Bienvenido a tu escritorio de Administrador General de {{ mb_strtoupper($institucion->nombre) }}</p>
-
+                                @if (!empty($contextosCentro) && !empty($contextoActivo))
+                                    <form method="GET" action="{{ route('adm_cm.home') }}" class="mt-3">
+                                        <div class="form-row align-items-end">
+                                            <div class="col-md-5">
+                                                <label class="text-white mb-1">Institución / Sucursal activa</label>
+                                                <select name="contexto" class="form-control form-control-sm">
+                                                    @foreach ($contextosCentro as $contexto)
+                                                        <option value="{{ $contexto['key'] }}" @selected(($contextoActivo['key'] ?? '') === $contexto['key'])>
+                                                            {{ $contexto['label'] }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2 mt-2 mt-md-0">
+                                                <button type="submit" class="btn btn-light btn-sm btn-block">Cambiar</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                @endif
                             </div>
 
                         </div>
@@ -365,4 +389,3 @@
     @include('app.adm_cm.modales.en_construccion')
 
 @endsection
-

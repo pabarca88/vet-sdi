@@ -13,6 +13,7 @@ use App\Models\FichaAtencion;
 use App\Models\HoraMedica;
 use App\Models\Profesional;
 use App\Models\Producto;
+use App\Support\LugarAtencionInstitucionResolver;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -61,7 +62,11 @@ class MascotasController extends Controller
     public function index()
     {
         $paciente = Paciente::where('id_usuario', Auth::id())->first();
-        $mascotas = Mascota::with(['especieMascota', 'tamanoMascota'])->where('id_responsable', optional($paciente)->id)->get();
+        $idLugarAtencion = request()->input('id_lugar_atencion');
+        $mascotas = Mascota::with(['especieMascota', 'tamanoMascota', 'lugaresAtencion'])
+            ->where('id_responsable', optional($paciente)->id)
+            ->porLugarAtencion($idLugarAtencion)
+            ->get();
         $especies = EspecieMascota::orderBy('nombre')->get();
         $tamanos = TamanoMascota::orderBy('nombre')->get();
         $especieTamanos = EspecieTamanoMascota::with(['especie', 'tamano'])->get();
@@ -121,6 +126,7 @@ class MascotasController extends Controller
             'vacunas' => 'nullable|string',
             'viajes' => 'nullable|string',
             'vive_con_animales' => 'nullable|boolean',
+            'id_lugar_atencion' => 'nullable|integer|exists:lugares_atencion,id',
         ]);
 
         if ($validator->fails()) {
@@ -212,10 +218,16 @@ class MascotasController extends Controller
         $mascota->estado = 1;
 
         if ($mascota->save()) {
+            $idLugarAtencion = $request->filled('id_lugar_atencion')
+                ? (int) $request->input('id_lugar_atencion')
+                : null;
+            $idInstitucion = LugarAtencionInstitucionResolver::resolve($idLugarAtencion);
+            $mascota->vincularLugarAtencion($idLugarAtencion, $idInstitucion, 'portal_responsable');
+
             return [
                 'estado' => 1,
                 'msj' => 'Mascota registrada con exito.',
-                'registro' => $mascota->load(['especieMascota', 'razaMascota', 'tamanoMascota']),
+                'registro' => $mascota->load(['especieMascota', 'razaMascota', 'tamanoMascota', 'lugaresAtencion']),
             ];
         }
 
@@ -293,6 +305,7 @@ class MascotasController extends Controller
             'vacunas' => 'nullable|string',
             'viajes' => 'nullable|string',
             'vive_con_animales' => 'nullable|boolean',
+            'id_lugar_atencion' => 'nullable|integer|exists:lugares_atencion,id',
         ]);
 
         if ($validator->fails()) {
@@ -373,10 +386,16 @@ class MascotasController extends Controller
         $mascota->estado = 1;
 
         if ($mascota->save()) {
+            $idLugarAtencion = $request->filled('id_lugar_atencion')
+                ? (int) $request->input('id_lugar_atencion')
+                : null;
+            $idInstitucion = LugarAtencionInstitucionResolver::resolve($idLugarAtencion);
+            $mascota->vincularLugarAtencion($idLugarAtencion, $idInstitucion, 'actualizacion');
+
             return [
                 'estado' => 1,
                 'msj' => 'Mascota actualizada con exito.',
-                'registro' => $mascota->load(['especieMascota', 'razaMascota', 'tamanoMascota']),
+                'registro' => $mascota->load(['especieMascota', 'razaMascota', 'tamanoMascota', 'lugaresAtencion']),
             ];
         }
 
@@ -396,7 +415,10 @@ class MascotasController extends Controller
             ];
         }
 
-        $mascotas = Mascota::with(['especieMascota', 'razaMascota', 'tamanoMascota'])->where('id_responsable', $paciente->id)->get();
+        $mascotas = Mascota::with(['especieMascota', 'razaMascota', 'tamanoMascota', 'lugaresAtencion'])
+            ->where('id_responsable', $paciente->id)
+            ->porLugarAtencion($request->input('id_lugar_atencion'))
+            ->get();
 
         return [
             'estado' => 1,
