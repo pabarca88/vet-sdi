@@ -2800,8 +2800,8 @@
                                                                                         {{ $area->numero_personas }}</td>
                                                                                     <td class="align-middle text-left">
                                                                                         @if ($area->profesionales)
-                                                                                            @foreach ($area->profesionales as $profesional)
-                                                                                                <span>{{ $profesional->nombre . ' ' . $profesional->apellido_uno . ' ' . $profesional->apellido_dos }}</span><br>
+                                                                                            @foreach (collect($area->profesionales)->filter() as $profesional)
+                                                                                                <span>{{ trim(($profesional->nombre ?? '') . ' ' . ($profesional->apellido_uno ?? '') . ' ' . ($profesional->apellido_dos ?? '')) }}</span><br>
                                                                                             @endforeach
                                                                                         @endif
                                                                                     </td>
@@ -2907,8 +2907,8 @@
                                                                                         {{ $area->numero_personas }}</td>
                                                                                     <td class="align-middle text-left">
                                                                                         @if ($area->profesionales)
-                                                                                            @foreach ($area->profesionales as $profesional)
-                                                                                                <span>{{ $profesional->nombre . ' ' . $profesional->apellido_uno . ' ' . $profesional->apellido_dos }}</span><br>
+                                                                                            @foreach (collect($area->profesionales)->filter() as $profesional)
+                                                                                                <span>{{ trim(($profesional->nombre ?? '') . ' ' . ($profesional->apellido_uno ?? '') . ' ' . ($profesional->apellido_dos ?? '')) }}</span><br>
                                                                                             @endforeach
                                                                                         @endif
                                                                                     </td>
