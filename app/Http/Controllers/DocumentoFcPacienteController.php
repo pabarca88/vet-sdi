@@ -193,7 +193,7 @@ class DocumentoFcPacienteController extends Controller
                         );
                     $cc = array();
                     $bcc = array();
-                    $asunto = 'MED-SDI - Indicaciones de su Medico';
+                    $asunto = 'VET-SDI - Indicaciones de su Medico';
                     $body = array(
                         'NOMBRE_PACIENTE' => mb_strtoupper($nombre_pc),
                         'NOMBRE_PROFESIONAL' => mb_strtoupper($nombre_pf)

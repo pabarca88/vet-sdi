@@ -99,7 +99,7 @@ class SendMailController extends Controller
             {
                 //envio correo a destino origen y copia oculta
                 $bcc = array(
-                    ['email'=>'contacto@med-sdi.cl','name'=>'Contacto MED-SDI'],
+                    ['email'=>'contacto@vet-sdi.cl','name'=>'Contacto VET-SDI'],
                     ['email'=>'jkriman@gmail.com','name'=>'Jaime']
                     //['email'=>'johan.e.davilap@gmail.com','name'=>'Johan']
                 );
@@ -120,7 +120,7 @@ class SendMailController extends Controller
                 {
                     // desarrollo
                     $to = array(
-                        ['email'=>'contacto@med-sdi.cl','name'=>'Contacto MED-SDI'],
+                        ['email'=>'contacto@vet-sdi.cl','name'=>'Contacto VET-SDI'],
                         ['email'=>'jkriman@gmail.com','name'=>'Jaime']
                         //['email'=>'johan.e.davilap@gmail.com','name'=>'Johan']
                     );
@@ -129,7 +129,7 @@ class SendMailController extends Controller
                 {
                     //envio correo a destino origen y copia oculta
                     $bcc = array(
-                        ['email'=>'contacto@med-sdi.cl','name'=>'Contacto MED-SDI'],
+                        ['email'=>'contacto@vet-sdi.cl','name'=>'Contacto VET-SDI'],
                         ['email'=>'jkriman@gmail.com','name'=>'Jaime']
                         //['email'=>'johan.e.davilap@gmail.com','name'=>'Johan']
                     );
@@ -237,12 +237,12 @@ class SendMailController extends Controller
         $to = array(
                 array('email' => 'jkriman@gmail.com','name' => 'jaime'),
                 array('email' => 'j2edavila@gmail.com','name' => 'johan'),
-                array('email' => 'contacto@med-sdi.cl','name' => 'Contacto MED-sdi'),
+                array('email' => 'contacto@vet-sdi.cl','name' => 'Contacto vet-sdi'),
                 // array('email' => 'paul_baeza@hotmail.com','name' => 'paul')
             );
         $cc = array();
         $bcc = array();
-        $asunto = 'MED-SDI - Codigo Registro APP';
+        $asunto = 'VET-SDI - Codigo Registro APP';
         $body = array('CODIGO'=>'12345', 'NOMBRE_CLIENTE'=> 'demo demo', 'URL'=>'455646');
         // $archivo = 'documentos/consejosodontopediatría.pdf';/** pendiente */
         $archivo = '';/** pendiente */

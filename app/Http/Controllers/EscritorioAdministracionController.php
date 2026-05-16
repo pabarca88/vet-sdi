@@ -1240,7 +1240,7 @@ class EscritorioAdministracionController extends Controller
                             );
                         $cc = array();
                         $bcc = array();
-                        $asunto = 'MED-SDI - Bienvenido!';
+                        $asunto = 'VET-SDI - Bienvenido!';
                         $body = array(
                             'nombre'=>$nuevo_profesional->nombre.' '.$nuevo_profesional->apellido_uno.' '.$nuevo_profesional->apellido_dos,
                             'user' => $nuevo_profesional->email,

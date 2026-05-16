@@ -541,7 +541,7 @@ class JitsiController extends Controller
                     );
                 $cc = array();
                 $bcc = array();
-                $asunto = 'MED-SDI - Notificación Link de Consulta';
+                $asunto = 'VET-SDI - Notificación Link de Consulta';
                 $body = array(
                     'nombre_paciente' => $paciente->nombres.' '.$paciente->apellido_uno,
                     'nombre_profesional' => $profesional->nombres.' '.$profesional->apellido_uno,

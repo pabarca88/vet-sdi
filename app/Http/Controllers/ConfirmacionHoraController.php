@@ -84,7 +84,7 @@ class ConfirmacionHoraController extends Controller
                     );
                 $cc = array();
                 $bcc = array();
-                $asunto = 'MED-SDI - Confirmacion de Hora Medica';
+                $asunto = 'VET-SDI - Confirmacion de Hora Medica';
                 $body = array(
                     'nombre_paciente'=> mb_strtoupper($paciente->nombres . ' ' . $paciente->apellido_uno . ' ' . $paciente->apellido_dos),
                     'fecha'=> $value_hora->fecha_consulta,
@@ -277,7 +277,7 @@ class ConfirmacionHoraController extends Controller
                         );
                     $cc = array();
                     $bcc = array();
-                    $asunto = 'MED-SDI - Confirmacion de Hora Medica';
+                    $asunto = 'VET-SDI - Confirmacion de Hora Medica';
                     $body = array(
                         'nombre_paciente'=> mb_strtoupper($paciente->nombres . ' ' . $paciente->apellido_uno . ' ' . $paciente->apellido_dos),
                         'fecha'=> $value_NC->fecha_evento,
@@ -442,7 +442,7 @@ class ConfirmacionHoraController extends Controller
                         );
                     $cc = array();
                     $bcc = array();
-                    $asunto = 'MED-SDI - Reserva de Hora Confirmada';
+                    $asunto = 'VET-SDI - Reserva de Hora Confirmada';
                     $body = array(
                         'nombre_paciente'=> mb_strtoupper($paciente->nombres . ' ' . $paciente->apellido_uno . ' ' . $paciente->apellido_dos),
                         'fecha'=> $notificacion->fecha_evento,
@@ -604,7 +604,7 @@ class ConfirmacionHoraController extends Controller
                         );
                     $cc = array();
                     $bcc = array();
-                    $asunto = 'MED-SDI - Reserva de Hora Cancelada';
+                    $asunto = 'VET-SDI - Reserva de Hora Cancelada';
                     $body = array(
                         'nombre_paciente'=> mb_strtoupper($paciente->nombres . ' ' . $paciente->apellido_uno . ' ' . $paciente->apellido_dos),
                         'fecha'=> $notificacion->fecha_evento,

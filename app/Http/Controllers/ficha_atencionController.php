@@ -5823,7 +5823,7 @@ class ficha_atencionController extends Controller
                 );
             $cc = array();
             $bcc = array();
-            $asunto = 'MED-SDI - Notificación GES';
+            $asunto = 'VET-SDI - Notificación GES';
             $body = array(
                 'nombre_paciente'=> $paciente->nombres . ' ' . $paciente->apellido_uno . ' ' . $paciente->apellido_dos,
                 'nombre_ges'=>$request->nombre_ges,

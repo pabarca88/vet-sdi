@@ -826,7 +826,7 @@ class EscritorioAsistente extends Controller
 
                 if( (\Carbon\Carbon::parse($request->fecha_nac)->age) < 18 && !empty($request->reserva_hora_email))
                 {
-                    // $paciente->email = $temp.'@med-sdi.cl';
+                    // $paciente->email = $temp.'@vet-sdi.cl';
                     $paciente->email = PacienteController::generarEmailPacienteTemporal($request->reserva_hora_nombre,$request->reserva_hora_primer_apellido,$request->reserva_hora_segundo_apellido);
                 }
                 else
@@ -841,7 +841,7 @@ class EscritorioAsistente extends Controller
                             }
                             else
                             {
-                                // $paciente->email = $temp.'@med-sdi.cl';
+                                // $paciente->email = $temp.'@vet-sdi.cl';
                                 $paciente->email = PacienteController::generarEmailPacienteTemporal($request->reserva_hora_nombre,$request->reserva_hora_primer_apellido,$request->reserva_hora_segundo_apellido);
                             }
                         }
@@ -855,7 +855,7 @@ class EscritorioAsistente extends Controller
                                 }
                                 else
                                 {
-                                    // $paciente->email = $temp.'@med-sdi.cl';
+                                    // $paciente->email = $temp.'@vet-sdi.cl';
                                     $paciente->email = PacienteController::generarEmailPacienteTemporal($request->reserva_hora_nombre,$request->reserva_hora_primer_apellido,$request->reserva_hora_segundo_apellido);
                                 }
                             }
@@ -867,7 +867,7 @@ class EscritorioAsistente extends Controller
                     }
                     else
                     {
-                        // $paciente->email = $temp.'@med-sdi.cl';
+                        // $paciente->email = $temp.'@vet-sdi.cl';
                         $paciente->email = PacienteController::generarEmailPacienteTemporal($request->reserva_hora_nombre,$request->reserva_hora_primer_apellido,$request->reserva_hora_segundo_apellido);
                     }
                 }
@@ -988,7 +988,7 @@ class EscritorioAsistente extends Controller
                                             );
                                         $cc = array();
                                         $bcc = array();
-                                        $asunto = 'MED-SDI - Bienvenido!';
+                                        $asunto = 'VET-SDI - Bienvenido!';
                                         $body = array(
                                                     'nombre'=>$paciente->nombres . ' ' .$paciente->apellido_uno . ' ' .$paciente->apellido_dos,
                                                     'user' => $paciente->email,
@@ -1082,7 +1082,7 @@ class EscritorioAsistente extends Controller
 
                             if( $representante_result_codigo_validacion == 1 && empty($paciente_representante->email))
                             {
-                                // $paciente_representante->email = $representante_temp.'@med-sdi.cl';
+                                // $paciente_representante->email = $representante_temp.'@vet-sdi.cl';
                                 $paciente_representante->email = PacienteController::generarEmailPacienteTemporal($representante_nombres_paciente,$representante_apellido_uno,$representante_apellido_dos);
                             }
                             else if( $representante_result_codigo_validacion == 1 && !empty($paciente_representante->email))
@@ -1163,7 +1163,7 @@ class EscritorioAsistente extends Controller
                                                         );
                                                     $cc = array();
                                                     $bcc = array();
-                                                    $asunto = 'MED-SDI - Bienvenido!';
+                                                    $asunto = 'VET-SDI - Bienvenido!';
                                                     $body = array(
                                                                 'nombre'=>$representante_nombres_paciente . ' ' .$representante_apellido_uno . ' ' .$representante_apellido_dos,
                                                                 'user' => $representante_correo,
@@ -1330,7 +1330,7 @@ class EscritorioAsistente extends Controller
                         }
                         $cc = array();
                         $bcc = array();
-                        $asunto = 'MED-SDI - Nueva Hora Agendada';
+                        $asunto = 'VET-SDI - Nueva Hora Agendada';
                         $body = array(
                             'nombre_paciente'=> $paciente->nombres . ' ' . $paciente->apellido_uno . ' ' . $paciente->apellido_dos,
                             'fecha'=> $hora_medica->fecha_consulta,
@@ -1515,7 +1515,7 @@ class EscritorioAsistente extends Controller
 
                             $cc = array();
                             $bcc = array();
-                            $asunto = 'MED-SDI - Pre Agendada';
+                            $asunto = 'VET-SDI - Pre Agendada';
                             $body = array(
                                 'nombre_paciente'=> $paciente->nombres . ' ' . $paciente->apellido_uno . ' ' . $paciente->apellido_dos,
 								'token_paciente'=> $paciente->token,
@@ -1665,7 +1665,7 @@ class EscritorioAsistente extends Controller
 
                     $cc = array();
                     $bcc = array();
-                    $asunto = 'MED-SDI - Pre Agendada';
+                    $asunto = 'VET-SDI - Pre Agendada';
                     $body = array(
                         'nombre_paciente'=> $paciente->nombres . ' ' . $paciente->apellido_uno . ' ' . $paciente->apellido_dos,
                         'fecha'=> $hora_medica->fecha_consulta,
@@ -1938,7 +1938,7 @@ class EscritorioAsistente extends Controller
             );
         $cc = array();
         $bcc = array();
-        $asunto = 'MED-SDI - Nueva Hora Agendada';
+        $asunto = 'VET-SDI - Nueva Hora Agendada';
         $body = array(
             'nombre_paciente'=> $paciente->nombres . ' ' . $paciente->apellido_uno . ' ' . $paciente->apellido_dos,
             'fecha'=> $hora_medica->fecha_consulta,

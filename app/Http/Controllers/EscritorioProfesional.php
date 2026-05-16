@@ -2214,7 +2214,7 @@ class EscritorioProfesional extends Controller
                                             );
                                         $cc = array();
                                         $bcc = array();
-                                        $asunto = 'MED-SDI - Bienvenido!';
+                                        $asunto = 'VET-SDI - Bienvenido!';
                                         $body = array(
                                                     'nombre'=>$nuevo_profesional->nombres . ' ' .$nuevo_profesional->apellido_uno . ' ' .$nuevo_profesional->apellido_dos,
                                                     'user' => $nuevo_profesional->email,
@@ -9452,7 +9452,7 @@ public function eliminarPiezaCoronaProtesis(Request $req){
                         }
                         else
                         {
-                            // $paciente->email = $temp.'@med-sdi.cl';
+                            // $paciente->email = $temp.'@VET-SDI.cl';
                             //$paciente->email = PacienteController::generarEmailPacienteTemporal($request->reserva_hora_nombre,$request->reserva_hora_primer_apellido,$request->reserva_hora_segundo_apellido);
                         }
                     }
@@ -9466,7 +9466,7 @@ public function eliminarPiezaCoronaProtesis(Request $req){
                             }
                             else
                             {
-                                // $paciente->email = $temp.'@med-sdi.cl';
+                                // $paciente->email = $temp.'@VET-SDI.cl';
                                 //$paciente->email = PacienteController::generarEmailPacienteTemporal($request->reserva_hora_nombre,$request->reserva_hora_primer_apellido,$request->reserva_hora_segundo_apellido);
                             }
                         }
@@ -9478,7 +9478,7 @@ public function eliminarPiezaCoronaProtesis(Request $req){
                 }
                 else
                 {
-                    // $paciente->email = $temp.'@med-sdi.cl';
+                    // $paciente->email = $temp.'@VET-SDI.cl';
                     //$paciente->email = PacienteController::generarEmailPacienteTemporal($request->reserva_hora_nombre,$request->reserva_hora_primer_apellido,$request->reserva_hora_segundo_apellido);
                 }
             }
@@ -9605,7 +9605,7 @@ public function eliminarPiezaCoronaProtesis(Request $req){
                                             );
                                         $cc = array();
                                         $bcc = array();
-                                        $asunto = 'MED-SDI - Bienvenido!';
+                                        $asunto = 'VET-SDI - Bienvenido!';
                                         $body = array(
                                                     'nombre'=>$paciente->nombres . ' ' .$paciente->apellido_uno . ' ' .$paciente->apellido_dos,
                                                     'user' => $paciente->email,
@@ -9696,7 +9696,7 @@ public function eliminarPiezaCoronaProtesis(Request $req){
 
                         if( $representante_result_codigo_validacion == 1 && empty($paciente_representante->email))
 						{
-                            // $paciente_representante->email = $representante_temp.'@med-sdi.cl';
+                            // $paciente_representante->email = $representante_temp.'@VET-SDI.cl';
                             $paciente_representante->email = PacienteController::generarEmailPacienteTemporal($representante_nombres_paciente,$representante_apellido_uno,$representante_apellido_dos);
                         }
                         else if( $representante_result_codigo_validacion == 1 && !empty($paciente_representante->email))
@@ -9777,7 +9777,7 @@ public function eliminarPiezaCoronaProtesis(Request $req){
                                                     );
                                                 $cc = array();
                                                 $bcc = array();
-                                                $asunto = 'MED-SDI - Bienvenido!';
+                                                $asunto = 'VET-SDI - Bienvenido!';
                                                 $body = array(
                                                             'nombre'=>$representante_nombres_paciente . ' ' .$representante_apellido_uno . ' ' .$representante_apellido_dos,
                                                             'user' => $representante_correo,
@@ -9982,7 +9982,7 @@ public function eliminarPiezaCoronaProtesis(Request $req){
 
                         $cc = array();
                         $bcc = array();
-                        $asunto = 'MED-SDI - Nueva Hora Agendada';
+                        $asunto = 'VET-SDI - Nueva Hora Agendada';
                         $sub_tipo_especialidad = $profesional->SubTipoEspecialidad()->first();
                         $body = array(
                             'nombre_paciente'=> $paciente->nombres . ' ' . $paciente->apellido_uno . ' ' . $paciente->apellido_dos,
@@ -10132,7 +10132,7 @@ public function eliminarPiezaCoronaProtesis(Request $req){
             );
         $cc = array();
         $bcc = array();
-        $asunto = 'MED-SDI - Reserva de Hora Confirmada';
+        $asunto = 'VET-SDI - Reserva de Hora Confirmada';
         if($profesional)
         {
             $body = array(
@@ -10627,7 +10627,7 @@ public function eliminarPiezaCoronaProtesis(Request $req){
             );
         $cc = array();
         $bcc = array();
-        $asunto = 'MED-SDI - Reserva de Hora Cancelada';
+        $asunto = 'VET-SDI - Reserva de Hora Cancelada';
         if(!empty($profesional))
         {
             $body = array(
@@ -12325,7 +12325,7 @@ public function eliminarPiezaCoronaProtesis(Request $req){
                 );
             $cc = array();
             $bcc = array();
-            $asunto = 'MED-SDI - Bienvenido!';
+            $asunto = 'VET-SDI - Bienvenido!';
             $body = array(
                 'nombre' => $nombre.' '.$primer_apellido.' '.$segundo_apellido,
                 'user'=> $email,

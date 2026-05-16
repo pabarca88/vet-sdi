@@ -1131,15 +1131,15 @@ class PacienteController extends Controller
 
         // Generar el correo base
         $nombre_correo = "{$nombre}.{$apellido_uno}.{$apellido_dos}";
-        $correo = $nombre_correo . '@med-sdi.cl';
+        $correo = $nombre_correo . '@vet-sdi.cl';
 
         // Verificar si el correo ya existe en la base de datos
-        $registro_cant = Paciente::where('email', 'like', "{$nombre_correo}%@med-sdi.cl")->count();
+        $registro_cant = Paciente::where('email', 'like', "{$nombre_correo}%@vet-sdi.cl")->count();
 
         // Si existe, agregar un número incremental para garantizar unicidad
         if ($registro_cant > 0) {
             $registro_cant++; // Incrementar para evitar conflictos
-            $correo = "{$nombre_correo}.{$registro_cant}@med-sdi.cl";
+            $correo = "{$nombre_correo}.{$registro_cant}@vet-sdi.cl";
         }
 
         // Retornar el correo generado

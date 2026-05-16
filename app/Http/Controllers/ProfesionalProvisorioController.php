@@ -483,7 +483,7 @@ class ProfesionalProvisorioController extends Controller
                     );
                 $cc = array();
                 $bcc = array();
-                $asunto = 'MED-SDI - Invitación a Profesional!';
+                $asunto = 'VET-SDI - Invitación a Profesional!';
 
                 //$url_ = 'http://medichile_sistema.test'; // LOCAL
                 $url_ = env('APP_URL'); // PRODUCCION

@@ -761,7 +761,7 @@ class TranscripcionController extends Controller
                         );
                     $cc = array();
                     $bcc = array();
-                    $asunto = 'MED-SDI - Resultado de Examen';
+                    $asunto = 'VET-SDI - Resultado de Examen';
                     $body = array(
                         'nombre_cliente' => $paciente->nombres.' '.$paciente->apellido_uno.' '.$paciente->apellido_dos,
                         'mensaje' => $mensaje_correo,

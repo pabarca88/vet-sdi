@@ -276,7 +276,7 @@ class ResultadoExamenController extends Controller
                         );
                     $cc = array();
                     $bcc = array();
-                    $asunto = 'MED-SDI - Resultado Examen';
+                    $asunto = 'VET-SDI - Resultado Examen';
                     $body = array(
                         'NOMBRE_PACIENTE' => mb_strtoupper($registro->nombre.' '.$registro->apellido_paterno.' '.$registro->apellido_materno),
                         'TIPO_EXAMEN' => mb_strtoupper($tipo_examen_medico->nombre_examen),

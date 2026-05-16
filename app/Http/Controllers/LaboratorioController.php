@@ -7179,7 +7179,7 @@ class LaboratorioController extends Controller
 
         $bcc = array();
 
-        $asunto = 'MED-SDI - Nueva Hora Agendada';
+        $asunto = 'VET-SDI - Nueva Hora Agendada';
 
         $body = array(
 

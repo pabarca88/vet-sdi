@@ -448,7 +448,7 @@ class LicenciaAprobacionController extends Controller
                                 );
                             $cc = array();
                             $bcc = array();
-                            $asunto = 'MED-SDI - Bienvenido!';
+                            $asunto = 'VET-SDI - Bienvenido!';
                             $body = array(
                                         'nombre'=>$paciente->nombres . ' ' .$paciente->apellido_uno . ' ' .$paciente->apellido_dos,
                                         'user' => $paciente->email,

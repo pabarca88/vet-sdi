@@ -262,7 +262,7 @@ class ProfesionalInstitucionConvenioController extends Controller
                             );
                         $cc = array();
                         $bcc = array();
-                        $asunto = 'MED-SDI - Invitacion Convenio';
+                        $asunto = 'VET-SDI - Invitacion Convenio';
                         $body = array(
                             'nombre'=>$invitacion->nombre.' '.$invitacion->apellido_uno.' '.$invitacion->apellido_dos,
                             'lugar_atencion' => $invitacion->LugarAtencion->nombre,

@@ -406,7 +406,7 @@ class VentaBonoController extends Controller
                                     );
                                 $cc = array();
                                 $bcc = array();
-                                $asunto = 'MED-SDI - Compra de Bono';
+                                $asunto = 'VET-SDI - Compra de Bono';
 
                                 $tipo_bono = TipoBono::find($bono->id_tipo_bono);
                                 $prevision = Prevision::find($bono->convenio);

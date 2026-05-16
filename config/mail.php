@@ -94,8 +94,8 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'no-reponse@med-sdi.cl'),
-        'name' => env('MAIL_FROM_NAME', 'MED-SDI'),
+        'address' => env('MAIL_FROM_ADDRESS', 'no-reponse@vet-sdi.cl'),
+        'name' => env('MAIL_FROM_NAME', 'VET-SDI'),
     ],
 
     /*

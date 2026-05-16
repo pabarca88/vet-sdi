@@ -400,7 +400,7 @@ class EscritorioDependientesController extends Controller
                 {
                     $permitted_chars = '#\qwertyuiopasdfghjkklzxcvbnm123467890ABCDEFGHIJKLMNOPQRSTUVWXYZ&=';
                     $temp = substr(str_shuffle($permitted_chars), 0, 10);
-                    // $paciente_dep->email = $paciente->email = $temp.'@med-sdi.cl';
+                    // $paciente_dep->email = $paciente->email = $temp.'@vet-sdi.cl';
                     $paciente_dep->email = $paciente->email = PacienteController::generarEmailPacienteTemporal($request->nombres_paciente,$request->apellido_uno,$request->apellido_dos);
                 }
                 else
@@ -448,7 +448,7 @@ class EscritorioDependientesController extends Controller
                                         );
                                     $cc = array();
                                     $bcc = array();
-                                    $asunto = 'MED-SDI - Bienvenido!';
+                                    $asunto = 'VET-SDI - Bienvenido!';
                                     $body = array('nombre'=>$request->nombres_paciente . ' ' .$request->apellido_uno . ' ' .$request->apellido_dos);
                                     $archivo = '';/** pendiente */
                                     $id_institucion = '';

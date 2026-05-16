@@ -1476,7 +1476,7 @@ class AppPacienteController extends Controller
             );
         $cc = array();
         $bcc = array();
-        $asunto = 'MED-SDI - Nueva Hora Agendada';
+        $asunto = 'VET-SDI - Nueva Hora Agendada';
         $body = array(
             'nombre_paciente'=> $paciente->nombres . ' ' . $paciente->apellido_uno . ' ' . $paciente->apellido_dos,
             'fecha'=> $hora_medica->fecha_consulta,
@@ -1830,7 +1830,7 @@ class AppPacienteController extends Controller
             );
         $cc = array();
         $bcc = array();
-        $asunto = 'MED-SDI - Reserva de Hora Cancelada';
+        $asunto = 'VET-SDI - Reserva de Hora Cancelada';
         if(!empty($profesional))
         {
             $body = array(

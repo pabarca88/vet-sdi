@@ -2,7 +2,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-	<title>MED-SDI / ENLACE</title>
+	<title>VET-SDI / ENLACE</title>
 	<link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" >
 	<!-- Estilos -->
   	<link href="{{ asset('css/autorizacion_main.css') }}" rel="stylesheet" type="text/css">

@@ -24,7 +24,7 @@ Este documento explica cómo funciona el sistema de emails para pacientes, permi
 ### 1. Email Temporal para Pacientes sin Email Real
 
 **Cuando un paciente NO tiene email:**
-- Se genera automáticamente: `sintemporal@med-sdi.cl`
+- Se genera automáticamente: `sintemporal@vet-sdi.cl`
 - Este email se guarda en `pacientes.email`
 - Múltiples pacientes pueden tener este mismo email temporal
 
@@ -38,7 +38,7 @@ Este documento explica cómo funciona el sistema de emails para pacientes, permi
 // En PacienteController.php
 public static function generarEmailPacienteTemporal($nombres, $apellido_uno, $apellido_dos)
 {
-    return 'sintemporal@med-sdi.cl';
+    return 'sintemporal@vet-sdi.cl';
 }
 ```
 
@@ -70,7 +70,7 @@ public static function generarEmailPacienteTemporal($nombres, $apellido_uno, $ap
 2. **Juan** se registra → Email ya existe en users → NO se crea User (sin acceso al sistema)
 3. **Rosa** se registra → Email ya existe en users → NO se crea User (sin acceso al sistema)
 
-**Nota importante:** El sistema solo usa el RUT como email en `users` cuando el paciente **NO tiene email** (usa `sintemporal@med-sdi.cl`). Si el paciente proporciona un email real, aunque sea de otra persona, el sistema intenta usar ese email para crear el User, y si ya existe, simplemente no crea la cuenta de acceso.
+**Nota importante:** El sistema solo usa el RUT como email en `users` cuando el paciente **NO tiene email** (usa `sintemporal@vet-sdi.cl`). Si el paciente proporciona un email real, aunque sea de otra persona, el sistema intenta usar ese email para crear el User, y si ya existe, simplemente no crea la cuenta de acceso.
 
 ---
 
@@ -81,14 +81,14 @@ public static function generarEmailPacienteTemporal($nombres, $apellido_uno, $ap
 ```php
 // PASO 1: Siempre permitir crear el paciente (email es solo dato de contacto)
 if(true) {
-    $paciente->email = $request->reserva_hora_email; // o sintemporal@med-sdi.cl
+    $paciente->email = $request->reserva_hora_email; // o sintemporal@vet-sdi.cl
     $paciente->save(); // ✅ Siempre se guarda
     
     // PASO 2: Intentar crear User solo si tiene ≥18 años
     if( (\Carbon\Carbon::parse($fechaConvertida)->age) >= 18) {
         
         // Determinar qué email usar en tabla users
-        if($paciente->email === 'sintemporal@med-sdi.cl') {
+        if($paciente->email === 'sintemporal@vet-sdi.cl') {
             // Usar RUT sin formato
             $user->email = str_replace(['.', '-', ' '], '', $paciente->rut);
         } else {
@@ -131,7 +131,7 @@ if(true) {
 - RUT: 12.345.678-9
 
 **Resultado:**
-- ✅ Registro en `pacientes` con email `sintemporal@med-sdi.cl`
+- ✅ Registro en `pacientes` con email `sintemporal@vet-sdi.cl`
 - ✅ Registro en `users` con email `123456789` (RUT sin formato)
 - ✅ Login: `123456789` + password
 
@@ -146,8 +146,8 @@ if(true) {
 **Resultado:**
 | Paciente | Email en `pacientes` | Email en `users` | Login |
 |----------|---------------------|------------------|-------|
-| María | sintemporal@med-sdi.cl | 111111111 | 111111111 |
-| José | sintemporal@med-sdi.cl | 222222222 | 222222222 |
+| María | sintemporal@vet-sdi.cl | 111111111 | 111111111 |
+| José | sintemporal@vet-sdi.cl | 222222222 | 222222222 |
 
 ---
 
@@ -233,7 +233,7 @@ if(true) {
 ```php
 public static function generarEmailPacienteTemporal($nombres, $apellido_uno, $apellido_dos)
 {
-    return 'sintemporal@med-sdi.cl';
+    return 'sintemporal@vet-sdi.cl';
 }
 ```
 
@@ -243,7 +243,7 @@ public static function generarEmailPacienteTemporal($nombres, $apellido_uno, $ap
 **Cambios principales:**
 - Eliminada validación que rechazaba emails duplicados en pacientes (línea ~788)
 - Agregado try-catch para capturar error de email duplicado en users (línea ~970)
-- Detección de email temporal usando `=== 'sintemporal@med-sdi.cl'` (línea ~956 y ~1152)
+- Detección de email temporal usando `=== 'sintemporal@vet-sdi.cl'` (línea ~956 y ~1152)
 
 ---
 
@@ -263,8 +263,8 @@ public static function generarEmailPacienteTemporal($nombres, $apellido_uno, $ap
    ```
 
 3. **Probar escenarios:**
-   - ✅ Paciente sin email (debe crear con sintemporal@med-sdi.cl)
-   - ✅ Dos pacientes sin email (ambos con sintemporal@med-sdi.cl)
+   - ✅ Paciente sin email (debe crear con sintemporal@vet-sdi.cl)
+   - ✅ Dos pacientes sin email (ambos con sintemporal@vet-sdi.cl)
    - ✅ Paciente usando email de otro paciente registrado
 
 ---
@@ -272,7 +272,7 @@ public static function generarEmailPacienteTemporal($nombres, $apellido_uno, $ap
 ## Preguntas Frecuentes
 
 ### ¿Qué pasa si 100 pacientes no tienen email?
-✅ Todos se guardan con `sintemporal@med-sdi.cl` en `pacientes`
+✅ Todos se guardan con `sintemporal@vet-sdi.cl` en `pacientes`
 ✅ Cada uno tiene su RUT único en `users` para login
 ✅ No hay conflictos
 

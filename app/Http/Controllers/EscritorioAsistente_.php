@@ -970,7 +970,7 @@ class EscritorioAsistente extends Controller
                                         );
                                     $cc = array();
                                     $bcc = array();
-                                    $asunto = 'MED-SDI - Bienvenido!';
+                                    $asunto = 'VET-SDI - Bienvenido!';
                                     $body = array(
                                                 'nombre'=>$paciente->nombres . ' ' .$paciente->apellido_uno . ' ' .$paciente->apellido_dos,
                                                 'user' => $paciente->email,
@@ -1142,7 +1142,7 @@ class EscritorioAsistente extends Controller
                                                     );
                                                 $cc = array();
                                                 $bcc = array();
-                                                $asunto = 'MED-SDI - Bienvenido!';
+                                                $asunto = 'VET-SDI - Bienvenido!';
                                                 $body = array(
                                                             'nombre'=>$representante_nombres_paciente . ' ' .$representante_apellido_uno . ' ' .$representante_apellido_dos,
                                                             'user' => $representante_correo,
@@ -1309,7 +1309,7 @@ class EscritorioAsistente extends Controller
                     }
                     $cc = array();
                     $bcc = array();
-                    $asunto = 'MED-SDI - Nueva Hora Agendada';
+                    $asunto = 'VET-SDI - Nueva Hora Agendada';
                     $body = array(
                         'nombre_paciente'=> $paciente->nombres . ' ' . $paciente->apellido_uno . ' ' . $paciente->apellido_dos,
                         'fecha'=> $hora_medica->fecha_consulta,
@@ -1547,7 +1547,7 @@ class EscritorioAsistente extends Controller
             );
         $cc = array();
         $bcc = array();
-        $asunto = 'MED-SDI - Nueva Hora Agendada';
+        $asunto = 'VET-SDI - Nueva Hora Agendada';
         $body = array(
             'nombre_paciente'=> $paciente->nombres . ' ' . $paciente->apellido_uno . ' ' . $paciente->apellido_dos,
             'fecha'=> $hora_medica->fecha_consulta,

@@ -274,7 +274,7 @@ class Funciones{
             $body_correo = array();
             switch ($tipo_id) {
                 case '11':
-                    $asunto_correo = 'MED-SDI - Solicitud de permiso de Inicio de Licencia por Profesional';
+                    $asunto_correo = 'VET-SDI - Solicitud de permiso de Inicio de Licencia por Profesional';
                     $body_correo = array(
                         'titulo' => 'Solicitud Permiso para Licencia',
                         'cuerpo' => 'El profesional '.$datos_create['nombre'].' '.$datos_create['apellido_uno'].' '.$datos_create['apellido_dos'].' esta solicitando permiso para Iniciar Licencia.<br>
@@ -302,7 +302,7 @@ class Funciones{
                     );
                     break;
                 case '12':
-                    $asunto_correo = 'MED-SDI - Permiso para Inicio de Licencia';
+                    $asunto_correo = 'VET-SDI - Permiso para Inicio de Licencia';
                     $body_correo = array(
                         'titulo' => 'Solicitud Permiso para Licencia',
                         'cuerpo' => 'Profesional usted esta Iniciando una Licencia<br>

@@ -255,7 +255,7 @@ class SolicitudPabellonQuirurgicosController extends Controller
                                                 );
                                             $cc = array();
                                             $bcc = array();
-                                            $asunto = 'MED-SDI - Nuevo Integrante!';
+                                            $asunto = 'VET-SDI - Nuevo Integrante!';
                                             $body = array('nombre'=>$temp->profesional_nombre.' '.$temp->profesional_apellido, 'user'=>$temp->profesional_email, 'pass'=>$temp_pass);
                                             $archivo = '';/** pendiente */
                                             $id_institucion = '';

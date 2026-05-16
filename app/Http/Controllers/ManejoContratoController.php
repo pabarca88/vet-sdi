@@ -2473,7 +2473,7 @@ class ManejoContratoController extends Controller
                                         );
                                     $cc = array();
                                     $bcc = array();
-                                    $asunto = 'MED-SDI - Bienvenido!';
+                                    $asunto = 'VET-SDI - Bienvenido!';
                                     $body = array(
                                         'nombre' => $asistente_user->name,
                                         'user' => $asistente_user->email,
@@ -2711,7 +2711,7 @@ class ManejoContratoController extends Controller
                                 );
                             $cc = array();
                             $bcc = array();
-                            $asunto = 'MED-SDI - Bienvenido!';
+                            $asunto = 'VET-SDI - Bienvenido!';
                             $body = array(
                                 'nombre' => $profesional_user->name,
                                 'user' => $profesional_user->email,
@@ -2943,7 +2943,7 @@ class ManejoContratoController extends Controller
                                 );
                             $cc = array();
                             $bcc = array();
-                            $asunto = 'MED-SDI - Bienvenido!';
+                            $asunto = 'VET-SDI - Bienvenido!';
                             $body = array(
                                 'nombre' => $administrativo_user->name,
                                 'user' => $administrativo_user->email,
@@ -3154,7 +3154,7 @@ class ManejoContratoController extends Controller
                         //         );
                         //     $cc = array();
                         //     $bcc = array();
-                        //     $asunto = 'MED-SDI - Bienvenido!';
+                        //     $asunto = 'VET-SDI - Bienvenido!';
                         //     $body = array(
                         //         'nombre' => $mantencion_user->name,
                         //         'user' => $mantencion_user->email,

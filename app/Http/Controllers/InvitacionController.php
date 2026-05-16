@@ -203,7 +203,7 @@ class InvitacionController extends Controller
                             );
                         $cc = array();
                         $bcc = array();
-                        $asunto = 'MED-SDI - Invitacion';
+                        $asunto = 'VET-SDI - Invitacion';
                         $body = array(
                             'nombre'=>$invitacion->nombre.' '.$invitacion->apellido_uno.' '.$invitacion->apellido_dos,
                             'lugar_atencion' => $invitacion->LugarAtencion->nombre,

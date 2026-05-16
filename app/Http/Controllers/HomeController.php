@@ -366,7 +366,7 @@ class HomeController extends Controller
                     );
                 $cc = array();
                 $bcc = array();
-                $asunto = 'MED-SDI - Bienvenido!';
+                $asunto = 'VET-SDI - Bienvenido!';
                 $body = array('nombre'=>$request->nombre_registro.' '.$request->primer_apellido_registro.' '.$request->segundo_apellido_registro);
                 $archivo = '';/** pendiente */
                 $id_institucion = '';
@@ -479,7 +479,7 @@ class HomeController extends Controller
                 );
             $cc = array();
             $bcc = array();
-            $asunto = 'MED-SDI - Bienvenido!';
+            $asunto = 'VET-SDI - Bienvenido!';
             $body = array('nombre'=>$request->nombre_registro.' '.$request->primer_apellido_registro.' '.$request->segundo_apellido_registro);
             $archivo = '';/** pendiente */
             $id_institucion = '';
@@ -697,7 +697,7 @@ class HomeController extends Controller
                     );
                 $cc = array();
                 $bcc = array();
-                $asunto = 'MED-SDI - Bienvenido!';
+                $asunto = 'VET-SDI - Bienvenido!';
                 $body = array('nombre'=>$request->nombre_registro.' '.$request->primer_apellido_registro.' '.$request->segundo_apellido_registro);
                 $archivo = '';/** pendiente */
                 $id_institucion = '';
@@ -984,7 +984,7 @@ class HomeController extends Controller
                         );
                     $cc = array();
                     $bcc = array();
-                    $asunto = 'MED-SDI - Bienvenido!';
+                    $asunto = 'VET-SDI - Bienvenido!';
                     $body = array('nombre'=>$request->institucion_nombre);
                     $archivo = '';/** pendiente */
                     $id_institucion = '';
@@ -1050,7 +1050,7 @@ class HomeController extends Controller
                         );
                     $cc = array();
                     $bcc = array();
-                    $asunto = 'MED-SDI - Bienvenido!';
+                    $asunto = 'VET-SDI - Bienvenido!';
                     $body = array(
                             'nombre'=> $request->responsable_nombre.' '.$request->responsable_apellido_uno.' '.$request->responsable_apellido_dos,
                             'nombre_institucion'=> $request->institucion_nombre,
@@ -1129,7 +1129,7 @@ class HomeController extends Controller
                             );
                         $cc = array();
                         $bcc = array();
-                        $asunto = 'MED-SDI - Bienvenido!';
+                        $asunto = 'VET-SDI - Bienvenido!';
                         $body = array('nombre'=>$request->institucion_nombre);
                         $archivo = '';/** pendiente */
                         $id_institucion = '';
@@ -1276,7 +1276,7 @@ class HomeController extends Controller
 								);
 							$cc = array();
 							$bcc = array();
-							$asunto = 'MED-SDI - Recuperacion Contraseña';
+							$asunto = 'VET-SDI - Recuperacion Contraseña';
 							$body = array(
 								'nombre'=>$user->name,
 								'pass'=>$contrasena,

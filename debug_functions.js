@@ -1,4 +1,4 @@
-// Funciones de debug para Laravel API Authentication - Med-SDI
+// Funciones de debug para Laravel API Authentication - VET-SDI
 // Creado para solucionar problemas de autenticación con headers filtrados
 
 async function createMiddlewareOnServer() {
@@ -384,7 +384,7 @@ async function testSanctumAuth() {
 
 // Mostrar ayuda al cargar el archivo
 console.log(`
-🔧 Laravel API Authentication Debug - Med-SDI
+🔧 Laravel API Authentication Debug - VET-SDI
 ===============================================
 
 📋 FUNCIONES DISPONIBLES:

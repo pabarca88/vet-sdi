@@ -1013,7 +1013,7 @@ class EscritorioGeneral extends Controller
                                         );
                                     $cc = array();
                                     $bcc = array();
-                                    $asunto = 'MED-SDI - Bienvenido!';
+                                    $asunto = 'VET-SDI - Bienvenido!';
                                     $body = array(
                                         'nombre'=>$invitacion->nombre.' '.$invitacion->apellido_uno.' '.$invitacion->apellido_dos,
                                         'user' => $invitacion->email,
@@ -1068,7 +1068,7 @@ class EscritorioGeneral extends Controller
                                             );
                                         $cc = array();
                                         $bcc = array();
-                                        $asunto = 'MED-SDI - Bienvenido!';
+                                        $asunto = 'VET-SDI - Bienvenido!';
                                         $body = array(
                                             'nombre'=>$invitacion->nombre.' '.$invitacion->apellido_uno.' '.$invitacion->apellido_dos,
                                             'user' => $invitacion->email,
@@ -1308,7 +1308,7 @@ class EscritorioGeneral extends Controller
                                         );
                                     $cc = array();
                                     $bcc = array();
-                                    $asunto = 'MED-SDI - Bienvenido!';
+                                    $asunto = 'VET-SDI - Bienvenido!';
                                     $body = array(
                                         'nombre'=> $invitacion->nombre.' '.$invitacion->apellido_uno.' '.$invitacion->apellido_dos,
                                         'user' => $invitacion->email,
@@ -1396,7 +1396,7 @@ class EscritorioGeneral extends Controller
                                             );
                                         $cc = array();
                                         $bcc = array();
-                                        $asunto = 'MED-SDI - Bienvenido!';
+                                        $asunto = 'VET-SDI - Bienvenido!';
                                         $body = array(
                                             'nombre'=>$invitacion->nombre.' '.$invitacion->apellido_uno.' '.$invitacion->apellido_dos,
                                             'user' => $invitacion->email,

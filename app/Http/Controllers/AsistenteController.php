@@ -109,7 +109,7 @@ class AsistenteController extends Controller
                                     );
                                 $cc = array();
                                 $bcc = array();
-                                $asunto = 'MED-SDI - Bienvenido!';
+                                $asunto = 'VET-SDI - Bienvenido!';
                                 $body = array(
                                             'nombre'=>$request->nombres_paciente . ' ' .$request->apellido_uno . ' ' .$request->apellido_dos,
                                             'user' => $request->email,

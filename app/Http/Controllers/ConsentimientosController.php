@@ -687,7 +687,7 @@ class ConsentimientosController extends Controller
                         );
                     $cc = array();
                     $bcc = array();
-                    $asunto = 'MED-SDI - Consentimiento Enviado';
+                    $asunto = 'VET-SDI - Consentimiento Enviado';
                     $body = array(
                         'nombre_paciente'=> $paciente->nombres . ' ' . $paciente->apellido_uno . ' ' . $paciente->apellido_dos,
                         'fecha'=> $registro->created_at->format('d/m/Y'),

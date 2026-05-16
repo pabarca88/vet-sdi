@@ -422,7 +422,7 @@ class UsersDevicesController extends Controller
                     $to = array(array('email' => $correo,'name' => $nombre));
                     $cc = array();
                     $bcc = array();
-                    $asunto = 'MED-SDI - Solicitud de Registro de Equipo';
+                    $asunto = 'VET-SDI - Solicitud de Registro de Equipo';
                     $body = array('URL'=>$url, 'NOMBRE_CLIENTE'=> $nombre);
                     $archivo = '';/** pendiente */
                     $id_institucion = '';

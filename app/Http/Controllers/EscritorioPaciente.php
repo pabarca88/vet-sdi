@@ -2939,7 +2939,7 @@ class EscritorioPaciente extends Controller
             );
         $cc = array();
         $bcc = array();
-        $asunto = 'MED-SDI - Nueva Hora Agendada';
+        $asunto = 'VET-SDI - Nueva Hora Agendada';
         $body = array(
             'nombre_paciente'=> $paciente->nombres . ' ' . $paciente->apellido_uno . ' ' . $paciente->apellido_dos,
             'fecha'=> $hora_medica->fecha_consulta,
@@ -4586,7 +4586,7 @@ class EscritorioPaciente extends Controller
                                 );
                             $cc = array();
                             $bcc = array();
-                            $asunto = 'MED-SDI - Bienvenido!';
+                            $asunto = 'VET-SDI - Bienvenido!';
                             $body = array(
                                         'nombre'=>$paciente->nombres . ' ' .$paciente->apellido_uno . ' ' .$paciente->apellido_dos,
                                         'user' => $paciente->email,
