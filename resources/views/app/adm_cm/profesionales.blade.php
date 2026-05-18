@@ -1,5 +1,11 @@
 @extends('template.adm_cm.template')
 @section('content')
+@php
+    $contextosCentro = $contextosCentro ?? collect();
+    $contextoActivo = $contextoActivo ?? [];
+    $scopeLugarIds = $scopeLugarIds ?? [$institucion->id_lugar_atencion];
+    $lugarAtencionAccion = $contextoActivo['id_lugar_atencion'] ?? ($scopeLugarIds[0] ?? $institucion->id_lugar_atencion);
+@endphp
 
 <!--****Container Completo****-->
 <style>
@@ -17,9 +23,31 @@
                             <h5 class="m-b-10 font-weight-bold">Profesionales del centro</h5>
                         </div>
                         <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{ ROUTE('adm_cm.home') }}" data-toggle="tooltip" data-placement="top" title="Volver a mi escritorio"><i class="feather  icon-home"></i></a></li>
+                            <li class="breadcrumb-item"><a href="{{ ROUTE('adm_cm.home', ['contexto' => $contextoActivo['key'] ?? null]) }}" data-toggle="tooltip" data-placement="top" title="Volver a mi escritorio"><i class="feather  icon-home"></i></a></li>
                             <li class="breadcrumb-item"><a href="adm_cm.home">Profesionales</a></li>
                         </ul>
+                        @if ($contextosCentro->isNotEmpty())
+                            <form method="GET" action="{{ route('adm_cm.profesionales_institucion') }}" class="mb-3">
+                                <div class="form-row align-items-end">
+                                    <div class="col-md-5">
+                                        <label class="floating-label-activo-sm mb-0">Institución / Sucursal activa</label>
+                                        <select name="contexto" class="form-control form-control-sm">
+                                            @foreach ($contextosCentro as $contexto)
+                                                <option value="{{ $contexto['key'] ?? '' }}" @selected(($contextoActivo['key'] ?? '') === ($contexto['key'] ?? ''))>
+                                                    {{ $contexto['label'] ?? 'Sin contexto' }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3 mt-2 mt-md-0">
+                                        <button type="submit" class="btn btn-info btn-sm">Cambiar contexto</button>
+                                    </div>
+                                    <div class="col-md-4 mt-2 mt-md-0 text-md-right">
+                                        <span class="badge badge-light mt-2">{{ $contextoActivo['role_label'] ?? 'Administrador General' }}</span>
+                                    </div>
+                                </div>
+                            </form>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -103,11 +131,8 @@
                                                                             @endif
                                                                         </td>
                                                                         <td class="align-middle">
-                                                                            @foreach($prof_medico->LugaresAtencion()->get() as $key_lugar => $value_lugar)
-                                                                                {{--  COMPLETAR CUANDO TENGAMOS SUCURSALES  --}}
-                                                                                @if($institucion->id_lugar_atencion == $value_lugar->id)
+                                                                            @foreach($prof_medico->LugaresAtencion()->whereIn('lugares_atencion.id', $scopeLugarIds)->get() as $key_lugar => $value_lugar)
                                                                                     <span>{{ $value_lugar->Direccion()->first()->direccion.', '.$value_lugar->Direccion()->first()->ciudad->nombre  }}</span><br>
-                                                                                @endif
                                                                             @endforeach
                                                                         </td>
                                                                         <td class="align-middle">
@@ -119,11 +144,11 @@
                                                                                 <button type="button" class="btn btn-success btn-sm btn-icon" onclick="datos_depositos({{ $prof_medico->id_usuario }});" data-toggle="tooltip" data-placement="top" title="Datos bancarios"><i class="feather icon-credit-card"></i></button>
 
                                                                                 <!--Botón Modal horario-->
-                                                                                <button type="button" class="btn btn-purple btn-sm btn-icon" onclick="horario_profesional_cm({{ $prof_medico->id }}, {{ $institucion->id_lugar_atencion }});" data-toggle="tooltip" data-placement="top" title="Horario y días de atención"><i class="feather icon-clock"></i></button>
+                                                                                <button type="button" class="btn btn-purple btn-sm btn-icon" onclick="horario_profesional_cm({{ $prof_medico->id }}, {{ $lugarAtencionAccion }});" data-toggle="tooltip" data-placement="top" title="Horario y días de atención"><i class="feather icon-clock"></i></button>
                                                                             </td>
                                                                             <td class="align-middle text-center">
                                                                                 <!--Botón Modal convenios-->
-                                                                                <button type="button" class="btn btn-danger btn-sm btn-icon" onclick="convenio_profesional_cm({{ $prof_medico->id }},{{ $institucion->id_lugar_atencion }});" data-toggle="tooltip" data-placement="top" title="Convenio"><i class="feather icon-file-text"></i></button>
+                                                                                <button type="button" class="btn btn-danger btn-sm btn-icon" onclick="convenio_profesional_cm({{ $prof_medico->id }},{{ $lugarAtencionAccion }});" data-toggle="tooltip" data-placement="top" title="Convenio"><i class="feather icon-file-text"></i></button>
                                                                             </td>
                                                                             <td class="align-middle">
                                                                                 <!--Botón Modal roles y permisos-->
@@ -201,11 +226,8 @@
                                                                             @endif
                                                                         </td>
                                                                         <td class="align-middle">
-                                                                            @foreach($prof_medico->LugaresAtencion()->get() as $key_lugar => $value_lugar)
-                                                                                {{--  COMPLETAR CUANDO TENGAMOS SUCURSALES  --}}
-                                                                                @if($institucion->id_lugar_atencion == $value_lugar->id)
+                                                                            @foreach($prof_medico->LugaresAtencion()->whereIn('lugares_atencion.id', $scopeLugarIds)->get() as $key_lugar => $value_lugar)
                                                                                     <span>{{ $value_lugar->Direccion()->first()->direccion.', '.$value_lugar->Direccion()->first()->ciudad->nombre  }}</span><br>
-                                                                                @endif
                                                                             @endforeach
                                                                         </td>
                                                                         <td class="align-middle">
@@ -217,11 +239,11 @@
                                                                                 <button type="button" class="btn btn-success btn-sm btn-icon" onclick="datos_depositos({{ $prof_medico->id_usuario }});" data-toggle="tooltip" data-placement="top" title="Datos bancarios"><i class="feather icon-credit-card"></i></button>
 
                                                                                 <!--Botón Modal horario-->
-                                                                                <button type="button" class="btn btn-purple btn-sm btn-icon" onclick="horario_profesional_cm({{ $prof_medico->id }}, {{ $institucion->id_lugar_atencion }});" data-toggle="tooltip" data-placement="top" title="Horario y días de atención"><i class="feather icon-clock"></i></button>
+                                                                                <button type="button" class="btn btn-purple btn-sm btn-icon" onclick="horario_profesional_cm({{ $prof_medico->id }}, {{ $lugarAtencionAccion }});" data-toggle="tooltip" data-placement="top" title="Horario y días de atención"><i class="feather icon-clock"></i></button>
                                                                             </td>
                                                                             <td class="align-middle text-center">
                                                                                 <!--Botón Modal convenios-->
-                                                                                <button type="button" class="btn btn-danger btn-sm btn-icon" onclick="convenio_profesional_cm({{ $prof_medico->id }});" data-toggle="tooltip" data-placement="top" title="Convenio"><i class="feather icon-file-text"></i></button>
+                                                                                <button type="button" class="btn btn-danger btn-sm btn-icon" onclick="convenio_profesional_cm({{ $prof_medico->id }},{{ $lugarAtencionAccion }});" data-toggle="tooltip" data-placement="top" title="Convenio"><i class="feather icon-file-text"></i></button>
                                                                             </td>
                                                                             <td class="align-middle">
                                                                                 <!--Botón Modal roles y permisos-->
@@ -296,11 +318,8 @@
                                                                             @endif
                                                                         </td>
                                                                         <td class="align-middle">
-                                                                            @foreach($prof_medico->LugaresAtencion()->get() as $key_lugar => $value_lugar)
-                                                                                {{--  COMPLETAR CUANDO TENGAMOS SUCURSALES  --}}
-                                                                                @if($institucion->id_lugar_atencion == $value_lugar->id)
+                                                                            @foreach($prof_medico->LugaresAtencion()->whereIn('lugares_atencion.id', $scopeLugarIds)->get() as $key_lugar => $value_lugar)
                                                                                     <span>{{ $value_lugar->Direccion()->first()->direccion.', '.$value_lugar->Direccion()->first()->ciudad->nombre  }}</span><br>
-                                                                                @endif
                                                                             @endforeach
                                                                         </td>
                                                                         <td class="align-middle">
@@ -312,11 +331,11 @@
                                                                                 <button type="button" class="btn btn-success btn-sm btn-icon" onclick="datos_depositos({{ $prof_medico->id_usuario }});" data-toggle="tooltip" data-placement="top" title="Datos bancarios"><i class="feather icon-credit-card"></i></button>
 
                                                                                 <!--Botón Modal horario-->
-                                                                                <button type="button" class="btn btn-purple btn-sm btn-icon" onclick="horario_profesional_cm({{ $prof_medico->id }}, {{ $institucion->id_lugar_atencion }});" data-toggle="tooltip" data-placement="top" title="Horario y días de atención"><i class="feather icon-clock"></i></button>
+                                                                                <button type="button" class="btn btn-purple btn-sm btn-icon" onclick="horario_profesional_cm({{ $prof_medico->id }}, {{ $lugarAtencionAccion }});" data-toggle="tooltip" data-placement="top" title="Horario y días de atención"><i class="feather icon-clock"></i></button>
                                                                             </td>
                                                                             <td class="align-middle text-center">
                                                                                 <!--Botón Modal convenios-->
-                                                                                <button type="button" class="btn btn-danger btn-sm btn-icon" onclick="convenio_profesional_cm({{ $prof_medico->id }});" data-toggle="tooltip" data-placement="top" title="Convenio"><i class="feather icon-file-text"></i></button>
+                                                                                <button type="button" class="btn btn-danger btn-sm btn-icon" onclick="convenio_profesional_cm({{ $prof_medico->id }},{{ $lugarAtencionAccion }});" data-toggle="tooltip" data-placement="top" title="Convenio"><i class="feather icon-file-text"></i></button>
                                                                             </td>
                                                                             <td class="align-middle">
                                                                                 <!--Botón Modal roles y permisos-->
@@ -733,5 +752,3 @@ $(document).ready(function(){
     {{--  @include('app.adm_cm.modal_adm.roles_permisos_prof')  --}}
     @include('app.adm_cm.modal_adm.liquidacion_profesionales')
 @endsection
-
-

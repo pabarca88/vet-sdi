@@ -84,6 +84,130 @@ use App\Support\UserCenterContext;
 
 class AdministradorCmController extends Controller
 {
+    protected function normalizeLugarAtencionIds($ids): array
+    {
+        if (empty($ids)) {
+            return [];
+        }
+
+        if (!is_array($ids)) {
+            $ids = [$ids];
+        }
+
+        return collect($ids)
+            ->filter()
+            ->map(fn ($id) => (int) $id)
+            ->filter(fn ($id) => $id > 0)
+            ->unique()
+            ->values()
+            ->all();
+    }
+
+    protected function uniquePersonalCollection(array $personal): array
+    {
+        return collect($personal)
+            ->filter()
+            ->unique(fn ($item) => class_basename($item) . ':' . ($item->id ?? spl_object_hash((object) $item)))
+            ->values()
+            ->all();
+    }
+
+    protected function resolveAdminInstitutionContext(Request $request): array
+    {
+        $institucion = null;
+        $responsable = null;
+        $tipo_institucion = '1';
+        $context = UserCenterContext::forAdmin(Auth::user(), $request);
+        $activeContext = $context['active'] ?? null;
+        $registro = null;
+
+        if (!empty($activeContext['id_institucion'])) {
+            $registro = Instituciones::find($activeContext['id_institucion']);
+
+            if ($registro && !empty($activeContext['id_lugar_atencion'])) {
+                $registro->id_lugar_atencion = $activeContext['id_lugar_atencion'];
+            }
+        }
+
+        if (!$registro) {
+            $id_busqueda = Auth::user()->id;
+            if(Auth::user()->id == 3)
+            {
+                $id_busqueda = 5;
+                $registro = Instituciones::where('id', $id_busqueda)->first();
+            }
+            else
+            {
+                $registro = Instituciones::where('id_usuario',Auth::user()->id)->first();
+            }
+        }
+
+        if($registro)
+        {
+            $institucion = $registro;
+            $usuarioAdministrador = $registro->UsuarioAdministrador()->first();
+            if ($usuarioAdministrador) {
+                $responsable = AdminInstServ::where('id', $usuarioAdministrador->id)->first();
+            }
+            $tipo_institucion = 'institucion';
+        }
+        else
+        {
+            $registro = Servicios::where('id_usuario',Auth::user()->id)->first();
+            if($registro)
+            {
+                $institucion = $registro;
+                $tipo_institucion = 'servicio';
+            }
+            else
+            {
+                $responsable = AdminInstServ::where('id_admin',Auth::user()->id)->first();
+
+                if($responsable)
+                {
+                    $registro = Instituciones::where('id_responsable',$responsable->id)->first();
+                    if($registro)
+                    {
+                        $institucion = $registro;
+
+                        if (!empty($activeContext['id_lugar_atencion'])) {
+                            $institucion->id_lugar_atencion = $activeContext['id_lugar_atencion'];
+                        }
+
+                        $tipo_institucion = 'institucion';
+
+                    }
+                    else
+                    {
+                        $registro = Servicios::where('id_responsable',$responsable->id)->first();
+                        if($registro)
+                        {
+                            $institucion = $registro;
+                            $tipo_institucion = 'servicio';
+                        }
+                    }
+                }
+            }
+        }
+
+        $scopeLugarIds = [];
+        if ($institucion instanceof Instituciones) {
+            $scopeLugarIds = $this->normalizeLugarAtencionIds($activeContext['scope_lugar_ids'] ?? [$institucion->id_lugar_atencion]);
+            if (empty($scopeLugarIds) && !empty($institucion->id_lugar_atencion)) {
+                $scopeLugarIds = [(int) $institucion->id_lugar_atencion];
+            }
+        }
+
+        return [
+            'institucion' => $institucion,
+            'responsable' => $responsable,
+            'tipo_institucion' => $tipo_institucion,
+            'contextosCentro' => $context['contexts'] ?? collect(),
+            'contextoActivo' => $activeContext,
+            'scopeLugarIds' => $scopeLugarIds,
+        ];
+    }
+
     public function index()
     {
         $context = UserCenterContext::forAdmin(Auth::user(), request());
@@ -487,89 +611,13 @@ class AdministradorCmController extends Controller
 
     public function configuracion()
     {
-        $institucion = null;
-        $responsable = null;
-        $tipo_institucion = '1';
-        $context = UserCenterContext::forAdmin(Auth::user(), request());
-        $activeContext = $context['active'] ?? null;
-        $registro = null;
-
-        if (!empty($activeContext['id_institucion'])) {
-            $registro = Instituciones::find($activeContext['id_institucion']);
-
-            if ($registro && !empty($activeContext['id_lugar_atencion'])) {
-                $registro->id_lugar_atencion = $activeContext['id_lugar_atencion'];
-            }
-        }
-
-        if (!$registro) {
-            $id_busqueda = Auth::user()->id;
-            if(Auth::user()->id == 3)
-            {
-                $id_busqueda = 5;
-                $registro = Instituciones::where('id', $id_busqueda)->first();
-            }
-            else
-            {
-                $registro = Instituciones::where('id_usuario',Auth::user()->id)->first();
-            }
-        }
-
-        if($registro)
-        {
-            $institucion = $registro;
-            $usuarioAdministrador = $registro->UsuarioAdministrador()->first();
-            if ($usuarioAdministrador) {
-                $responsable = AdminInstServ::where('id', $usuarioAdministrador->id)->first();
-            }
-            $tipo_institucion = 'institucion';
-        }
-        else
-        {
-            $registro = Servicios::where('id_usuario',Auth::user()->id)->first();
-            if($registro)
-            {
-                $institucion = $registro;
-                $tipo_institucion = 'servicio';
-            }
-            else
-            {
-                $responsable = AdminInstServ::where('id_admin',Auth::user()->id)->first();
-
-                if($responsable)
-                {
-                    $registro = Instituciones::where('id_responsable',$responsable->id)->first();
-                    if($registro)
-                    {
-                        $institucion = $registro;
-
-                        if (!empty($activeContext['id_lugar_atencion'])) {
-                            $institucion->id_lugar_atencion = $activeContext['id_lugar_atencion'];
-                        }
-
-                        $tipo_institucion = 'institucion';
-
-                    }
-                    else
-                    {
-                        $registro = Servicios::where('id_responsable',$responsable->id)->first();
-                        if($registro)
-                        {
-                            $institucion = $registro;
-                            $tipo_institucion = 'servicio';
-                        }
-                        else
-                        {
-                            return back()->with('error','Institución no encontrada');
-                        }
-                    }
-                }
-                else
-                {
-                    return back()->with('error','Institución no encontrada');
-                }
-            }
-        }
+        $contextData = $this->resolveAdminInstitutionContext(request());
+        $institucion = $contextData['institucion'];
+        $responsable = $contextData['responsable'];
+        $tipo_institucion = $contextData['tipo_institucion'];
+        $contextosCentro = $contextData['contextosCentro'];
+        $contextoActivo = $contextData['contextoActivo'];
+        $scopeLugarIds = $contextData['scopeLugarIds'];
 
         if (!$institucion) {
             return back()->with('error','Institución no encontrada');
@@ -583,7 +631,7 @@ class AdministradorCmController extends Controller
         /** EMPLEADOS */
         $contratos = ContratoDependiente::select('id', 'id_institucion', 'id_lugar_atencion', 'tipo_empleado', 'id_empleado')
                                         ->where('id_institucion',$institucion->id)
-                                        ->where('id_lugar_atencion', $institucion->id_lugar_atencion)
+                                        ->whereIn('id_lugar_atencion', $scopeLugarIds)
                                         ->get();
         // var_dump($contratos);
 
@@ -637,6 +685,7 @@ class AdministradorCmController extends Controller
                 }
             }
         }
+        $personal = $this->uniquePersonalCollection($personal);
 
 
         /** CONVENIOS */
@@ -675,9 +724,9 @@ class AdministradorCmController extends Controller
 
         $especialidades_cm = $this->dame_especialidades_cm($institucion->id);
         $otras_especialidades_cm = $this->dame_otras_especialidades_cm($institucion->id);
-        $profesionales = $this->dame_profesionales($institucion->id_lugar_atencion);
+        $profesionales = $this->dame_profesionales($scopeLugarIds);
         $tipos_areas_cm = TipoAreasCm::all();
-        $areas_cm = $this->dame_areas_cm($institucion->id_lugar_atencion);
+        $areas_cm = $this->dame_areas_cm($scopeLugarIds);
 
         $servicios = Servicios::all();
 
@@ -727,9 +776,9 @@ class AdministradorCmController extends Controller
         }
 
         $tipos_laboratorio = TiposLaboratorio::all();
-        $laboratorios = $this->dame_laboratorios($institucion->id_lugar_atencion);
+        $laboratorios = $this->dame_laboratorios($scopeLugarIds, $institucion->id);
 
-        $boxes_cm = $this->dame_boxes_cm($institucion->id_lugar_atencion);
+        $boxes_cm = $this->dame_boxes_cm($scopeLugarIds);
 
         $tipos_productos = TipoProducto::all();
 
@@ -789,11 +838,23 @@ class AdministradorCmController extends Controller
             'bodegas' => $bodegas,
             'sala_espera' => $sala_espera,
 			'sucursales' => $sucursales,
+            'contextosCentro' => $contextosCentro,
+            'contextoActivo' => $contextoActivo,
+            'scopeLugarIds' => $scopeLugarIds,
         ]);
     }
 
     public function dame_boxes_cm($id_lugar_atencion){
-        $boxes = BoxCm::where('id_lugar_atencion',$id_lugar_atencion)->get();
+        $ids = $this->normalizeLugarAtencionIds($id_lugar_atencion);
+        $boxes = BoxCm::query()
+            ->when(!empty($ids), function ($query) use ($ids) {
+                if (count($ids) === 1) {
+                    $query->where('id_lugar_atencion', $ids[0]);
+                } else {
+                    $query->whereIn('id_lugar_atencion', $ids);
+                }
+            })
+            ->get();
         foreach($boxes as $box){
             if($box->seccion == '1') $box->seccion = 'Pediatría';
             if($box->seccion == '2') $box->seccion = 'General';
@@ -803,10 +864,20 @@ class AdministradorCmController extends Controller
         return $boxes;
     }
 
-    public function dame_laboratorios($id_lugar_atencion){
+    public function dame_laboratorios($id_lugar_atencion, $idInstitucion = null){
+        $ids = $this->normalizeLugarAtencionIds($id_lugar_atencion);
         $laboratorios = Sucursal::select('sucursal.*','direcciones.direccion','direcciones.numero_dir','direcciones.id_ciudad')
             ->join('direcciones','sucursal.id_direccion','=','direcciones.id')
-            ->where('sucursal.id_lugar_atencion',$id_lugar_atencion)
+            ->when(!empty($idInstitucion), function ($query) use ($idInstitucion) {
+                $query->where('sucursal.id_institucion', $idInstitucion);
+            })
+            ->when(!empty($ids), function ($query) use ($ids) {
+                if (count($ids) === 1) {
+                    $query->where('sucursal.id_lugar_atencion', $ids[0]);
+                } else {
+                    $query->whereIn('sucursal.id_lugar_atencion', $ids);
+                }
+            })
             ->get();
 
         foreach($laboratorios as $laboratorio){
@@ -1556,10 +1627,17 @@ class AdministradorCmController extends Controller
     }
 
     public function dame_areas_cm($id_lugar_atencion){
+        $ids = $this->normalizeLugarAtencionIds($id_lugar_atencion);
         $areas_cm = AreasCm::select('areas_cm.*','tipos_areas_cm.nombre as tipo_area','profesionales.nombre as nombre_responsable','profesionales.apellido_uno as apellido_uno_responsable','profesionales.apellido_dos as apellido_dos_responsable')
                             ->join('tipos_areas_cm','tipos_areas_cm.id','=','areas_cm.id_tipo_area_cm')
                             ->leftjoin('profesionales','profesionales.id','=','areas_cm.id_responsable')
-                            ->where('areas_cm.id_lugar_atencion',$id_lugar_atencion)
+                            ->when(!empty($ids), function ($query) use ($ids) {
+                                if (count($ids) === 1) {
+                                    $query->where('areas_cm.id_lugar_atencion', $ids[0]);
+                                } else {
+                                    $query->whereIn('areas_cm.id_lugar_atencion', $ids);
+                                }
+                            })
                             ->get();
 
         foreach ($areas_cm as $key => $area_cm) {
@@ -1580,11 +1658,19 @@ class AdministradorCmController extends Controller
     }
 
     public function dame_profesionales($id_lugar_atencion){
+        $ids = $this->normalizeLugarAtencionIds($id_lugar_atencion);
         $profesionales = ProfesionalesLugaresAtencion::select('profesionales_lugares_atencion.*','profesionales.nombre','profesionales.apellido_uno','profesionales.apellido_dos','especialidades.nombre as especialidad','tipos_especialidad.nombre as tipo_especialidad','profesionales.rut')
                             ->join('profesionales','profesionales.id','=','profesionales_lugares_atencion.id_profesional')
                             ->join('especialidades','profesionales.id_especialidad','especialidades.id')
                             ->leftjoin('tipos_especialidad','profesionales.id_tipo_especialidad','tipos_especialidad.id')
-                            ->where('profesionales_lugares_atencion.id_lugar_atencion',$id_lugar_atencion)
+                            ->when(!empty($ids), function ($query) use ($ids) {
+                                if (count($ids) === 1) {
+                                    $query->where('profesionales_lugares_atencion.id_lugar_atencion', $ids[0]);
+                                } else {
+                                    $query->whereIn('profesionales_lugares_atencion.id_lugar_atencion', $ids);
+                                }
+                            })
+                            ->distinct('profesionales_lugares_atencion.id_profesional')
                             ->get();
 
         foreach($profesionales as $p){
@@ -3505,146 +3591,40 @@ class AdministradorCmController extends Controller
     }
 
     public function profesionales_institucion(){
-        $institucion = '';
-        $tipo_institucion = '1';
-        $id_busqueda = Auth::user()->id;
+        $contextData = $this->resolveAdminInstitutionContext(request());
+        $institucion = $contextData['institucion'];
+        $responsable = $contextData['responsable'];
+        $tipo_institucion = $contextData['tipo_institucion'];
+        $contextosCentro = $contextData['contextosCentro'];
+        $contextoActivo = $contextData['contextoActivo'];
+        $scopeLugarIds = $contextData['scopeLugarIds'];
 
-        /** INFORMACION DE INSTITUCION Y RESPONSABLE */
-        if(Auth::user()->id == 3)
-        {
-            $id_busqueda = 5;
-            $registro = Instituciones::where('id', $id_busqueda)->first();
+        if (!$institucion) {
+            return back()->with('error','Institución no encontrada');
         }
-        else
-        {
-            $registro = Instituciones::where('id_usuario',Auth::user()->id)->first();
-        }
-
-        if($registro)
-        {
-            // var_dump($registro);
-            // var_dump($registro->UsuarioAdministrador()->first());
-            //var_dump($registro->UsuarioAdministrador()->first()->id);
-            /** INSTITUCION */
-            $institucion = $registro;
-            $responsable = AdminInstServ::where('id',$registro->UsuarioAdministrador()->first()->id)->first();
-            $tipo_institucion = 'institucion';
-
-        }
-        else
-        {
-            $registro = Servicios::where('id_usuario',Auth::user()->id)->first();
-            if($registro)
-            {
-                /** SERVICIOS */
-                $institucion = $registro;
-                $tipo_institucion = 'servicio';
-            }
-            else
-            {
-                /** busqueda por responsable */
-                $responsable = AdminInstServ::where('id_admin',Auth::user()->id)->first();
-
-                if($responsable)
-                {
-                    $registro = Instituciones::where('id_responsable',$responsable->id)->first();
-                    if($registro)
-                    {
-                        // var_dump($registro);
-                        // var_dump($registro->UsuarioAdministrador()->first());
-                        /** INSTITUCION */
-                        $institucion = $registro;
-                        $tipo_institucion = 'institucion';
-
-                    }
-                    else
-                    {
-                        $registro = Servicios::where('id_responsable',$responsable->id)->first();
-                        if($registro)
-                        {
-                            /** SERVICIOS */
-                            $institucion = $registro;
-                            $tipo_institucion = 'servicio';
-                        }
-                        else
-                        {
-
-                            $result_contrato = ContratoDependiente::where('tipo_empleado', 'like', '%ADMINISTRADOR%')
-                                    ->where('id_empleado', $responsable->id)
-                                    ->whereIn('estado', [2,3])
-                                    ->first();
-
-                            if($result_contrato)
-                            {
-                                $registro = Instituciones::where('id',$result_contrato->id_institucion)->first();
-                                if($registro)
-                                {
-                                    /** INSTITUCION */
-                                    $institucion = $registro;
-                                    $tipo_institucion = 'institucion';
-                                }
-                                else
-                                {
-                                    $registro = Servicios::where('id',$result_contrato->id_institucion)->first();
-                                    if($registro)
-                                    {
-                                        /** SERVICIOS */
-                                        $institucion = $registro;
-                                        $tipo_institucion = 'servicio';
-                                    }
-                                    else
-                                    {
-                                        return back()->with('error','Institución no encontrada');
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                return back()->with('error','Permisos de usuario no validos para Ingresar al modulo');
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    return back()->with('error','Institución no encontrada');
-                }
-
-            }
-        }
-        /** FIN INFORMACION DE INSTITUCION Y RESPONSABLE */
 
         /** CARGA DE PROFESIONALES */
-        $LugarAtencion = LugarAtencion::where('id',$institucion->id_lugar_atencion)->first();
         $lista_profesionales = array();
         $lista_profesionales['MEDICO'] = array();
         $lista_profesionales['ODONTOLOG'] = array();
         $lista_profesionales['OTROS'] = array();
 
-        if($LugarAtencion)
+        $profesionales = $this->dame_profesionales($scopeLugarIds);
+        if($profesionales)
         {
-            $profesionales = $LugarAtencion->Profesionales()->get();
-            if($profesionales)
+            foreach ($profesionales as $key_prof => $value_prof)
             {
-
-                // echo json_encode($profesionales);
-                // exit();
-
-                foreach ($profesionales as $key_prof => $value_prof)
+                if($value_prof->id_especialidad == 1)//MEDICO
                 {
-
-                    if($value_prof->id_especialidad == 1)//MEDICO
-                    {
-                        array_push($lista_profesionales['MEDICO'], $value_prof) ;
-                    }
-                    else if($value_prof->id_especialidad == 2)//ODONTOLOG
-                    {
-                        array_push($lista_profesionales['ODONTOLOG'], $value_prof) ;
-                    }
-                    else //OTROS
-                    {
-                        array_push($lista_profesionales['OTROS'], $value_prof) ;
-                    }
+                    array_push($lista_profesionales['MEDICO'], $value_prof) ;
+                }
+                else if($value_prof->id_especialidad == 2)//ODONTOLOG
+                {
+                    array_push($lista_profesionales['ODONTOLOG'], $value_prof) ;
+                }
+                else //OTROS
+                {
+                    array_push($lista_profesionales['OTROS'], $value_prof) ;
                 }
             }
         }
@@ -3672,7 +3652,10 @@ class AdministradorCmController extends Controller
             'especialidad' => $especialidad,
             'roles' => $roles,
             'adm_medico' => $adm_medico,
-            'servicios' => $servicios
+            'servicios' => $servicios,
+            'contextosCentro' => $contextosCentro,
+            'contextoActivo' => $contextoActivo,
+            'scopeLugarIds' => $scopeLugarIds,
         ]);
     }
 

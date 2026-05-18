@@ -1,6 +1,9 @@
 @extends('template.adm_cm.template')
 @section('content')
     @php
+        $contextosCentro = $contextosCentro ?? collect();
+        $contextoActivo = $contextoActivo ?? [];
+        $scopeLugarIds = $scopeLugarIds ?? [$institucion->id_lugar_atencion];
         $profesionalAgendaReferencia = collect($profesionales ?? [])->first();
         $institucionDireccion = $institucion->Direccion()->first();
         $institucionCiudad = $institucionDireccion ? $institucionDireccion->Ciudad()->first() : null;
@@ -41,7 +44,7 @@
                             </div>
                             <ul class="breadcrumb mb-4">
                                 <li class="breadcrumb-item">
-                                    <a href="{{ ROUTE('adm_cm.home') }}" data-toggle="tooltip" data-placement="top"
+                                    <a href="{{ ROUTE('adm_cm.home', ['contexto' => $contextoActivo['key'] ?? null]) }}" data-toggle="tooltip" data-placement="top"
                                         title="Volver a mi escritorio">
                                         <i class="feather icon-home"></i>
                                     </a>
@@ -50,6 +53,28 @@
                                     <a href="#">Configuración</a>
                                 </li>
                             </ul>
+                            @if ($contextosCentro->isNotEmpty())
+                                <form method="GET" action="{{ route('adm_cm.configuracion') }}" class="mb-3">
+                                    <div class="form-row align-items-end">
+                                        <div class="col-md-5">
+                                            <label class="floating-label-activo-sm mb-0">Institución / Sucursal activa</label>
+                                            <select name="contexto" class="form-control form-control-sm">
+                                                @foreach ($contextosCentro as $contexto)
+                                                    <option value="{{ $contexto['key'] ?? '' }}" @selected(($contextoActivo['key'] ?? '') === ($contexto['key'] ?? ''))>
+                                                        {{ $contexto['label'] ?? 'Sin contexto' }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3 mt-2 mt-md-0">
+                                            <button type="submit" class="btn btn-info btn-sm">Cambiar contexto</button>
+                                        </div>
+                                        <div class="col-md-4 mt-2 mt-md-0 text-md-right">
+                                            <span class="badge badge-light mt-2">{{ $contextoActivo['role_label'] ?? 'Administrador General' }}</span>
+                                        </div>
+                                    </div>
+                                </form>
+                            @endif
                         </div>
                     </div>
                 </div>
