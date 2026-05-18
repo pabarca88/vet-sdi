@@ -888,6 +888,7 @@ Route::post('Convenios/editar', [App\Http\Controllers\EscritorioPaciente::class,
 
     Route::get('/vacunas',[App\Http\Controllers\MascotasController::class, 'registro_vacunas'])->name('registro_vacunas');
     Route::get('/desparasitaciones',[App\Http\Controllers\MascotasController::class, 'registro_desparasitacion'])->name('registro_desparasitacion');
+    Route::get('/mascotas/{mascotaId}/fichas',[App\Http\Controllers\MascotasController::class, 'obtenerFichasMascota'])->name('paciente.mascotas.fichas');
     Route::get('/mascotas/{mascotaId}/registros-sanitarios',[App\Http\Controllers\MascotasController::class, 'obtenerRegistrosSanitarios'])->name('paciente.mascotas.registros_sanitarios');
     Route::post('/mascotas/{mascotaId}/vacunas',[App\Http\Controllers\MascotasController::class, 'guardarVacunaDesdeModal'])->name('paciente.mascotas.vacunas.guardar');
     Route::post('/mascotas/{mascotaId}/desparasitaciones',[App\Http\Controllers\MascotasController::class, 'guardarDesparasitacionDesdeModal'])->name('paciente.mascotas.desparasitaciones.guardar');

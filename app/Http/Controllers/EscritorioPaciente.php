@@ -73,6 +73,7 @@ use App\Models\RecomendacionDetalle;
 use App\Models\ResultadoExamen;
 use App\Models\TipoExamen;
 use App\Models\UsoPersonal;
+use App\Support\LugarAtencionInstitucionResolver;
 use DateTime;
 
 class EscritorioPaciente extends Controller
@@ -2850,7 +2851,18 @@ class EscritorioPaciente extends Controller
             $hora_medica->descripcion = $paciente->nombres . ' ' . $paciente->apellido_uno . ' ' . $paciente->apellido_dos;
             $hora_medica->id_lugar_atencion = $request->id_lugar_atencion;
             if (!empty($request->id_mascota)) {
-                $hora_medica->id_mascota = $request->id_mascota;
+                $mascota = Mascota::where('id', $request->id_mascota)
+                    ->where('id_responsable', $paciente->id)
+                    ->first();
+
+                if (!$mascota) {
+                    $datos['estado'] = 0;
+                    $datos['msj'] = 'La mascota seleccionada no pertenece al responsable indicado.';
+
+                    return $datos;
+                }
+
+                $hora_medica->id_mascota = $mascota->id;
             }
 
             $hora_medica->acomp_representante = $request->representante;
@@ -2865,6 +2877,12 @@ class EscritorioPaciente extends Controller
 
             if ($hora_medica->save())
             {
+                if (!empty($mascota)) {
+                    $idLugarAtencion = (int) $request->id_lugar_atencion;
+                    $idInstitucion = LugarAtencionInstitucionResolver::resolve($idLugarAtencion);
+                    $mascota->vincularLugarAtencion($idLugarAtencion, $idInstitucion, 'agenda_responsable');
+                }
+
                 if($request->tipo_hora_medica == 'T')
                 {
                     $jitsi = JitsiController::jitsiRegistroMeet( $profesional->id, $paciente->id, $hora_medica->id );

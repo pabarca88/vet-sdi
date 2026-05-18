@@ -107,6 +107,7 @@ use App\Models\TipoEspecialidad;
 use App\Models\TipoExamen;
 use App\Models\User;
 use App\Models\UsoPersonal;
+use App\Support\LugarAtencionInstitucionResolver;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Models\FichaCirugiaDigestivaGeneralAdulto;
@@ -514,6 +515,19 @@ class ficha_atencionController extends Controller
 
             if (!$hora->save()) {
                 return back()->with('mensaje', 'error');
+            }
+        }
+
+        $idMascotaAtencion = $request->id_mascota ?? $hora->id_mascota ?? null;
+        if (!empty($idMascotaAtencion) && !empty($request->lugar_atencion_id)) {
+            $mascotaAtencion = Mascota::where('id', $idMascotaAtencion)
+                ->where('id_responsable', $paciente->id)
+                ->first();
+
+            if ($mascotaAtencion) {
+                $idLugarAtencion = (int) $request->lugar_atencion_id;
+                $idInstitucion = LugarAtencionInstitucionResolver::resolve($idLugarAtencion);
+                $mascotaAtencion->vincularLugarAtencion($idLugarAtencion, $idInstitucion, 'ficha_atencion');
             }
         }
 

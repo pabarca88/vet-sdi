@@ -244,22 +244,13 @@
                                     <th>Fecha</th>
                                     <th>Diagnóstico</th>
                                     <th>Indicaciones</th>
+                                    <th>Profesional / Lugar</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @if (isset($fichasMascota) && $fichasMascota->count() > 0)
-                                    @foreach ($fichasMascota as $ficha)
-                                        <tr>
-                                            <td>{{ \Carbon\Carbon::parse($ficha->created_at)->format('d/m/Y') }}</td>
-                                            <td>{{ $ficha->hipotesis_diagnostico ?: '-' }}</td>
-                                            <td>{{ $ficha->indicaciones ?: '-' }}</td>
-                                        </tr>
-                                    @endforeach
-                                @else
-                                    <tr>
-                                        <td colspan="3" class="text-center">Sin registros</td>
-                                    </tr>
-                                @endif
+                                <tr>
+                                    <td colspan="4" class="text-center">Seleccione una mascota para ver sus registros</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -943,6 +934,7 @@
                 var idMascota = $(this).data('id') || $(this).closest('.card-mascota').data('id');
                 var mascota = mascotasCache[idMascota];
                 $('#modal_ficha_mascota_nombre').text(mascota && mascota.nombre ? 'de ' + mascota.nombre : '');
+                cargarFichaMascota(idMascota);
                 var $modalFicha = $('#modal_ficha_mascota');
                 $('.modal.show').modal('hide');
                 if ($modalFicha.length) {
@@ -998,6 +990,69 @@
             $('#obs_fotos_ven').val('');
             $('#btn_registrar').show();
             lista_ven_imagenes = {};
+        }
+
+        function renderizarFilasFichaMascota(registros)
+        {
+            var $tbody = $('#tabla_ficha_mascota tbody');
+            $tbody.html('');
+
+            if (!Array.isArray(registros) || registros.length === 0) {
+                $tbody.append('<tr><td colspan="4" class="text-center">Sin registros</td></tr>');
+                return;
+            }
+
+            $.each(registros, function(_, ficha) {
+                var profesionalLugar = '<strong>' + (ficha.profesional || 'Sin profesional registrado') + '</strong><br>' + (ficha.lugar_atencion || 'Sin lugar registrado');
+                var html = '';
+                html += '<tr>';
+                html += '  <td>' + (ficha.fecha || '-') + '</td>';
+                html += '  <td>' + (ficha.diagnostico || '-') + '</td>';
+                html += '  <td>' + (ficha.indicaciones || '-') + '</td>';
+                html += '  <td>' + profesionalLugar + '</td>';
+                html += '</tr>';
+                $tbody.append(html);
+            });
+        }
+
+        function cargarFichaMascota(idMascota)
+        {
+            var tablaFichaMascota = inicializarTablaFichaMascota();
+            if (tablaFichaMascota && tablaFichaMascota.clear) {
+                tablaFichaMascota.clear().draw();
+            }
+
+            renderizarFilasFichaMascota([]);
+            $('#tabla_ficha_mascota tbody').html('<tr><td colspan="4" class="text-center">Cargando registros...</td></tr>');
+
+            $.ajax({
+                url: rutaMascotasBase + '/' + idMascota + '/fichas',
+                type: 'GET',
+            }).done(function(resp) {
+                resp = normalizarRespuestaAjax(resp);
+                renderizarFilasFichaMascota(resp.registros || []);
+
+                var tabla = inicializarTablaFichaMascota();
+                if (tabla && tabla.rows) {
+                    tabla.rows().invalidate().draw(false);
+                    tabla.columns.adjust().draw(false);
+                }
+            }).fail(function() {
+                $('#tabla_ficha_mascota tbody').html('<tr><td colspan="4" class="text-center text-danger">No fue posible cargar la ficha médica.</td></tr>');
+            });
+        }
+
+        function normalizarRespuestaAjax(data)
+        {
+            if (typeof data === 'string') {
+                try {
+                    return JSON.parse(data);
+                } catch (error) {
+                    return {};
+                }
+            }
+
+            return data || {};
         }
 
         function toggleChipInput()

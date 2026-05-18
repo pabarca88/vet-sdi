@@ -9346,6 +9346,7 @@ public function eliminarPiezaCoronaProtesis(Request $req){
 
         $hora_medica->descripcion = $paciente->nombres . ' ' . $paciente->apellido_uno . ' ' . $paciente->apellido_dos;
         $hora_medica->id_lugar_atencion = $request->id_lugar_atencion;
+        $mascota = null;
         if(!empty($request->id_mascota))
         {
             $mascota = Mascota::where('id', $request->id_mascota)
@@ -9364,6 +9365,12 @@ public function eliminarPiezaCoronaProtesis(Request $req){
 
         if (!$hora_medica->save()) {
             return 'error';
+        }
+
+        if ($mascota) {
+            $idLugarAtencion = (int) $request->id_lugar_atencion;
+            $idInstitucion = LugarAtencionInstitucionResolver::resolve($idLugarAtencion);
+            $mascota->vincularLugarAtencion($idLugarAtencion, $idInstitucion, 'agenda_profesional_existente');
         }
 
         if($request->tipo_hora_medica == 'T')

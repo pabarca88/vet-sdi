@@ -70,10 +70,6 @@ class MascotasController extends Controller
         $especies = EspecieMascota::orderBy('nombre')->get();
         $tamanos = TamanoMascota::orderBy('nombre')->get();
         $especieTamanos = EspecieTamanoMascota::with(['especie', 'tamano'])->get();
-        $fichasMascota = FichaAtencion::with('PresupuestosMascota')
-            ->where('id_paciente', 3)
-            ->orderBy('id', 'desc')
-            ->get();
 
         return view('app.paciente.dependientes')->with([
             'titulo' => 'Mascotas',
@@ -87,7 +83,50 @@ class MascotasController extends Controller
             'especiesMascotas' => $especies,
             'tamanosMascotas' => $tamanos,
             'especieTamanosMascotas' => $especieTamanos,
-            'fichasMascota' => $fichasMascota,
+            'fichasMascota' => collect(),
+        ]);
+    }
+
+    public function obtenerFichasMascota($mascotaId)
+    {
+        $mascota = $this->resolverMascota($mascotaId);
+        if (!$mascota) {
+            return response()->json([
+                'estado' => 0,
+                'msj' => 'Mascota no encontrada',
+                'registros' => [],
+            ], 404);
+        }
+
+        $registros = FichaAtencion::with(['Profesional', 'LugarAtencion'])
+            ->where('id_mascota', $mascota->id)
+            ->where('id_paciente', $mascota->id_responsable)
+            ->orderByDesc('created_at')
+            ->orderByDesc('id')
+            ->get()
+            ->map(function ($ficha) {
+                $profesional = $ficha->Profesional;
+                $lugarAtencion = $ficha->LugarAtencion;
+
+                return [
+                    'id' => $ficha->id,
+                    'fecha' => optional($ficha->created_at)->format('d/m/Y'),
+                    'diagnostico' => $ficha->hipotesis_diagnostico ?: '-',
+                    'indicaciones' => $ficha->indicaciones ?: '-',
+                    'profesional' => trim(collect([
+                        optional($profesional)->nombre,
+                        optional($profesional)->apellido_uno,
+                        optional($profesional)->apellido_dos,
+                    ])->filter()->implode(' ')) ?: 'Sin profesional registrado',
+                    'lugar_atencion' => optional($lugarAtencion)->nombre ?: 'Sin lugar registrado',
+                ];
+            })
+            ->values();
+
+        return response()->json([
+            'estado' => 1,
+            'msj' => 'registros',
+            'registros' => $registros,
         ]);
     }
 

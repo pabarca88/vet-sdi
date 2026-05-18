@@ -1,5 +1,10 @@
 @extends('template.profesional.template')
 @section('content')
+    @php
+        $contextosCentro = $contextosCentro ?? [];
+        $contextoActivo = $contextoActivo ?? [];
+        $search = $search ?? '';
+    @endphp
 
     <!--Container Completo-->
     <div class="pcoded-main-container">
@@ -42,11 +47,13 @@
                                 <div class="col-md-4 mb-2">
                                     <label class="floating-label-activo-sm mb-0">Centro activo</label>
                                     <select name="contexto" class="form-control form-control-sm">
-                                        @foreach ($contextosCentro as $contexto)
-                                            <option value="{{ $contexto['key'] }}" @selected(($contextoActivo['key'] ?? '') === $contexto['key'])>
-                                                {{ $contexto['label'] }}
+                                        @forelse ($contextosCentro as $contexto)
+                                            <option value="{{ $contexto['key'] ?? '' }}" @selected(($contextoActivo['key'] ?? '') === ($contexto['key'] ?? ''))>
+                                                {{ $contexto['label'] ?? 'Sin contexto' }}
                                             </option>
-                                        @endforeach
+                                        @empty
+                                            <option value="">Sin contexto</option>
+                                        @endforelse
                                     </select>
                                 </div>
                                 <div class="col-md-6 mb-2">
