@@ -4708,13 +4708,30 @@ class AdministradorCmController extends Controller
             ->unique()
             ->values();
 
+        $search = trim((string) request('q', ''));
+
+        $mascotas = $this->buscarMascotasResponsablesPorScope($scopeLugarIds, $search);
+
+        $lugaresActivos = LugarAtencion::whereIn('id', $scopeLugarIds)->get()->keyBy('id');
+
+        return view('app.adm_cm.mis_pacientes', [
+            'institucion' => $institucion,
+            'mascotas' => $mascotas,
+            'lugares_atencion' => $lugaresActivos,
+            'contextosCentro' => $context['contexts'],
+            'contextoActivo' => $activeContext,
+            'search' => $search,
+        ]);
+
+    }
+
+    protected function buscarMascotasResponsablesPorScope($scopeLugarIds, string $search = '')
+    {
         $fichaMascotaIds = FichaAtencion::whereIn('id_lugar_atencion', $scopeLugarIds)
             ->whereNotNull('id_mascota')
             ->pluck('id_mascota');
 
-        $search = trim((string) request('q', ''));
-
-        $mascotas = Mascota::with(['Responsable.Prevision', 'especieMascota', 'razaMascota', 'tamanoMascota', 'lugaresAtencion'])
+        return Mascota::with(['Responsable.Prevision', 'especieMascota', 'razaMascota', 'tamanoMascota', 'lugaresAtencion'])
             ->where(function ($query) use ($scopeLugarIds, $fichaMascotaIds) {
                 $query->whereHas('lugaresAtencion', function ($subQuery) use ($scopeLugarIds) {
                     $subQuery->whereIn('id_lugar_atencion', $scopeLugarIds);
@@ -4737,18 +4754,54 @@ class AdministradorCmController extends Controller
             })
             ->orderBy('nombre')
             ->get();
+    }
 
-        $lugaresActivos = LugarAtencion::whereIn('id', $scopeLugarIds)->get()->keyBy('id');
-
-        return view('app.adm_cm.mis_pacientes', [
-            'institucion' => $institucion,
-            'mascotas' => $mascotas,
-            'lugares_atencion' => $lugaresActivos,
-            'contextosCentro' => $context['contexts'],
-            'contextoActivo' => $activeContext,
-            'search' => $search,
+    public function enviarMensajeDifusionMascotasResponsables(Request $request)
+    {
+        $request->validate([
+            'asunto' => 'required|string',
+            'mensaje' => 'required|string',
         ]);
 
+        $context = UserCenterContext::forAdmin(Auth::user(), $request);
+        $activeContext = $context['active'];
+        if (!$activeContext) {
+            return response()->json(['estado' => 0, 'mensaje' => 'No hay contexto activo'], 422);
+        }
+
+        $scopeLugarIds = collect($activeContext['scope_lugar_ids'] ?? [])
+            ->filter()
+            ->map(fn ($id) => (int) $id)
+            ->unique()
+            ->values();
+
+        $responsableIds = $this->buscarMascotasResponsablesPorScope($scopeLugarIds, '')
+            ->pluck('id_responsable')
+            ->filter()
+            ->unique()
+            ->values();
+
+        if ($responsableIds->isEmpty()) {
+            return response()->json(['estado' => 0, 'mensaje' => 'No hay responsables para el contexto activo'], 422);
+        }
+
+        $datosMensaje = [
+            'asunto' => $request->asunto,
+            'mensaje' => $request->mensaje,
+        ];
+
+        foreach ($responsableIds as $responsableId) {
+            $nuevoMensaje = new Mensajes();
+            $nuevoMensaje->id_usuario = Auth::user()->id;
+            $nuevoMensaje->id_receptor = $responsableId;
+            $nuevoMensaje->estado = 1;
+            $nuevoMensaje->datos_mensaje = json_encode($datosMensaje);
+            $nuevoMensaje->tipo_mensaje = 4;
+            $nuevoMensaje->fecha_envio = Carbon::now()->format('Y-m-d H:i:s');
+            $nuevoMensaje->save();
+        }
+
+        return response()->json(['estado' => 1, 'mensaje' => 'Mensaje enviado correctamente']);
     }
 
     public function detalle_paciente(Request $req)

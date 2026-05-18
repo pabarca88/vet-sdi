@@ -29,6 +29,10 @@
 @include('general.sidebar.modal_form_generales.modal_ges')
 
 <!--Botón Flotante-->
+@php
+    $subTipoEspecialidadNombre = optional($profesional->SubTipoEspecialidad()->first())->nombre;
+    $tipoEspecialidadNombre = optional($profesional->TipoEspecialidad()->first())->nombre;
+@endphp
 <div class="row">
     <div class="col-sm-12">
         <div class="boton-formularios">
@@ -38,62 +42,62 @@
                 <a id="boton_2" class="fas fa-notes-medical fa-2x" data-toggle="canvas" data-target="#formularios_atencion" aria-expanded="false" aria-controls="bs-canvas-right" title="Formularios de Atención" data-placement="left" style="cursor:pointer;"></a>
                 <a id="boton_4" class="icono-signosv" data-toggle="canvas" data-target="#formularios_signos_vitales" aria-expanded="false" aria-controls="bs-canvas-right" title="Formularios Signos Vitales" data-placement="left" style="cursor:pointer;"></a>
 
-                @if($profesional->SubTipoEspecialidad()->first()->nombre == 'Cardiología Adultos' )
+                @if($subTipoEspecialidadNombre == 'Cardiología Adultos' )
                 <a id="boton_3" class="fas fa-heart fa-2x" data-toggle="canvas" data-target="#formularios_cardiologicos" aria-expanded="false" aria-controls="bs-canvas-right" title="Formularios Cardiología" data-placement="left" style="cursor:pointer;"></a>
                  @endif
 
-                @if($profesional->SubTipoEspecialidad()->first()->nombre == 'Otorrinolaringología' )
+                @if($subTipoEspecialidadNombre == 'Otorrinolaringología' )
                     <a id="boton_3" class="icono-vetgral" data-toggle="canvas" data-target="#formularios_orl" aria-expanded="false" aria-controls="bs-canvas-right" title="Formularios Atención Veterinaria General" data-placement="left" ></a>
                 @endif
 
-                @if($profesional->SubTipoEspecialidad()->first()->nombre == 'Dermatología' )
+                @if($subTipoEspecialidadNombre == 'Dermatología' )
                     <a id="boton_3" class="fas fa-search-minus fa-2x" data-toggle="canvas" data-target="#formularios_dermato" aria-expanded="false" aria-controls="bs-canvas-right" title="Formularios Dermatología" data-placement="left"></a>
                 @endif
 
-                @if($profesional->SubTipoEspecialidad()->first()->nombre == 'Oftalmología' )
+                @if($subTipoEspecialidadNombre == 'Oftalmología' )
                     <a id="boton_3" class="fas fa-eye-slash fa-2x" data-toggle="canvas" data-target="#formularios_ojo" aria-expanded="false" aria-controls="bs-canvas-right" title="Formularios Oftalmología" data-placement="left"></a>
                 @endif
 
-                @if($profesional->SubTipoEspecialidad()->first()->nombre == 'Broncopulmonar' )
+                @if($subTipoEspecialidadNombre == 'Broncopulmonar' )
                     <a id="boton_3" class="fas fa-bold fa-2x" data-toggle="canvas" data-target="#formularios_broncopulmonar" aria-expanded="false" aria-controls="bs-canvas-right" title="Formularios broncopulmonar" data-placement="left"></a>
                 @endif
 
-                @if($profesional->SubTipoEspecialidad()->first()->nombre == 'Cirugía Gástrica' )
+                @if($subTipoEspecialidadNombre == 'Cirugía Gástrica' )
 					<a id="boton_3" class="fas fa-user-ninja fa-2x" data-toggle="canvas" data-target="#formularios_cir_dalta" aria-expanded="false" aria-controls="bs-canvas-right" title="Formularios Cirugia Alta" data-placement="left"></a>
 				@endif
 
-                @if($profesional->SubTipoEspecialidad()->first()->nombre == 'Gastroenterología' )
+                @if($subTipoEspecialidadNombre == 'Gastroenterología' )
 					<a id="boton_3" class="fas fa-user-ninja fa-2x" data-toggle="canvas" data-target="#formularios_gastroenterologia" aria-expanded="false" aria-controls="bs-canvas-right" title="Gastroenterología" data-placement="left"></a>
 				@endif
 
-				@if($profesional->SubTipoEspecialidad()->first()->nombre == 'Cirugía Coloproctológica' )
+				@if($subTipoEspecialidadNombre == 'Cirugía Coloproctológica' )
 					<a id="boton_3" class="fas fa-user-ninja fa-2x" data-toggle="canvas" data-target="#formularios_cir_dbaja" aria-expanded="false" aria-controls="bs-canvas-right" title="Coloproctología" data-placement="left"></a>
 				@endif
 
-				@if($profesional->SubTipoEspecialidad()->first()->nombre == 'Urología' )
+				@if($subTipoEspecialidadNombre == 'Urología' )
 					<a id="boton_3" class="fas fa-user-cog fa-2x" data-toggle="canvas" data-target="#formularios_uro" aria-expanded="false" aria-controls="bs-canvas-right" title="Formularios Urología" data-placement="left"></a>
 				@endif
 
-                @if($profesional->SubTipoEspecialidad()->first()->nombre == 'Cirugía digestiva' )
+                @if($subTipoEspecialidadNombre == 'Cirugía digestiva' )
 					<a id="boton_3" class="fas fa-user-md fa-2x" data-toggle="canvas" data-target="#formularios_cir_digest" aria-expanded="false" aria-controls="bs-canvas-right" title="Formularios Cirugía Digestiva" data-placement="left"></a>
 				@endif
 
-                @if($profesional->SubTipoEspecialidad()->first()->nombre == 'Cirugía General' )
+                @if($subTipoEspecialidadNombre == 'Cirugía General' )
                     <a id="boton_3" class="fas fa-user-md fa-2x" data-toggle="canvas" data-target="#formularios_cir_gen" aria-expanded="false" aria-controls="bs-canvas-right" title="Formularios Cirugía" data-placement="left"></a>
                 @endif
 
-                @if($profesional->SubTipoEspecialidad()->first()->nombre == 'Medicina general adultos y niños' )
+                @if($subTipoEspecialidadNombre == 'Medicina general adultos y niños' )
                     <a id="boton_3" class="fas fa-heart-broken fa-2x" data-toggle="canvas" data-target="#formularios_medicina_gen" aria-expanded="false" aria-controls="bs-canvas-right" title="Formularios Medicina General" data-placement="left"></a>
                 @endif
 
-                @if($profesional->SubTipoEspecialidad()->first()->nombre == 'Traumatología General' )
+                @if($subTipoEspecialidadNombre == 'Traumatología General' )
                 <a id="boton_3" class="fas fa-bone fa-2x" data-toggle="canvas" data-target="#form_traumato_general" aria-expanded="false" aria-controls="bs-canvas-right" title="Formularios Traumatología General" data-placement="left"></a>
                 @endif
 
-                @if($profesional->TipoEspecialidad()->first()->nombre == 'SIQUIATRÍA' )
+                @if($tipoEspecialidadNombre == 'SIQUIATRÍA' )
                 <a id="boton_3" class="fas fa-brain fa-2x" data-toggle="canvas" data-target="#form_siquiatria" aria-expanded="false" aria-controls="bs-canvas-right" title="Formularios Siquiatría" data-placement="left"></a>
                 @endif
-                @if($profesional->SubTipoEspecialidad()->first()->nombre == 'Neurología' )
+                @if($subTipoEspecialidadNombre == 'Neurología' )
                 <a id="boton_3" class="fas fa-brain fa-2x" data-toggle="canvas" data-target="#form_neuro" aria-expanded="false" aria-controls="bs-canvas-right" title="Formularios Neurología" data-placement="left"></a>
                 @endif
             </div>

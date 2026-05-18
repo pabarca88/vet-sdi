@@ -3713,6 +3713,7 @@ Route::group([
 
 
 	Route::get('/Pacientes', [App\Http\Controllers\AdministradorCmController::class, 'adm_buscar_pacientes'])->name('adm_cm.pacientes');
+    Route::post('/Pacientes/mensaje-difusion', [App\Http\Controllers\AdministradorCmController::class, 'enviarMensajeDifusionMascotasResponsables'])->name('adm_cm.pacientes.difusion');
 
 
 
