@@ -378,8 +378,7 @@ $(document).ready(function(){
         /*-Modals personal-*/
         function contacto(id)
         {
-            let url = "{{ route('laboratorio.profesional_buscar', ['id_profesional' => '__id__']) }}";
-            url = url.replace('__id__', id);
+            let url = "{{ route('adm_cm.profesional_buscar') }}" + "?id_profesional=" + id;
 
             $.ajax({
                 url: url,

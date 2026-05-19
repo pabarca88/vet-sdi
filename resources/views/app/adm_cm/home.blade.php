@@ -174,7 +174,7 @@
 
                     <div class="card subir py-auto">
 
-                        <a href="{{ ROUTE('adm_cm.profesionales_institucion') }}">
+                        <a href="{{ ROUTE('adm_cm.profesionales') }}">
 
                             <div class="card-body text-center" style="cursor:pointer">
 
