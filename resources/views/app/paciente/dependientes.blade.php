@@ -247,11 +247,7 @@
                                     <th>Profesional / Lugar</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td colspan="4" class="text-center">Seleccione una mascota para ver sus registros</td>
-                                </tr>
-                            </tbody>
+                            <tbody></tbody>
                         </table>
                     </div>
                 </div>
@@ -318,10 +314,22 @@
     });
   }
 
+  function construirFilaEstadoFichaMascota(mensaje, claseExtra) {
+    return '<tr>'
+      + '<td class="text-center ' + (claseExtra || '') + '">' + (mensaje || '-') + '</td>'
+      + '<td></td>'
+      + '<td></td>'
+      + '<td></td>'
+      + '</tr>';
+  }
+
   function normalizarRutaImagen(nombreImagen) {
     if (!nombreImagen) return '';
     if (typeof nombreImagen !== 'string') return '';
+    if (nombreImagen.startsWith('http://') || nombreImagen.startsWith('https://')) return nombreImagen;
     if (nombreImagen.startsWith('/')) return nombreImagen;
+    if (nombreImagen.startsWith('storage/')) return '/' + nombreImagen;
+    if (nombreImagen.indexOf('/') !== -1) return '/storage/' + nombreImagen;
     return '/storage/imagenes/temp/' + nombreImagen;
   }
 
@@ -998,7 +1006,7 @@
             $tbody.html('');
 
             if (!Array.isArray(registros) || registros.length === 0) {
-                $tbody.append('<tr><td colspan="4" class="text-center">Sin registros</td></tr>');
+                $tbody.append(construirFilaEstadoFichaMascota('Sin registros'));
                 return;
             }
 
@@ -1023,7 +1031,7 @@
             }
 
             renderizarFilasFichaMascota([]);
-            $('#tabla_ficha_mascota tbody').html('<tr><td colspan="4" class="text-center">Cargando registros...</td></tr>');
+            $('#tabla_ficha_mascota tbody').html(construirFilaEstadoFichaMascota('Cargando registros...'));
 
             $.ajax({
                 url: rutaMascotasBase + '/' + idMascota + '/fichas',
@@ -1038,7 +1046,7 @@
                     tabla.columns.adjust().draw(false);
                 }
             }).fail(function() {
-                $('#tabla_ficha_mascota tbody').html('<tr><td colspan="4" class="text-center text-danger">No fue posible cargar la ficha médica.</td></tr>');
+                $('#tabla_ficha_mascota tbody').html(construirFilaEstadoFichaMascota('No fue posible cargar la ficha médica.', 'text-danger'));
             });
         }
 
