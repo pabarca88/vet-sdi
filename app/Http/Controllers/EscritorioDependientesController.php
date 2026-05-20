@@ -6,11 +6,15 @@ use App\Models\Acompanante;
 use App\Models\AcompananteDependiente;
 use App\Models\Asistente;
 use App\Models\Direccion;
+use App\Models\EspecieMascota;
+use App\Models\EspecieTamanoMascota;
+use App\Models\Mascota;
 use App\Models\Paciente;
 use App\Models\PacientesDependientes;
 use App\Models\Prevision;
 use App\Models\Profesional;
 use App\Models\Region;
+use App\Models\TamanoMascota;
 use App\Models\TipoDependencia;
 use App\Models\User;
 use App\Models\FichaAtencion;
@@ -20,6 +24,36 @@ use Illuminate\Support\Facades\Hash;
 
 class EscritorioDependientesController extends Controller
 {
+    private function buildMascotasViewData($paciente, $tipoDependencias, $dependencia)
+    {
+        $especiesMascotas = EspecieMascota::orderBy('nombre')->get();
+        $tamanosMascotas = TamanoMascota::orderBy('nombre')->get();
+        $especieTamanosMascotas = EspecieTamanoMascota::with(['especie', 'tamano'])->get();
+        $mascotas = collect();
+
+        if ($paciente) {
+            $mascotas = Mascota::with(['especieMascota', 'razaMascota', 'tamanoMascota', 'lugaresAtencion'])
+                ->where('id_responsable', $paciente->id)
+                ->orderBy('nombre')
+                ->get();
+        }
+
+        return [
+            'titulo' => 'Mascotas',
+            'registros' => collect(),
+            'mascotas' => $mascotas,
+            'dependencia' => $dependencia,
+            'tipo_dependencias' => $tipoDependencias,
+            'prevision' => Prevision::all(),
+            'region' => Region::all(),
+            'paciente' => $paciente,
+            'especiesMascotas' => $especiesMascotas,
+            'tamanosMascotas' => $tamanosMascotas,
+            'especieTamanosMascotas' => $especieTamanosMascotas,
+            'fichasMascota' => collect(),
+        ];
+    }
+
     /** dependencia definitiva */
     public function verDependiente(Request $request)
     {
@@ -42,6 +76,13 @@ class EscritorioDependientesController extends Controller
                 }
 
                 $paciente = Paciente::where('id_usuario', Auth::user()->id)->first();
+
+                if ($dependencia == 1) {
+                    return view('app.paciente.dependientes')->with(
+                        $this->buildMascotasViewData($paciente, $request->tipo_dependencia, $dependencia)
+                    );
+                }
+
                 $registros = PacientesDependientes::whereIn('tipo_dependencia', $tipo)
                                                     // ->with('Responsable')
                                                     ->with('Paciente')
@@ -110,6 +151,13 @@ class EscritorioDependientesController extends Controller
                 }
 
                 $paciente = Paciente::where('id_usuario', Auth::user()->id)->first();
+
+                if ($dependencia == 1) {
+                    return view('app.paciente.dependientes')->with(
+                        $this->buildMascotasViewData($paciente, $request->tipo_dependencia, $dependencia)
+                    );
+                }
+
                 $registros = PacientesDependientes::whereIn('tipo_dependencia', $tipo)
                                                     // ->with('Responsable')
                                                     ->with('Paciente')
