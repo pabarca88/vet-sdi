@@ -140,6 +140,8 @@
                                                                                 <button type="button" class="btn btn-info btn-sm btn-icon" onclick="contacto({{ $prof_medico->id }});" data-toggle="tooltip" data-placement="top" title="Contacto"><i class="feather icon-phone"></i></button>
                                                                             </td>
                                                                             <td class="align-middle">
+                                                                                <button type="button" class="btn btn-primary btn-sm btn-icon" onclick="f_profesional({{ $prof_medico->id }});" data-toggle="tooltip" data-placement="top" title="Información profesional"><i class="feather icon-eye"></i></button>
+
                                                                                 <!--Botón Modal deposito-->
                                                                                 <button type="button" class="btn btn-success btn-sm btn-icon" onclick="datos_depositos({{ $prof_medico->id_usuario }});" data-toggle="tooltip" data-placement="top" title="Datos bancarios"><i class="feather icon-credit-card"></i></button>
 
@@ -235,6 +237,8 @@
                                                                                 <button type="button" class="btn btn-info btn-sm btn-icon" onclick="contacto({{ $prof_medico->id }});" data-toggle="tooltip" data-placement="top" title="Contacto"><i class="feather icon-phone"></i></button>
                                                                             </td>
                                                                             <td class="align-middle">
+                                                                                <button type="button" class="btn btn-primary btn-sm btn-icon" onclick="f_profesional({{ $prof_medico->id }});" data-toggle="tooltip" data-placement="top" title="Información profesional"><i class="feather icon-eye"></i></button>
+
                                                                                 <!--Botón Modal deposito-->
                                                                                 <button type="button" class="btn btn-success btn-sm btn-icon" onclick="datos_depositos({{ $prof_medico->id_usuario }});" data-toggle="tooltip" data-placement="top" title="Datos bancarios"><i class="feather icon-credit-card"></i></button>
 
@@ -327,6 +331,8 @@
                                                                                 <button type="button" class="btn btn-info btn-sm btn-icon" onclick="contacto({{ $prof_medico->id }});" data-toggle="tooltip" data-placement="top" title="Contacto"><i class="feather icon-phone"></i></button>
                                                                             </td>
                                                                             <td class="align-middle">
+                                                                                <button type="button" class="btn btn-primary btn-sm btn-icon" onclick="f_profesional({{ $prof_medico->id }});" data-toggle="tooltip" data-placement="top" title="Información profesional"><i class="feather icon-eye"></i></button>
+
                                                                                 <!--Botón Modal deposito-->
                                                                                 <button type="button" class="btn btn-success btn-sm btn-icon" onclick="datos_depositos({{ $prof_medico->id_usuario }});" data-toggle="tooltip" data-placement="top" title="Datos bancarios"><i class="feather icon-credit-card"></i></button>
 
@@ -521,6 +527,88 @@ $(document).ready(function(){
                 console.log(jqXHR, ajaxOptions, thrownError)
             });
 
+        }
+
+        function f_profesional(id_profesional) {
+            $.ajax({
+                url: "{{ route('profesional.informacionProfesional') }}",
+                type: 'get',
+                data: {
+                    id_profesional: id_profesional,
+                },
+            })
+            .done(function(data) {
+                if (data.estado !== 1 || !data.profesional) {
+                    swal({
+                        title: 'Información profesional',
+                        text: data.msj || 'No fue posible cargar la información del veterinario.',
+                        icon: 'error',
+                        buttons: 'Aceptar',
+                    });
+                    return;
+                }
+
+                const profesional = data.profesional;
+                const direccion = profesional.direccion || null;
+                const ciudad = direccion && direccion.ciudad ? direccion.ciudad : null;
+                const tipoEspecialidad = profesional.tipo_especialidad ? profesional.tipo_especialidad.nombre : (profesional.especialidad ? profesional.especialidad.nombre : 'Veterinario/a');
+                const subTipoEspecialidad = profesional.sub_tipo_especialidad ? profesional.sub_tipo_especialidad.nombre : '';
+                const direccionTexto = direccion
+                    ? [direccion.direccion, direccion.numero_dir ? '#' + direccion.numero_dir : ''].filter(Boolean).join(' ')
+                    : 'No informado';
+
+                $('#modal_info_pro_foto').attr('src', profesional.img_profesional);
+                $('#modal_info_pro_nombre').html((profesional.nombre || '') + ' ' + (profesional.apellido_uno || '') + ' ' + (profesional.apellido_dos || ''));
+                $('#modal_info_pro_tipo_especialidad').html(tipoEspecialidad);
+                $('#modalinfo_pro_sub_tipo_especialidad').html(subTipoEspecialidad !== '' ? ': ' + subTipoEspecialidad : '');
+                $('#modal_info_pro_rut').text(profesional.rut || 'No informado');
+                $('#modal_info_pro_email').text(profesional.email || 'No informado');
+                $('#modal_info_pro_telefono').text(profesional.telefono_uno || 'No informado');
+                $('#modal_info_pro_ciudad').text(ciudad ? ciudad.nombre : 'No informado');
+                $('#modal_info_pro_direccion').text(direccionTexto);
+
+                $('#modal_info_pro_academicos').html('');
+                $(profesional.antecedente_academico || []).each(function(_, value) {
+                    let html = '';
+                    html += '<div class="col-md-3" align="left">' + (value.tipo_antecedente_academico ? value.tipo_antecedente_academico.nombre : 'Antecedente') + '</div>';
+                    html += '<div class="col-md-4"><b>' + (value.nombre || 'No informado') + '</b></div>';
+                    html += '<div class="col-md-5"><b>' + (((value.ciudad_pais || '') + ' ' + (value.universidad || '')).trim()) + '</b>' + (value.anio || '') + '</div>';
+                    $('#modal_info_pro_academicos').append(html);
+                });
+                $('#modal_info_pro_academicos_vacio').toggle((profesional.antecedente_academico || []).length === 0);
+
+                if ($.fn.DataTable.isDataTable('#modal_info_pro_lugar_atencion')) {
+                    $('#modal_info_pro_lugar_atencion').DataTable().clear().destroy();
+                }
+
+                $('#modal_info_pro_lugar_atencion tbody').html('');
+                $.each(data.lugares_atencion || [], function(_, value) {
+                    const direccionLugar = value.direccion
+                        ? [value.direccion.direccion, value.direccion.numero_dir ? '#' + value.direccion.numero_dir : '', value.direccion.ciudad ? value.direccion.ciudad.nombre : ''].filter(Boolean).join(', ')
+                        : 'No informado';
+                    let html = '<tr>';
+                    html += '<td><span><strong>' + (value.nombre || 'Sin nombre') + ':</strong></span><br>' + direccionLugar + '</td>';
+                    html += '<td style="color:#666666;text-align:left">' + (value.convenio && value.convenio.convenios ? value.convenio.convenios : 'No informado') + '</td>';
+                    html += '<td style="text-align:left">' + (value.telefono || 'No informado') + '</td>';
+                    html += '</tr>';
+                    $('#modal_info_pro_lugar_atencion tbody').append(html);
+                });
+                $('#modal_info_pro_lugares_vacio').toggle((data.lugares_atencion || []).length === 0);
+
+                $('#modal_info_pro_lugar_atencion').DataTable({
+                    responsive: true,
+                });
+
+                $('#ficha_profesional').modal('show');
+            })
+            .fail(function() {
+                swal({
+                    title: 'Información profesional',
+                    text: 'No fue posible cargar la información del veterinario.',
+                    icon: 'error',
+                    buttons: 'Aceptar',
+                });
+            });
         }
 
         /** Modals Horario */
@@ -745,6 +833,7 @@ $(document).ready(function(){
     @include('app.adm_cm.modal_adm.horario_usuario')
     @include('app.adm_cm.modal_adm.convenio_usuario')
     @include('app.adm_cm.modal_adm.contacto_usuario')
+    @include('app.general.buscador_profesionales.modals.ficha_profesional')
     {{-- @include('app.adm_cm.modales.personal.contacto_personal') --}}
     {{--  @include('app.adm_cm.modal_adm.editar_profesional')  --}}
     {{--  @include('app.adm_cm.modal_adm.registrar_profesional')  --}}
