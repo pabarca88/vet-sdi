@@ -51,8 +51,9 @@
                     @endif
                 @endif
                 @if (Auth::user())
+                    @include('template.partials.workspace_switcher')
 
-                    @if (count(Auth::user()->roles()->get()) > 1)
+                    @if (false)
                         <li>
                             <div class="dropdown drp-user">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="Cambiar escritorio" data-placement="button" >

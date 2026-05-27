@@ -10,7 +10,7 @@
 		</div>
 		<div class="collapse navbar-collapse">
 			<ul class="navbar-nav ml-auto">
-			</li>
+            @include('template.partials.workspace_switcher')
 			<li>
                 <div class="dropdown drp-user">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">

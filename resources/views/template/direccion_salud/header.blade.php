@@ -10,7 +10,8 @@
 		</div>
 		<div class="collapse navbar-collapse">
 			<ul class="navbar-nav ml-auto">
-                @if (count(Auth::user()->roles()->get()) > 1)
+                @include('template.partials.workspace_switcher')
+                @if (false)
                     <li>
                         <div class="dropdown drp-user">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="Cambiar escritorio" data-placement="button" >

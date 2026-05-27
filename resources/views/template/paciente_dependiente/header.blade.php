@@ -31,6 +31,7 @@
 
 			<ul class="navbar-nav ml-auto">
 
+            @include('template.partials.workspace_switcher')
 			<li>
 
                 <div class="dropdown drp-user">
