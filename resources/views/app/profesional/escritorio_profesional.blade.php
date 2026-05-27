@@ -54,6 +54,14 @@
                             </a>
                         </div>
                         <div class="card subir">
+                            <a href="{{ route('profesional.reporte_estadisticas') }}">
+                                <div class="card-body text-center px-2" style="cursor:pointer">
+                                    <img class="wid-40 text-center" src="{{ asset('images/iconos/estadisticas.svg') }}">
+                                    <h6 class="mt-1">Reporte y estadísticas</h6>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="card subir">
                             <a href="{{ route('profesional.index_receta_online') }}">
                                 <div class="card-body text-center px-2" style="cursor:pointer">
                                     <img class="wid-40 text-center" src="{{ asset('images/iconos/docs.svg') }}">

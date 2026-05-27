@@ -1273,6 +1273,7 @@ Route::group([
     Route::post('iniciar_cobro', [App\Http\Controllers\FlujoCajaController::class, 'iniciar_cobro'])->name('flujo_caja.profesional.iniciar_cobro');
 
     Route::get('Mis_estadisticas', [App\Http\Controllers\EscritorioProfesional::class, 'mis_estadisticas'])->name('profesional.mis_estadisticas');
+    Route::view('Reporte_estadisticas', 'app.profesional.reporte_estadisticas')->name('profesional.reporte_estadisticas');
 
 	Route::get('Administracion', [App\Http\Controllers\EscritorioProfesional::class, 'ver_adm_dental'])->name('profesional.ver_adm_dental');
 
@@ -3629,6 +3630,7 @@ Route::group([
     Route::post('/eliminar_servicio_cm', [App\Http\Controllers\AdministradorCmController::class, 'eliminar_servicio_cm'])->name('adm_cm.eliminar_servicio_cm');
 
     Route::get('/Estadisticas', [App\Http\Controllers\AdministradorCmController::class, 'estadisticas'])->name('adm_cm.estadisticas');
+    Route::view('/Reporte_estadisticas', 'app.adm_cm.reporte_estadisticas')->name('adm_cm.reporte_estadisticas');
 
 
 

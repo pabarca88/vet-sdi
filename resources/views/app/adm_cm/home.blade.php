@@ -252,6 +252,26 @@
 
                 </div>
 
+                <div class="col">
+
+                    <div class="card subir py-auto">
+
+                        <a href="{{ ROUTE('adm_cm.reporte_estadisticas') }}">
+
+                            <div class="card-body text-center" style="cursor:pointer">
+
+                                <img class="wid-50 text-center" src="{{ asset('images/iconos/estadisticas.svg') }}">
+
+                                <h6 class="mt-1 mb-0">Reporte y estadísticas</h6>
+
+                            </div>
+
+                        </a>
+
+                    </div>
+
+                </div>
+
 
 
             </div>
