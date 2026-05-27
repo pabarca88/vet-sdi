@@ -56,7 +56,7 @@
                         <div class="card subir">
                             <a href="{{ route('profesional.reporte_estadisticas') }}">
                                 <div class="card-body text-center px-2" style="cursor:pointer">
-                                    <img class="wid-40 text-center" src="{{ asset('images/iconos/estadisticas.svg') }}">
+                                    <img class="wid-40 text-center" src="{{ asset('images/iconos/estadisticas_2.svg') }}">
                                     <h6 class="mt-1">Reporte y estadísticas</h6>
                                 </div>
                             </a>

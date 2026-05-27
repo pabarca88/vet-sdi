@@ -260,7 +260,7 @@
 
                             <div class="card-body text-center" style="cursor:pointer">
 
-                                <img class="wid-50 text-center" src="{{ asset('images/iconos/estadisticas.svg') }}">
+                                <img class="wid-50 text-center" src="{{ asset('images/iconos/estadisticas_2.svg') }}">
 
                                 <h6 class="mt-1 mb-0">Reporte y estadísticas</h6>
 
