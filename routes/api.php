@@ -150,6 +150,7 @@ Route::prefix('vetsdinicio/reservas')->group(function () {
     Route::get('/ciudades', [VetsdiInicioReservaController::class, 'ciudades']);
     Route::get('/tipos-especialidad', [VetsdiInicioReservaController::class, 'tiposEspecialidad']);
     Route::get('/subtipos-especialidad', [VetsdiInicioReservaController::class, 'subtiposEspecialidad']);
+    Route::get('/responsable', [VetsdiInicioReservaController::class, 'responsable']);
     Route::get('/profesionales', [VetsdiInicioReservaController::class, 'profesionales']);
     Route::get('/horas', [VetsdiInicioReservaController::class, 'horas']);
     Route::post('/agendar', [VetsdiInicioReservaController::class, 'reservar']);

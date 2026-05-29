@@ -94,21 +94,27 @@ require_once('include/head.php');
             </div>
 
             <form id="reservation-booking-form">
+                <input type="hidden" id="responsable-id" name="responsable_id">
                 <input type="hidden" id="booking-professional-id" name="id_profesional">
                 <input type="hidden" id="booking-location-id" name="id_lugar_atencion">
                 <input type="hidden" id="booking-date" name="fecha">
                 <input type="hidden" id="booking-time" name="hora">
 
                 <div class="form-row">
-                    <div class="form-group col-md-4">
+                    <div class="form-group col-md-3">
+                        <label for="responsable-rut">RUT del responsable</label>
+                        <input class="form-control rounded-xl" id="responsable-rut" name="responsable_rut" type="text" required>
+                        <small class="form-text text-muted" id="responsable-lookup-feedback"></small>
+                    </div>
+                    <div class="form-group col-md-3">
                         <label for="responsable-nombres">Nombres del responsable</label>
                         <input class="form-control rounded-xl" id="responsable-nombres" name="responsable_nombres" type="text" required>
                     </div>
-                    <div class="form-group col-md-4">
+                    <div class="form-group col-md-3">
                         <label for="responsable-apellido-uno">Primer apellido</label>
                         <input class="form-control rounded-xl" id="responsable-apellido-uno" name="responsable_apellido_uno" type="text" required>
                     </div>
-                    <div class="form-group col-md-4">
+                    <div class="form-group col-md-3">
                         <label for="responsable-apellido-dos">Segundo apellido</label>
                         <input class="form-control rounded-xl" id="responsable-apellido-dos" name="responsable_apellido_dos" type="text">
                     </div>
@@ -126,15 +132,28 @@ require_once('include/head.php');
                 </div>
 
                 <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="mascota-nombre">Nombre de la mascota</label>
-                        <input class="form-control rounded-xl" id="mascota-nombre" name="mascota_nombre" type="text" required>
+                    <div class="form-group col-md-6" id="mascota-nombre-manual-group">
+                        <label for="mascota-nombre-input">Nombre de la mascota</label>
+                        <input class="form-control rounded-xl" id="mascota-nombre-input" name="mascota_nombre" type="text" required>
+                    </div>
+                    <div class="form-group col-md-6 d-none" id="mascota-nombre-select-group">
+                        <label for="mascota-nombre-select">Nombre de la mascota</label>
+                        <select class="form-control rounded-xl" id="mascota-nombre-select" name="mascota_id" disabled>
+                            <option value="">Selecciona una mascota</option>
+                        </select>
+                        <small class="form-text text-muted">Se muestran las mascotas asociadas al responsable.</small>
                     </div>
                     <div class="form-group col-md-6">
                         <label for="mascota-especie">Tipo de mascota</label>
                         <select class="form-control rounded-xl" id="mascota-especie" name="mascota_especie_id" required>
                             <option value="">Selecciona una opción</option>
                         </select>
+                    </div>
+                </div>
+
+                <div class="form-row d-none" id="mascota-manual-helper-row">
+                    <div class="form-group col-md-12">
+                        <small class="form-text text-muted">Si el responsable no tiene mascotas registradas, ingresa la mascota manualmente.</small>
                     </div>
                 </div>
 

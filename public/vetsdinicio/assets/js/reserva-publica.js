@@ -4,6 +4,9 @@
         especies: [],
         areasVeterinarias: [],
         selectedReservation: null,
+        responsibleLookupKey: "",
+        responsibleFound: false,
+        mascotasRegistradas: [],
     };
 
     const el = {
@@ -24,6 +27,19 @@
         hiddenLocation: document.getElementById("booking-location-id"),
         hiddenDate: document.getElementById("booking-date"),
         hiddenTime: document.getElementById("booking-time"),
+        responsibleId: document.getElementById("responsable-id"),
+        responsibleRut: document.getElementById("responsable-rut"),
+        responsibleNames: document.getElementById("responsable-nombres"),
+        responsibleLastNameOne: document.getElementById("responsable-apellido-uno"),
+        responsibleLastNameTwo: document.getElementById("responsable-apellido-dos"),
+        responsibleEmail: document.getElementById("responsable-email"),
+        responsiblePhone: document.getElementById("responsable-telefono"),
+        responsibleLookupFeedback: document.getElementById("responsable-lookup-feedback"),
+        petManualGroup: document.getElementById("mascota-nombre-manual-group"),
+        petSelectGroup: document.getElementById("mascota-nombre-select-group"),
+        petManualHelperRow: document.getElementById("mascota-manual-helper-row"),
+        petNameInput: document.getElementById("mascota-nombre-input"),
+        petNameSelect: document.getElementById("mascota-nombre-select"),
         bookingSubmit: document.getElementById("booking-submit"),
     };
 
@@ -41,6 +57,10 @@
         el.specialty.addEventListener("change", onSpecialtyChange);
         el.filterForm.addEventListener("submit", onSearchSubmit);
         el.bookingForm.addEventListener("submit", onBookingSubmit);
+        el.responsibleRut.addEventListener("blur", onResponsibleRutLookup);
+        el.responsibleRut.addEventListener("change", onResponsibleRutLookup);
+        el.responsibleRut.addEventListener("input", onResponsibleRutInput);
+        el.petNameSelect.addEventListener("change", onPetSelectionChange);
 
         el.searchResults.addEventListener("click", function (event) {
             const searchButton = event.target.closest("[data-action='search-hours']");
@@ -316,6 +336,7 @@
 
             el.bookingForm.reset();
             fillSelect(el.species, state.especies, "Selecciona una opción");
+            resetResponsibleState({ preserveRut: false, preserveFeedback: false, clearFields: true });
             state.selectedReservation = null;
             renderSelectedReservation();
             el.bookingSection.classList.add("d-none");
@@ -335,6 +356,188 @@
         } finally {
             el.bookingSubmit.disabled = false;
         }
+    }
+
+    function onResponsibleRutInput() {
+        const lookupKey = normalizeRutLookup(el.responsibleRut.value);
+        if (state.responsibleLookupKey && lookupKey !== state.responsibleLookupKey) {
+            resetResponsibleState({ preserveRut: true, preserveFeedback: false, clearFields: true });
+        }
+    }
+
+    async function onResponsibleRutLookup() {
+        const rut = el.responsibleRut.value.trim();
+        const lookupKey = normalizeRutLookup(rut);
+
+        if (!lookupKey) {
+            resetResponsibleState({ preserveRut: true, preserveFeedback: false, clearFields: false });
+            return;
+        }
+
+        if (lookupKey === state.responsibleLookupKey && state.responsibleFound) {
+            return;
+        }
+
+        setResponsibleLookupFeedback("Buscando responsable por RUT...", "info");
+
+        try {
+            const response = await fetchJson(apiBase + "/responsable?rut=" + encodeURIComponent(rut));
+            applyResponsibleLookup(response);
+        } catch (error) {
+            resetResponsibleState({ preserveRut: true, preserveFeedback: true, clearFields: false });
+            setResponsibleLookupFeedback(error.message, "danger");
+        }
+    }
+
+    function applyResponsibleLookup(response) {
+        state.responsibleLookupKey = normalizeRutLookup(el.responsibleRut.value);
+        state.responsibleFound = Boolean(response.encontrado);
+        state.mascotasRegistradas = response.mascotas || [];
+
+        if (!response.encontrado || !response.responsable) {
+            el.responsibleId.value = "";
+            setPetManualMode();
+            clearPetSelection();
+            setResponsibleLookupFeedback("Responsable no registrado. Completa los datos manualmente.", "warning");
+            return;
+        }
+
+        el.responsibleId.value = response.responsable.id || "";
+        el.responsibleRut.value = response.responsable.rut || el.responsibleRut.value;
+        el.responsibleNames.value = response.responsable.nombres || "";
+        el.responsibleLastNameOne.value = response.responsable.apellido_uno || "";
+        el.responsibleLastNameTwo.value = response.responsable.apellido_dos || "";
+        el.responsibleEmail.value = response.responsable.email || "";
+        el.responsiblePhone.value = response.responsable.telefono || "";
+
+        if (state.mascotasRegistradas.length) {
+            setPetSelectMode(state.mascotasRegistradas);
+            setResponsibleLookupFeedback("Responsable encontrado. Selecciona una de sus mascotas registradas.", "success");
+        } else {
+            setPetManualMode();
+            clearPetSelection();
+            setResponsibleLookupFeedback("Responsable encontrado, pero no tiene mascotas activas registradas. Ingresa la mascota manualmente.", "info");
+        }
+    }
+
+    function onPetSelectionChange() {
+        const selectedId = el.petNameSelect.value;
+        const mascota = state.mascotasRegistradas.find(function (item) {
+            return String(item.id) === String(selectedId);
+        });
+
+        if (!mascota) {
+            el.species.value = "";
+            return;
+        }
+
+        el.species.value = mascota.especie_id ? String(mascota.especie_id) : "";
+    }
+
+    function setPetSelectMode(mascotas) {
+        el.petManualGroup.classList.add("d-none");
+        el.petSelectGroup.classList.remove("d-none");
+        el.petManualHelperRow.classList.add("d-none");
+        el.petNameInput.value = "";
+        el.petNameInput.required = false;
+        el.petNameSelect.disabled = false;
+        el.petNameSelect.required = true;
+        el.petNameSelect.innerHTML = buildPetOptions(mascotas);
+        el.species.value = "";
+    }
+
+    function setPetManualMode() {
+        el.petManualGroup.classList.remove("d-none");
+        el.petSelectGroup.classList.add("d-none");
+        el.petManualHelperRow.classList.toggle("d-none", !state.responsibleFound);
+        el.petNameInput.required = true;
+        el.petNameSelect.required = false;
+        el.petNameSelect.disabled = true;
+        el.petNameSelect.innerHTML = "<option value=''>Selecciona una mascota</option>";
+        el.species.value = "";
+    }
+
+    function clearPetSelection() {
+        state.mascotasRegistradas = [];
+        el.petNameInput.value = "";
+        el.petNameSelect.innerHTML = "<option value=''>Selecciona una mascota</option>";
+        el.petNameSelect.disabled = true;
+        el.species.value = "";
+    }
+
+    function resetResponsibleState(options) {
+        const settings = Object.assign({
+            preserveRut: true,
+            preserveFeedback: false,
+            clearFields: true,
+        }, options || {});
+
+        state.responsibleLookupKey = "";
+        state.responsibleFound = false;
+        el.responsibleId.value = "";
+        clearPetSelection();
+        setPetManualMode();
+
+        if (settings.clearFields) {
+            el.responsibleNames.value = "";
+            el.responsibleLastNameOne.value = "";
+            el.responsibleLastNameTwo.value = "";
+            el.responsibleEmail.value = "";
+            el.responsiblePhone.value = "";
+        }
+
+        if (!settings.preserveRut) {
+            el.responsibleRut.value = "";
+        }
+
+        if (!settings.preserveFeedback) {
+            setResponsibleLookupFeedback("", "");
+        }
+    }
+
+    function buildPetOptions(mascotas) {
+        const options = ["<option value=''>Selecciona una mascota</option>"];
+        mascotas.forEach(function (mascota) {
+            const speciesName = mascota.especie_nombre ? " · " + mascota.especie_nombre : "";
+            options.push(
+                "<option value='" + escapeHtml(String(mascota.id)) + "'>" +
+                    escapeHtml(mascota.nombre + speciesName) +
+                "</option>"
+            );
+        });
+        return options.join("");
+    }
+
+    function setResponsibleLookupFeedback(message, type) {
+        el.responsibleLookupFeedback.textContent = message || "";
+        el.responsibleLookupFeedback.className = "form-text";
+
+        if (!message || !type) {
+            return;
+        }
+
+        if (type === "danger") {
+            el.responsibleLookupFeedback.classList.add("text-danger");
+            return;
+        }
+
+        if (type === "warning") {
+            el.responsibleLookupFeedback.classList.add("text-warning");
+            return;
+        }
+
+        if (type === "success") {
+            el.responsibleLookupFeedback.classList.add("text-success");
+            return;
+        }
+
+        el.responsibleLookupFeedback.classList.add("text-muted");
+    }
+
+    function normalizeRutLookup(value) {
+        return String(value || "")
+            .replace(/[^0-9kK]/g, "")
+            .toUpperCase();
     }
 
     async function fetchJson(url, options) {

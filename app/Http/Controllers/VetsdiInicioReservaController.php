@@ -78,6 +78,54 @@ class VetsdiInicioReservaController extends Controller
         ]);
     }
 
+    public function responsable(Request $request)
+    {
+        $request->validate([
+            'rut' => 'required|string|max:20',
+        ]);
+
+        $paciente = $this->findPacienteByRut((string) $request->input('rut'));
+
+        if (!$paciente) {
+            return response()->json([
+                'estado' => 1,
+                'encontrado' => false,
+                'responsable' => null,
+                'mascotas' => [],
+            ]);
+        }
+
+        $mascotas = Mascota::with('especieMascota')
+            ->where('id_responsable', $paciente->id)
+            ->where('estado', 1)
+            ->orderBy('nombre')
+            ->get()
+            ->map(function (Mascota $mascota) {
+                return [
+                    'id' => $mascota->id,
+                    'nombre' => $mascota->nombre,
+                    'especie_id' => $mascota->especie_id ?: $mascota->especie,
+                    'especie_nombre' => optional($mascota->especieMascota)->nombre,
+                ];
+            })
+            ->values();
+
+        return response()->json([
+            'estado' => 1,
+            'encontrado' => true,
+            'responsable' => [
+                'id' => $paciente->id,
+                'rut' => $this->formatRut($paciente->rut),
+                'nombres' => $paciente->nombres,
+                'apellido_uno' => $paciente->apellido_uno,
+                'apellido_dos' => $paciente->apellido_dos === 'N/A' ? '' : $paciente->apellido_dos,
+                'email' => $paciente->email,
+                'telefono' => $paciente->telefono_uno ?: $paciente->telefono_dos,
+            ],
+            'mascotas' => $mascotas,
+        ]);
+    }
+
     public function profesionales(Request $request)
     {
         $veterinariaAreaSlug = trim((string) $request->input('veterinaria_area', ''));
@@ -258,13 +306,16 @@ class VetsdiInicioReservaController extends Controller
             'id_lugar_atencion' => 'required|integer',
             'fecha' => 'required|date_format:Y-m-d',
             'hora' => 'required|date_format:H:i',
+            'responsable_id' => 'nullable|integer|exists:pacientes,id',
+            'responsable_rut' => 'required|string|max:20',
             'responsable_nombres' => 'required|string|max:100',
             'responsable_apellido_uno' => 'required|string|max:50',
             'responsable_apellido_dos' => 'nullable|string|max:50',
             'responsable_email' => 'required|email|max:200',
             'responsable_telefono' => 'required|string|max:20',
-            'mascota_nombre' => 'required|string|max:100',
-            'mascota_especie_id' => 'required|integer|exists:especies_mascotas,id',
+            'mascota_id' => 'nullable|integer|exists:mascotas,id',
+            'mascota_nombre' => 'required_without:mascota_id|nullable|string|max:100',
+            'mascota_especie_id' => 'required_without:mascota_id|nullable|integer|exists:especies_mascotas,id',
             'comentarios' => 'nullable|string|max:1000',
         ]);
 
@@ -279,7 +330,11 @@ class VetsdiInicioReservaController extends Controller
         $respuesta = DB::transaction(function () use ($request) {
             $profesional = Profesional::with(['Especialidad', 'TipoEspecialidad', 'SubTipoEspecialidad'])->findOrFail((int) $request->input('id_profesional'));
             $lugar = LugarAtencion::with('Direccion.Ciudad')->findOrFail((int) $request->input('id_lugar_atencion'));
-            $especie = EspecieMascota::findOrFail((int) $request->input('mascota_especie_id'));
+            $especie = null;
+
+            if ($request->filled('mascota_especie_id')) {
+                $especie = EspecieMascota::findOrFail((int) $request->input('mascota_especie_id'));
+            }
 
             $inicio = Carbon::createFromFormat('Y-m-d H:i', $request->input('fecha').' '.$request->input('hora'));
             $horario = $this->getHorario($profesional->id, $lugar->id, $inicio);
@@ -300,12 +355,35 @@ class VetsdiInicioReservaController extends Controller
                 ], 409);
             }
 
-            $paciente = Paciente::whereRaw('LOWER(email) = ?', [mb_strtolower($request->input('responsable_email'))])->first();
+            $rutIngresado = (string) $request->input('responsable_rut');
+            $rutNormalizado = $this->normalizeRut($rutIngresado);
+            $rutFormateado = $this->formatRut($rutIngresado);
+
+            $paciente = null;
+
+            if ($request->filled('responsable_id')) {
+                $paciente = Paciente::findOrFail((int) $request->input('responsable_id'));
+
+                if ($rutNormalizado !== '' && $this->normalizeRut((string) $paciente->rut) !== $rutNormalizado) {
+                    return response()->json([
+                        'estado' => 0,
+                        'msj' => 'El RUT ingresado no coincide con el responsable seleccionado.',
+                    ], 422);
+                }
+            }
+
+            if (!$paciente && $rutNormalizado !== '') {
+                $paciente = $this->findPacienteByRut($rutIngresado);
+            }
+
+            if (!$paciente) {
+                $paciente = Paciente::whereRaw('LOWER(email) = ?', [mb_strtolower($request->input('responsable_email'))])->first();
+            }
 
             if (!$paciente) {
                 $paciente = new Paciente();
                 $paciente->token = md5(uniqid((string) mt_rand(), true));
-                $paciente->rut = $this->generateExternalRut();
+                $paciente->rut = $rutFormateado !== '' ? $rutFormateado : $this->generateExternalRut();
                 $paciente->nombres = trim((string) $request->input('responsable_nombres'));
                 $paciente->apellido_uno = trim((string) $request->input('responsable_apellido_uno'));
                 $paciente->apellido_dos = trim((string) $request->input('responsable_apellido_dos', '')) ?: 'N/A';
@@ -316,21 +394,52 @@ class VetsdiInicioReservaController extends Controller
                 $paciente->id_prevision = optional(Prevision::orderBy('id')->first())->id ?? 1;
                 $paciente->save();
             } else {
+                if ($rutFormateado !== '' && strncmp((string) $paciente->rut, 'EXT', 3) !== 0) {
+                    $paciente->rut = $rutFormateado;
+                }
                 $paciente->telefono_uno = trim((string) $request->input('responsable_telefono'));
                 $paciente->nombres = trim((string) $request->input('responsable_nombres'));
                 $paciente->apellido_uno = trim((string) $request->input('responsable_apellido_uno'));
                 $paciente->apellido_dos = trim((string) $request->input('responsable_apellido_dos', '')) ?: ($paciente->apellido_dos ?: 'N/A');
+                $paciente->email = mb_strtolower(trim((string) $request->input('responsable_email')));
                 $paciente->save();
             }
 
-            $mascota = new Mascota();
-            $mascota->id_responsable = $paciente->id;
-            $mascota->nombre = trim((string) $request->input('mascota_nombre'));
-            $mascota->especie_id = $especie->id;
-            $mascota->especie = $especie->id;
-            $mascota->id_user = $paciente->id_usuario;
-            $mascota->estado = 1;
-            $mascota->save();
+            $mascota = null;
+
+            if ($request->filled('mascota_id')) {
+                $mascota = Mascota::with('especieMascota')
+                    ->where('id', (int) $request->input('mascota_id'))
+                    ->where('id_responsable', $paciente->id)
+                    ->first();
+
+                if (!$mascota) {
+                    return response()->json([
+                        'estado' => 0,
+                        'msj' => 'La mascota seleccionada no corresponde al responsable indicado.',
+                    ], 422);
+                }
+
+                $especie = $mascota->especieMascota ?: EspecieMascota::find($mascota->especie_id ?: $mascota->especie);
+            }
+
+            if (!$mascota) {
+                if (!$especie) {
+                    return response()->json([
+                        'estado' => 0,
+                        'msj' => 'Selecciona el tipo de mascota antes de confirmar.',
+                    ], 422);
+                }
+
+                $mascota = new Mascota();
+                $mascota->id_responsable = $paciente->id;
+                $mascota->nombre = trim((string) $request->input('mascota_nombre'));
+                $mascota->especie_id = $especie->id;
+                $mascota->especie = $especie->id;
+                $mascota->id_user = $paciente->id_usuario;
+                $mascota->estado = 1;
+                $mascota->save();
+            }
 
             $horaMedica = new HoraMedica();
             $horaMedica->id_paciente = $paciente->id;
@@ -545,5 +654,43 @@ class VetsdiInicioReservaController extends Controller
         }
 
         return null;
+    }
+
+    protected function findPacienteByRut(string $rut): ?Paciente
+    {
+        $normalizedRut = $this->normalizeRut($rut);
+
+        if ($normalizedRut === '') {
+            return null;
+        }
+
+        return Paciente::whereRaw(
+            "REPLACE(REPLACE(UPPER(rut), '.', ''), '-', '') = ?",
+            [$normalizedRut]
+        )->first();
+    }
+
+    protected function normalizeRut(?string $value): string
+    {
+        return strtoupper((string) preg_replace('/[^0-9kK]/', '', (string) $value));
+    }
+
+    protected function formatRut(?string $value): string
+    {
+        $normalized = $this->normalizeRut($value);
+
+        if ($normalized === '' || strncmp($normalized, 'EXT', 3) === 0) {
+            return $normalized;
+        }
+
+        if (strlen($normalized) < 2) {
+            return $normalized;
+        }
+
+        $body = substr($normalized, 0, -1);
+        $dv = substr($normalized, -1);
+        $formattedBody = number_format((int) $body, 0, '', '.');
+
+        return $formattedBody.'-'.$dv;
     }
 }
