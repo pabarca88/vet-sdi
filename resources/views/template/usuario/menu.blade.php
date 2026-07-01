@@ -57,7 +57,7 @@
 					<ul class="pcoded-submenu">
 						<li><a href="{{ ROUTE('paciente.perfil') }}">Editar Perfil</a></li>
 						{{--  <li><a href="{{ ROUTE('paciente.rompeclave') }}">Rompeclave</a></li>  --}}
-						<li><a href="{{ ROUTE('paciente.subcripcion') }}">Pagos y Suscripción</a></li>
+						<li><a href="{{ ROUTE('paciente.mascotas.pagos_suscripcion') }}">Suscripciones y facturacion</a></li>
 					</ul>
 				</li>
 			</ul>

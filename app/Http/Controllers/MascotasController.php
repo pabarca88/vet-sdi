@@ -694,6 +694,10 @@ class MascotasController extends Controller
         return view('app.paciente_dependiente.promociones_generales');
     }
 
+     public function pagos_suscripcion(){
+        return view('app.paciente_dependiente.pagos_suscripcion');
+    }
+
     public function razasPorEspecie($especie)
     {
         $razas = RazaMascota::where('especie_id', $especie)
@@ -922,3 +926,5 @@ class MascotasController extends Controller
         return $mascota;
     }
 }
+
+

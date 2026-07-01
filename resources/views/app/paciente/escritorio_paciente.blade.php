@@ -9,7 +9,7 @@
                 <div class="row align-items-center">
                     <div class="col-md-12">
                         <div class="page-header-title">
-                            <h4 class="m-b-10 font-weight-bold text-white">Hola, Nombre</h4>
+                            <h4 class="m-b-10 font-weight-bold text-white">Hola, {{ $paciente->nombres }}</h4>
                             <p class="text-white">Bienvenido/a a tu escritorio de cuidado de mascotas</p>
                         </div>
                         <!--<ul class="breadcrumb">
@@ -39,19 +39,19 @@
                           <a href="{{ ROUTE('paciente.mascotas.suscripcion_servicios') }}"> 
                             <div class="card-body text-center py-3" style="cursor:pointer">
                                 <img class="wid-50 text-center mt-2" src="{{ asset('images/iconos/alimento.png') }}">
-                                <h5 class="mt-2"> Suscripciones y servicios cercanos </h5>
+                                <h5 class="mt-2"> Servicios cercanos </h5>
                             </div>
                         </a>
                     </div>
                     <!--<div class="card subir">
-                          <a href="{{ ROUTE('paciente.mascotas.inscripcion_alimentos') }}"> 
+                          <a href="{{ ROUTE('paciente.mascotas.pagos_suscripcion') }}">
                             <div class="card-body text-center py-3" style="cursor:pointer">
                                 <img class="wid-50 text-center mt-2" src="{{ asset('images/iconos/alimento.png') }}">
-                                <h5 class="mt-2"> Registro de <br>mis alimentos </h5>
+                                <h5 class="mt-2"> Suscripciones y facturación </h5>
                             </div>
                         </a>
-                    </div>
-                    <div class="card subir">
+                    </div>-->
+                    <!--<div class="card subir">
                         <a href="{{ ROUTE('paciente.mascotas.inscripcion_medicamentos') }}">
                             <div class="card-body text-center py-3" style="cursor:pointer">
                                 <img class="wid-50 text-center mt-2" src="{{ asset('images/iconos/i-medic.svg') }}">

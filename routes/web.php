@@ -893,6 +893,8 @@ Route::post('Convenios/editar', [App\Http\Controllers\EscritorioPaciente::class,
     Route::post('/mascotas/{mascotaId}/vacunas',[App\Http\Controllers\MascotasController::class, 'guardarVacunaDesdeModal'])->name('paciente.mascotas.vacunas.guardar');
     Route::post('/mascotas/{mascotaId}/desparasitaciones',[App\Http\Controllers\MascotasController::class, 'guardarDesparasitacionDesdeModal'])->name('paciente.mascotas.desparasitaciones.guardar');
 
+    Route::get('/pagos_suscripcion',[App\Http\Controllers\MascotasController::class, 'pagos_suscripcion'])->name('paciente.mascotas.pagos_suscripcion');
+
 
 
 
@@ -1191,7 +1193,6 @@ Route::group([
     Route::post('editar_datos_contacto_perfil', [App\Http\Controllers\EscritorioProfesional::class, 'editar_datos_contacto_perfil'])->name('profesional.editar_datos_contacto_perfil');
 
 	Route::post('editar_datos_residencia_perfil', [App\Http\Controllers\EscritorioProfesional::class, 'editar_datos_residencia_perfil'])->name('profesional.editar_datos_residencia_perfil');
-
 
 
 
