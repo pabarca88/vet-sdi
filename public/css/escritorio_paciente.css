@@ -1,9 +1,10 @@
 body {
- background: #560d75;
-background: -webkit-linear-gradient(90deg, rgb(122 37 155) 0%, rgb(155 119 170) 100%);
-background: -moz-linear-gradient(90deg, rgb(122 37 155) 0%, rgb(155 119 170) 100%);
-background: linear-gradient(90deg, rgb(122 37 155) 0%, rgb(155 119 170) 100%);
-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#7A259B", endColorstr="#9B77AA", GradientType=1);
+    background: #0f6b62; 
+    background: -webkit-linear-gradient(90deg, rgb(15, 107, 98) 0%, rgb(10, 75, 69) 100%);
+    background: -moz-linear-gradient(90deg, rgb(15, 107, 98) 0%, rgb(10, 75, 69) 100%);
+    background: -o-linear-gradient(90deg, rgb(15, 107, 98) 0%, rgb(10, 75, 69) 100%);
+    background: linear-gradient(90deg, rgb(15, 107, 98) 0%, rgb(10, 75, 69) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#0F6B62", endColorstr="#0A4B45", GradientType=1);
 }
 
 .bg-c-info {

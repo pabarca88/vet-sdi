@@ -11,6 +11,7 @@ File: style.css
 
 
 @import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap');
 
 // <uniquifier>: Use a unique and descriptive class name
 // <weight>: Use a value from 200 to 1000
@@ -249,12 +250,7 @@ body {
     line-height: 1.5;
     color: #154299;
     text-align: left;
-     background: #560d75;
-    background: -webkit-linear-gradient(90deg, rgb(122 37 155) 0%, rgb(155 119 170) 100%);
-    background: -moz-linear-gradient(90deg, rgb(122 37 155) 0%, rgb(155 119 170) 100%);
-    background: linear-gradient(90deg, rgb(122 37 155) 0%, rgb(155 119 170) 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#7A259B", endColorstr="#9B77AA", GradientType=1);
-
+                 background:radial-gradient(120% 140% at 0% 0%, #17847A 0%, var(--primary-dark) 55%, #071F1C 100%);
     
 }
 
@@ -5293,6 +5289,7 @@ input[type="button"].btn-block {
 }
 
 .card-header {
+    font-family: 'Outfit',sans-serif; font-weight:700;
     padding: 0.4rem  1rem 0.3rem;
     margin-bottom: 0;
     font-size: 1.2rem;
@@ -6628,7 +6625,12 @@ a.close.disabled {
     justify-content: space-between;
     padding: 10px 20px;
     font-size: 1.3rem!important;
-    background-color: #1CBEBE !important;
+    background-color: #0f6b62;
+    background-color: -webkit-linear-gradient(90deg, rgb(15, 107, 98) 0%, rgb(10, 75, 69) 100%);
+    background-color: -moz-linear-gradient(90deg, rgb(15, 107, 98) 0%, rgb(10, 75, 69) 100%);
+    background-color: -o-linear-gradient(90deg, rgb(15, 107, 98) 0%, rgb(10, 75, 69) 100%);
+    background-color: linear-gradient(90deg, rgb(15, 107, 98) 0%, rgb(10, 75, 69) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#0F6B62", endColorstr="#0A4B45", GradientType=1);
     border-top-right-radius: calc(0.7rem - 1px);
     border-top-left-radius: calc(0.7rem - 1px);
 }
@@ -20775,11 +20777,12 @@ body {
     font-size: 13px;
     color: #596679;
     font-weight: 400;
-     background: #560d75;
-    background: -webkit-linear-gradient(90deg, rgb(122 37 155) 0%, rgb(155 119 170) 100%);
-    background: -moz-linear-gradient(90deg, rgb(122 37 155) 0%, rgb(155 119 170) 100%);
-    background: linear-gradient(90deg, rgb(122 37 155) 0%, rgb(155 119 170) 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#7A259B", endColorstr="#9B77AA", GradientType=1);
+     background: #0f6b62;
+    background: -webkit-linear-gradient(90deg, rgb(15, 107, 98) 0%, rgb(10, 75, 69) 100%);
+    background: -moz-linear-gradient(90deg, rgb(15, 107, 98) 0%, rgb(10, 75, 69) 100%);
+    background: -o-linear-gradient(90deg, rgb(15, 107, 98) 0%, rgb(10, 75, 69) 100%);
+    background: linear-gradient(90deg, rgb(15, 107, 98) 0%, rgb(10, 75, 69) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#0F6B62", endColorstr="#0A4B45", GradientType=1);
     position: relative;
 }
 
@@ -22225,6 +22228,14 @@ pre[class*=language-]:before {
 }
 
 
+.bg-green {
+    background: #0f6b62; /* fallback para navegadores muy antiguos */
+    background: -webkit-linear-gradient(90deg, rgb(15, 107, 98) 0%, rgb(10, 75, 69) 100%);
+    background: -moz-linear-gradient(90deg, rgb(15, 107, 98) 0%, rgb(10, 75, 69) 100%);
+    background: -o-linear-gradient(90deg, rgb(15, 107, 98) 0%, rgb(10, 75, 69) 100%);
+    background: linear-gradient(90deg, rgb(15, 107, 98) 0%, rgb(10, 75, 69) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#0F6B62", endColorstr="#0A4B45", GradientType=1);
+}
 
 .bg-purple {
     background-color: #8a4fa6!important;
@@ -36158,6 +36169,7 @@ transition: 0.2s!important;
 
 /*****MODALES VETSDI**/
 .modal-title-sdi {
+    font-size: 'Outfit',sans-serif; font-weight:700;
     font-size: 1.3rem!important;
     color: #fff;
     margin-top: 7px;
