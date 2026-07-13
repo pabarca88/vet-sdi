@@ -2,7 +2,7 @@
 <html lang="es">
 
 <head>
-    <title>SDI</title>
+    <title>VET-SDI</title>
     <!--[if lt IE 11]>
   <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
   <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
@@ -71,10 +71,16 @@
                                     <input type="text" class="form-control" name="email" id="email" value="">
                                 </div>
                                 <div class="form-group mb-3">
-                                    <label class="floating-label-activo-sm">Ingrese su contraseña</label>
-                                    <input type="password" class="form-control" name="password" id="password"
-                                        value="">
-                                </div>
+            <label class="floating-label-activo-sm ">Ingrese su contraseña</label>
+            <div>
+                <input type="password" class="form-control" name="password" id="password"
+                    value="" style="padding-right: 40px;">
+                <span id="toggle-password" onclick="togglePassword()"
+                    style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; user-select: none;">
+                    <i class="feather icon-eye-off"></i>
+                </span>
+            </div>
+        </div>
                                 <button class="btn btn-info mb-4" id="btn-ingresar">Ingresar</button>
                                 {{--  <button id="registrar" class="btn btn-outline-info mb-4 toggle-btn">¡Quiero registrarme!</button>  --}}
                             </form>
@@ -186,6 +192,19 @@
     <script src="{{ asset('js/plugins/sweetalert.min.js') }}"></script>
     <script src="{{ asset('js/login/registro.js') }}?"></script>
     <script>
+        function togglePassword()
+{
+    var passwordInput = document.getElementById('password');
+    var toggleIcon = document.getElementById('toggle-password');
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        toggleIcon.innerHTML = '<i class="feather icon-eye"></i>';
+    } else {
+        passwordInput.type = 'password';
+        toggleIcon.innerHTML = '<i class="feather icon-eye-off"></i>';
+    }
+}
+
         $(".toggle-btn").on("click", function() {
             $(".toggle-block").toggle();
         });
