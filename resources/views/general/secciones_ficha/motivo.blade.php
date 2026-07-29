@@ -8,6 +8,10 @@
         <div id="motivo_c" class="collapse show" aria-labelledby="motivo" data-parent="#motivo">
             <div class="card-body-aten-a">
                 <div class="form-row">
+                    <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">
+                        <label class="floating-label-activo-sm" for="motivo">Motivo de consulta</label>
+                        <textarea class="form-control caja-texto form-control-sm"  rows="1"  onfocus="this.rows=4" onblur="this.rows=1;" name="motivo" id="motivo" placeholder="Escriba la información cómo la describe el Tutor"></textarea>
+                    </div>
                     <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-6 col-xxl-6">
                         <label class="floating-label-activo-sm" for="motivo">Dieta</label>
                          <textarea class="form-control caja-texto form-control-sm mb-9"  rows="1"  onfocus="this.rows=4" onblur="this.rows=1;" name="dieta" id="dieta"></textarea>
@@ -66,11 +70,7 @@
                     </div>
                     <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">
                         <label class="floating-label-activo-sm" for="motivo">Comportamiento del animal</label>
-                         <textarea class="form-control caja-texto form-control-sm"  rows="1"  onfocus="this.rows=4" onblur="this.rows=1;" name="comportamiento_animal" id="comportamiento_animal" placeholder="Escriba la información cómo la describe el Responsable"></textarea>
-                    </div>
-                    <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">
-                        <label class="floating-label-activo-sm" for="motivo">Motivo de consulta</label>
-                        <textarea class="form-control caja-texto form-control-sm"  rows="1"  onfocus="this.rows=4" onblur="this.rows=1;" name="motivo" id="motivo" placeholder="Escriba la información cómo la describe el Responsable"></textarea>
+                         <textarea class="form-control caja-texto form-control-sm"  rows="1"  onfocus="this.rows=4" onblur="this.rows=1;" name="comportamiento_animal" id="comportamiento_animal" placeholder="Escriba la información cómo la describe el Tutor"></textarea>
                     </div>
                 </div>
                 <br>

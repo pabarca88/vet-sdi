@@ -51,14 +51,14 @@
                                         @endif
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link text-reset" id="aten-previas-tab" data-toggle="tab" href="#aten-previas" role="tab" aria-controls="aten-previas" aria-selected="false">Historial de consultas</a>
+                                        <a class="nav-link text-reset" id="aten-previas-tab" data-toggle="tab" href="#aten-previas" role="tab" aria-controls="aten-previas" aria-selected="false">Historial Clínico</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link text-reset" id="band_exam-tab" data-toggle="tab" href="#band_exam" role="tab" aria-controls="band_exam" aria-selected="false">Exámenes</a>
                                     </li>
-                                    <li class="nav-item">
+                                    {{--<li class="nav-item">
                                         <a class="nav-link text-reset" id="hospitalizacion-tab" data-toggle="tab" href="#hospitalizacion" role="tab" aria-controls="hospitalizacion" aria-selected="false">Hospitalización</a>
-                                    </li>
+                                    </li>--}}
                                 </ul>
                             </div>
                         </div>
@@ -70,27 +70,24 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="tab-content" id="at-orl">
-                        <!--Atender paciente-->
+                        <!--ATENDER PACIENTE (ANIMAL)-->
                         <div class="tab-pane fade show active" id="atender" role="tabpanel" aria-labelledby="atender-tab">
                             @include('atencion_medica.secciones_especialidad.ficha_orl')
                         </div>
-                        <!--Licencia-->
-                        <div class="tab-pane fade show" id="licencia" role="tabpanel" aria-labelledby="licencia-tab">
-                            @include('general.secciones_ficha.licencia')
-                        </div>
-                        <!--Ficha Médica Única-->
+                     
+                        <!--FICHA VETERINARIA ÚNICA-->
                         <div class="tab-pane fade show" id="fmu" role="tabpanel" aria-labelledby="fmu-tab">
                             @include('general.secciones_ficha.fmu')
                         </div>
-                        <!--Atenciones previas-->
+                        <!--HISTORIAL VETERINARIO-->
                         <div class="tab-pane fade show" id="aten-previas" role="tabpanel" aria-labelledby="aten-previas-tab">
                             @include('general.secciones_ficha.atenciones_previas_form')
                         </div>
-                         <!--Exámenes-->
+                         <!--EXÁMENES-->
                         <div class="tab-pane fade show" id="band_exam" role="tabpanel" aria-labelledby="band_exam_tab">
                             @include('general.secciones_ficha.bandeja_examenes')
                         </div>
-                        <!--Hospitalización-->
+                        <!--HOSPITALIZACIÓN-->
 						<div class="tab-pane fade show" id="hospitalizacion" role="tabpanel" aria-labelledby="hospitalizacion-tab">
                             @include('general.hospitalizacion.hospitalizacion')
                         </div>

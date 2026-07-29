@@ -9,15 +9,15 @@
         <div id="diagnostico_c" class="collapse show" aria-labelledby="diagnostico" data-parent="#diagnostico">
             <div class="card-body-aten-a  shadow-none">
                 <div class="form-row">
-                    <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                    <div class="form-group col-12">
                         <label class="floating-label-activo-sm" for="descripcion_hipotesis">Diagnóstico</label>
                         <input type="text" class="form-control form-control-sm"  data-input_igual="lic_descripcion_hipotesis,hipotesis_certificado,eno_diagnositico_confirmado,diagnostico_cons,diag_endos_eda" name="descripcion_hipotesis" id="descripcion_hipotesis" onchange="cargarIgual('descripcion_hipotesis')" value="">
                     </div>
-                    <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                    {{--<div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6">
                         <label class="floating-label-activo-sm" for="descripcion_cie">Diagnóstico CIE-10</label>
                         <input type="text" class="form-control form-control-sm" data-input_igual="lic_descripcion_cie,descripcion_cie_esp,eno_diagnostico_cie" name="descripcion_cie" id="descripcion_cie" value="" onchange="cargarIgual('descripcion_cie')">
                         <input type="hidden" class="form-control form-control-sm" data-input_igual="id_lic_descripcion_cie,id_descripcion_cie_esp,eno_id_diagnostico_cie" name="id_descripcion_cie" id="id_descripcion_cie" value="" onchange="cargarIgual('id_descripcion_cie')">
-                    </div>
+                    </div>--}}
                     <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6">
                         <label class="floating-label-activo-sm" for="descripcion_hipotesis">Obs. Cínicas para recordar en consulta</label>
                         <textarea class="form-control caja-texto form-control-sm"  rows="1"  onfocus="this.rows=5" onblur="this.rows=1;" name="obs_clinicas" id="obs_clinicas"></textarea>

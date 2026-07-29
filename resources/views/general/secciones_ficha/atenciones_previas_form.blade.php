@@ -8,7 +8,7 @@
                     </div>
                     @endif
                     <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                        <h4 class="text-c-blue mt-3 f-20">Historial de atenciones</h4>
+                        <h4 class="text-c-blue mt-3 f-20">Historial clínico</h4>
                     </div>
                     <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                         <div class="card">

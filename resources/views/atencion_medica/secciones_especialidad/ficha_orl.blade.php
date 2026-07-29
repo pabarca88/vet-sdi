@@ -69,7 +69,7 @@
                                     <!--Diagnóstico-->
 
                                     <!--HOSPITALIZACION-->
-                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                    {{--<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                                         <div class="card-a">
                                             <div class="card-header-a" id="hospitalizar_paciente">
                                                 <button class="accor-closed btn pt-1 pb-0 pl-1 btn-block text-left collapsed card-act-open " type="button" data-toggle="collapse" data-target="#hospitalizar_paciente-c" aria-expanded="false" aria-controls="hospitalizar_paciente-c">
@@ -109,7 +109,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div>--}}
 
                                     <!--Diagnóstico-->
                                     @include('general.secciones_ficha.diagnostico')
