@@ -12,12 +12,13 @@ File: style.css
 
 @import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
   @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,300..800;1,300..800&display=swap');
 
 // <uniquifier>: Use a unique and descriptive class name
 // <weight>: Use a value from 200 to 1000
 
 .nunito-<uniquifier> {
-  font-family: "Nunito", sans-serif;
+  font-family: 'Inter Tight', sans-serif;
   font-optical-sizing: auto;
   font-weight: <weight>;
   font-style: normal;
@@ -232,7 +233,7 @@ File: style.css
 }
 
 html {
-    font-family: "Nunito",sans-serif;
+    font-family: 'Inter Tight', sans-serif;
     line-height: 1.15;
     -webkit-text-size-adjust: 100%;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
@@ -244,7 +245,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 
 body {
     margin: 0;
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Inter Tight', sans-serif;
     font-size: 1rem;
     font-weight: 300;
     line-height: 1.5;
@@ -267,13 +268,13 @@ hr {
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Inter Tight', sans-serif;
     margin-top: 0;
     margin-bottom: 0.5rem;
 }
 
 p {
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Inter Tight', sans-serif;
     margin-top: 0;
     margin-bottom: 0;
 }
@@ -348,7 +349,7 @@ sup {
 }
 
 a {
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Inter Tight', sans-serif;
     color: #1a49a3;
     text-decoration: none;
     background-color: transparent;
@@ -399,12 +400,12 @@ svg {
 }
 
 table {
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Inter Tight', sans-serif;
     border-collapse: collapse;
 }
 
 caption {
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Inter Tight', sans-serif;
     padding-top: 0.75rem;
     padding-bottom: 0.75rem;
     color: #868e96;
@@ -413,12 +414,12 @@ caption {
 }
 
 th {
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Inter Tight', sans-serif;
     text-align: inherit;
 }
 
 label {
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Inter Tight', sans-serif;
     display: inline-block;
     margin-bottom: 0.5rem;
     margin-left: 0.5rem;
@@ -428,7 +429,7 @@ label {
 }
 
 button {
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Inter Tight', sans-serif;
     border-radius: 0;
 }
 
@@ -442,7 +443,7 @@ button,
 select,
 optgroup,
 textarea {
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Inter Tight', sans-serif;
     margin: 0;
     font-family: inherit;
     font-size: inherit;
@@ -460,7 +461,7 @@ input {
 
 button,
 select {
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Inter Tight', sans-serif;
     text-transform: none;
 }
 
@@ -469,7 +470,7 @@ select {
 }
 
 select {
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Inter Tight', sans-serif;
     word-wrap: normal;
 }
 
@@ -497,19 +498,19 @@ button::-moz-focus-inner,
 
 input[type="radio"],
 input[type="checkbox"] {
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Inter Tight', sans-serif;
     box-sizing: border-box;
     padding: 0;
 }
 
 textarea {
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Inter Tight', sans-serif;
     overflow: auto;
     resize: vertical;
 }
 
 fieldset {
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Inter Tight', sans-serif;
     min-width: 0;
     padding: 0;
     margin: 0;
@@ -517,7 +518,7 @@ fieldset {
 }
 
 legend {
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Inter Tight', sans-serif;
     display: block;
     width: 100%;
     max-width: 100%;
@@ -530,7 +531,7 @@ legend {
 }
 
 progress {
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Inter Tight', sans-serif;
     vertical-align: baseline;
 }
 
@@ -572,7 +573,7 @@ template {
 
 h1, h2, h3, h4, h5, h6,
 .h1, .h2, .h3, .h4, .h5, .h6 {
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Inter Tight', sans-serif;
     margin-bottom: 0.5rem;
     font-weight: 500;
     line-height: 1.2;
@@ -640,7 +641,7 @@ hr {
 
 small,
 .small {
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Inter Tight', sans-serif;
     font-size: 80%;
     font-weight: 400;
 }
@@ -823,7 +824,7 @@ pre code {
 }
 
 .row {
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Inter Tight', sans-serif;
     display: flex;
     flex-wrap: wrap;
     margin-right: -15px;
@@ -1913,7 +1914,7 @@ pre code {
 }
 
 .table {
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Inter Tight', sans-serif;
     width: 100%;
     margin-bottom: 1rem;
     color: #373a3c;
@@ -2266,7 +2267,7 @@ pre code {
 }
 
 .form-control {
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Inter Tight', sans-serif;
     display: block;
     width: 100%;
     height: calc(1.5em + 1.25rem + 2px);
@@ -2430,7 +2431,7 @@ select.form-control:focus::-ms-value {
 .form-control-tit {
     margin-top: 8px;
     margin-bottom:6px;
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Inter Tight', sans-serif;
     padding-left: 0px;
     padding-right: 3px;
     font-size: 0.95rem;
@@ -2520,7 +2521,7 @@ textarea.form-control {
 }
 
 .form-check-inline {
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Inter Tight', sans-serif;
     display: inline-flex;
     align-items: center;
     padding-left: 0;
@@ -2543,7 +2544,7 @@ textarea.form-control {
 }
 
 .valid-tooltip {
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Inter Tight', sans-serif;
     position: absolute;
     top: 100%;
     z-index: 5;
@@ -2803,7 +2804,7 @@ textarea.form-control {
 }
 
 .btn {
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Inter Tight', sans-serif;
     display: inline-block;
     font-weight: 700;
     color: #373a3c;
@@ -4714,7 +4715,7 @@ input[type="button"].btn-block {
 }
 
 .nav {
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Inter Tight', sans-serif;
     font-size: 0.8rem;
     display: flex;
     flex-wrap: wrap;
@@ -4724,7 +4725,7 @@ input[type="button"].btn-block {
 }
 
 .nav-link {
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Inter Tight', sans-serif;
     font-size: 0.90rem!important;
     display: block;
     padding: 0.5rem 0.2rem;
@@ -5836,7 +5837,7 @@ a.badge-dark:focus, a.badge-dark.focus {
 }
 
 .alert {
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Inter Tight', sans-serif;
     position: relative;
     padding: 0.75rem 1.25rem;
     margin-bottom: 1rem;
@@ -20773,7 +20774,7 @@ a.badge-light-dark.active, a.badge-light-dark:active, a.badge-light-dark:focus, 
       Custom css start
 ==========================  **/
 body {
-    font-family: "Nunito Sans", sans-serif;
+    font-family: 'Inter Tight', sans-serif;
     font-size: 13px;
     color: #596679;
     font-weight: 400;
@@ -23363,7 +23364,7 @@ pre[class*=language-]:before {
     padding: 15px;
     position: relative;
     background: #1cbebe;
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Inter Tight', sans-serif;
 }
 
 .pcoded-header .dropdown .profile-notification .pro-head img {
@@ -23576,7 +23577,7 @@ pre[class*=language-]:before {
     padding: 25px 25px 10px;
     height: 116px;
     text-align: center;
-     font-family: Nunito, sans-serif;
+     font-family: 'Inter Tight', sans-serif;
     font-weight:700;
 }
 }
@@ -27400,7 +27401,7 @@ body.box-layout .pcoded-navbar.theme-horizontal ~ .pcoded-header {
 }
 
 .form-group .form-control {
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Inter Tight', sans-serif;
     padding-left: 10px;
     padding-right: 10px;
     font-size: 0.9rem;
@@ -30020,7 +30021,7 @@ div.dtk-focus-alt table.dataTable tbody th.focus {
     line-height: normal;
     z-index: 0;
     font-size: 12px;
-    font-family: Nunito, sans-serif ;
+    font-family: 'Inter Tight', sans-serif;
 }
 
 .highcharts-root {
@@ -33540,9 +33541,9 @@ padding: 0;
 
 
 
-/*--- Validación de Jquery --*/
+/*--- ValidaciÃƒÂ³n de Jquery --*/
 .es-invalido{
-font-family: 'Nunito', sans-serif;
+font-family: 'Inter Tight', sans-serif;
   border-color: #ff5252;
   padding-right: calc(1.5em + 1-25rem);
   background-repeat: no-repeat;
@@ -33888,7 +33889,7 @@ font-family: 'Nunito', sans-serif;
 /**BOTONES XS**/
 
 .btn-xs, .btn-group-xs > .btn {
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Inter Tight', sans-serif;
     padding: 0.3rem 0.5rem 0.2rem 0.5rem;
     font-size: 0.9rem;
     line-height: 1.5;
@@ -33899,7 +33900,7 @@ font-family: 'Nunito', sans-serif;
 /**BOTONES XXS**/
 
 .btn-xxs, .btn-group-xxs > .btn {
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Inter Tight', sans-serif;
     padding: 0.19em 0.6em;
     font-size: 0.75rem;
     line-height: 1.5;
@@ -33912,7 +33913,7 @@ font-family: 'Nunito', sans-serif;
 /**BOTONES XXXS**/
 
 .btn-xxxs, .btn-group-xxxs > .btn {
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Inter Tight', sans-serif;
     padding: 0.1em 0.6em;
     font-size: 0.66rem;
     line-height: 1.5;
@@ -34665,7 +34666,7 @@ box-shadow: 0 2px 4px -2px rgba(54, 80, 138, 0.4) !important;
 .accor-open-fmu {
 
   cursor: pointer;
-  font-family: 'Nunito', sans-serif;
+  font-family: 'Inter Tight', sans-serif;
 }
 
 
@@ -34673,7 +34674,7 @@ box-shadow: 0 2px 4px -2px rgba(54, 80, 138, 0.4) !important;
 
 .accor-closed-fmu {
   cursor: pointer;
-  font-family: 'Nunito', sans-serif;
+  font-family: 'Inter Tight', sans-serif;
 
 }
 
