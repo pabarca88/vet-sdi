@@ -2,10 +2,65 @@
 <style>
     .swal-overlay { z-index: 20000 !important; }
     .swal-modal { z-index: 20001 !important; }
+
+    .dm-recipe-modal .nav-link-wizard {
+        border-radius: 999px !important;
+        font-weight: 700 !important;
+        font-size: 0.8rem !important;
+        border: 1px solid #44ad93 !important;
+        color: #1e7d6d !important;
+        margin-right: 8px;
+        padding: 6px 16px !important;
+    }
+
+    .dm-recipe-modal .nav-link-wizard.active {
+        background: linear-gradient(135deg, #44ad93 0%, #1e7d6d 100%) !important;
+        color: #fff !important;
+        border-color: transparent !important;
+    }
+
+    .dm-recipe-modal .btn-success.btn-sm.float-right {
+        border-radius: 999px !important;
+        font-weight: 700 !important;
+        border: none !important;
+    }
+
+    .dm-recipe-modal table.table-bordered thead td,
+    .dm-recipe-modal table.table-bordered thead th {
+        background: #f7f7f7;
+        color: #6c757d;
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: .03em;
+        font-weight: 700;
+        border-color: #eef0f2;
+    }
+
+    .dm-recipe-modal table.table-bordered tbody td {
+        border-color: #eef0f2;
+        font-size: 0.85rem;
+        vertical-align: middle;
+    }
+
+    .dm-recipe-modal .btn_remove {
+        border-radius: 999px !important;
+        background: #fdeeee !important;
+        color: #c0392b !important;
+        border: none !important;
+    }
+
+    .dm-recipe-modal .custom-control-label.text-primary u {
+        text-decoration: none;
+    }
+
+    .dm-recipe-modal .custom-control-label.text-primary {
+        color: #1e7d6d !important;
+        font-weight: 700 !important;
+    }
 </style>
 <div id="indicar_recetario" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="indicar_recetario"aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content">
+        <div class="modal-content dm-recipe-modal">
             <div class="modal-header bg-info">
                 <h5 class="modal-title text-white mt-1">Recetario SDI</h5>
                 <input type="hidden" id="id_profesional" value="{{ @Auth::user()->id }}">

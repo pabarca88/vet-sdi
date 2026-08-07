@@ -2,10 +2,58 @@
     $modalIndicarExamenesId = $modalIndicarExamenesId ?? 'indicar_examenes';
 @endphp
 
+<style>
+    .dm-exam-modal .dm-exam-btn-add {
+        border-radius: 999px !important;
+        font-weight: 700 !important;
+        padding: 8px 18px !important;
+        border: none !important;
+    }
+
+    .dm-exam-modal .tabla_examenes_ficha {
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .dm-exam-modal .tabla_examenes_ficha thead th {
+        background: #f7f7f7;
+        color: #6c757d;
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: .03em;
+        font-weight: 700;
+        border-color: #eef0f2;
+    }
+
+    .dm-exam-modal .tabla_examenes_ficha td {
+        border-color: #eef0f2;
+        font-size: 0.85rem;
+        vertical-align: middle;
+    }
+
+    .dm-exam-modal .btn_remove {
+        border-radius: 50% !important;
+        background: #fdeeee !important;
+        color: #c0392b !important;
+        border: none !important;
+    }
+
+    .dm-exam-modal .examenes_sin_registros td {
+        padding: 26px 12px !important;
+        color: #6c757d !important;
+        font-size: 0.85rem !important;
+        font-weight: 500 !important;
+    }
+
+    .dm-exam-modal .switch.switch-success .cr {
+        border-radius: 999px !important;
+    }
+</style>
+
 <div id="{{ $modalIndicarExamenesId }}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal_indicar_examen"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg"  data-backdrop="static" tabindex="-1" aria-labelledby="staticBackdropLabel" role="document">
-        <div class="modal-content">
+        <div class="modal-content dm-exam-modal">
             <div class="modal-header bg-info">
                 <h5 class="modal-title text-white mt-1" id="modal_indicar_examen">Indicar Examen</h5>
                 <button type="button" class="close" aria-label="Close"  onclick="cerrarModalExamenesFicha();">
@@ -17,7 +65,7 @@
                 <div class="form-row">
                     <div class="col-sm-12 mt-2">
                         <div class="form-group fill">
-                            <label class="floating-label">Tipo Examen</label>
+                            <label class="floating-label-activo-sm">Tipo Examen</label>
 
                             <select class="form-control form-control-sm" name="tipo_examen_d" id="tipo_examen_d">
                                 <option value="0">Seleccione</option>
@@ -48,7 +96,7 @@
                     </div>
                     <div class="col-sm-6 mt-2">
                         <div class="form-group fill">
-                            <label class="floating-label">Lado</label>
+                            <label class="floating-label-activo-sm">Lado</label>
                             <select class="form-control form-control-sm" id="lado_d" name="lado_d">
                                 <option value="0" selected>Seleccione</option>
                                 <option value="Derecho">Derecho</option>
@@ -60,7 +108,7 @@
 
                     <div class="col-sm-6 mt-2">
                         <div class="form-group fill">
-                            <label class="floating-label">Prioridad</label>
+                            <label class="floating-label-activo-sm">Prioridad</label>
                             <select class="form-control form-control-sm" id="prioridad_d" name="prioridad_d">
                                 <option value="0">Seleccione</option>
                                 <option value="1">Baja</option>
@@ -83,7 +131,7 @@
                         </div>
                     </div>
                     <div class="col-sm-12">
-                        <button type="button" onclick="indicar_examen_cirugia_d();" id="agregar_examen_tabla" class="btn btn-success btn-sm float-right">
+                        <button type="button" onclick="indicar_examen_cirugia_d();" id="agregar_examen_tabla" class="btn btn-success btn-sm float-right dm-exam-btn-add">
                             <i lass="fa fa-plus"></i> Agregar Examen
                         </button>
                     </div>

@@ -8,141 +8,49 @@
 
         <!--Header-->
 
-        <div class="page-header">
-
-            <div class="page-block">
-
-                <div class="row align-items-center">
-
-                    <div class="col-md-12">
-
-                        <div class="page-header-title pt-2">
-
-                            <h4 class="font-weight-bold text-white mb-0">Escritorio de <span class="text-capitalize">{{ $mascota->nombres ?? $mascota->nombre }}</span></h4>
-                            <p class="text-white">Toda su información veterinaria en un solo lugar</p>
-                              <a class="btn btn-outline-light btn-xxs mt-3" href="{{ ROUTE('paciente.home') }}"><i class="feather icon-home"></i> Volver al Inicio </a>
-
-                        </div>
-
-
-                    </div>
-
-                </div>
-
+        <div class="pd-hero">
+            <div>
+                <h4 class="pd-hero-title text-capitalize mb-0">Escritorio de {{ $mascota->nombres ?? $mascota->nombre }}</h4>
+                <p class="pd-hero-subtitle mb-0">Toda su información veterinaria en un solo lugar</p>
             </div>
-
+            <a class="pd-hero-btn" href="{{ ROUTE('paciente.home') }}"><i class="feather icon-home"></i> Volver al Inicio</a>
         </div>
 
         <!--Cierre: Header-->
 
         <!--Botones superiores-->
 
-        <div class="row m-b-30">
+        <div class="pd-actions">
 
-            <div class="col-md-12">
+            <a class="pd-action" href="{{ ROUTE('paciente.dependiente.agendar_hora', ['id_dependiente_activo'=> $mascota->id]) }}">
+                <span class="pd-action-icon"><img src="{{ asset('images/iconos/agenda.svg') }}" alt=""></span>
+                <span class="pd-action-label">Reservar Cita Veterinaria</span>
+            </a>
 
-                <div class="card-deck">
+            <a class="pd-action" href="{{ ROUTE('paciente.dependiente.mis_profesionales', ['id_dependiente_activo'=> $mascota->id]) }}">
+                <span class="pd-action-icon"><img src="{{ asset('images/iconos/profesionales.svg') }}" alt=""></span>
+                <span class="pd-action-label">Mis Veterinarios</span>
+            </a>
 
-                    <div class="card subir">
+            <a class="pd-action" href="{{ ROUTE('registro_vacunas', ['id_dependiente_activo'=> $mascota->id]) }}">
+                <span class="pd-action-icon"><img src="{{ asset('images/iconos/vacunas.svg') }}" alt=""></span>
+                <span class="pd-action-label">Mis vacunas</span>
+            </a>
 
-                        <a href="{{ ROUTE('paciente.dependiente.agendar_hora', ['id_dependiente_activo'=> $mascota->id]) }}">
+            <a class="pd-action" href="{{ ROUTE('registro_desparasitacion', ['id_dependiente_activo'=> $mascota->id]) }}">
+                <span class="pd-action-icon"><img src="{{ asset('images/iconos/desparasitacion.svg') }}" alt=""></span>
+                <span class="pd-action-label">Registro de desparasitación</span>
+            </a>
 
-                            <div class="card-body text-center" style="cursor:pointer">
+            <a class="pd-action" href="{{ ROUTE('paciente.dependiente.mi_ficha', ['id_dependiente_activo'=> $mascota->id]) }}">
+                <span class="pd-action-icon"><img src="{{ asset('images/iconos/fvu.svg') }}" alt=""></span>
+                <span class="pd-action-label">Mi Ficha Veterinaria Única</span>
+            </a>
 
-                                <img class="wid-60 text-center mt-1" src="{{ asset('images/iconos/agenda.svg') }}">
-
-                                <h5 class="mt-2"> Reservar Cita Veterinaria</h5>
-
-                            </div>
-
-                        </a>
-
-                    </div>
-
-                    <div class="card subir">
-
-                        <a href="{{ ROUTE('paciente.dependiente.mis_profesionales', ['id_dependiente_activo'=> $mascota->id]) }}">
-
-                            <div class="card-body text-center" style="cursor:pointer">
-
-                                <img class="wid-60 text-center" src="{{ asset('images/iconos/profesionales.svg') }}">
-
-                                <h5 class="mt-2"> Mis Veterinarios </h5>
-
-                            </div>
-
-                        </a>
-
-                    </div>
-                     <div class="card subir">
-
-                        <a href="{{ ROUTE('registro_vacunas', ['id_dependiente_activo'=> $mascota->id]) }}">
-
-                            <div class="card-body text-center" style="cursor:pointer">
-
-                                <img class="wid-60 text-center" src="{{ asset('images/iconos/vacunas.svg') }}">
-
-                                <h5 class="mt-2"> Mis vacunas</h5>
-
-                            </div>
-
-                        </a>
-
-                    </div>
-                  
-
-                    <div class="card subir">
-
-                        <a href="{{ ROUTE('registro_desparasitacion', ['id_dependiente_activo'=> $mascota->id]) }}">
-
-                            <div class="card-body text-center" style="cursor:pointer">
-
-                                <img class="wid-60 text-center" src="{{ asset('images/iconos/desparasitacion.svg') }}">
-
-                                <h5 class="mt-2"> Registro de desparasitación</h5>
-
-                            </div>
-
-                        </a>
-
-                    </div>
-
-
-                    <div class="card subir">
-
-                        <a href="{{ ROUTE('paciente.dependiente.mi_ficha', ['id_dependiente_activo'=> $mascota->id]) }}">
-
-                            <div class="card-body text-center" style="cursor:pointer">
-
-                                <img class="wid-60 text-center" src="{{ asset('images/iconos/fvu.svg') }}">
-
-                                <h5 class="mt-1"> Mi Ficha Veterinaria Única</h5>
-
-                            </div>
-
-                        </a>
-
-                    </div>
-
-                    <div class="card subir">
-
-                        <a href="{{ ROUTE('paciente.dependiente.receta', ['id_dependiente_activo'=> $mascota->id]) }}">
-
-                            <div class="card-body text-center" style="cursor:pointer">
-
-                                <img class="wid-60 text-center" src="{{ asset('images/iconos/docs.svg') }}">
-
-                                <h5 class="mt-2">Documentos </h5>
-
-                            </div>
-
-                        </a>
-
-                    </div>
-
-                </div>
-
-            </div>
+            <a class="pd-action" href="{{ ROUTE('paciente.dependiente.receta', ['id_dependiente_activo'=> $mascota->id]) }}">
+                <span class="pd-action-icon"><img src="{{ asset('images/iconos/docs.svg') }}" alt=""></span>
+                <span class="pd-action-label">Documentos</span>
+            </a>
 
         </div>
 
@@ -156,11 +64,12 @@
 
             <div class="col-md-8">
 
-                <div class="card h-100 pb-0">
+                <div class="card h-100 pb-0 pd-card">
 
-                    <div class="card-header text-center bg-c-info">
+                    <div class="card-header pd-card-header">
 
-                        <h5 class="text-white d-inline text-center" style="font-size: 1.2rem;">Mis horas agendadas</h5>
+                        <span class="pd-card-header-icon"><i class="feather icon-calendar"></i></span>
+                        <h5 class="mb-0">Mis citas agendadas</h5>
 
                     </div>
 
@@ -259,7 +168,14 @@
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="5" class="text-center align-middle">No existen registros</td>
+                                            <td colspan="5" class="text-center align-middle">
+                                                <div class="pd-empty">
+                                                    <span class="pd-empty-icon"><i class="feather icon-calendar"></i></span>
+                                                    <p class="pd-empty-title">Aún no tienes horas agendadas</p>
+                                                    <p class="pd-empty-text">Reserva una atención para {{ $mascota->nombres ?? $mascota->nombre }}.</p>
+                                                    <a class="pd-empty-cta" href="{{ ROUTE('paciente.dependiente.agendar_hora', ['id_dependiente_activo'=> $mascota->id]) }}">Reservar Cita Veterinaria</a>
+                                                </div>
+                                            </td>
                                         </tr>
                                     @endforelse
 
@@ -277,31 +193,17 @@
 
             <div class="col-md-4">
 
-                <div class="card subir text-center h-100">
+                <div class="card h-100 pd-promo">
 
-                    <img class="img-fluid card-img-top" src="{{ asset('images/iconos/profesional_no_inscrito.svg') }}"
+                    <img class="pd-promo-img" src="{{ asset('images/iconos/profesional_no_inscrito.svg') }}" alt="">
 
-                        alt="Flujo de caja">
+                    <h5 class="pd-promo-title">Atención por veterinario no registrado</h5>
 
-                    <a href="{{ ROUTE('paciente.acceso_pni') }}" class="btn  btn-arrastre"
+                    <p class="pd-promo-text">
+                        Los datos de su atención quedarán registrados en su Ficha Veterinaria Única.
+                    </p>
 
-                        type="button">
-
-                        <div class="card-body">
-
-                            <h5 style="font-size: 1.1rem;" class="card-title pt-2">Atención por profesional no registrado</h5>
-
-                            <p class="card-text">
-
-                                Haga click acá para ser atendido, los datos de su atención quedarán
-
-                                registrados en su Ficha Médica Única
-
-                            </p>
-
-                        </div>
-
-                    </a>
+                    <a href="{{ ROUTE('paciente.acceso_pni') }}" class="pd-promo-cta">Registrar atención</a>
 
                 </div>
 
@@ -377,6 +279,254 @@
 
 @section('page-styles')
     <style>
+        .pcoded-content {
+            margin-top: 4px;
+        }
+
+        .card .card-header h5 {
+            color: #212529;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .card-header {
+            padding: 0.5rem 1.2rem 0.6rem;
+            margin-bottom: 0;
+            font-size: 1.2rem;
+            background-color: #f7f7f7;
+            color: #212529;
+            border-bottom: 0px solid rgba(0, 0, 0, 0.125);
+        }
+
+        .pd-hero,
+        .pd-card-header h5,
+        .pd-empty-title,
+        .pd-promo-title {
+            font-weight: 700;
+        }
+
+        .pd-hero-title {
+            font-weight: 800;
+        }
+
+        .pd-hero {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+            background: linear-gradient(135deg, #44ad93 0%, #1e7d6d 100%);
+            border-radius: 18px;
+            padding: 28px 30px;
+            margin: 20px 0 24px;
+        }
+
+        .pd-hero-title {
+            font-size: 1.4rem;
+            color: #fff;
+        }
+
+        .pd-hero-subtitle {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.85);
+            margin-top: 4px;
+        }
+
+        .pd-hero-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #fff;
+            color: #0e7c7c;
+            font-size: 0.85rem;
+            font-weight: 700;
+            padding: 10px 18px;
+            border-radius: 999px;
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+
+        .pd-hero-btn:hover {
+            background: #f2fdfc;
+            color: #0e7c7c;
+            text-decoration: none;
+        }
+
+        .pd-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 14px;
+            margin-bottom: 24px;
+        }
+
+        .pd-action {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-align: center;
+            background: #fff;
+            border: 1px solid #eef0f2;
+            border-radius: 16px;
+            padding: 20px 12px;
+            text-decoration: none;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            transition: border-color .15s ease, transform .15s ease, box-shadow .15s ease;
+        }
+
+        .pd-action:hover {
+            border-color: #8a7fe0;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 18px rgba(138, 127, 224, .15);
+            text-decoration: none;
+        }
+
+        .pd-action-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pd-action-icon img {
+            width: 44px;
+            height: 44px;
+        }
+
+        .pd-action-label {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #343a40;
+        }
+
+        .pd-card {
+            border-radius: 16px;
+            border: 1px solid #eef0f2;
+            overflow: hidden;
+        }
+
+        .pd-card-header {
+            background: #fff;
+            border-bottom: 1px solid #eef0f2;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pd-card-header-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #f1eefc;
+            color: #5b4fc4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+        }
+
+        .pd-card-header h5 {
+            color: #212529;
+            font-size: 1.05rem;
+        }
+
+        .pd-empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            padding: 26px 12px;
+        }
+
+        .pd-empty-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: #f1eefc;
+            color: #5b4fc4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            margin-bottom: 6px;
+        }
+
+        .pd-empty-title {
+            color: #343a40;
+            margin: 0;
+        }
+
+        .pd-empty-text {
+            color: #6c757d;
+            font-size: 0.85rem;
+            margin: 0 0 10px;
+        }
+
+        .pd-empty-cta {
+            display: inline-block;
+            background: linear-gradient(135deg, #44ad93 0%, #1e7d6d 100%);
+            color: #fff;
+            font-size: 0.85rem;
+            font-weight: 700;
+            padding: 10px 20px;
+            border-radius: 999px;
+            text-decoration: none;
+        }
+
+        .pd-empty-cta:hover {
+            opacity: .9;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .pd-promo {
+            border-radius: 16px;
+            border: none;
+            background: linear-gradient(135deg, #44ad93 0%, #1e7d6d 100%);
+            padding: 24px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .pd-promo-img {
+            width: 250px;
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 12px;
+        }
+
+        .pd-promo-title {
+            font-size: 1.2rem;
+            color: #fff;
+            margin-bottom: 6px;
+        }
+
+        .pd-promo-text {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 16px;
+        }
+
+        .pd-promo-cta {
+            display: inline-block;
+            background: #fff;
+            color: #0e7c7c;
+            font-size: 0.85rem;
+            font-weight: 700;
+            padding: 10px 20px;
+            border-radius: 999px;
+            text-decoration: none;
+        }
+
+        .pd-promo-cta:hover {
+            background: #f2fdfc;
+            color: #0e7c7c;
+            text-decoration: none;
+        }
+
         .estado-hora-chip {
             display: inline-block;
             padding: 6px 10px;
@@ -402,7 +552,7 @@
         }
 
         .estado-hora-chip.en-proceso {
-            background-color: #7d4bc4;
+            background-color: #8a7fe0;
         }
 
         .estado-hora-chip.realizada {

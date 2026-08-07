@@ -93,10 +93,36 @@
 
 
 
+<style>
+    .dm-auth-modal .btn-xs {
+        border-radius: 999px !important;
+        font-weight: 700 !important;
+        padding: 8px 18px !important;
+        font-size: 0.8rem !important;
+    }
+
+    .dm-auth-modal .btn-xs.btn-success {
+        background: linear-gradient(135deg, #44ad93 0%, #1e7d6d 100%) !important;
+        border: none !important;
+    }
+
+    .dm-auth-modal .btn-xs.btn-danger {
+        background: #fdeeee !important;
+        color: #c0392b !important;
+        border: none !important;
+    }
+
+    .dm-auth-modal .modal-body h3 {
+        font-size: 1rem;
+        font-weight: 700;
+        color: #212529;
+    }
+</style>
+
 <div id="modal_autorizacion" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Recepcion de bonos" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
+        <div class="modal-content dm-auth-modal">
+            <div class="modal-header bg-info">
                 <h5 class="modal-title" id="modal_autorizacionLabel">Autorización</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="cerrar_autorizacion();"><span aria-hidden="true">&times;</span></button>
             </div>
@@ -128,7 +154,7 @@
                 </div>
 
             </div>
-            <div class="modal-body">
+            <div class="modal-footer">
                 <button class="btn btn-sm btn-danger" onclick="cerrar_autorizacion();">Cerrar</button>
             </div>
         </div>
@@ -137,8 +163,8 @@
 
 <div id="modal_autorizacion_fmu" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Recepcion de bonos" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
+        <div class="modal-content dm-auth-modal">
+            <div class="modal-header bg-info">
                 <h5 class="modal-title" id="modal_autorizacion_fmuLabel">Autorización FMU</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="cerrar_autorizacion_fmu();"><span aria-hidden="true">&times;</span></button>
             </div>
@@ -170,7 +196,7 @@
                 </div>
 
             </div>
-            <div class="modal-body">
+            <div class="modal-footer">
                 <button class="btn btn-sm btn-danger" onclick="cerrar_autorizacion_fmu();">Cerrar</button>
             </div>
         </div>

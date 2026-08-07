@@ -12,13 +12,13 @@ File: style.css
 
 @import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
   @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap');
-  @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,300..800;1,300..800&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,300..800;1,300..800&display=swap');
 
 // <uniquifier>: Use a unique and descriptive class name
 // <weight>: Use a value from 200 to 1000
 
 .nunito-<uniquifier> {
-  font-family: 'Inter Tight', sans-serif;
+  font-family: 'Nunito Sans', sans-serif;
   font-optical-sizing: auto;
   font-weight: <weight>;
   font-style: normal;
@@ -233,7 +233,7 @@ File: style.css
 }
 
 html {
-    font-family: 'Inter Tight', sans-serif;
+    font-family: 'Nunito Sans', sans-serif;
     line-height: 1.15;
     -webkit-text-size-adjust: 100%;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
@@ -245,7 +245,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 
 body {
     margin: 0;
-    font-family: 'Inter Tight', sans-serif;
+    font-family: 'Nunito Sans', sans-serif;
     font-size: 1rem;
     font-weight: 300;
     line-height: 1.5;
@@ -268,13 +268,13 @@ hr {
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: 'Inter Tight', sans-serif;
+    font-family: 'Nunito Sans', sans-serif;
     margin-top: 0;
     margin-bottom: 0.5rem;
 }
 
 p {
-    font-family: 'Inter Tight', sans-serif;
+    font-family: 'Nunito Sans', sans-serif;
     margin-top: 0;
     margin-bottom: 0;
 }
@@ -349,7 +349,7 @@ sup {
 }
 
 a {
-    font-family: 'Inter Tight', sans-serif;
+    font-family: 'Nunito Sans', sans-serif;
     color: #1a49a3;
     text-decoration: none;
     background-color: transparent;
@@ -400,12 +400,12 @@ svg {
 }
 
 table {
-    font-family: 'Inter Tight', sans-serif;
+    font-family: 'Nunito Sans', sans-serif;
     border-collapse: collapse;
 }
 
 caption {
-    font-family: 'Inter Tight', sans-serif;
+    font-family: 'Nunito Sans', sans-serif;
     padding-top: 0.75rem;
     padding-bottom: 0.75rem;
     color: #868e96;
@@ -414,22 +414,23 @@ caption {
 }
 
 th {
-    font-family: 'Inter Tight', sans-serif;
+    font-family: 'Nunito Sans', sans-serif;
     text-align: inherit;
 }
 
 label {
-    font-family: 'Inter Tight', sans-serif;
+    font-family: 'Nunito Sans', sans-serif;
     display: inline-block;
     margin-bottom: 0.5rem;
     margin-left: 0.5rem;
     margin-right: 0.5rem;
     font-size: 0.86rem;
-    color: #485465;
+    color: #212529;
+    font-weight: 700;
 }
 
 button {
-    font-family: 'Inter Tight', sans-serif;
+    font-family: 'Nunito Sans', sans-serif;
     border-radius: 0;
 }
 
@@ -443,7 +444,7 @@ button,
 select,
 optgroup,
 textarea {
-    font-family: 'Inter Tight', sans-serif;
+    font-family: 'Nunito Sans', sans-serif;
     margin: 0;
     font-family: inherit;
     font-size: inherit;
@@ -461,7 +462,7 @@ input {
 
 button,
 select {
-    font-family: 'Inter Tight', sans-serif;
+    font-family: 'Nunito Sans', sans-serif;
     text-transform: none;
 }
 
@@ -470,7 +471,7 @@ select {
 }
 
 select {
-    font-family: 'Inter Tight', sans-serif;
+    font-family: 'Nunito Sans', sans-serif;
     word-wrap: normal;
 }
 
@@ -498,19 +499,19 @@ button::-moz-focus-inner,
 
 input[type="radio"],
 input[type="checkbox"] {
-    font-family: 'Inter Tight', sans-serif;
+    font-family: 'Nunito Sans', sans-serif;
     box-sizing: border-box;
     padding: 0;
 }
 
 textarea {
-    font-family: 'Inter Tight', sans-serif;
+    font-family: 'Nunito Sans', sans-serif;
     overflow: auto;
     resize: vertical;
 }
 
 fieldset {
-    font-family: 'Inter Tight', sans-serif;
+    font-family: 'Nunito Sans', sans-serif;
     min-width: 0;
     padding: 0;
     margin: 0;
@@ -518,7 +519,7 @@ fieldset {
 }
 
 legend {
-    font-family: 'Inter Tight', sans-serif;
+    font-family: 'Nunito Sans', sans-serif;
     display: block;
     width: 100%;
     max-width: 100%;
@@ -531,7 +532,7 @@ legend {
 }
 
 progress {
-    font-family: 'Inter Tight', sans-serif;
+    font-family: 'Nunito Sans', sans-serif;
     vertical-align: baseline;
 }
 
@@ -573,7 +574,7 @@ template {
 
 h1, h2, h3, h4, h5, h6,
 .h1, .h2, .h3, .h4, .h5, .h6 {
-    font-family: 'Inter Tight', sans-serif;
+    font-family: 'Nunito Sans', sans-serif;
     margin-bottom: 0.5rem;
     font-weight: 500;
     line-height: 1.2;
@@ -641,7 +642,7 @@ hr {
 
 small,
 .small {
-    font-family: 'Inter Tight', sans-serif;
+    font-family: 'Nunito Sans', sans-serif;
     font-size: 80%;
     font-weight: 400;
 }
@@ -824,7 +825,7 @@ pre code {
 }
 
 .row {
-    font-family: 'Inter Tight', sans-serif;
+    font-family: 'Nunito Sans', sans-serif;
     display: flex;
     flex-wrap: wrap;
     margin-right: -15px;
@@ -1914,7 +1915,7 @@ pre code {
 }
 
 .table {
-    font-family: 'Inter Tight', sans-serif;
+    font-family: 'Nunito Sans', sans-serif;
     width: 100%;
     margin-bottom: 1rem;
     color: #373a3c;
@@ -2267,7 +2268,7 @@ pre code {
 }
 
 .form-control {
-    font-family: 'Inter Tight', sans-serif;
+    font-family: 'Nunito Sans', sans-serif;
     display: block;
     width: 100%;
     height: calc(1.5em + 1.25rem + 2px);
@@ -2431,7 +2432,7 @@ select.form-control:focus::-ms-value {
 .form-control-tit {
     margin-top: 8px;
     margin-bottom:6px;
-    font-family: 'Inter Tight', sans-serif;
+    font-family: 'Nunito Sans', sans-serif;
     padding-left: 0px;
     padding-right: 3px;
     font-size: 0.95rem;
@@ -2521,7 +2522,7 @@ textarea.form-control {
 }
 
 .form-check-inline {
-    font-family: 'Inter Tight', sans-serif;
+    font-family: 'Nunito Sans', sans-serif;
     display: inline-flex;
     align-items: center;
     padding-left: 0;
@@ -2544,7 +2545,7 @@ textarea.form-control {
 }
 
 .valid-tooltip {
-    font-family: 'Inter Tight', sans-serif;
+    font-family: 'Nunito Sans', sans-serif;
     position: absolute;
     top: 100%;
     z-index: 5;
@@ -2804,7 +2805,7 @@ textarea.form-control {
 }
 
 .btn {
-    font-family: 'Inter Tight', sans-serif;
+    font-family: 'Nunito Sans', sans-serif;
     display: inline-block;
     font-weight: 700;
     color: #373a3c;
@@ -4715,7 +4716,7 @@ input[type="button"].btn-block {
 }
 
 .nav {
-    font-family: 'Inter Tight', sans-serif;
+    font-family: 'Nunito Sans', sans-serif;
     font-size: 0.8rem;
     display: flex;
     flex-wrap: wrap;
@@ -4725,7 +4726,7 @@ input[type="button"].btn-block {
 }
 
 .nav-link {
-    font-family: 'Inter Tight', sans-serif;
+    font-family: 'Nunito Sans', sans-serif;
     font-size: 0.90rem!important;
     display: block;
     padding: 0.5rem 0.2rem;
@@ -5291,11 +5292,11 @@ input[type="button"].btn-block {
 
 .card-header {
     font-family: 'Outfit',sans-serif; font-weight:700;
-    padding: 0.4rem  1rem 0.3rem;
+    padding: 0.5rem  1.2rem 0.6rem;
     margin-bottom: 0;
     font-size: 1.2rem;
     background-color: #f7f7f7;
-    color: #1a49a3;
+    color: #212529;
     border-bottom: 0px solid rgba(0, 0, 0, 0.125);
 }
 
@@ -5837,7 +5838,7 @@ a.badge-dark:focus, a.badge-dark.focus {
 }
 
 .alert {
-    font-family: 'Inter Tight', sans-serif;
+    font-family: 'Nunito Sans', sans-serif;
     position: relative;
     padding: 0.75rem 1.25rem;
     margin-bottom: 1rem;
@@ -20259,9 +20260,9 @@ a{
 
 .card .card-header h5 {
     margin-bottom: 0;
-    color: #37474f;
-    font-size: 0.9375rem;
-    font-weight: 800;
+    color: #212529;
+    font-size: 1.2rem;
+    font-weight: 700;
     display: inline-block;
     margin-right: 10px;
     line-height: 1.1;
@@ -20774,7 +20775,7 @@ a.badge-light-dark.active, a.badge-light-dark:active, a.badge-light-dark:focus, 
       Custom css start
 ==========================  **/
 body {
-    font-family: 'Inter Tight', sans-serif;
+    font-family: 'Nunito Sans', sans-serif;
     font-size: 13px;
     color: #596679;
     font-weight: 400;
@@ -23364,7 +23365,7 @@ pre[class*=language-]:before {
     padding: 15px;
     position: relative;
     background: #1cbebe;
-    font-family: 'Inter Tight', sans-serif;
+    font-family: 'Nunito Sans', sans-serif;
 }
 
 .pcoded-header .dropdown .profile-notification .pro-head img {
@@ -23577,7 +23578,7 @@ pre[class*=language-]:before {
     padding: 25px 25px 10px;
     height: 116px;
     text-align: center;
-     font-family: 'Inter Tight', sans-serif;
+     font-family: 'Nunito Sans', sans-serif;
     font-weight:700;
 }
 }
@@ -27401,7 +27402,7 @@ body.box-layout .pcoded-navbar.theme-horizontal ~ .pcoded-header {
 }
 
 .form-group .form-control {
-    font-family: 'Inter Tight', sans-serif;
+    font-family: 'Nunito Sans', sans-serif;
     padding-left: 10px;
     padding-right: 10px;
     font-size: 0.9rem;
@@ -30021,7 +30022,7 @@ div.dtk-focus-alt table.dataTable tbody th.focus {
     line-height: normal;
     z-index: 0;
     font-size: 12px;
-    font-family: 'Inter Tight', sans-serif;
+    font-family: 'Nunito Sans', sans-serif;
 }
 
 .highcharts-root {
@@ -33541,9 +33542,9 @@ padding: 0;
 
 
 
-/*--- ValidaciÃƒÂ³n de Jquery --*/
+/*--- ValidaciÃƒÆ’Ã‚Â³n de Jquery --*/
 .es-invalido{
-font-family: 'Inter Tight', sans-serif;
+font-family: 'Nunito Sans', sans-serif;
   border-color: #ff5252;
   padding-right: calc(1.5em + 1-25rem);
   background-repeat: no-repeat;
@@ -33579,7 +33580,7 @@ font-family: 'Inter Tight', sans-serif;
     font-size: 0.85rem!important;
     background-color: #fff!important;
     border-radius:3px!important;
-    font-weight:600!important;
+    font-weight:700!important;
     /* z-index: 10000!important;*/
     cursor: text!important;
     padding: 0px 3px!important;
@@ -33595,7 +33596,7 @@ font-family: 'Inter Tight', sans-serif;
     font-size: 0.85rem!important;
     background-color: #fff!important;
     border-radius:3px!important;
-    font-weight:600!important;
+    font-weight:700!important;
     z-index: 1!important;
     cursor: text!important;
     padding: 0px 3px!important;
@@ -33889,7 +33890,7 @@ font-family: 'Inter Tight', sans-serif;
 /**BOTONES XS**/
 
 .btn-xs, .btn-group-xs > .btn {
-    font-family: 'Inter Tight', sans-serif;
+    font-family: 'Nunito Sans', sans-serif;
     padding: 0.3rem 0.5rem 0.2rem 0.5rem;
     font-size: 0.9rem;
     line-height: 1.5;
@@ -33900,7 +33901,7 @@ font-family: 'Inter Tight', sans-serif;
 /**BOTONES XXS**/
 
 .btn-xxs, .btn-group-xxs > .btn {
-    font-family: 'Inter Tight', sans-serif;
+    font-family: 'Nunito Sans', sans-serif;
     padding: 0.19em 0.6em;
     font-size: 0.75rem;
     line-height: 1.5;
@@ -33913,7 +33914,7 @@ font-family: 'Inter Tight', sans-serif;
 /**BOTONES XXXS**/
 
 .btn-xxxs, .btn-group-xxxs > .btn {
-    font-family: 'Inter Tight', sans-serif;
+    font-family: 'Nunito Sans', sans-serif;
     padding: 0.1em 0.6em;
     font-size: 0.66rem;
     line-height: 1.5;
@@ -34666,7 +34667,7 @@ box-shadow: 0 2px 4px -2px rgba(54, 80, 138, 0.4) !important;
 .accor-open-fmu {
 
   cursor: pointer;
-  font-family: 'Inter Tight', sans-serif;
+  font-family: 'Nunito Sans', sans-serif;
 }
 
 
@@ -34674,7 +34675,7 @@ box-shadow: 0 2px 4px -2px rgba(54, 80, 138, 0.4) !important;
 
 .accor-closed-fmu {
   cursor: pointer;
-  font-family: 'Inter Tight', sans-serif;
+  font-family: 'Nunito Sans', sans-serif;
 
 }
 
@@ -36204,6 +36205,172 @@ transition: 0.2s!important;
 }
 
 /*****MODALES VETSDI**/
+
+/* =========================================================
+   VET-SDI · Sistema visual moderno "SaaS veterinario"
+   Base para todas las pantallas de Atención (medica/orl/etc)
+   ========================================================= */
+
+/* Inputs y textareas de fichas de atención: fondo blanco,
+   borde suave, esquinas redondeadas, foco en teal de marca */
+.form-control,
+.form-control.form-control-sm,
+textarea.caja-texto.form-control-sm {
+    background-color: #fff !important;
+    border: 1px solid #c6c6c6!important;
+    border-radius: 10px !important;
+    font-size: 0.875rem !important;
+    box-shadow: none !important;
+    transition: border-color .15s ease, box-shadow .15s ease;
+}
+
+.form-control:focus,
+.form-control.form-control-sm:focus,
+textarea.caja-texto.form-control-sm:focus {
+    border-color: #c6c6c6!important;
+    box-shadow: 0 0 0 3px rgba(68, 173, 147, .15) !important;
+    background-color: #fff !important;
+}
+
+.form-group {
+    margin-bottom: 22px !important;
+}
+
+/* Secciones colapsables (Anamnesis, Examen físico, Diagnóstico, etc.) */
+.card-a {
+    border: 1px solid #eef0f2 !important;
+    border-radius: 16px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .05) !important;
+    overflow: hidden !important;
+    margin-bottom: 18px !important;
+}
+
+.card-header-a {
+    background: #fff !important;
+    padding: 6px 8px !important;
+}
+
+.card-header-a .accor-closed {
+    color: #212529 !important;
+    font-weight: 700 !important;
+    font-size: 0.95rem !important;
+    text-decoration: none !important;
+}
+
+.card-body-aten-a {
+    background: #fff !important;
+    padding: 20px 22px !important;
+}
+
+/* Botones de acción de la ficha: forma píldora moderna,
+   se mantienen los colores semánticos ya existentes */
+.btn-purple,
+.btn-outline-purple,
+.btn-info-light-c,
+.btn-agenda-autorizacion {
+    border-radius: 999px !important;
+    font-weight: 700 !important;
+}
+
+.btn-purple,
+.btn-outline-purple.btn-block,
+.btn-info-light-c {
+    padding: 8px 20px !important;
+    font-size: 0.85rem !important;
+}
+
+/* Modales del sistema: esquinas redondeadas + header/footer
+   con la misma línea gráfica (aplica a receta, examen, etc.) */
+.modal-content {
+    border: none !important;
+    border-radius: 18px !important;
+    overflow: hidden !important;
+}
+
+.modal-header.bg-info {
+    background: linear-gradient(135deg, #44ad93 0%, #1e7d6d 100%) !important;
+    border-bottom: none !important;
+    align-items: center !important;
+}
+
+.modal-header.bg-info .modal-title {
+    color: #fff !important;
+    font-weight: 700 !important;
+}
+
+.modal-header.bg-info .close {
+    color: #fff !important;
+    opacity: 1 !important;
+    background: rgba(255, 255, 255, .2) !important;
+    border-radius: 50% !important;
+    width: 30px !important;
+    height: 30px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-shadow: none !important;
+    line-height: 1 !important;
+}
+
+.modal-header.bg-info .close:hover {
+    background: rgba(255, 255, 255, .32) !important;
+    color: #fff !important;
+}
+
+.modal-footer .btn-info {
+    border-radius: 999px !important;
+    font-weight: 700 !important;
+    background: linear-gradient(135deg, #44ad93 0%, #1e7d6d 100%) !important;
+    border: none !important;
+}
+
+.modal-footer .btn-danger {
+    border-radius: 999px !important;
+    font-weight: 700 !important;
+    background: #fdeeee !important;
+    color: #c0392b !important;
+    border: none !important;
+}
+
+/* Dropzones (subida de imágenes) en cualquier pantalla del sistema */
+.dropzone {
+    border: 2px dashed #b7c4c0!important;
+    border-radius: 12px !important;
+    background: #fafcfb !important;
+    min-height: 90px;
+    transition: border-color .15s ease;
+}
+
+.dropzone:hover {
+    border-color: #44ad93 !important;
+}
+
+.dropzone .dz-message,
+.dropzone .dz-default.dz-message {
+    color: #6c757d !important;
+}
+
+/* Título con franja - con ícono y línea divisoria */
+.dm-form-section {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    font-size: 1rem !important;
+    font-weight: 700 !important;
+    letter-spacing: .02em !important;
+    color: #5b4fc4 !important;
+    margin: 4px 0 16px !important;
+    padding-bottom: 10px !important;
+    border-bottom: 2px solid #f1eefc !important;
+}
+
+.dm-form-section i {
+    font-size: 1.1rem !important;
+}
+
+/* =========================================================
+   Fin
+   ========================================================= */
 
 /*****TITULOS**/
 .titulo-sm {

@@ -16,6 +16,264 @@
     #modal_ficha_mascota td:nth-child(1) {
         width: 120px;
     }
+
+    .pcoded-content {
+        margin-top: 4px;
+    }
+
+    .dm-hero {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 14px;
+        background: linear-gradient(135deg, #44ad93 0%, #1e7d6d 100%);
+        border-radius: 18px;
+        padding: 22px 26px;
+        margin: 20px 0 24px;
+    }
+
+    .dm-hero-title {
+        font-size: 1.3rem;
+        font-weight: 800;
+        color: #fff;
+    }
+
+    .dm-hero-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: #fff;
+        color: #1e7d6d;
+        font-size: 0.85rem;
+        font-weight: 700;
+        padding: 10px 18px;
+        border: none;
+        border-radius: 999px;
+    }
+
+    .dm-hero-btn:hover {
+        background: #f2fdfc;
+        color: #1e7d6d;
+    }
+
+    .dm-card {
+        border-radius: 16px;
+        border: 1px solid #eef0f2;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        overflow: hidden;
+        transition: border-color .15s ease, transform .15s ease, box-shadow .15s ease;
+    }
+
+    .dm-card:hover {
+        border-color: #8a7fe0;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 18px rgba(138, 127, 224, .15);
+    }
+
+    .dm-card-body {
+        padding: 22px 16px 18px;
+    }
+
+    .dm-avatar {
+        width: 72px;
+        height: 72px;
+        border-radius: 50%;
+        object-fit: cover;
+        box-shadow: 0 0 0 4px #f1eefc;
+        margin-bottom: 10px;
+    }
+
+    .dm-name {
+        font-weight: 700;
+        font-size: 1.05rem;
+        color: #212529;
+        margin-bottom: 2px;
+    }
+
+    .dm-species {
+        font-size: 0.85rem;
+        color: #6c757d;
+    }
+
+    .dm-footer {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+        gap: 1px;
+        background: #eef0f2;
+        border-top: 1px solid #eef0f2;
+    }
+
+    .dm-btn {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        background: #fff;
+        border: none;
+        padding: 12px 6px;
+        font-size: 0.7rem;
+        font-weight: 700;
+        color: #1e7d6d;
+        text-align: center;
+    }
+
+    .dm-btn i {
+        font-size: 1rem;
+    }
+
+    .dm-btn:hover:not(:disabled) {
+        background: #f2fdfc;
+    }
+
+    .dm-btn-disabled {
+        color: #adb5bd;
+        cursor: not-allowed;
+    }
+
+    .dm-modal-content {
+        border: none;
+        border-radius: 18px;
+        overflow: hidden;
+    }
+
+    .dm-modal-header {
+        background: linear-gradient(135deg, #44ad93 0%, #1e7d6d 100%);
+        border-bottom: none;
+        padding: 18px 22px;
+        align-items: center;
+    }
+
+    .dm-modal-title {
+        color: #fff;
+        font-weight: 700;
+        font-size: 1.1rem;
+        margin: 0;
+    }
+
+    .dm-modal-close {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+        color: #fff;
+        border: none;
+        opacity: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+    }
+
+    .dm-modal-close:hover {
+        background: rgba(255, 255, 255, 0.32);
+        color: #fff;
+    }
+
+    .dm-modal-body {
+        padding: 24px 26px 8px;
+    }
+
+    .dm-modal-profile {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .dm-modal-avatar {
+        width: 84px;
+        height: 84px;
+        border-radius: 50%;
+        object-fit: cover;
+        box-shadow: 0 0 0 4px #f1eefc;
+        margin-bottom: 10px;
+    }
+
+    .dm-modal-name {
+        font-weight: 700;
+        font-size: 1.1rem;
+        color: #212529;
+        margin: 0;
+    }
+
+    .dm-modal-section-label {
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .04em;
+        color: #5b4fc4;
+        margin: 0 0 10px;
+    }
+
+    .dm-info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 14px;
+        margin-bottom: 22px;
+    }
+
+    .dm-info-item {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        background: #f7f7f7;
+        border-radius: 10px;
+        padding: 10px 12px;
+    }
+
+    .dm-info-item-full {
+        grid-column: 1 / -1;
+    }
+
+    .dm-info-label {
+        font-size: 0.72rem;
+        color: #6c757d;
+    }
+
+    .dm-info-value {
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: #212529;
+    }
+
+    .dm-modal-footer {
+        border-top: 1px solid #eef0f2;
+        padding: 16px 22px;
+    }
+
+    .dm-modal-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        border: none;
+        border-radius: 999px;
+        padding: 9px 18px;
+        font-size: 0.85rem;
+        font-weight: 700;
+    }
+
+    .dm-modal-btn-danger {
+        background: #fdeeee;
+        color: #c0392b;
+    }
+
+    .dm-modal-btn-danger:hover {
+        background: #fbe0e0;
+        color: #c0392b;
+    }
+
+    .dm-modal-btn-primary {
+        background: linear-gradient(135deg, #44ad93 0%, #1e7d6d 100%);
+        color: #fff;
+    }
+
+    .dm-modal-btn-primary:hover {
+        opacity: .92;
+        color: #fff;
+    }
 </style>
 @endsection
 
@@ -33,82 +291,17 @@
 
             <!--Header-->
 
-            <div class="page-header">
+            <div class="dm-hero">
+                <h5 class="dm-hero-title mb-0">Mis Mascotas</h5>
 
-                <div class="page-block">
+                <button type="button" class="dm-hero-btn" id="btn-agregar-dep" name="btn-agregar-dep"><i class="fas fa-plus"></i> Agregar mascota</button>
 
-                    <div class="row align-items-center">
+                <input type="hidden" name="dependencia" id="dependencia" value="{{ $dependencia }}">
 
-                        <div class="col-md-12">
-
-                            <div class="page-header-title">
-
-                                <h5 class="m-b-10 font-weight-bold">Mis Mascotas</h5>
-
-                            </div>
-
-                            <!-- <ul class="breadcrumb">
-
-                                <li class="breadcrumb-item">
-
-                                    <a href="#">Mis Mascotas</a>
-
-                                </li>
-
-                            </ul> -->
-
-                        </div>
-
-                    </div>
-
-                </div>
-
+                <input type="hidden" name="tipo_dependencias" id="tipo_dependencias" value="{{ $tipo_dependencias }}">
             </div>
 
             <!--Cierre: Header-->
-
-
-
-            <!-- TABLA DE DEPENDIENTES-->
-
-            <div class="row ">
-
-                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-
-                    <div class="card">
-
-                        <div class="card-body bg-info py-3 rounded-xl">
-
-                            <div class="row">
-
-                                <div class="col-md-12">
-
-                                    <h5 class="text-white f-20 d-inline">Mis Mascotas </h5>
-
-
-
-                                    {{-- @if ( $tipo_dependencias != '4' ) --}}
-
-                                        <button type="button" class="btn btn-light btn-sm d-inline float-md-right" id="btn-agregar-dep" name="btn-agregar-dep"><i class="fas fa-plus"></i> Agregar mascota</button>
-                                     
-
-                                    {{-- @endif --}}
-
-                                    <input type="hidden" name="dependencia" id="dependencia" value="{{ $dependencia }}">
-
-                                    <input type="hidden" name="tipo_dependencias" id="tipo_dependencias" value="{{ $tipo_dependencias }}">
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
 
 
 
@@ -125,16 +318,18 @@
                             }
                         @endphp
                         <div class="col">
-                            <div class="card card-mascota" data-id="{{ $mascota->id }}">
-                                <div class="card-body text-center" style="cursor:pointer">
-                                    <img class="wid-60 text-center mt-1 rounded-circle" src="{{ $imgMascota }}">
-                                    <h5 class="mt-2 mb-0 text-capitalize">{{ $mascota->nombre }}</h5>
-                                    <p class="mb-0">{{ $labelEspecie }}</p>
-                                    <div class="mt-2 d-flex justify-content-center">
-                                        <button type="button" class="btn btn-info btn-sm mr-1 btn-ver-mascota" data-id="{{ $mascota->id }}">Ver mascota</button>
-                                        <button type="button" class="btn btn-primary btn-sm btn-ver-ficha" data-id="{{ $mascota->id }}">Ficha medica</button>
-                                        <button type="button" class="btn btn-purple btn-sm btn-escritorio-mascota" data-id="{{ $mascota->id }}">Escritorio</button>
-                                    </div>
+                            <div class="card dm-card card-mascota" data-id="{{ $mascota->id }}">
+                                <div class="dm-card-body text-center" style="cursor:pointer">
+                                    <img class="dm-avatar" src="{{ $imgMascota }}">
+                                    <h5 class="dm-name text-capitalize">{{ $mascota->nombre }}</h5>
+                                    <p class="dm-species mb-0">{{ $labelEspecie }}</p>
+                                </div>
+                                <div class="dm-footer">
+                                    <button type="button" class="dm-btn btn-ver-mascota" data-id="{{ $mascota->id }}"><i class="feather icon-eye"></i><span>Ver mascota</span></button>
+                                    <button type="button" class="dm-btn btn-ver-ficha" data-id="{{ $mascota->id }}"><i class="feather icon-file-text"></i><span>Ficha médica</span></button>
+                                    <button type="button" class="dm-btn btn-escritorio-mascota" data-id="{{ $mascota->id }}"><i class="feather icon-grid"></i><span>Escritorio</span></button>
+                                    <button type="button" class="dm-btn dm-btn-disabled" disabled><i class="feather icon-shield"></i><span>Vacunas / Desparasitaciones</span></button>
+                                    <button type="button" class="dm-btn dm-btn-disabled" disabled><i class="feather icon-share-2"></i><span>Genealogía</span></button>
                                 </div>
                             </div>
                         </div>
@@ -179,51 +374,64 @@
     <!--MODAL DETALLE MASCOTA-->
     <div class="modal fade" id="modal_detalle_mascota" tabindex="-1" role="dialog" aria-labelledby="modalDetalleMascota" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header bg-info">
-                    <h5 class="modal-title text-white mt-1" id="modalDetalleMascota">Información de la mascota </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <div class="modal-content dm-modal-content">
+                <div class="modal-header dm-modal-header">
+                    <h5 class="modal-title dm-modal-title" id="modalDetalleMascota">Información de la mascota</h5>
+                    <button type="button" class="dm-modal-close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 </div>
-                <div class="modal-body">
-                    <div class="text-center mb-3">
-                        <img id="modal_mascota_img" class="wid-60 text-center mt-1 rounded-circle" src="{{ asset('images/iconos/paciente-m.svg') }}" alt="Foto Mascota">
-                        <h5 class="mt-2 mb-0 text-uppercase" id="modal_mascota_nombre"></h5>
+                <div class="modal-body dm-modal-body">
+                    <div class="dm-modal-profile">
+                        <img id="modal_mascota_img" class="dm-modal-avatar" src="{{ asset('images/iconos/paciente-m.svg') }}" alt="Foto Mascota">
+                        <h5 class="dm-modal-name text-capitalize" id="modal_mascota_nombre"></h5>
                     </div>
-                    
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <p class="mb-1"><strong>Especie:</strong> <span id="modal_mascota_especie">-</span></p>
+
+                    <p class="dm-modal-section-label">Datos generales</p>
+                    <div class="dm-info-grid">
+                        <div class="dm-info-item">
+                            <span class="dm-info-label">Especie</span>
+                            <span class="dm-info-value" id="modal_mascota_especie">-</span>
                         </div>
-                         <div class="col-sm-6">
-                            <p class="mb-1"><strong>Raza:</strong> <span id="modal_mascota_raza">-</span></p>
+                        <div class="dm-info-item">
+                            <span class="dm-info-label">Raza</span>
+                            <span class="dm-info-value" id="modal_mascota_raza">-</span>
                         </div>
-                        <div class="col-sm-6">
-                            <p class="mb-1"><strong>Tamaño:</strong> <span id="modal_mascota_tamano">-</span></p>
+                        <div class="dm-info-item">
+                            <span class="dm-info-label">Tamaño</span>
+                            <span class="dm-info-value" id="modal_mascota_tamano">-</span>
                         </div>
-                        <div class="col-sm-6">
-                            <p class="mb-1"><strong>Sexo:</strong> <span id="modal_mascota_sexo">-</span></p>
+                        <div class="dm-info-item">
+                            <span class="dm-info-label">Sexo</span>
+                            <span class="dm-info-value" id="modal_mascota_sexo">-</span>
                         </div>
-                        <div class="col-sm-6">
-                            <p class="mb-1"><strong>Fecha nacimiento:</strong> <span id="modal_mascota_fecha">-</span></p>
+                        <div class="dm-info-item">
+                            <span class="dm-info-label">Fecha nacimiento</span>
+                            <span class="dm-info-value" id="modal_mascota_fecha">-</span>
                         </div>
-                        <div class="col-sm-12">
-                            <p class="mb-1"><strong>Chip:</strong> <span id="modal_mascota_chip">-</span></p>
-                        </div>
-                        <div class="col-sm-6">
-                            <p class="mb-1"><strong>Esterilizado:</strong> <span id="modal_mascota_esterilizado">-</span></p>
-                        </div>
-                        <div class="col-sm-6">
-                            <p class="mb-1"><strong>F. esterilización:</strong> <span id="modal_mascota_fecha_esterilizacion">-</span></p>
-                        </div>
-                        <div class="col-sm-12">
-                            <p class="mb-1"><strong>Enfermedad crónica o frecuente:</strong> <span id="modal_mascota_enfermedad_cronica">-</span></p>
+                        <div class="dm-info-item">
+                            <span class="dm-info-label">Chip</span>
+                            <span class="dm-info-value" id="modal_mascota_chip">-</span>
                         </div>
                     </div>
+
+                    <p class="dm-modal-section-label">Información médica</p>
+                    <div class="dm-info-grid">
+                        <div class="dm-info-item">
+                            <span class="dm-info-label">Esterilizado</span>
+                            <span class="dm-info-value" id="modal_mascota_esterilizado">-</span>
+                        </div>
+                        <div class="dm-info-item">
+                            <span class="dm-info-label">F. esterilización</span>
+                            <span class="dm-info-value" id="modal_mascota_fecha_esterilizacion">-</span>
+                        </div>
+                        <div class="dm-info-item dm-info-item-full">
+                            <span class="dm-info-label">Enfermedad crónica o frecuente</span>
+                            <span class="dm-info-value" id="modal_mascota_enfermedad_cronica">-</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger btn-sm" id="btn_eliminar_mascota"><i class="feather icon-x"></i> Eliminar</button>
-                    <button type="button" class="btn btn-info btn-sm" id="btn_editar_mascota"><i class="feather icon-edit"></i> Editar</button>
-                    <!--<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>-->
+                <div class="modal-footer dm-modal-footer">
+                    <button type="button" class="dm-modal-btn dm-modal-btn-danger" id="btn_eliminar_mascota"><i class="feather icon-x"></i> Eliminar</button>
+                    <button type="button" class="dm-modal-btn dm-modal-btn-primary" id="btn_editar_mascota"><i class="feather icon-edit"></i> Editar</button>
                 </div>
             </div>
         </div>
@@ -1715,16 +1923,18 @@
                             var especie_label = obtenerLabelEspecie(value.especie_id || value.especie, value.otra_especie);
 
                             html += '<div class="col">';
-                            html += '    <div class="card card-mascota" data-id="'+value.id+'">';
-                            html += '        <div class="card-body text-center" style="cursor:pointer">';
-                            html += '            <img class="wid-60 text-center mt-1 rounded-circle" src="'+img+'">';
-                            html += '            <h5 class="mt-2 mb-0">'+value.nombre+'</h5>';
-                            html += '            <p class="mb-0">'+especie_label+'</p>';
-                            html += '            <div class="mt-2 d-flex justify-content-center">';
-                            html += '                <button type="button" class="btn btn-info btn-xxs mr-1 btn-ver-mascota" data-id="'+value.id+'"><i class="feather icon-user"></i> Ver mascota</button>';
-                            html += '                <button type="button" class="btn btn-primary mr-1 btn-xxs btn-ver-ficha" data-id="'+value.id+'"><i class="feather icon-file-plus"></i> Ficha medica</button>';
-                                html += '                <button type="button" class="btn btn-purple btn-xxs btn-escritorio-mascota" data-id="'+value.id+'"><i class="feather icon-monitor"></i> Escritorio</button>';
-                            html += '            </div>';
+                            html += '    <div class="card dm-card card-mascota" data-id="'+value.id+'">';
+                            html += '        <div class="dm-card-body text-center" style="cursor:pointer">';
+                            html += '            <img class="dm-avatar" src="'+img+'">';
+                            html += '            <h5 class="dm-name text-capitalize">'+value.nombre+'</h5>';
+                            html += '            <p class="dm-species mb-0">'+especie_label+'</p>';
+                            html += '        </div>';
+                            html += '        <div class="dm-footer">';
+                            html += '            <button type="button" class="dm-btn btn-ver-mascota" data-id="'+value.id+'"><i class="feather icon-eye"></i><span>Ver mascota</span></button>';
+                            html += '            <button type="button" class="dm-btn btn-ver-ficha" data-id="'+value.id+'"><i class="feather icon-file-text"></i><span>Ficha médica</span></button>';
+                            html += '            <button type="button" class="dm-btn btn-escritorio-mascota" data-id="'+value.id+'"><i class="feather icon-grid"></i><span>Escritorio</span></button>';
+                            html += '            <button type="button" class="dm-btn dm-btn-disabled" disabled><i class="feather icon-shield"></i><span>Vacunas / Desparasitaciones</span></button>';
+                            html += '            <button type="button" class="dm-btn dm-btn-disabled" disabled><i class="feather icon-share-2"></i><span>Genealogía</span></button>';
                             html += '        </div>';
                             html += '    </div>';
                             html += '</div>';

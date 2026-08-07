@@ -101,7 +101,7 @@
                         <textarea class="form-control caja-texto form-control-sm" rows="1" onfocus="this.rows=8" onblur="this.rows=1;" name="otros_examen_fisico" id="otros_examen_fisico"></textarea>
                     </div>
                     <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                        <label class="floating-label-activo-sm" for="mis-imagenes">Imágenes de la atención</label>
+                        <h6 class="dm-form-section"><i class="feather icon-image"></i> Imágenes de la atención</h6>
                         <div class="dropzone" id="mis-imagenes" action="{{ route('profesional.imagen.carga') }}"></div>
                     </div>
                 </div>

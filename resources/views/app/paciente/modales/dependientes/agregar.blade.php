@@ -241,23 +241,97 @@
 
 
 
+<style>
+    #modal_agregar_dep_nuevo .modal-content {
+        border: none;
+        border-radius: 18px;
+        overflow: hidden;
+    }
+
+    #modal_agregar_dep_nuevo .dm-form {
+        padding: 22px 26px;
+        background: #fff;
+    }
+
+    #modal_agregar_dep_nuevo .form-group {
+        margin-bottom: 26px;
+    }
+
+    #modal_agregar_dep_nuevo .requerido {
+        color: #c0392b !important;
+    }
+
+    #modal_agregar_dep_nuevo .form-control {
+        border: 1px solid #eef0f2;
+        background: #f7f7f7;
+        border-radius: 10px;
+        font-size: 0.875rem;
+        padding: .45rem .75rem;
+        box-shadow: none;
+    }
+
+    #modal_agregar_dep_nuevo .form-control:focus {
+        border-color: #44ad93;
+        background: #fff;
+        box-shadow: 0 0 0 3px rgba(68, 173, 147, .15);
+    }
+
+    #modal_agregar_dep_nuevo .form-check-label {
+        font-size: 0.8rem;
+        color: #6c757d;
+    }
+
+    #modal_agregar_dep_nuevo .dm-form-section {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 1rem;
+        font-weight: 700;
+        letter-spacing: .02em;
+        color: #5b4fc4;
+        margin: 4px 0 16px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #f1eefc;
+    }
+
+    #modal_agregar_dep_nuevo .dm-form-section i {
+        font-size: 1.1rem;
+    }
+
+    #modal_agregar_dep_nuevo .dropzone {
+        border: 2px dashed #d8e6e2;
+        border-radius: 12px;
+        background: #fafcfb;
+        min-height: 90px;
+    }
+
+    #modal_agregar_dep_nuevo .dropzone:hover {
+        border-color: #44ad93;
+    }
+
+    #modal_agregar_dep_nuevo hr {
+        border-color: #eef0f2;
+        margin: 18px 0;
+    }
+</style>
+
 <!-- Modal agregar paciente nuevo -->
 
 <div class="modal fade" id="modal_agregar_dep_nuevo" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
 
     <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
 
-    <div class="modal-content">
+    <div class="modal-content dm-modal-content">
 
-        <div class="modal-header bg-info">
+        <div class="modal-header dm-modal-header">
 
-            <h5 class="modal-title text-white mt-1" id="modal_indicar_examen">Agregar Mascota no registrada</h5>
+            <h5 class="modal-title dm-modal-title" id="modal_indicar_examen">Agregar Mascota no registrada</h5>
 
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <button type="button" class="dm-modal-close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 
         </div>
 
-        <div class="modal-body">
+        <div class="modal-body dm-form">
 
             <input type="hidden" id="mascota_editar_id" value="">
 
@@ -386,7 +460,7 @@
                     <div class="form-group">
                         <div class="form-row">
                             <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                                <h6 class="t-aten">Fotos</h6>
+                                <h6 class="dm-form-section"><i class="feather icon-camera"></i> Fotos</h6>
                                 <input type="hidden" name="input_lista_ven_imagenes" id="input_lista_ven_imagenes" value="">
                             </div>
                         </div>
@@ -644,11 +718,11 @@
 
 
 
-        <div class="modal-footer">
+        <div class="modal-footer dm-modal-footer">
 
-            <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal"><i class="feather icon-x"></i> Cerrar</button>
+            <button type="button" class="dm-modal-btn dm-modal-btn-danger" data-dismiss="modal"><i class="feather icon-x"></i> Cerrar</button>
 
-            <button type="button" class="btn btn-info btn-sm" id="btn_registrar" onclick="registrar_dep_nuevo();"><i class="feather icon-check"></i> Registrar</button>
+            <button type="button" class="dm-modal-btn dm-modal-btn-primary" id="btn_registrar" onclick="registrar_dep_nuevo();"><i class="feather icon-check"></i> Registrar</button>
 
         </div>
 
